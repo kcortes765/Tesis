@@ -1,0 +1,164 @@
+{
+  "features": [
+    {
+      "id": "S1.1",
+      "name": "Verificar pipeline end-to-end con canal 30m",
+      "description": "El pipeline SPH tiene 4 modulos en src/: geometry_builder.py, batch_runner.py, data_cleaner.py, main_orchestrator.py. Necesitamos verificar que la cadena completa funciona con el canal de 30m y dp=0.02 (modo desarrollo). Los ejecutables DualSPHysics estan instalados localmente — el config/dsph_config.json tiene 'dsph_bin': 'auto' que resuelve automaticamente la ruta. HAY UNA GPU RTX 4060 DISPONIBLE para correr simulaciones reales. Verificar: (1) geometry_builder genera XML correcto, (2) batch_runner ejecuta GenCase + DualSPHysics GPU exitosamente, (3) data_cleaner parsea los CSVs generados, (4) los resultados se guardan en SQLite. Si hay bugs, corregirlos. Correr 1 caso de prueba real (dam_h=0.30, mass=1.06, dp=0.02) desde main_orchestrator.py o manualmente paso a paso. NOTA: dp=0.02 es rapido (~2-5 min), ideal para verificacion.",
+      "steps": [
+        "Leer src/main_orchestrator.py, src/geometry_builder.py, src/batch_runner.py, src/data_cleaner.py",
+        "Leer config/dsph_config.json — verificar que dsph_bin='auto' resuelve correctamente",
+        "Crear caso de prueba: dam_h=0.30, mass=1.06, dp=0.02 usando geometry_builder.py directamente",
+        "Ejecutar GenCase + DualSPHysics GPU via batch_runner.run_case()",
+        "Verificar que se generan CSVs en el caso: ChronoExchange, ChronoBody_forces, GaugesVel, GaugesMaxZ",
+        "Ejecutar data_cleaner.process_case() sobre los CSVs generados",
+        "Verificar que results.sqlite se crea/actualiza con save_to_sqlite()",
+        "Si algo falla: diagnosticar, corregir el bug, y re-ejecutar",
+        "Documentar que se verifico y que resultado dio (en un commit)"
+      ],
+      "passes": true,
+      "dependencies": []
+    },
+    {
+      "id": "S1.2",
+      "name": "Correr batch de validacion (5 casos dp=0.02)",
+      "description": "Ahora que el pipeline funciona (feature S1.1 ya paso), correr 5 casos de validacion con dp=0.02 para verificar tendencias fisicas basicas. Usar los primeros 5 casos de config/gp_initial_batch.csv (gp_001 a gp_005 — son las 4 esquinas del dominio + centro). Estos 5 casos cubren: dam_h minimo/maximo y mass minimo/maximo, mas un punto central. Con sus resultados podemos verificar sanity checks basicos: (1) mas dam_h → mas desplazamiento, (2) mas mass → menos desplazamiento. Ejecutar via main_orchestrator.py usando un CSV temporal con solo esos 5 casos, o ejecutar manualmente caso por caso. dp=0.02 tarda ~2-5 min por caso, total ~15-25 min.",
+      "steps": [
+        "Leer config/gp_initial_batch.csv — extraer primeros 5 casos (gp_001 a gp_005)",
+        "Crear un CSV temporal config/validation_5cases.csv con solo esos 5 casos",
+        "Leer src/main_orchestrator.py para entender como ejecutar una campana con CSV custom",
+        "Ejecutar: cd src && python main_orchestrator.py con el CSV de 5 casos y dp=0.02",
+        "Alternativa si main_orchestrator no acepta CSV custom: ejecutar manualmente con geometry_builder + batch_runner para cada caso",
+        "Verificar que los 5 resultados estan en data/processed/gp_00{1-5}/",
+        "Ejecutar data_cleaner para cada caso y guardar en SQLite",
+        "Verificar tendencia basica: el caso con dam_h=0.5 debe tener mas desplazamiento que dam_h=0.1",
+        "Commit con resultados: feat(S1.2): run 5-case validation batch"
+      ],
+      "passes": true,
+      "dependencies": ["S1.1"]
+    },
+    {
+      "id": "S1.3",
+      "name": "Implementar modulo GP + Active Learning",
+      "description": "Crear src/gp_active_learning.py — modulo completo de Gaussian Process con Active Learning para encontrar el umbral de movimiento incipiente en 2D (dam_height, boulder_mass). LEER PRIMERO: docs/RESEARCH_GP_AL.md (metodologia completa con formulas), docs/PLAN_GP_AL_BATCH.md (diseno del batch y AL loop). El modulo debe: (1) Entrenar GP con Matern 5/2 kernel + ARD usando sklearn.gaussian_process.GaussianProcessRegressor, (2) Implementar U-function de Echard 2011: U(x) = |mu(x) - T| / sigma(x) donde T es el umbral de desplazamiento (d_eq del boulder ~0.10m), (3) Proponer siguiente punto: argmin U sobre grilla candidata 50x50, (4) Criterio de parada: min(U) >= 2 para todos candidatos O budget total = 30 sims, (5) LOO cross-validation con formula analitica, (6) Generar figuras: GP surface con incertidumbre, contorno de umbral, LOO plot, U-function heatmap. TAMBIEN LEER src/ml_surrogate.py como referencia del GP existente (pero es version vieja, reescribir desde cero). Debe funcionar con datos de SQLite o CSV.",
+      "steps": [
+        "Leer docs/RESEARCH_GP_AL.md completo — extraer formulas y parametros",
+        "Leer docs/PLAN_GP_AL_BATCH.md — entender diseno del batch y AL loop",
+        "Leer src/ml_surrogate.py — referencia del GP viejo (no copiar, solo entender interfaz)",
+        "Leer config/param_ranges.json — rangos de dam_height y boulder_mass",
+        "Crear src/gp_active_learning.py con las siguientes clases/funciones:",
+        "  - GPSurrogate class: fit(X, y), predict(X), predict_with_std(X), loo_cv()",
+        "  - u_function(gp, X_candidates, threshold): calcula U para cada candidato",
+        "  - propose_next_point(gp, param_ranges, threshold, grid_size=50): retorna siguiente punto",
+        "  - check_stopping(gp, param_ranges, threshold, grid_size=50): True si min(U)>=2",
+        "  - al_loop(initial_X, initial_y, param_ranges, threshold, max_budget=30): loop completo",
+        "  - generate_figures(gp, X_train, y_train, param_ranges, threshold, output_dir): todas las figuras",
+        "Verificar imports: sklearn.gaussian_process, numpy, pandas, matplotlib",
+        "Test con datos sinteticos: generar 10 puntos con funcion conocida, entrenar GP, verificar U-function",
+        "Verificar que generate_figures crea archivos PNG en data/figures/",
+        "Commit: feat(S1.3): implement GP + active learning module"
+      ],
+      "passes": true,
+      "dependencies": []
+    },
+    {
+      "id": "S1.4",
+      "name": "Implementar sanity checks automaticos",
+      "description": "Crear src/sanity_checks.py — verificaciones fisicas automaticas que validan resultados de simulacion SPH. LEER PRIMERO: docs/RESEARCH_EMPIRICAL_SANITY.md (tiene todas las formulas y valores esperados). Los checks son: (1) Monotonicidad: mas dam_h → mas desplazamiento, mas mass → menos desplazamiento. (2) Velocidad Ritter: vel del frente de onda debe ser ~2*sqrt(g*h0), SPH da 5-15% menos. (3) Magnitudes: desplazamiento debe estar en rango razonable (0 a ~5m para dam_h=0.1-0.5). (4) Fuerzas: fuerza SPH maxima debe ser > 0 y < 10*peso del boulder. (5) Suavidad: curvas temporales no deben tener oscilaciones espurias (derivada no debe cambiar signo mas de N veces). El modulo lee resultados de SQLite o de CSVs en data/processed/ y genera un reporte JSON + figura resumen.",
+      "steps": [
+        "Leer docs/RESEARCH_EMPIRICAL_SANITY.md completo — extraer formulas y valores",
+        "Leer src/data_cleaner.py — entender CaseResult dataclass y formato de datos",
+        "Crear src/sanity_checks.py con estas funciones:",
+        "  - check_monotonicity(results_df): verifica correlacion dam_h-disp y mass-disp",
+        "  - check_ritter(results_df): vel flujo vs 2*sqrt(9.81*dam_h), tolerancia 15%",
+        "  - check_magnitudes(results_df): desplazamiento en rango [0, 10m], rotacion en [0, 360deg]",
+        "  - check_forces(results_df, boulder_mass): fuerza SPH > 0 y razonable vs peso",
+        "  - check_smoothness(case_dir): lee ChronoExchange CSV, verifica curvas suaves",
+        "  - run_all_checks(results_df, processed_dir): ejecuta todos, retorna dict pass/fail",
+        "  - generate_report(check_results, output_dir): JSON + figura resumen",
+        "Test: si hay datos en data/processed/ o SQLite, ejecutar checks sobre datos reales",
+        "Si no hay datos, crear test con datos sinteticos que pasen y fallen cada check",
+        "Commit: feat(S1.4): implement automated sanity checks"
+      ],
+      "passes": false,
+      "dependencies": []
+    },
+    {
+      "id": "S1.5",
+      "name": "Validar sanity checks con resultados reales",
+      "description": "La feature S1.2 corrio 5 casos reales y S1.4 creo el modulo de sanity checks. Ahora ejecutar los sanity checks sobre los resultados reales de los 5 casos. Leer resultados de data/results.sqlite (tabla 'results') o de data/processed/gp_00{1-5}/. Los 5 casos son esquinas + centro del dominio 2D (dam_h, mass), asi que la monotonicidad deberia ser clara. Correr run_all_checks(), analizar resultados, y si algun check falla, investigar por que (puede ser un bug en el check o un resultado fisico inesperado). Generar reporte y figuras.",
+      "steps": [
+        "Leer data/results.sqlite — verificar que tiene resultados de S1.2 (5 casos gp_001 a gp_005)",
+        "Si SQLite esta vacia, leer CSVs de data/processed/gp_00{1-5}/ directamente",
+        "Importar sanity_checks: from sanity_checks import run_all_checks, generate_report",
+        "Cargar resultados en DataFrame",
+        "Ejecutar run_all_checks(results_df, processed_dir=Path('data/processed'))",
+        "Analizar resultado: cuales checks pasan, cuales fallan",
+        "Si un check falla: investigar si es bug del check o resultado fisico real",
+        "Ejecutar generate_report() para crear JSON + figura resumen en data/figures/",
+        "Commit: feat(S1.5): validate sanity checks with real simulation results"
+      ],
+      "passes": false,
+      "dependencies": ["S1.2", "S1.4"]
+    },
+    {
+      "id": "S2.1",
+      "name": "Entrenar GP con datos reales y generar figuras",
+      "description": "Usar los resultados de los 5 casos de validacion (S1.2) para entrenar el GP surrogate (S1.3) y generar las primeras figuras reales. Leer datos de SQLite o processed CSVs. Features de entrada: [dam_height, boulder_mass]. Target: max_displacement (metros). Entrenar GPSurrogate, ejecutar LOO-CV, generar figuras (GP surface, incertidumbre, contorno threshold). El threshold es d_eq del boulder = 0.1004m (ver config/param_ranges.json justificacion). Con solo 5 puntos el GP sera impreciso — eso esta bien, el objetivo es verificar que el pipeline GP funciona end-to-end y las figuras se generan correctamente. Las figuras van en data/figures/gp/.",
+      "steps": [
+        "Leer data/results.sqlite o data/processed/ para obtener resultados de 5 casos",
+        "Construir X (dam_height, boulder_mass) e y (max_displacement) como arrays numpy",
+        "Importar GPSurrogate de src/gp_active_learning.py",
+        "Entrenar: gp = GPSurrogate(); gp.fit(X, y)",
+        "LOO-CV: scores = gp.loo_cv(); print R2, RMSE",
+        "Generar figuras: gp surface 2D con colorbar, incertidumbre (std), contorno threshold=0.1004",
+        "Guardar figuras en data/figures/gp/",
+        "Ejecutar U-function sobre grilla 50x50 y visualizar",
+        "Proponer siguiente punto (propose_next_point) — verificar que es razonable",
+        "Crear script scripts/train_gp.py que encapsule todo esto para re-ejecucion facil",
+        "Commit: feat(S2.1): train GP surrogate with real data and generate figures"
+      ],
+      "passes": false,
+      "dependencies": ["S1.2", "S1.3"]
+    },
+    {
+      "id": "S2.2",
+      "name": "Crear script de deploy para WS",
+      "description": "Crear scripts/deploy_ws.py que empaqueta todo lo necesario para correr el batch de produccion en la Workstation UCN (RTX 5090). La WS NO tiene git — se deploya via ZIP + Copy-Item. El script debe: (1) Copiar src/*.py, config/*.json, config/*.csv, config/*.xml, models/*.stl a un directorio temporal. (2) Generar XMLs de produccion (dp=0.004) para los 20 casos de config/gp_initial_batch.csv usando geometry_builder. (3) Crear ZIP listo para copiar. (4) Incluir un script run_batch.ps1 dentro del ZIP que ejecute main_orchestrator.py en la WS con las rutas correctas (la WS tiene dsph_bin en C:\\Users\\ProyBloq_Cortes\\Desktop\\CarpetaTesis\\ejecutablesWindows). NOTA: el config/dsph_config.json tiene dsph_bin='auto' con ambas rutas, asi que funciona en ambas maquinas sin cambios.",
+      "steps": [
+        "Leer config/dsph_config.json, config/gp_initial_batch.csv",
+        "Leer src/geometry_builder.py y src/batch_runner.py para entender que archivos necesita la WS",
+        "Crear scripts/deploy_ws.py con funcion principal:",
+        "  - Crear directorio temporal deploy/",
+        "  - Copiar src/*.py, config/, models/*.stl",
+        "  - Generar XMLs para 20 casos con dp=0.004 (produccion) usando geometry_builder",
+        "  - Crear run_batch.ps1 wrapper para la WS",
+        "  - Comprimir todo en deploy_ws_FECHA.zip",
+        "Ejecutar el script para verificar que genera el ZIP",
+        "Verificar contenido del ZIP: debe tener XMLs, STLs, scripts, config",
+        "Commit: feat(S2.2): create WS deploy package script"
+      ],
+      "passes": false,
+      "dependencies": ["S1.1"]
+    },
+    {
+      "id": "S2.3",
+      "name": "Escribir Cap 3 Metodologia (GP + AL)",
+      "description": "Expandir el capitulo 3 de la tesis (tesis/cap3_metodologia.md) con la seccion de metodologia GP + Active Learning. LEER PRIMERO: docs/RESEARCH_GP_AL.md (tiene toda la teoria con formulas), docs/RESEARCH_EMPIRICAL_SANITY.md (ecuaciones empiricas y validacion). El capitulo debe incluir: (1) GP regression con kernel Matern 5/2 + ARD, (2) Active Learning con U-function (Echard 2011), criterio de parada, (3) Diseno experimental: batch inicial LHS 20 puntos, espacio 2D, rangos, (4) Pipeline computacional: DualSPHysics → metricas → GP → AL → siguiente sim, (5) Sanity checks y validacion fisica (Ritter, Nandasena), (6) Ecuaciones formateadas. Redactar en espanol academico, estilo tesis ingenieria.",
+      "steps": [
+        "Leer tesis/cap3_metodologia.md existente — entender estructura actual",
+        "Leer docs/RESEARCH_GP_AL.md — extraer ecuaciones y referencias clave",
+        "Leer docs/RESEARCH_EMPIRICAL_SANITY.md — extraer ecuaciones empiricas",
+        "Leer docs/PLAN_GP_AL_BATCH.md — diseno experimental",
+        "Agregar seccion 3.X: Surrogate Model (GP con Matern 5/2, training, LOO-CV)",
+        "Agregar seccion 3.X+1: Active Learning (U-function, criterio parada, loop)",
+        "Agregar seccion 3.X+2: Diseno experimental (LHS, rangos, batch inicial)",
+        "Agregar seccion 3.X+3: Validacion (sanity checks, ecuaciones empiricas)",
+        "Incluir ecuaciones en formato LaTeX inline: $ecuacion$",
+        "Citar referencias: Bryan 2005, Echard 2011, Loeppky 2009, Nandasena 2011, Cox 2020",
+        "Commit: feat(S2.3): write methodology chapter GP + active learning"
+      ],
+      "passes": false,
+      "dependencies": []
+    }
+  ]
+}
