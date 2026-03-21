@@ -137,7 +137,7 @@
         "Verificar contenido del ZIP: debe tener XMLs, STLs, scripts, config",
         "Commit: feat(S2.2): create WS deploy package script"
       ],
-      "passes": false,
+      "passes": true,
       "dependencies": ["S1.1"]
     },
     {
