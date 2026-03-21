@@ -1,0 +1,294 @@
+{
+  "checks": {
+    "monotonicity": {
+      "name": "monotonicity",
+      "passed": true,
+      "details": {
+        "dam_h_vs_disp": {
+          "spearman_rho": 0.956182887467515,
+          "p_value": 0.002837845926734439,
+          "expected": "positive",
+          "passed": true
+        },
+        "mass_vs_disp": {
+          "spearman_rho": -0.26482044885142486,
+          "p_value": 0.6120552385657049,
+          "expected": "negative",
+          "passed": true
+        }
+      }
+    },
+    "ritter_velocity": {
+      "name": "ritter_velocity",
+      "passed": true,
+      "details": [
+        {
+          "case": "test_diego_reference",
+          "dam_h": 0.3,
+          "v_sph": 1.4952773407114874,
+          "v_ritter": 3.431034829318991,
+          "ratio_sph_ritter": 0.4358094321672268,
+          "passed": true,
+          "warning": "SPH velocity unusually low vs Ritter"
+        },
+        {
+          "case": "gp_001",
+          "skipped": true,
+          "reason": "no flow velocity data or dam_h=0"
+        },
+        {
+          "case": "gp_002",
+          "dam_h": 0.5,
+          "v_sph": 2.7820058944057418,
+          "v_ritter": 4.4294469180700204,
+          "ratio_sph_ritter": 0.6280707153429226,
+          "passed": true,
+          "warning": "SPH velocity unusually low vs Ritter"
+        },
+        {
+          "case": "gp_003",
+          "dam_h": 0.3,
+          "v_sph": 1.4951143107086429,
+          "v_ritter": 3.431034829318991,
+          "ratio_sph_ritter": 0.4357619158897902,
+          "passed": true,
+          "warning": "SPH velocity unusually low vs Ritter"
+        },
+        {
+          "case": "gp_004",
+          "dam_h": 0.1,
+          "v_sph": 0.08499534486841265,
+          "v_ritter": 1.9809088823063015,
+          "ratio_sph_ritter": 0.04290724607658662,
+          "passed": true,
+          "warning": "SPH velocity unusually low vs Ritter"
+        },
+        {
+          "case": "gp_005",
+          "dam_h": 0.5,
+          "v_sph": 2.7821763708009253,
+          "v_ritter": 4.4294469180700204,
+          "ratio_sph_ritter": 0.6281092024042503,
+          "passed": true,
+          "warning": "SPH velocity unusually low vs Ritter"
+        }
+      ]
+    },
+    "magnitudes": {
+      "name": "magnitudes",
+      "passed": true,
+      "details": [
+        {
+          "case": "test_diego_reference",
+          "max_displacement": 4.452429911487097,
+          "max_rotation": 105.58962352869183,
+          "max_velocity": 1.416425378632422,
+          "max_flow_velocity": 1.4952773407114874,
+          "passed": true,
+          "issues": []
+        },
+        {
+          "case": "gp_001",
+          "max_displacement": 0.03646549368924007,
+          "max_rotation": 20.251710019339875,
+          "max_velocity": 0.75627,
+          "max_flow_velocity": 0.0,
+          "passed": true,
+          "issues": []
+        },
+        {
+          "case": "gp_002",
+          "max_displacement": 13.627112131020974,
+          "max_rotation": 132.04397613473526,
+          "max_velocity": 2.4283238441083186,
+          "max_flow_velocity": 2.7820058944057418,
+          "passed": true,
+          "issues": []
+        },
+        {
+          "case": "gp_003",
+          "max_displacement": 4.27744272690845,
+          "max_rotation": 80.00828705764208,
+          "max_velocity": 1.3628700989001115,
+          "max_flow_velocity": 1.4951143107086429,
+          "passed": true,
+          "issues": []
+        },
+        {
+          "case": "gp_004",
+          "max_displacement": 0.23495481986756497,
+          "max_rotation": 30.217409696891952,
+          "max_velocity": 0.75627,
+          "max_flow_velocity": 0.08499534486841265,
+          "passed": true,
+          "issues": []
+        },
+        {
+          "case": "gp_005",
+          "max_displacement": 16.070829104561472,
+          "max_rotation": 131.44973111775303,
+          "max_velocity": 2.885710157202382,
+          "max_flow_velocity": 2.7821763708009253,
+          "passed": true,
+          "issues": []
+        }
+      ]
+    },
+    "forces": {
+      "name": "forces",
+      "passed": true,
+      "details": [
+        {
+          "case": "test_diego_reference",
+          "boulder_mass": 1.06,
+          "weight": 10.398600000000002,
+          "max_sph_force": 101.1942031712948,
+          "ratio_fsph_weight": 9.73152185595126,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        },
+        {
+          "case": "gp_001",
+          "boulder_mass": 1.6,
+          "weight": 15.696000000000002,
+          "max_sph_force": 17.438540646991108,
+          "ratio_fsph_weight": 1.1110181350019819,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        },
+        {
+          "case": "gp_002",
+          "boulder_mass": 1.6,
+          "weight": 15.696000000000002,
+          "max_sph_force": 258.1024449233112,
+          "ratio_fsph_weight": 16.443835685735934,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        },
+        {
+          "case": "gp_003",
+          "boulder_mass": 1.2,
+          "weight": 11.772,
+          "max_sph_force": 104.47236008445499,
+          "ratio_fsph_weight": 8.87464832521704,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        },
+        {
+          "case": "gp_004",
+          "boulder_mass": 0.8,
+          "weight": 7.848000000000001,
+          "max_sph_force": 9.27411256153946,
+          "ratio_fsph_weight": 1.181716687250186,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        },
+        {
+          "case": "gp_005",
+          "boulder_mass": 0.8,
+          "weight": 7.848000000000001,
+          "max_sph_force": 225.37446787892125,
+          "ratio_fsph_weight": 28.717439841860504,
+          "passed": true,
+          "issues": [],
+          "warnings": []
+        }
+      ]
+    },
+    "smoothness": {
+      "name": "smoothness",
+      "passed": true,
+      "cases": [
+        {
+          "name": "smoothness",
+          "case": "test_diego_reference",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 7,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 31,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        },
+        {
+          "name": "smoothness",
+          "case": "gp_001",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 6,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 23,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        },
+        {
+          "name": "smoothness",
+          "case": "gp_002",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 6,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 27,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        },
+        {
+          "name": "smoothness",
+          "case": "gp_003",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 9,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 33,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        },
+        {
+          "name": "smoothness",
+          "case": "gp_004",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 11,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 24,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        },
+        {
+          "name": "smoothness",
+          "case": "gp_005",
+          "passed": true,
+          "details": {
+            "displacement_sign_changes": 6,
+            "displacement_max_allowed": 15,
+            "displacement_smooth": true,
+            "velocity_sign_changes": 27,
+            "velocity_max_allowed": 50,
+            "velocity_smooth": true
+          }
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "all_passed": true
+  }
+}
