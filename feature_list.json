@@ -117,7 +117,7 @@
         "Crear script scripts/train_gp.py que encapsule todo esto para re-ejecucion facil",
         "Commit: feat(S2.1): train GP surrogate with real data and generate figures"
       ],
-      "passes": false,
+      "passes": true,
       "dependencies": ["S1.2", "S1.3"]
     },
     {
