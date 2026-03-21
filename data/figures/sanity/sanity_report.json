@@ -5,14 +5,14 @@
       "passed": true,
       "details": {
         "dam_h_vs_disp": {
-          "spearman_rho": 0.956182887467515,
-          "p_value": 0.002837845926734439,
+          "spearman_rho": 0.9486832980505137,
+          "p_value": 0.013846832988859107,
           "expected": "positive",
           "passed": true
         },
         "mass_vs_disp": {
-          "spearman_rho": -0.26482044885142486,
-          "p_value": 0.6120552385657049,
+          "spearman_rho": -0.31622776601683794,
+          "p_value": 0.604181303590592,
           "expected": "negative",
           "passed": true
         }
@@ -22,15 +22,6 @@
       "name": "ritter_velocity",
       "passed": true,
       "details": [
-        {
-          "case": "test_diego_reference",
-          "dam_h": 0.3,
-          "v_sph": 1.4952773407114874,
-          "v_ritter": 3.431034829318991,
-          "ratio_sph_ritter": 0.4358094321672268,
-          "passed": true,
-          "warning": "SPH velocity unusually low vs Ritter"
-        },
         {
           "case": "gp_001",
           "skipped": true,
@@ -78,15 +69,6 @@
       "name": "magnitudes",
       "passed": true,
       "details": [
-        {
-          "case": "test_diego_reference",
-          "max_displacement": 4.452429911487097,
-          "max_rotation": 105.58962352869183,
-          "max_velocity": 1.416425378632422,
-          "max_flow_velocity": 1.4952773407114874,
-          "passed": true,
-          "issues": []
-        },
         {
           "case": "gp_001",
           "max_displacement": 0.03646549368924007,
@@ -138,16 +120,6 @@
       "name": "forces",
       "passed": true,
       "details": [
-        {
-          "case": "test_diego_reference",
-          "boulder_mass": 1.06,
-          "weight": 10.398600000000002,
-          "max_sph_force": 101.1942031712948,
-          "ratio_fsph_weight": 9.73152185595126,
-          "passed": true,
-          "issues": [],
-          "warnings": []
-        },
         {
           "case": "gp_001",
           "boulder_mass": 1.6,
@@ -204,19 +176,6 @@
       "name": "smoothness",
       "passed": true,
       "cases": [
-        {
-          "name": "smoothness",
-          "case": "test_diego_reference",
-          "passed": true,
-          "details": {
-            "displacement_sign_changes": 7,
-            "displacement_max_allowed": 15,
-            "displacement_smooth": true,
-            "velocity_sign_changes": 31,
-            "velocity_max_allowed": 50,
-            "velocity_smooth": true
-          }
-        },
         {
           "name": "smoothness",
           "case": "gp_001",

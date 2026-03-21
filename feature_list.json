@@ -79,7 +79,7 @@
         "Si no hay datos, crear test con datos sinteticos que pasen y fallen cada check",
         "Commit: feat(S1.4): implement automated sanity checks"
       ],
-      "passes": false,
+      "passes": true,
       "dependencies": []
     },
     {
@@ -97,7 +97,7 @@
         "Ejecutar generate_report() para crear JSON + figura resumen en data/figures/",
         "Commit: feat(S1.5): validate sanity checks with real simulation results"
       ],
-      "passes": false,
+      "passes": true,
       "dependencies": ["S1.2", "S1.4"]
     },
     {
