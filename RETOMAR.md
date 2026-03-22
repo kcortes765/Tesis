@@ -1,6 +1,6 @@
 # RETOMAR.md — SPH-IncipientMotion
 
-> Ultima actualizacion: 2026-03-21 10:15
+> Ultima actualizacion: 2026-03-22 00:30
 
 ## Sistema de continuidad
 
@@ -12,7 +12,7 @@ Este proyecto usa **APOS**. Para retomar, leer:
 
 ## Estado en una linea
 
-**8/8 features COMPLETADAS** por agente autonomo. Pipeline verificado, GP+AL implementado, figuras generadas, deploy script listo, Cap 3 escrito. Listo para produccion en WS.
+**20 sims produccion (dp=0.004) CORRIENDO en WS UCN** (RTX 5090). Lanzadas 2026-03-22 00:01. Estimado: ~12-15h.
 
 ## Agente autonomo (completado)
 
@@ -45,9 +45,9 @@ Este proyecto usa **APOS**. Para retomar, leer:
 
 ## Siguiente accion
 
-1. **Revisar codigo generado**: src/gp_active_learning.py, src/sanity_checks.py, scripts/deploy_ws.py
-2. **Revisar figuras GP**: data/figures/gp/ (6 PNGs + PDFs)
-3. **Revisar Cap 3 expandido**: tesis/cap3_metodologia.md (646 lineas)
-4. **Deployar a WS**: `python scripts/deploy_ws.py` → genera ZIP con 20 casos dp=0.004
-5. **Copiar ZIP a WS** y lanzar batch produccion
-6. **AL loop**: recolectar resultados → entrenar GP → proponer siguiente punto → repetir
+1. **Verificar que 20 sims terminaron** en WS
+2. **En WS**: `git add data/ && git commit -m "results: 20 cases dp=0.004" && git push`
+3. **En laptop**: `git pull` → verificar SQLite tiene 20+ filas
+4. **Re-entrenar GP** con 20 puntos → figuras, Sobol
+5. **Correr sanity checks** sobre datos produccion
+6. **AL loop**: proponer siguiente punto → simular en WS → repetir

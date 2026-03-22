@@ -38,19 +38,20 @@ Tier 3 (continuidad fuerte, handoff explícito, decisiones trazables).
 - Research persistido en docs/RESEARCH_*.md
 - Sistema autónomo probado: agente.ps1 -All (8/8 features)
 
-**Bloqueado:** No.
-**Riesgo:** Deploy a WS pendiente. Resultados actuales son dp=0.02 (dev).
+**Bloqueado:** No. 20 sims producción corriendo en WS.
+**Riesgo:** Verificar que las sims completaron sin error.
 
 ---
 
 ## SIGUIENTE ACCIÓN
 
-1. **Deploy a WS**: `python scripts/deploy_ws.py` → copiar ZIP a WS UCN
-2. **Lanzar batch producción**: 20 casos dp=0.004 en RTX 5090
-3. **Recolectar resultados** → SQLite local
-4. **Re-entrenar GP** con 20+ puntos → LOO, Sobol, figuras
-5. **AL loop**: proponer puntos → simular → repetir hasta U_min >= 2.0
-6. **Cap 6**: resultados paramétricos con figuras finales
+1. **Verificar que 20 sims completaron** en WS (lanzadas 2026-03-22 00:01)
+2. **En WS**: `git add data/ && git commit -m "results: 20 cases dp=0.004" && git push`
+3. **En laptop**: `git pull` → verificar SQLite tiene 20+ filas
+4. **Re-entrenar GP** con 20 puntos → LOO, Sobol, figuras
+5. **Correr sanity checks** sobre datos producción
+6. **AL loop**: proponer puntos → simular en WS → repetir hasta U_min >= 2.0
+7. **Cap 6**: resultados paramétricos con figuras finales
 
 ---
 

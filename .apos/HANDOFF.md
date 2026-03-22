@@ -1,53 +1,49 @@
 # HANDOFF — Thesis OS
 
-**Última sesión:** 2026-03-21 (sesión 4)
+**Última sesión:** 2026-03-22 (sesión 5)
 
 ## Qué se hizo
-- Research re-hecho con 3 agentes paralelos, persistido a docs/ (no a tasks efímeras):
-  - docs/RESEARCH_GP_AL.md — GP kernels, 6 acquisition functions, implementación, Sobol, 16 refs
-  - docs/RESEARCH_EMPIRICAL_SANITY.md — Ritter, Nandasena, Cox 2020, 7 sanity checks, 24 figuras
-  - docs/PLAN_GP_AL_BATCH.md — diseño batch 20 pts LHS maximin, plan AL loop
-  - config/gp_initial_batch.csv — 20 casos listos
-- Construido sistema autónomo:
-  - seba_os/scripts/autonomous_runner.py — orquestador Python (alternativa a agente.ps1)
-  - feature_list.json + CONTEXT.md + prompts/coding_prompt.md para agente.ps1
-- Ejecutado agente.ps1 -All overnight — **8/8 features completadas**:
-  - S1.1: Pipeline verificado end-to-end (GenCase + DualSPHysics GPU local, RTX 4060)
-  - S1.2: 5 sims de validación corridas (esquinas + centro del dominio 2D)
-  - S1.3: src/gp_active_learning.py implementado (Matérn 5/2, U-function, LOO Q2=0.92)
-  - S1.4: src/sanity_checks.py implementado (5 checks, todos PASS)
-  - S1.5: Sanity checks validados con datos reales
-  - S2.1: GP entrenado con datos reales, 6 figuras generadas (PNG+PDF)
-  - S2.2: scripts/deploy_ws.py creado
-  - S2.3: tesis/cap3_metodologia.md expandido (647 líneas, 81 ecuaciones, 19 refs)
-- dsph_config.json actualizado con auto-detect de ejecutables (laptop + WS)
-- Regla de persistencia de research agregada a BOOTSTRAP.md warning #8
-- PLAN.md actualizado con Fase 3 en progreso
+- Revisión final con 5 agentes Opus en paralelo: GP+AL, sanity checks, pipeline+data, Cap 3, APOS governance
+- Corregidos todos los issues encontrados:
+  - Cap 3: canal 15m→30m
+  - CLAUDE.md: coefh 1.0→0.75, viscoart 0.1→0.05 (verificados contra template XML real)
+  - GP al_loop: usa check_stopping() para convergencia (no U inflado del propose)
+  - Sanity checks: string "1.2"→"1.5", guard mass=0
+  - main_orchestrator: DEFAULT_PARAM_RANGES corregidos (mass 0.80-1.60 no 1.0-3.0)
+  - main_orchestrator: flag --matrix para CSV custom, flag --model
+  - APOS: todas las inconsistencias corregidas (SQLite "vacío", "4 módulos", PLAN checkmarks)
+- Construido sistema APOS-auto: agente.ps1 escribe a .apos-auto/ (staging), se promueve a .apos/ con /guardar
+- agente.ps1 mejorado: --model flag (default opus), rate limit robusto (fallback 1h, más patrones), APOS-auto
+- Integrado notifier.py al repo Tesis (self-contained, no depende de seba_os)
+- Notificaciones conectadas al pipeline: cada 5 casos + en fallo + al completar campaña
+- WS UCN configurada: Git + Python 3.10 + DualSPHysics v5.4.3 instalados
+- dsph_config.json: agregada ruta Admin + auto-detect funciona en WS
+- .gitignore: STLs trackeados en models/, excluidos en cases/
+- Repo pusheado a GitHub, clonado en WS
+- **20 sims producción (dp=0.004) CORRIENDO en RTX 5090** — lanzadas ~00:01am
 
 ## Qué cambió
-- 6 commits nuevos del agente (feat S1.3 a S2.3)
-- 3 módulos nuevos: src/gp_active_learning.py, src/sanity_checks.py, scripts/deploy_ws.py
-- 3 docs de research en docs/
-- SQLite: 6 filas con datos reales (5 gp_* + test_diego_reference)
-- 12 figuras nuevas en data/figures/gp/ y data/figures/sanity/
-- Cap 3 expandido con metodología GP+AL completa
-- config/dsph_config.json: dsph_bin="auto" con paths laptop + WS
+- 3 commits nuevos pusheados a GitHub
+- WS UCN tiene repo clonado con todo el pipeline
+- Smart App Control resuelto con Unblock-File
+- Notificaciones integradas al pipeline (ntfy.sh)
+- .apos-auto/ creado para governance automática de agente.ps1
+- agente.ps1 actualizado (modelo, rate limits, APOS-auto)
 
 ## Qué debe hacer el siguiente agente
-1. **Deployar a WS**: ejecutar `python scripts/deploy_ws.py` → copiar ZIP a WS UCN
-2. **Lanzar batch producción**: 20 casos dp=0.004 en RTX 5090 (~15h)
-3. **Recolectar resultados** → meter en SQLite local
-4. **Re-entrenar GP** con 20 puntos → LOO, figuras, Sobol
-5. **AL loop**: proponer siguiente punto → simular → repetir hasta U_min >= 2.0
-6. **Cap 6**: escribir con figuras finales
+1. **Verificar que las 20 sims terminaron** en la WS
+2. **En la WS**: `git add data/ && git commit -m "results: 20 cases dp=0.004" && git push`
+3. **En laptop**: `git pull` → verificar data/results.sqlite tiene 20+ filas
+4. **Re-entrenar GP** con 20 puntos reales → LOO, figuras, Sobol
+5. **Correr sanity checks** sobre datos producción
+6. **AL loop**: proponer siguiente punto → simular en WS → repetir hasta U_min >= 2.0
 
 ## Qué no debe asumir
-- Que los 5 resultados actuales (dp=0.02) son definitivos — son de desarrollo, producción es dp=0.004
-- Que el GP con 5 puntos es preciso — es verificación, no resultado final
-- Que deploy_ws.py ya fue ejecutado — solo fue creado, no usado
-- Que la WS está lista — verificar espacio en disco y estado
+- Que las 20 sims ya terminaron — verificar primero
+- Que los resultados dp=0.02 anteriores (5 casos) siguen siendo relevantes — producción es dp=0.004
+- Que la WS tiene seba_os — NO, solo tiene el repo Tesis con notifier.py incluido
+- Que agente.ps1 está en el repo — está en C:\Seba\agente.ps1 (solo laptop)
 
 ## Contexto mínimo para retomar
 Leer: BOOTSTRAP.md → este HANDOFF → PLAN.md
-Si toca código: src/gp_active_learning.py, src/sanity_checks.py
-Si toca deploy: scripts/deploy_ws.py, config/dsph_config.json
+Si toca WS: el repo está en C:\Users\Admin\Desktop\SPH-Tesis

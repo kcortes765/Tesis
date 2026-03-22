@@ -131,3 +131,18 @@ Append-only. Si algo cambia, no se borra: se marca como revertido o supersedido.
 **Fecha:** 2026-03-21
 **Decisión:** Usar agente.ps1 -All con feature_list.json + CONTEXT.md + coding_prompt.md para ejecutar features headless. Maneja rate limits automáticamente.
 **Razón:** Probado 2026-03-21: 8/8 features completadas, 6 commits, rate limits manejados sin intervención. Features de código ~5 min, features con GPU toman horas por rate limits.
+
+## DEC-026: APOS-auto staging para agente.ps1
+**Fecha:** 2026-03-22
+**Decisión:** agente.ps1 escribe a .apos-auto/ (staging) durante ejecución headless. Se promueve a .apos/ oficial solo con aprobación del usuario vía /guardar.
+**Razón:** El agente headless no debe modificar governance oficial sin supervisión. Dos capas: auto (draft) y oficial (aprobado).
+
+## DEC-027: Notifier integrado al repo Tesis
+**Fecha:** 2026-03-22
+**Decisión:** scripts/notifier.py + config/notifier_config.json viajan con el repo. No dependen de seba_os.
+**Razón:** La WS UCN no tiene seba_os. El pipeline necesita notificaciones independientes. Config auto-detecta: repo config/ → seba_os fallback.
+
+## DEC-028: WS UCN via Git (no ZIP)
+**Fecha:** 2026-03-22
+**Decisión:** Deploy a WS via git clone/pull, no ZIP/Copy-Item. Repo en C:\Users\Admin\Desktop\SPH-Tesis.
+**Razón:** Git permite sync bidireccional laptop↔WS. Resultados viajan con git push/pull. El usuario Admin tiene Git + Python 3.10 instalados.

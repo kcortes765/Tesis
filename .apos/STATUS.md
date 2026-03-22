@@ -1,12 +1,12 @@
 # STATUS — Thesis OS
 
-**Última actualización:** 2026-03-21 (sesión 4)
+**Última actualización:** 2026-03-22 (sesión 5)
 
 ## Estado general
-Activo — Fase 3 en progreso. Pipeline verificado, GP+AL implementado, 5 sims de validación corridas. Listo para deploy producción a WS.
+Activo — 20 sims producción dp=0.004 corriendo en WS UCN (RTX 5090). Estimado: ~12-15h.
 
 ## Fase actual
-Fase 3 ejecutándose: módulos GP+AL listos, sanity checks validados, deploy script creado. Siguiente: producción en WS.
+Fase 3 en producción. Pipeline deployado a WS via Git. Esperando resultados.
 
 ## Qué está listo
 - Pipeline completo y **verificado end-to-end** (7 módulos en src/)
@@ -24,8 +24,8 @@ Fase 3 ejecutándose: módulos GP+AL listos, sanity checks validados, deploy scr
 - Notificaciones push (ntfy.sh)
 
 ## Qué falta
-- Deployar batch producción (20 casos dp=0.004) a WS
-- Recolectar resultados WS → SQLite
+- ~~Deployar batch producción a WS~~ CORRIENDO (lanzado 2026-03-22 00:01)
+- Recolectar resultados WS → git push → git pull laptop
 - Re-entrenar GP con 20+ puntos
 - AL loop iterativo (~10 sims adicionales)
 - Sobol sensitivity analysis
@@ -40,8 +40,8 @@ Fase 3 ejecutándose: módulos GP+AL listos, sanity checks validados, deploy scr
 
 ## Riesgos activos
 - Moris no ha respondido sobre dp (correo enviado 2026-03-20)
-- Resultados actuales son dp=0.02 (dev), producción requiere dp=0.004
+- Sims corriendo en WS — verificar mañana que completaron sin error
 - Moris puede tardar en entregar STLs → bloquea multi-forma
 
 ## Próximo hito
-Deploy 20 casos a WS → batch producción → recolectar → GP + AL loop.
+Recolectar 20 resultados → re-entrenar GP → AL loop → Sobol → Cap 6.
