@@ -28,6 +28,16 @@ from data_cleaner import process_case, save_to_sqlite
 
 logger = logging.getLogger(__name__)
 
+# Notificaciones (opcional — no falla si no esta)
+try:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
+    from notifier import notify
+    HAS_NOTIFIER = True
+except ImportError:
+    HAS_NOTIFIER = False
+    def notify(**kwargs):
+        pass
+
 
 # ---------------------------------------------------------------------------
 # Diseno de Experimentos (LHS)
@@ -293,6 +303,18 @@ def run_campaign(matrix_csv: Path, project_root: Path,
         logger.info(f"  [{pipeline_result['case_id']}] {status} "
                      f"({pipeline_result['duration_s']:.1f}s)")
 
+        # Notificar progreso cada 5 casos o en fallo
+        if not pipeline_result['success'] or i % 5 == 0 or i == n_cases:
+            notify(
+                source="main_orchestrator",
+                event_type="sim_progress",
+                priority="high" if not pipeline_result['success'] else "low",
+                title=f"SPH {i}/{n_cases}: {pipeline_result['case_id']} {status}",
+                body=f"dp={dp} | {pipeline_result['duration_s']:.0f}s",
+                tags="x" if not pipeline_result['success'] else "gear",
+                project="tesis",
+            )
+
     # Guardar resultados exitosos en SQLite
     if successful_results:
         db_path = project_root / 'data' / 'results.sqlite'
@@ -310,6 +332,17 @@ def run_campaign(matrix_csv: Path, project_root: Path,
     logger.info(f"# Fallidos: {fail}/{n_cases}")
     logger.info(f"# Tiempo total: {total_time:.1f}s ({total_time/60:.1f}min)")
     logger.info(f"{'#'*60}")
+
+    # Notificar fin de campana
+    notify(
+        source="main_orchestrator",
+        event_type="campaign_complete",
+        priority="high",
+        title=f"CAMPANA COMPLETA: {ok}/{n_cases} exitosos",
+        body=f"dp={dp} | Tiempo: {total_time/60:.0f}min | Fallidos: {fail}",
+        tags="tada" if fail == 0 else "warning",
+        project="tesis",
+    )
 
     if fail > 0:
         logger.warning(f"\nCasos fallidos:")
