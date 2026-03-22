@@ -57,9 +57,23 @@ def get_timeout_for_dp(dp: float, config: dict) -> int:
 
 
 def load_config(config_path: Path) -> dict:
-    """Carga la configuracion de dsph_config.json."""
+    """Carga la configuracion de dsph_config.json. Resuelve dsph_bin='auto'."""
     with open(config_path) as f:
-        return json.load(f)
+        config = json.load(f)
+
+    if config.get('dsph_bin') == 'auto':
+        for candidate in config.get('dsph_bin_paths', []):
+            p = Path(candidate)
+            if p.exists() and (p / config['executables']['gencase']).exists():
+                config['dsph_bin'] = candidate
+                logger.info(f"dsph_bin auto-detected: {candidate}")
+                break
+        else:
+            raise FileNotFoundError(
+                f"No se encontró dsph_bin en ninguna ruta: {config.get('dsph_bin_paths')}"
+            )
+
+    return config
 
 
 def _get_exe(config: dict, name: str) -> Path:

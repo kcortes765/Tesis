@@ -1,5 +1,10 @@
 {
-    "dsph_bin": "C:\\Users\\ProyBloq_Cortes\\Desktop\\CarpetaTesis\\ejecutablesWindows",
+    "dsph_bin": "auto",
+    "dsph_bin_paths": [
+        "C:\\DualSPHysics_v5.4.3\\DualSPHysics_v5.4\\bin\\windows",
+        "C:\\Users\\Admin\\Desktop\\CarpetaTesis\\ejecutablesWindows",
+        "C:\\Users\\ProyBloq_Cortes\\Desktop\\CarpetaTesis\\ejecutablesWindows"
+    ],
     "executables": {
         "gencase": "GenCase_win64.exe",
         "dualsphysics_gpu": "DualSPHysics5.4_win64.exe",

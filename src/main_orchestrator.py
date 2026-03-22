@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 
 # Rangos por defecto (se sobreescriben con config/param_ranges.json)
 DEFAULT_PARAM_RANGES = {
-    'dam_height': (0.2, 0.5),
-    'boulder_mass': (1.0, 3.0),
+    'dam_height': (0.10, 0.50),
+    'boulder_mass': (0.80, 1.60),
 }
 
 
@@ -357,16 +357,18 @@ if __name__ == '__main__':
     n_samples = 5
     dp = config['defaults']['dp_dev']  # 0.02 para desarrollo
 
-    if len(sys.argv) > 1:
-        if sys.argv[1] == '--generate':
-            # Solo generar la matriz, no simular
-            n = int(sys.argv[2]) if len(sys.argv) > 2 else n_samples
+    for i, arg in enumerate(sys.argv[1:], 1):
+        if arg == '--generate':
+            n = int(sys.argv[i+1]) if i+1 < len(sys.argv) else n_samples
             generate_experiment_matrix(n, output_csv=matrix_csv)
             print(f"Matriz generada: {matrix_csv}")
             sys.exit(0)
-        elif sys.argv[1] == '--prod':
+        elif arg == '--prod':
             dp = config['defaults']['dp_prod']  # 0.004 para produccion
             logger.info(f"MODO PRODUCCION: dp={dp}")
+        elif arg == '--matrix' and i+1 <= len(sys.argv):
+            matrix_csv = project_root / sys.argv[i+1]
+            logger.info(f"Matriz custom: {matrix_csv}")
 
     # Generar matriz si no existe
     if not matrix_csv.exists():

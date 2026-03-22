@@ -195,7 +195,7 @@ def check_magnitudes(results_df: pd.DataFrame,
         if v < 0:
             issues.append('velocity < 0 (impossible)')
         if v_flow > 0.1 and v > v_flow * 1.5:
-            issues.append('boulder velocity (%.2f) > flow velocity (%.2f) * 1.2' % (v, v_flow))
+            issues.append('boulder velocity (%.2f) > flow velocity (%.2f) * 1.5' % (v, v_flow))
 
         case_passed = len(issues) == 0
         result['details'].append({
@@ -238,6 +238,14 @@ def check_forces(results_df: pd.DataFrame) -> Dict:
         moved = bool(row.get('moved', row['max_displacement'] > 0.01))
         issues = []
         warnings = []
+
+        if mass <= 0:
+            result['details'].append({
+                'case': case, 'boulder_mass': mass, 'passed': False,
+                'issues': ['boulder_mass <= 0 (invalid data)'], 'warnings': [],
+            })
+            result['passed'] = False
+            continue
 
         W = mass * G
 

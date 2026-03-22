@@ -27,9 +27,7 @@ El estudio de los CBD tiene aplicaciones directas en la evaluación de riesgo ts
 Según Nott (2003), un bloque costero puede experimentar tres modos principales de transporte:
 
 1. **Deslizamiento (*sliding*):** El bloque se desplaza horizontalmente cuando la fuerza de arrastre supera la fricción estática. El bloque mantiene contacto continuo con el sustrato.
-
 2. **Volcamiento (*overturning/toppling*):** El bloque rota alrededor de una arista inferior cuando el momento hidrodinámico supera el momento estabilizador del peso. Este modo es particularmente relevante para bloques con relaciones de aspecto altas.
-
 3. **Sustentación (*lifting/saltation*):** El bloque se eleva verticalmente cuando la fuerza de sustentación supera el peso sumergido. Este modo requiere velocidades de flujo elevadas y es más probable en bloques con geometrías que generan diferencias de presión significativas entre la cara superior e inferior.
 
 En la práctica, el transporte real involucra combinaciones de estos modos. Un bloque puede iniciar con un ligero deslizamiento, luego volcarse parcialmente y finalmente ser arrastrado por el flujo en una trayectoria compleja que incluye rotaciones en múltiples ejes.
@@ -40,7 +38,9 @@ En la práctica, el transporte real involucra combinaciones de estos modos. Un b
 
 Nott propuso las primeras ecuaciones cuantitativas para estimar la velocidad mínima de flujo necesaria para transportar bloques costeros. Para un bloque subaerial (no sumergido previamente), la velocidad crítica de volcamiento es:
 
-$$u^2 \geq \frac{2(\rho_s/\rho_w - 1) g a (b/c)}{C_D (b/a) + C_L}$$
+$$
+u^2 \geq \frac{2(\rho_s/\rho_w - 1) g a (b/c)}{C_D (b/a) + C_L}
+$$
 
 donde $\rho_s$ es la densidad del bloque, $\rho_w$ la densidad del agua, $g$ la gravedad, y $a$, $b$, $c$ son las dimensiones del bloque (largo, ancho, alto). $C_D$ y $C_L$ son los coeficientes de arrastre y sustentación, respectivamente.
 
@@ -51,10 +51,16 @@ donde $\rho_s$ es la densidad del bloque, $\rho_w$ la densidad del agua, $g$ la 
 Nandasena et al. refinaron las ecuaciones de Nott considerando explícitamente los tres modos de transporte (deslizamiento, volcamiento, sustentación) como criterios separados. El modo que requiere menor velocidad determina el mecanismo de fallo:
 
 **Deslizamiento:**
-$$u^2 \geq \frac{2(\rho_s/\rho_w - 1) g c (\mu_s \cos\theta - \sin\theta)}{C_D (c/b) + \mu_s C_L}$$
+
+$$
+u^2 \geq \frac{2(\rho_s/\rho_w - 1) g c (\mu_s \cos\theta - \sin\theta)}{C_D (c/b) + \mu_s C_L}
+$$
 
 **Volcamiento:**
-$$u^2 \geq \frac{2(\rho_s/\rho_w - 1) g c (c/b \cos\theta - \sin\theta)}{C_D (c^2/b^2) + C_L}$$
+
+$$
+u^2 \geq \frac{2(\rho_s/\rho_w - 1) g c (c/b \cos\theta - \sin\theta)}{C_D (c^2/b^2) + C_L}
+$$
 
 donde $\mu_s$ es el coeficiente de fricción estática y $\theta$ la pendiente del sustrato.
 
@@ -68,12 +74,12 @@ Engel & May incorporaron la fracción de sumergimiento del bloque y la variació
 
 Todas las ecuaciones predictivas comparten tres limitaciones fundamentales:
 
-| Limitación | Implicancia |
-|------------|-------------|
-| Geometría rectangular | No captura irregularidades que modifican fuerzas y momentos |
-| Coeficientes constantes | $C_D$ y $C_L$ dependen fuertemente de la geometría real |
-| Equilibrio estático | Ignora la dinámica transitoria del impacto (aceleración del flujo, respuesta del bloque) |
-| Modos de fallo aislados | En realidad los modos se combinan (traslación + rotación simultáneas) |
+| Limitación             | Implicancia                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------ |
+| Geometría rectangular  | No captura irregularidades que modifican fuerzas y momentos                                |
+| Coeficientes constantes | $C_D$ y $C_L$ dependen fuertemente de la geometría real                               |
+| Equilibrio estático    | Ignora la dinámica transitoria del impacto (aceleración del flujo, respuesta del bloque) |
+| Modos de fallo aislados | En realidad los modos se combinan (traslación + rotación simultáneas)                   |
 
 La presente tesis aborda estas limitaciones mediante simulación numérica directa, que resuelve la interacción fluido-estructura sin recurrir a coeficientes empíricos ni simplificaciones geométricas.
 
@@ -87,11 +93,14 @@ SPH es un método numérico lagrangiano sin malla (*meshfree*) para resolver ecu
 
 La idea central de SPH es representar un campo continuo $A(\mathbf{r})$ como una suma ponderada sobre un conjunto de partículas vecinas:
 
-$$A(\mathbf{r}) \approx \sum_j \frac{m_j}{\rho_j} A_j \, W(\mathbf{r} - \mathbf{r}_j, h)$$
+$$
+A(\mathbf{r}) \approx \sum_j \frac{m_j}{\rho_j} A_j \, W(\mathbf{r} - \mathbf{r}_j, h)
+$$
 
 donde $m_j$ y $\rho_j$ son la masa y densidad de la partícula $j$, $A_j$ es el valor del campo en la partícula $j$, y $W$ es la **función kernel** de suavizado con longitud característica $h$ (*smoothing length*).
 
 La función kernel define el radio de influencia de cada partícula. Las propiedades requeridas son:
+
 - Normalización: $\int W(\mathbf{r}, h) \, d\mathbf{r} = 1$
 - Compacidad: $W(\mathbf{r}, h) = 0$ para $|\mathbf{r}| > \kappa h$ (soporte compacto)
 - Convergencia al delta de Dirac: $\lim_{h \to 0} W(\mathbf{r}, h) = \delta(\mathbf{r})$
@@ -101,15 +110,24 @@ La función kernel define el radio de influencia de cada partícula. Las propied
 SPH resuelve las ecuaciones de Navier-Stokes para un fluido ligeramente compresible (*Weakly Compressible SPH*, WCSPH):
 
 **Conservación de masa (ecuación de continuidad):**
-$$\frac{d\rho_i}{dt} = \sum_j m_j (\mathbf{v}_i - \mathbf{v}_j) \cdot \nabla_i W_{ij}$$
+
+$$
+\frac{d\rho_i}{dt} = \sum_j m_j (\mathbf{v}_i - \mathbf{v}_j) \cdot \nabla_i W_{ij}
+$$
 
 **Conservación de momentum:**
-$$\frac{d\mathbf{v}_i}{dt} = -\sum_j m_j \left(\frac{P_i}{\rho_i^2} + \frac{P_j}{\rho_j^2} + \Pi_{ij}\right) \nabla_i W_{ij} + \mathbf{g}$$
+
+$$
+\frac{d\mathbf{v}_i}{dt} = -\sum_j m_j \left(\frac{P_i}{\rho_i^2} + \frac{P_j}{\rho_j^2} + \Pi_{ij}\right) \nabla_i W_{ij} + \mathbf{g}
+$$
 
 donde $P$ es la presión, $\Pi_{ij}$ es el término de viscosidad artificial, y $\mathbf{g}$ la aceleración gravitacional.
 
 **Ecuación de estado (Tait):**
-$$P = B \left[\left(\frac{\rho}{\rho_0}\right)^\gamma - 1\right]$$
+
+$$
+P = B \left[\left(\frac{\rho}{\rho_0}\right)^\gamma - 1\right]
+$$
 
 con $\gamma = 7$ y $B = c_0^2 \rho_0 / \gamma$, donde $c_0$ es la velocidad del sonido numérica (típicamente $c_0 = 10 \, v_{max}$ para mantener variaciones de densidad < 1%).
 
@@ -121,7 +139,10 @@ Las funciones kernel más empleadas en SPH son:
 Soporte compacto en $2h$. Ampliamente utilizado pero puede presentar inestabilidad tensil (*tensile instability*) en algunas configuraciones.
 
 **Kernel Wendland C2 (Wendland, 1995):**
-$$W(q) = \alpha_D (1 - q/2)^4 (2q + 1), \quad q = r/h \leq 2$$
+
+$$
+W(q) = \alpha_D (1 - q/2)^4 (2q + 1), \quad q = r/h \leq 2
+$$
 
 donde $\alpha_D$ es la constante de normalización dimensional. El kernel Wendland es preferido para problemas con cuerpos flotantes por su mayor estabilidad y suavidad (Dehnen & Aly, 2012).
 
@@ -129,7 +150,9 @@ donde $\alpha_D$ es la constante de normalización dimensional. El kernel Wendla
 
 Para estabilizar la simulación y prevenir oscilaciones no físicas en el campo de presión, se emplea viscosidad artificial (Monaghan, 1992):
 
-$$\Pi_{ij} = \begin{cases} \frac{-\alpha \bar{c}_{ij} \mu_{ij}}{\bar{\rho}_{ij}} & \text{si } \mathbf{v}_{ij} \cdot \mathbf{r}_{ij} < 0 \\ 0 & \text{en caso contrario} \end{cases}$$
+$$
+\Pi_{ij} = \begin{cases} \frac{-\alpha \bar{c}_{ij} \mu_{ij}}{\bar{\rho}_{ij}} & \text{si } \mathbf{v}_{ij} \cdot \mathbf{r}_{ij} < 0 \\ 0 & \text{en caso contrario} \end{cases}
+$$
 
 donde $\alpha$ es el coeficiente de viscosidad artificial. Valores típicos oscilan entre 0.01 y 0.1. Valores altos estabilizan la simulación pero introducen disipación numérica excesiva.
 
@@ -148,7 +171,9 @@ Integrador de segundo orden en tiempo que conserva las propiedades simplécticas
 **Condición CFL:**
 El paso de tiempo se calcula dinámicamente según la condición de Courant-Friedrichs-Lewy:
 
-$$\Delta t \leq C_{CFL} \cdot \frac{h}{c_0 + v_{max}}$$
+$$
+\Delta t \leq C_{CFL} \cdot \frac{h}{c_0 + v_{max}}
+$$
 
 con $C_{CFL}$ entre 0.1 y 0.4 (típicamente 0.2 para simulaciones con cuerpos rígidos).
 
@@ -156,22 +181,22 @@ con $C_{CFL}$ entre 0.1 y 0.4 (típicamente 0.2 para simulaciones con cuerpos r�
 
 **Ventajas para el presente problema:**
 
-| Ventaja | Relevancia |
-|---------|------------|
-| Sin malla | Maneja ruptura de superficie libre, salpicaduras y fragmentación |
-| Lagrangiano | Sigue naturalmente el fluido — ideal para impactos transitorios |
-| Geometrías complejas | Bloques irregulares se discretizan directamente desde STL |
+| Ventaja                  | Relevancia                                                             |
+| ------------------------ | ---------------------------------------------------------------------- |
+| Sin malla                | Maneja ruptura de superficie libre, salpicaduras y fragmentación      |
+| Lagrangiano              | Sigue naturalmente el fluido — ideal para impactos transitorios       |
+| Geometrías complejas    | Bloques irregulares se discretizan directamente desde STL              |
 | Acoplamiento FSI natural | Fuerzas fluido→sólido emergen de la formulación, sin interpolación |
-| Paralelizable en GPU | Millones de partículas en horas (vs. días en CPU) |
+| Paralelizable en GPU     | Millones de partículas en horas (vs. días en CPU)                    |
 
 **Limitaciones:**
 
-| Limitación | Mitigación |
-|------------|------------|
-| Costo computacional alto | GPU + modelo surrogate |
-| Condiciones de contorno complejas | Dynamic Boundary Conditions (DBC) |
-| Ruido en campo de presión | Delta-SPH (Fourtakas et al., 2019) |
-| Dependencia de resolución | Estudio de convergencia de malla obligatorio |
+| Limitación                       | Mitigación                                  |
+| --------------------------------- | -------------------------------------------- |
+| Costo computacional alto          | GPU + modelo surrogate                       |
+| Condiciones de contorno complejas | Dynamic Boundary Conditions (DBC)            |
+| Ruido en campo de presión        | Delta-SPH (Fourtakas et al., 2019)           |
+| Dependencia de resolución        | Estudio de convergencia de malla obligatorio |
 
 ---
 
@@ -186,9 +211,7 @@ DualSPHysics es un código SPH de código abierto desarrollado por un consorcio 
 El flujo de trabajo de DualSPHysics se compone de tres etapas:
 
 1. **Pre-procesamiento (GenCase):** Lee una definición XML del caso y genera la distribución inicial de partículas en formato binario (.bi4). Interpreta geometrías primitivas (cajas, cilindros, esferas) y archivos STL.
-
 2. **Simulación (DualSPHysics):** Resuelve las ecuaciones SPH en GPU, avanzando en tiempo hasta $t_{max}$. Genera instantáneas periódicas de las posiciones de todas las partículas.
-
 3. **Post-procesamiento:** Herramientas auxiliares extraen campos de velocidad, presión, fuerzas sobre cuerpos, y exportan a formatos de visualización (VTK, CSV).
 
 ### 2.4.3 Condiciones de Contorno
@@ -221,6 +244,7 @@ El acoplamiento bidireccional funciona así:
 Chrono emplea el método NSC (*Non-Smooth Contacts*) para resolver contactos entre cuerpos. A diferencia de los métodos de penalización que introducen fuerzas proporcionales a la penetración, NSC resuelve las restricciones de contacto como un problema complementario lineal (LCP), evitando penetraciones y proporcionando fuerzas de contacto exactas en el sentido de Coulomb.
 
 **Parámetros de material** relevantes para el contacto:
+
 - **Módulo de Young:** rigidez del material
 - **Razón de Poisson:** compresibilidad lateral
 - **Coeficiente de restitución:** elasticidad del rebote (0 = perfectamente plástico, 1 = perfectamente elástico)
@@ -251,14 +275,21 @@ Una campaña paramétrica completa — variando altura de flujo, masa del bloque
 
 Un proceso gaussiano (GP) es una distribución sobre funciones, donde cualquier conjunto finito de evaluaciones sigue una distribución normal multivariada (Rasmussen & Williams, 2006). Formalmente:
 
-$$f(\mathbf{x}) \sim \mathcal{GP}(m(\mathbf{x}), k(\mathbf{x}, \mathbf{x}'))$$
+$$
+f(\mathbf{x}) \sim \mathcal{GP}(m(\mathbf{x}), k(\mathbf{x}, \mathbf{x}'))
+$$
 
 donde $m(\mathbf{x})$ es la función de media (típicamente cero) y $k(\mathbf{x}, \mathbf{x}')$ es la función de covarianza (kernel).
 
 Dado un conjunto de observaciones $\{(\mathbf{x}_i, y_i)\}_{i=1}^n$, la predicción del GP para un nuevo punto $\mathbf{x}_*$ es:
 
-$$\mu_* = \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{y}$$
-$$\sigma_*^2 = k_{**} - \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{k}_*$$
+$$
+\mu_* = \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{y}
+$$
+
+$$
+\sigma_*^2 = k_{**} - \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{k}_*
+$$
 
 donde $\mathbf{K}$ es la matriz de covarianza entre puntos de entrenamiento, $\mathbf{k}_*$ es el vector de covarianzas entre el punto nuevo y los puntos de entrenamiento, y $\sigma_n^2$ es la varianza del ruido.
 
@@ -268,7 +299,9 @@ donde $\mathbf{K}$ es la matriz de covarianza entre puntos de entrenamiento, $\m
 
 La elección del kernel codifica las suposiciones sobre la suavidad de la función a emular. Se emplea el kernel Matérn con $\nu = 5/2$:
 
-$$k_{\text{Matérn}}(r) = \sigma_f^2 \left(1 + \frac{\sqrt{5} \, r}{\ell} + \frac{5 r^2}{3 \ell^2}\right) \exp\left(-\frac{\sqrt{5} \, r}{\ell}\right)$$
+$$
+k_{\text{Matérn}}(r) = \sigma_f^2 \left(1 + \frac{\sqrt{5} \, r}{\ell} + \frac{5 r^2}{3 \ell^2}\right) \exp\left(-\frac{\sqrt{5} \, r}{\ell}\right)
+$$
 
 donde $r = |\mathbf{x} - \mathbf{x}'|$, $\ell$ es la longitud de escala, y $\sigma_f^2$ la varianza de la señal. Matérn 5/2 produce funciones dos veces diferenciables, lo cual es apropiado para respuestas físicas suaves pero no analíticas.
 
@@ -287,6 +320,7 @@ La validación del GP se realiza mediante Leave-One-Out Cross-Validation (LOO-CV
 ### 2.7.1 Motivación
 
 El análisis de sensibilidad global identifica qué parámetros de entrada contribuyen más a la variabilidad de la respuesta. Esto es esencial para:
+
 - Priorizar parámetros en futuras campañas experimentales
 - Simplificar el modelo (fijar parámetros poco influyentes)
 - Interpretar físicamente los resultados
@@ -295,15 +329,23 @@ El análisis de sensibilidad global identifica qué parámetros de entrada contr
 
 Los índices de Sobol (Sobol', 2001) descomponen la varianza total de la respuesta $Y = f(X_1, X_2, \ldots, X_d)$ en contribuciones de cada parámetro y sus interacciones:
 
-$$V(Y) = \sum_i V_i + \sum_{i<j} V_{ij} + \cdots + V_{1,2,\ldots,d}$$
+$$
+V(Y) = \sum_i V_i + \sum_{i<j} V_{ij} + \cdots + V_{1,2,\ldots,d}
+$$
 
 **Índice de primer orden ($S_i$):**
-$$S_i = \frac{V_i}{V(Y)} = \frac{V[E(Y|X_i)]}{V(Y)}$$
+
+$$
+S_i = \frac{V_i}{V(Y)} = \frac{V[E(Y|X_i)]}{V(Y)}
+$$
 
 Mide la fracción de varianza explicada por $X_i$ actuando solo, sin interacciones.
 
 **Índice de orden total ($S_{T_i}$):**
-$$S_{T_i} = 1 - \frac{V[E(Y|X_{\sim i})]}{V(Y)}$$
+
+$$
+S_{T_i} = 1 - \frac{V[E(Y|X_{\sim i})]}{V(Y)}
+$$
 
 Mide la fracción de varianza explicada por $X_i$ incluyendo todas sus interacciones con otros parámetros. Si $S_{T_i} \approx 0$, el parámetro $X_i$ puede fijarse sin pérdida de información.
 
@@ -341,7 +383,7 @@ El pipeline de simulación → surrogate → Monte Carlo → Sobol que se emplea
 
 - **Salmanidou et al. (2017):** GP emulador para simulaciones de tsunami por deslizamiento de tierra, con análisis de sensibilidad de Sobol.
 - **Salmanidou et al. (2020):** Extensión del enfoque GP + Monte Carlo a la cuantificación de incertidumbre en oleaje por deslizamiento, publicado en *Water*.
-- **Sarri et al. (2012):** GP emulador para simulaciones de inundación por tsunami, demostrando que $\sim$50 simulaciones son suficientes para entrenar un emulador confiable en espacios de 3-4 dimensiones.
+- **Sarri et al. (2012):** GP emulador para simulaciones de inundación por tsunami, demostrando que 50 simulaciones son suficientes para entrenar un emulador confiable en espacios de 3-4 dimensiones.
 
 La diferencia de la presente tesis respecto a estos precedentes es la aplicación al **transporte de bloques con geometría irregular**, un problema donde la forma del cuerpo es una variable clave que las ecuaciones analíticas no capturan.
 
@@ -353,15 +395,15 @@ La Tabla 2.1 resume cómo cada componente teórica se integra en la investigaci�
 
 **Tabla 2.1: Integración de componentes teóricas en la investigación**
 
-| Componente Teórica | Rol en la Tesis | Capítulo de Aplicación |
-|--------------------|-----------------|-----------------------|
-| Transporte de bloques | Define el problema físico y los modos de fallo | Cap. 1, 3 |
-| Ecuaciones predictivas (Nott, Nandasena) | Referencia contra la cual se evalúa la mejora numérica | Cap. 6, 7 |
-| SPH (WCSPH) | Método numérico para resolver la interacción fluido-bloque | Cap. 3, 4 |
-| DualSPHysics + Chrono | Implementación del solver SPH + dinámica de cuerpos rígidos | Cap. 3, 5 |
-| Procesos Gaussianos | Modelo surrogate para predicción rápida + incertidumbre | Cap. 5, 6 |
-| Sobol + Monte Carlo | Análisis de sensibilidad y cuantificación de incertidumbre | Cap. 5, 6 |
-| Precedentes (Salmanidou) | Validación metodológica del pipeline SPH → GP → UQ | Cap. 2, 6 |
+| Componente Teórica                      | Rol en la Tesis                                                | Capítulo de Aplicación |
+| ---------------------------------------- | -------------------------------------------------------------- | ------------------------ |
+| Transporte de bloques                    | Define el problema físico y los modos de fallo                | Cap. 1, 3                |
+| Ecuaciones predictivas (Nott, Nandasena) | Referencia contra la cual se evalúa la mejora numérica       | Cap. 6, 7                |
+| SPH (WCSPH)                              | Método numérico para resolver la interacción fluido-bloque  | Cap. 3, 4                |
+| DualSPHysics + Chrono                    | Implementación del solver SPH + dinámica de cuerpos rígidos | Cap. 3, 5                |
+| Procesos Gaussianos                      | Modelo surrogate para predicción rápida + incertidumbre      | Cap. 5, 6                |
+| Sobol + Monte Carlo                      | Análisis de sensibilidad y cuantificación de incertidumbre   | Cap. 5, 6                |
+| Precedentes (Salmanidou)                 | Validación metodológica del pipeline SPH → GP → UQ         | Cap. 2, 6                |
 
 ---
 

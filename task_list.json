@@ -1,0 +1,151 @@
+{
+  "tasks": [
+    {
+      "id": "T001",
+      "name": "Verificar pipeline end-to-end canal 30m",
+      "description": "Correr 1 caso de prueba (dam_h=0.30, mass=1.06) con canal 30m + dp=0.004 para verificar que el pipeline completo funciona: geometry_builder → GenCase → DualSPHysics → data_cleaner → SQLite.",
+      "steps": [
+        "Leer src/main_orchestrator.py y entender el flujo",
+        "Verificar que config/template_base.xml tiene canal 30m",
+        "Crear un caso de prueba mínimo (1 caso, parámetros del caso de convergencia)",
+        "Ejecutar pipeline completo localmente (si GPU disponible) o verificar que los scripts no tienen errores de sintaxis/lógica",
+        "Verificar que data_cleaner.py parsea correctamente CSVs con separador ';'",
+        "Verificar que results.sqlite se puebla correctamente",
+        "Documentar cualquier fix necesario"
+      ],
+      "success_criteria": "Pipeline ejecuta sin errores o se documentan y corrigen todos los bugs encontrados.",
+      "dependencies": [],
+      "status": "pending",
+      "model": "sonnet",
+      "context_files": [
+        "src/main_orchestrator.py",
+        "src/geometry_builder.py",
+        "src/batch_runner.py",
+        "src/data_cleaner.py",
+        "config/param_ranges.json",
+        "config/dsph_config.json"
+      ]
+    },
+    {
+      "id": "T002",
+      "name": "Implementar módulo GP + Active Learning",
+      "description": "Crear src/gp_active_learning.py: GP con Matérn 5/2, U-function acquisition, stopping criterion, y loop AL completo. Debe integrarse con el pipeline existente.",
+      "steps": [
+        "Leer docs/RESEARCH_GP_AL.md para metodología",
+        "Leer docs/PLAN_GP_AL_BATCH.md para diseño del batch",
+        "Leer src/ml_surrogate.py existente como referencia",
+        "Implementar GP con sklearn GaussianProcessRegressor + Matérn 5/2 + ARD",
+        "Implementar U-function: U(x) = |mu(x) - T| / sigma(x) con T = d_eq del boulder",
+        "Implementar criterio de parada: U_min >= 2 para todos candidatos",
+        "Implementar LOO cross-validation",
+        "Implementar función que propone siguiente punto (argmin U en grilla candidata 50x50)",
+        "Generar figuras: GP surface, uncertainty, contour, LOO validation",
+        "Tests unitarios básicos con datos sintéticos"
+      ],
+      "success_criteria": "Módulo ejecuta con datos sintéticos, genera figuras, LOO funciona. Listo para recibir datos reales.",
+      "dependencies": [],
+      "status": "pending",
+      "model": "opus",
+      "context_files": [
+        "docs/RESEARCH_GP_AL.md",
+        "docs/PLAN_GP_AL_BATCH.md",
+        "src/ml_surrogate.py",
+        "config/param_ranges.json"
+      ]
+    },
+    {
+      "id": "T003",
+      "name": "Implementar sanity checks automáticos",
+      "description": "Crear src/sanity_checks.py: verificaciones físicas automáticas que corren después del batch inicial. Monotonicidad, Ritter, magnitudes, curvas.",
+      "steps": [
+        "Leer docs/RESEARCH_EMPIRICAL_SANITY.md para checks definidos",
+        "Implementar check_monotonicity(df): ↑dam_h→↑disp, ↑mass→↓disp",
+        "Implementar check_ritter(df): velocidad frente vs 2*sqrt(g*h0), tolerancia 15%",
+        "Implementar check_magnitudes(df): desplazamiento en rango razonable",
+        "Implementar check_forces(df): fuerzas SPH vs peso del boulder",
+        "Implementar check_smoothness(df): curvas temporales sin oscilaciones espurias",
+        "Generar reporte automático (JSON + figura resumen)",
+        "Función principal: run_all_checks(results_df) → dict con pass/fail por check"
+      ],
+      "success_criteria": "Módulo corre con datos de prueba y genera reporte claro pass/fail.",
+      "dependencies": [],
+      "status": "pending",
+      "model": "sonnet",
+      "context_files": [
+        "docs/RESEARCH_EMPIRICAL_SANITY.md",
+        "src/data_cleaner.py",
+        "config/param_ranges.json"
+      ]
+    },
+    {
+      "id": "T004",
+      "name": "Generar XMLs del batch inicial (20 casos)",
+      "description": "Usar geometry_builder.py con gp_initial_batch.csv para generar los 20 XMLs del batch inicial GP. Verificar que son correctos.",
+      "steps": [
+        "Leer config/gp_initial_batch.csv",
+        "Verificar que geometry_builder.py acepta este formato",
+        "Generar XMLs para los 20 casos",
+        "Verificar estructura XML: canal 30m, dp=0.004, FtPause=0.5, massbody correcto, inercia desde trimesh",
+        "Verificar que todos los archivos necesarios existen (STL, etc.)",
+        "Listar archivos generados para deploy a WS"
+      ],
+      "success_criteria": "20 XMLs generados en cases/, verificados, listos para copiar a WS.",
+      "dependencies": ["T001"],
+      "status": "pending",
+      "model": "sonnet",
+      "context_files": [
+        "config/gp_initial_batch.csv",
+        "src/geometry_builder.py",
+        "config/template_base.xml"
+      ]
+    },
+    {
+      "id": "T005",
+      "name": "Escribir script de deploy WS",
+      "description": "Script que empaqueta casos + scripts para la WS UCN (sin git). ZIP + instrucciones de copia.",
+      "steps": [
+        "Crear scripts/deploy_ws.py",
+        "Empaquetar: cases/*.xml, src/*.py, config/dsph_config.json, models/*.stl",
+        "Generar ZIP listo para copiar",
+        "Incluir script .ps1 de ejecución para WS (batch_runner con rutas WS)",
+        "Documentar instrucciones de deploy en el ZIP"
+      ],
+      "success_criteria": "ZIP generado con todo lo necesario. Instrucciones claras.",
+      "dependencies": ["T004"],
+      "status": "pending",
+      "model": "sonnet",
+      "context_files": [
+        "config/dsph_config.json",
+        "src/batch_runner.py"
+      ]
+    },
+    {
+      "id": "T006",
+      "name": "Escribir Cap 3: Metodología (GP+AL)",
+      "description": "Expandir capítulo 3 de la tesis con la metodología GP + Active Learning. Incluir ecuaciones, diseño experimental, pipeline.",
+      "steps": [
+        "Leer tesis/cap3_metodologia.md existente",
+        "Leer docs/RESEARCH_GP_AL.md para contenido técnico",
+        "Leer docs/RESEARCH_EMPIRICAL_SANITY.md para sanity checks",
+        "Agregar sección de GP surrogate: kernel, training, validation",
+        "Agregar sección de Active Learning: U-function, criterio de parada",
+        "Agregar sección de diseño experimental: batch inicial, LHS, rangos",
+        "Agregar sección de sanity checks y validación física",
+        "Incluir ecuaciones formateadas en LaTeX/markdown"
+      ],
+      "success_criteria": "Cap 3 completo con metodología GP+AL documentada, ecuaciones, y pipeline experimental.",
+      "dependencies": ["T002", "T003"],
+      "status": "pending",
+      "model": "opus",
+      "context_files": [
+        "tesis/cap3_metodologia.md",
+        "docs/RESEARCH_GP_AL.md",
+        "docs/RESEARCH_EMPIRICAL_SANITY.md"
+      ]
+    }
+  ],
+  "runner": {
+    "session": 0,
+    "last_activity": null
+  }
+}

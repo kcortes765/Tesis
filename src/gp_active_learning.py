@@ -451,10 +451,13 @@ def al_loop(initial_X, initial_y, param_bounds, threshold=DEFAULT_THRESHOLD,
             'x_proposed': x_next.tolist(),
         })
 
-        # Criterio de parada
-        if u_min >= DEFAULT_U_STOP:
-            logger.info("CONVERGENCIA en iteracion %d: U_min=%.3f >= %.1f",
-                        iteration, u_min, DEFAULT_U_STOP)
+        # Criterio de parada (usar check_stopping sin exclusiones para U_min real)
+        converged, u_min_global = check_stopping(gp_model, threshold, grid_size)
+        history[-1]['u_min_global'] = u_min_global
+
+        if converged:
+            logger.info("CONVERGENCIA en iteracion %d: U_min_global=%.3f >= %.1f",
+                        iteration, u_min_global, DEFAULT_U_STOP)
             return {
                 'gp': gp_model, 'X_train': X, 'y_train': y,
                 'history': history, 'converged': True,

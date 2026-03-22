@@ -1,0 +1,2 @@
+mass_kg,density_kgm3,d_eq_mm,dp_m,max_displacement_m,final_displacement_m,disp_over_deq,peak_velocity_ms,t_peak_vel_s,max_rotation_deg,peak_sph_force_N,peak_contact_force_N,t_impact_s,t_rest_s,transport_duration_s
+1.06053,2000.1,100.42099999999999,0.02,4.477628511946028,4.317108218308756,44.58856725133217,1.3981308180485115,2.876081,132.26973991734798,100.35011306967671,494.3542555704866,2.27501,7.943055,5.668045

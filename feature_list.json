@@ -157,7 +157,7 @@
         "Citar referencias: Bryan 2005, Echard 2011, Loeppky 2009, Nandasena 2011, Cox 2020",
         "Commit: feat(S2.3): write methodology chapter GP + active learning"
       ],
-      "passes": false,
+      "passes": true,
       "dependencies": []
     }
   ]

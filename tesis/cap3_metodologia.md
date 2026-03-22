@@ -15,10 +15,10 @@ Todas las simulaciones fueron realizadas con DualSPHysics v5.4.355 (GenCase v5.4
 El dominio computacional reproduce un canal con playa inclinada, diseñado para generar un flujo tipo dam-break que impacta un bloque posicionado en la zona de rompiente.
 
 **Dimensiones del dominio:**
-- Longitud: 15.0 m
+- Longitud: 30.0 m
 - Ancho: 1.0 m
 - Altura: 1.55 m
-- Límites: x ∈ [-0.05, 15.05], y ∈ [-0.05, 1.05], z ∈ [-0.15, 1.55]
+- Límites: x ∈ [-0.05, 30.05], y ∈ [-0.05, 1.05], z ∈ [-0.15, 1.55]
 
 **Geometría del fondo:**
 La playa se modela mediante un archivo STL (`Canal_Playa_1esa20_750cm.stl`) con pendiente 1:20, representativo de un perfil costero suave. Las paredes laterales, frontal y trasera se generan como partículas de contorno (boundary) tipo `drawbox` con relleno `bottom|left|right|front|back`.

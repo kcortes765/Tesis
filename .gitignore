@@ -16,21 +16,22 @@ __pycache__/
 *.obj
 *.out
 
-# STL models (large binary meshes)
-*.stl
+# STL in cases/ (copies, not originals)
+cases/**/*.stl
 
-# Simulation raw outputs
-cases/*/lhs_*_out/
-cases/test_diego_reference/test_diego_reference_out/
+# Simulation raw outputs — excluir binarios pesados, mantener CSVs clave
+cases/*/lhs_*_out/*.bi4
+cases/*/lhs_*_out/*.cbi4
+cases/*/lhs_*_out/*.obi4
+cases/*/lhs_*_out/*.ibi4
+cases/*/lhs_*_out/*.vtk
+cases/*/lhs_*_out/*.ply
+cases/*/lhs_*_out/PartVTK*/
+cases/*/lhs_*_out/PartVTKOut*/
 
-# Processed simulation data (large CSVs, keep local only)
-data/processed/
+# Processed simulation data — mantener en Git para acceso desde laptop
 data/*.log
 data/*.pkl
-
-# SQLite
-*.sqlite
-*.db
 
 # OS
 Thumbs.db
