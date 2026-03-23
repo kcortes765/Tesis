@@ -40,7 +40,7 @@
     }
   },
   "quiet_hours": {
-    "enabled": true,
+    "enabled": false,
     "start": "23:00",
     "end": "07:00",
     "timezone": "America/Santiago",
