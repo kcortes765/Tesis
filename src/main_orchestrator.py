@@ -284,10 +284,31 @@ def run_campaign(matrix_csv: Path, project_root: Path,
     matrix = pd.read_csv(matrix_csv)
     n_cases = len(matrix)
 
+    # Validacion de columnas requeridas
+    required_cols = ['case_id', 'dam_height', 'boulder_mass']
+    optional_cols = ['boulder_rot_z', 'friction_coefficient']
+    missing = [c for c in required_cols if c not in matrix.columns]
+    if missing:
+        raise ValueError(f"CSV falta columnas requeridas: {missing}")
+
+    has_rot = 'boulder_rot_z' in matrix.columns
+    has_fric = 'friction_coefficient' in matrix.columns
+
     logger.info(f"\n{'#'*60}")
     logger.info(f"# CAMPANA DE SIMULACION: {n_cases} casos")
     logger.info(f"# Matriz: {matrix_csv}")
     logger.info(f"# dp={dp}m, GPU={config['defaults']['gpu_id']}")
+    logger.info(f"# Parametros: dam_height, boulder_mass"
+                f"{', boulder_rot_z' if has_rot else ''}"
+                f"{', friction_coefficient' if has_fric else ''}")
+    if has_fric:
+        logger.info(f"# Friccion: [{matrix['friction_coefficient'].min():.3f}, "
+                     f"{matrix['friction_coefficient'].max():.3f}]")
+    if has_rot:
+        logger.info(f"# Rotacion: [{matrix['boulder_rot_z'].min():.1f}, "
+                     f"{matrix['boulder_rot_z'].max():.1f}] deg")
+    logger.info(f"# Tiempo estimado: {n_cases} x ~13.5h = ~{n_cases*13.5:.0f}h "
+                f"(~{n_cases*13.5/24:.1f} dias)")
     logger.info(f"{'#'*60}\n")
 
     all_results = []
@@ -387,7 +408,8 @@ if __name__ == '__main__':
     config_path = project_root / 'config' / 'dsph_config.json'
     config = load_config(config_path)
 
-    matrix_csv = project_root / 'config' / 'experiment_matrix.csv'
+    # Default: gp_initial_batch.csv (campana 4D dp=0.003)
+    matrix_csv = project_root / 'config' / 'gp_initial_batch.csv'
 
     # Argumentos CLI
     n_samples = 5
@@ -400,7 +422,7 @@ if __name__ == '__main__':
             print(f"Matriz generada: {matrix_csv}")
             sys.exit(0)
         elif arg == '--prod':
-            dp = config['defaults']['dp_prod']  # 0.004 para produccion
+            dp = config['defaults']['dp_prod']  # 0.003 para produccion
             logger.info(f"MODO PRODUCCION: dp={dp}")
         elif arg == '--matrix' and i+1 <= len(sys.argv):
             matrix_csv = project_root / sys.argv[i+1]
