@@ -1,10 +1,11 @@
 {
-    "_status": "PROVISIONAL CORREGIDO - rangos fisicamente realistas (validar con Dr. Moris)",
-    "_updated": "2026-02-24",
+    "_status": "4D PRODUCCION - dp=0.003, 25 puntos LHS iniciales + active learning",
+    "_updated": "2026-03-25",
     "_justification": {
-        "dam_height": "0.10m captura no-movimiento (0.30m ya produce transporte completo en convergencia). 0.50m es limite superior realista para flume 7.5m. Ref: Imamura 2008 uso 0.15-0.30m.",
-        "boulder_mass": "Vol BLIR3@scale=0.04 = 530cm3. Rango 0.80-1.60kg = densidades 1500-3100 kg/m3 (pumice ligero a basalto denso). Caso Diego: 1.06kg (2000 kg/m3). Anterior rango 0.5-3.0 era INCORRECTO: 0.5kg flota (943 kg/m3), 3.0kg no existe (5658 kg/m3).",
-        "boulder_rot_z": "0-90 deg cubre todas las orientaciones unicas (simetria aproximada). Ref: Oetjen et al. 2020."
+        "dam_height": "0.10m captura no-movimiento (0.30m ya produce transporte completo). 0.50m limite superior realista. Ref: Imamura 2008.",
+        "boulder_mass": "Vol BLIR3@scale=0.04 = 530cm3. Rango 0.80-1.60kg = densidades 1500-3100 kg/m3. Caso Diego: 1.06kg (2000 kg/m3).",
+        "boulder_rot_z": "0-90 deg cubre orientaciones unicas (simetria aproximada). Ref: Oetjen et al. 2020.",
+        "friction_coefficient": "Kfric Chrono (unico activo en v5.4, Sfric=Kfric). Rango 0.1-0.8 cubre PVC/acero (lab, ~0.15-0.25) a roca/roca (campo, ~0.6-0.7). Ref: Nott 2003, Nandasena 2011."
     },
     "parameters": {
         "dam_height": {
@@ -24,23 +25,23 @@
             "max": 90,
             "unit": "deg",
             "description": "Angulo de orientacion del boulder (rotacion Z)"
+        },
+        "friction_coefficient": {
+            "min": 0.1,
+            "max": 0.8,
+            "unit": "-",
+            "description": "Coeficiente de friccion Kfric (Chrono). Se aplica a boulder y playa via property override."
         }
     },
     "pending_parameters": {
         "stl_file": {
             "options": ["BLIR3.stl"],
-            "description": "Geometria del boulder - ESPERANDO 6 STLs mas (BLIR1-2, BLIR4-7)"
-        },
-        "boulder_scale": {
-            "note": "Si Moris quiere masas mas variadas, escalar geometria (0.03-0.05) a densidad fija 2600 kg/m3 en vez de variar masa con geometria fija",
-            "min": 0.03,
-            "max": 0.05
+            "description": "Geometria del boulder - pendiente 9 STLs adicionales escaneados en terreno"
         }
     },
     "sampling": {
-        "n_samples_dev": 5,
-        "n_samples_pilot": 50,
-        "n_samples_prod": 50,
+        "n_samples_initial": 25,
+        "n_samples_al_budget": 75,
         "seed": 42
     }
 }

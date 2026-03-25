@@ -146,3 +146,19 @@ Append-only. Si algo cambia, no se borra: se marca como revertido o supersedido.
 **Fecha:** 2026-03-22
 **Decisión:** Deploy a WS via git clone/pull, no ZIP/Copy-Item. Repo en C:\Users\Admin\Desktop\SPH-Tesis.
 **Razón:** Git permite sync bidireccional laptop↔WS. Resultados viajan con git push/pull. El usuario Admin tiene Git + Python 3.10 instalados.
+
+## DEC-029: dp producción = 0.003 (supersede DEC-005)
+**Fecha:** 2026-03-25
+**Decisión:** Producción cambia de dp=0.004 a dp=0.003. dp=0.01 para render se mantiene.
+**Razón:** Con 2 semestres disponibles (precapstone + capstone) y WS RTX 5090 24/7, el costo extra (~13.5h/caso vs ~8h) es asumible. dp=0.003 es la resolución más fina alcanzable en hardware y ofrece mejor precisión para publicación. Convergencia monótona garantiza que dp=0.003 está convergido (delta vs dp=0.004 < 5%, delta vs dp=0.002 sería aún menor). Los 20 casos dp=0.004 ya corridos sirven como validación cruzada de convergencia.
+**Supersede:** DEC-005 (dp=0.004 ya no es producción).
+
+## DEC-030: Batch inicial 35 puntos (supersede 20)
+**Fecha:** 2026-03-25
+**Decisión:** Batch inicial LHS sube de 20 a 35 puntos (5 anclas + 30 LHS maximin).
+**Razón:** Para paper, 20 puntos en 2D es el mínimo (10×d). 35 da GP más robusto desde el arranque, mejor estimación de Sobol, y reduce iteraciones AL necesarias. Con tiempo disponible, no hay razón para ser conservador.
+
+## DEC-031: Plan orientado a publicación, no a aprobación
+**Fecha:** 2026-03-25
+**Decisión:** Todo el trabajo apunta a calidad de paper (Coastal Engineering / CMAME). La tesis es el vehículo, no el techo.
+**Razón:** Kevin tiene 1 año completo, WS dedicada, y objetivo explícito de publicar. Las decisiones deben maximizar calidad científica, no minimizar esfuerzo.

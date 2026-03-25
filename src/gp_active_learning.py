@@ -59,12 +59,14 @@ DEFAULT_MAX_BUDGET = 30    # Maximo total de simulaciones
 DEFAULT_GRID_SIZE = 50     # Grilla candidata 50x50
 SEED = 42
 
-FEATURES = ['dam_height', 'boulder_mass']
+FEATURES = ['dam_height', 'boulder_mass', 'boulder_rot_z', 'friction_coefficient']
 TARGET = 'max_displacement'
 
 FEATURE_LABELS = {
     'dam_height': 'Altura columna $h$ [m]',
     'boulder_mass': 'Masa boulder [kg]',
+    'boulder_rot_z': 'Orientaci\u00f3n $\\theta_z$ [\u00b0]',
+    'friction_coefficient': 'Coef. fricci\u00f3n $\\mu_s$ [-]',
 }
 
 PLT_STYLE = {
@@ -88,9 +90,9 @@ PLT_STYLE = {
 
 def load_param_ranges(path=None):
     # type: (Optional[Path]) -> np.ndarray
-    """Carga rangos de param_ranges.json. Retorna array (2, 2): [[h_min, h_max], [m_min, m_max]]."""
+    """Carga rangos de param_ranges.json. Retorna array (d, 2) con bounds por feature."""
     path = path or PARAM_RANGES_PATH
-    defaults = np.array([[0.10, 0.50], [0.80, 1.60]])
+    defaults = np.array([[0.10, 0.50], [0.80, 1.60], [0.0, 90.0], [0.1, 0.8]])
     if not path.exists():
         logger.warning("param_ranges.json no encontrado, usando defaults")
         return defaults
@@ -115,8 +117,9 @@ def load_data_from_sqlite(db_path=None):
         raise FileNotFoundError("SQLite no encontrada: %s" % db_path)
 
     conn = sqlite3.connect(str(db_path))
-    df = pd.read_sql("""
-        SELECT case_name, dam_height, boulder_mass, max_displacement
+    cols = ', '.join(['case_name'] + FEATURES + [TARGET])
+    df = pd.read_sql(f"""
+        SELECT {cols}
         FROM results
         WHERE dam_height > 0 AND boulder_mass > 0
               AND max_displacement IS NOT NULL
@@ -147,11 +150,18 @@ def load_data_from_csv(csv_path):
 
 def make_candidate_grid(bounds, grid_size=DEFAULT_GRID_SIZE):
     # type: (np.ndarray, int) -> np.ndarray
-    """Crea grilla regular 2D de candidatos. bounds: (2, 2)."""
-    x1 = np.linspace(bounds[0, 0], bounds[0, 1], grid_size)
-    x2 = np.linspace(bounds[1, 0], bounds[1, 1], grid_size)
-    X1, X2 = np.meshgrid(x1, x2)
-    return np.column_stack([X1.ravel(), X2.ravel()])
+    """Crea grilla regular de candidatos en d dimensiones. bounds: (d, 2)."""
+    d = bounds.shape[0]
+    # Para d>2, reducir grid_size para evitar explosion combinatoria
+    if d <= 2:
+        gs = grid_size
+    elif d == 3:
+        gs = min(grid_size, 20)  # 20^3 = 8K puntos
+    else:
+        gs = min(grid_size, 12)  # 12^4 = ~21K puntos
+    axes = [np.linspace(bounds[i, 0], bounds[i, 1], gs) for i in range(d)]
+    grids = np.meshgrid(*axes, indexing='ij')
+    return np.column_stack([g.ravel() for g in grids])
 
 
 def _normalize(X, bounds):
@@ -171,21 +181,22 @@ def _denormalize(X_norm, bounds):
 # ---------------------------------------------------------------------------
 
 class GPSurrogate:
-    """Gaussian Process surrogate con Matern 5/2 + ARD para estudio 2D.
+    """Gaussian Process surrogate con Matern 5/2 + ARD.
 
     Normaliza inputs a [0, 1] internamente. Usa normalize_y=True de sklearn
-    para outputs.
+    para outputs. Soporta dimensionalidad arbitraria.
     """
 
     def __init__(self, bounds=None, noise_level=1e-5, n_restarts=20, seed=SEED):
         # type: (Optional[np.ndarray], float, int, int) -> None
         self.bounds = bounds if bounds is not None else load_param_ranges()
         self.seed = seed
+        n_features = self.bounds.shape[0]
 
         self.kernel = (
             ConstantKernel(1.0, constant_value_bounds=(1e-3, 1e3))
             * Matern(
-                length_scale=[1.0, 1.0],
+                length_scale=[1.0] * n_features,
                 length_scale_bounds=(1e-2, 1e2),
                 nu=2.5,
             )
@@ -516,18 +527,34 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
     plt.rcParams.update(PLT_STYLE)
 
     bounds = gp_model.bounds
+    d = bounds.shape[0]
     created = []  # type: List[Path]
 
-    # Grilla de prediccion
+    # Para d>2, usar slices 2D por los dos primeros features (dam_h, mass)
+    # fijando las demas variables en su mediana
     grid_size = 100
     x1 = np.linspace(bounds[0, 0], bounds[0, 1], grid_size)
     x2 = np.linspace(bounds[1, 0], bounds[1, 1], grid_size)
     X1, X2 = np.meshgrid(x1, x2)
-    X_grid = np.column_stack([X1.ravel(), X2.ravel()])
+    if d == 2:
+        X_grid = np.column_stack([X1.ravel(), X2.ravel()])
+    else:
+        # Fijar variables extra en mediana del rango
+        medians = (bounds[:, 0] + bounds[:, 1]) / 2
+        X_grid = np.tile(medians, (X1.size, 1))
+        X_grid[:, 0] = X1.ravel()
+        X_grid[:, 1] = X2.ravel()
 
     mu, sigma = gp_model.predict_with_std(X_grid)
     Mu = mu.reshape(grid_size, grid_size)
     Sigma = sigma.reshape(grid_size, grid_size)
+
+    slice_note = ""
+    if d > 2:
+        fixed_vals = ", ".join(
+            f"{FEATURES[i]}={medians[i]:.2f}" for i in range(2, d)
+        )
+        slice_note = f" (slice: {fixed_vals})"
 
     # --- Fig 1: GP Surface (media) ---
     fig, ax = plt.subplots(figsize=(7, 5.5))
@@ -540,7 +567,7 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
                label='Datos entrenamiento')
     ax.set_xlabel(FEATURE_LABELS['dam_height'])
     ax.set_ylabel(FEATURE_LABELS['boulder_mass'])
-    ax.set_title('GP Surrogate — Prediccion media')
+    ax.set_title('GP Surrogate — Prediccion media' + slice_note)
     ax.legend(fontsize=8)
     fig.tight_layout()
     p = output_dir / 'gp_surface_mean.png'
@@ -559,7 +586,7 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
                label='Datos entrenamiento')
     ax.set_xlabel(FEATURE_LABELS['dam_height'])
     ax.set_ylabel(FEATURE_LABELS['boulder_mass'])
-    ax.set_title('GP Surrogate — Incertidumbre predictiva')
+    ax.set_title('GP Surrogate — Incertidumbre predictiva' + slice_note)
     ax.legend(fontsize=8)
     fig.tight_layout()
     p = output_dir / 'gp_surface_std.png'
@@ -589,7 +616,7 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
                edgecolors='white', linewidths=0.7, zorder=5)
     ax.set_xlabel(FEATURE_LABELS['dam_height'])
     ax.set_ylabel(FEATURE_LABELS['boulder_mass'])
-    ax.set_title('Contorno umbral $T = %.2f$ m con banda 95%%' % threshold)
+    ax.set_title('Contorno umbral $T = %.2f$ m con banda 95%%' % threshold + slice_note)
     fig.tight_layout()
     p = output_dir / 'gp_contour_threshold.png'
     fig.savefig(p)
@@ -663,7 +690,7 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
                zorder=6, label='argmin $U$ (%.2f)' % U_grid[idx_min])
     ax.set_xlabel(FEATURE_LABELS['dam_height'])
     ax.set_ylabel(FEATURE_LABELS['boulder_mass'])
-    ax.set_title('U-function (Echard 2011) — $U_{min}$ = %.2f' % np.min(U_grid))
+    ax.set_title('U-function (Echard 2011) — $U_{min}$ = %.2f' % np.min(U_grid) + slice_note)
     ax.legend(fontsize=8)
     fig.tight_layout()
     p = output_dir / 'gp_u_function.png'
@@ -684,7 +711,7 @@ def generate_figures(gp_model, X_train, y_train, threshold=DEFAULT_THRESHOLD,
                edgecolors='white', linewidths=0.7, zorder=5)
     ax.set_xlabel(FEATURE_LABELS['dam_height'])
     ax.set_ylabel(FEATURE_LABELS['boulder_mass'])
-    ax.set_title('Probabilidad de movimiento ($T = %.2f$ m)' % threshold)
+    ax.set_title('Probabilidad de movimiento ($T = %.2f$ m)' % threshold + slice_note)
     fig.tight_layout()
     p = output_dir / 'gp_probability_movement.png'
     fig.savefig(p)

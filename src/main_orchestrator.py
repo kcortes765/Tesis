@@ -181,8 +181,11 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
     try:
         # --- PASO 1: Geometry Builder ---
         logger.info(f"\n{'='*60}")
+        mu_s = row.get('friction_coefficient', 0.3)
+        logger.info(f"\n{'='*60}")
         logger.info(f"CASO {case_id}: dam_h={row['dam_height']:.3f}m, "
-                     f"mass={row['boulder_mass']:.3f}kg, rot_z={rot_z:.1f}deg, dp={dp}")
+                     f"mass={row['boulder_mass']:.3f}kg, rot_z={rot_z:.1f}deg, "
+                     f"mu_s={mu_s:.3f}, dp={dp}")
         logger.info(f"{'='*60}")
 
         params = CaseParams(
@@ -190,11 +193,11 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
             dp=dp,
             dam_height=row['dam_height'],
             boulder_mass=row['boulder_mass'],
-            # Defaults del template para el resto
             boulder_scale=0.04,
             boulder_pos=(8.5, 0.5, 0.1),
             boulder_rot=(0.0, 0.0, rot_z),
             material="pvc",
+            friction_coefficient=mu_s,
             time_max=config['defaults']['time_max'],
             time_out=config['defaults']['time_out'],
             ft_pause=config['defaults']['ft_pause'],

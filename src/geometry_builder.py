@@ -44,6 +44,7 @@ class CaseParams:
     boulder_pos: tuple = (8.5, 0.5, 0.1)        # Posicion en el dominio (drawmove)
     boulder_rot: tuple = (0.0, 0.0, 0.0)        # Rotacion euler XYZ en grados
     material: str = "pvc"                        # Material en Floating_Materials.xml
+    friction_coefficient: float = 0.3            # Coef. friccion boulder-playa (Kfric Chrono)
     mkbound: int = 51                            # MK del boulder
     time_max: float = 10.0                       # Duracion de simulacion (s)
     time_out: float = 10.0                       # Intervalo de output de particulas (s)
@@ -478,6 +479,31 @@ def modify_xml(tree: etree._ElementTree, params: CaseParams,
     inertia_elem.set('x', f'{I[0][0]:.8g}')
     inertia_elem.set('y', f'{I[1][1]:.8g}')
     inertia_elem.set('z', f'{I[2][2]:.8g}')
+
+    # --- Friction coefficient (Kfric override via property) ---
+    properties = root.find('.//properties')
+    if properties is not None:
+        # Crear o actualizar property override para Kfric
+        set_kfric = None
+        for prop in properties.findall('property'):
+            if prop.get('name') == 'SetKfric':
+                set_kfric = prop
+                break
+        if set_kfric is None:
+            set_kfric = etree.SubElement(properties, 'property')
+            set_kfric.set('name', 'SetKfric')
+            set_kfric.tail = '\n\t\t\t'
+        set_kfric.set('Kfric_User', _fmt(params.friction_coefficient, 4))
+
+        # Asignar property override al boulder: material+SetKfric
+        floating.set('property', f'{params.material}+SetKfric')
+
+        # Asignar mismo Kfric al fondo (link mkbound=0)
+        links = properties.find('links')
+        if links is not None:
+            for link in links.findall('link'):
+                if link.get('mkbound') == '0':
+                    link.set('property', 'steel+SetKfric')
 
     # --- Execution parameters ---
     parameters = root.find('.//execution/parameters')

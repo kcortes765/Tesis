@@ -18,12 +18,12 @@
     },
     "defaults": {
         "dp_dev": 0.02,
-        "dp_prod": 0.004,
+        "dp_prod": 0.003,
         "time_max": 10.0,
         "time_out": 10.0,
         "ft_pause": 0.5,
         "gpu_id": 0,
-        "timeout_seconds": 7200
+        "timeout_seconds": 54000
     },
     "paths": {
         "template_xml": "config/template_base.xml",
