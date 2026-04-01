@@ -307,14 +307,31 @@ def run_campaign(matrix_csv: Path, project_root: Path,
     if has_rot:
         logger.info(f"# Rotacion: [{matrix['boulder_rot_z'].min():.1f}, "
                      f"{matrix['boulder_rot_z'].max():.1f}] deg")
-    logger.info(f"# Tiempo estimado: {n_cases} x ~13.5h = ~{n_cases*13.5:.0f}h "
-                f"(~{n_cases*13.5/24:.1f} dias)")
+    # Contar cuantos ya estan completados
+    processed_dir_check = project_root / config['paths']['processed_dir']
+    already_done = sum(1 for _, r in matrix.iterrows()
+                       if (processed_dir_check / r.get('case_id', '') / 'ChronoExchange_mkbound_51.csv').exists())
+    pending = n_cases - already_done
+    logger.info(f"# Ya completados: {already_done}, Pendientes: {pending}")
+    logger.info(f"# Tiempo estimado: {pending} x ~18h = ~{pending*18:.0f}h "
+                f"(~{pending*18/24:.1f} dias)")
     logger.info(f"{'#'*60}\n")
 
     all_results = []
     successful_results = []
 
+    # Detectar casos ya completados (tienen ChronoExchange CSV en processed/)
+    processed_dir = project_root / config['paths']['processed_dir']
+    skipped = 0
+
     for i, (_, row) in enumerate(matrix.iterrows(), 1):
+        case_id = row.get('case_id', f'case_{i:03d}')
+        case_processed = processed_dir / case_id / 'ChronoExchange_mkbound_51.csv'
+        if case_processed.exists():
+            logger.info(f"\n--- Caso {i}/{n_cases} --- SKIP {case_id} (ya completado)")
+            skipped += 1
+            continue
+
         logger.info(f"\n--- Caso {i}/{n_cases} ---")
 
         pipeline_result = run_pipeline_case(row, project_root, config, dp)

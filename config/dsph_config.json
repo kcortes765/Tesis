@@ -23,7 +23,8 @@
         "time_out": 10.0,
         "ft_pause": 0.5,
         "gpu_id": 0,
-        "timeout_seconds": 54000
+        "timeout_seconds": 54000,
+        "cleanup_binaries": false
     },
     "paths": {
         "template_xml": "config/template_base.xml",

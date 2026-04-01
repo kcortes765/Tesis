@@ -341,11 +341,15 @@ def run_case(case_dir: Path, config: dict,
     finally:
         # === LIMPIEZA BLINDADA ===
         # Se ejecuta SIEMPRE, sin importar si hubo exito, timeout o crash.
-        # Nunca debe lanzar una excepcion que enmascare el error original.
-        try:
-            cleanup_binaries(case_dir, out_dir)
-        except Exception as e:
-            logger.error(f"  [{case_name}] Error durante limpieza (no critico): {e}")
+        # Desactivable via config["defaults"]["cleanup_binaries"] = false
+        do_cleanup = config.get('defaults', {}).get('cleanup_binaries', True)
+        if do_cleanup:
+            try:
+                cleanup_binaries(case_dir, out_dir)
+            except Exception as e:
+                logger.error(f"  [{case_name}] Error durante limpieza (no critico): {e}")
+        else:
+            logger.info(f"  [{case_name}] Limpieza desactivada (cleanup_binaries=false)")
 
         duration = (datetime.now() - start_time).total_seconds()
         result['duration_s'] = duration
