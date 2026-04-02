@@ -74,6 +74,7 @@ class CaseResult:
     boulder_mass: float = 0.0    # Masa del boulder (kg)
     boulder_rot_z: float = 0.0   # Angulo de orientacion Z (grados)
     friction_coefficient: float = 0.0  # Coef. friccion (Kfric Chrono)
+    slope_inv: float = 20.0     # Inverso de pendiente (20 = 1:20)
     dp: float = 0.0              # Distancia entre particulas (m)
     stl_file: str = ""           # Nombre del STL usado
 
@@ -494,7 +495,7 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
     existing_cols = {row[1] for row in cursor.execute(f"PRAGMA table_info({table})").fetchall()}
     for col, coltype in [('dam_height', 'REAL'), ('boulder_mass', 'REAL'),
                          ('boulder_rot_z', 'REAL'), ('friction_coefficient', 'REAL'),
-                         ('dp', 'REAL'), ('stl_file', 'TEXT')]:
+                         ('slope_inv', 'REAL'), ('dp', 'REAL'), ('stl_file', 'TEXT')]:
         if col not in existing_cols:
             cursor.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coltype}")
             logger.info(f"  SQLite: columna '{col}' agregada a tabla '{table}'")
@@ -509,9 +510,9 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
                 moved, rotated, failed,
                 sim_time_reached, n_timesteps,
                 dam_height, boulder_mass, boulder_rot_z,
-                friction_coefficient, dp, stl_file
+                friction_coefficient, slope_inv, dp, stl_file
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         """, (
             row['case_name'],
@@ -523,6 +524,7 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
             row['sim_time_reached'], row['n_timesteps'],
             row.get('dam_height', 0.0), row.get('boulder_mass', 0.0),
             row.get('boulder_rot_z', 0.0), row.get('friction_coefficient', 0.0),
+            row.get('slope_inv', 20.0),
             row.get('dp', 0.0), row.get('stl_file', ''),
         ))
 

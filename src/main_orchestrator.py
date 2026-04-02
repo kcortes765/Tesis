@@ -50,6 +50,17 @@ DEFAULT_PARAM_RANGES = {
 }
 
 
+def estimate_case_hours(dp: float) -> float:
+    """Estimacion gruesa de duracion por caso segun dp."""
+    if dp <= 0.0035:
+        return 18.0
+    if dp <= 0.0055:
+        return 2.0
+    if dp <= 0.0105:
+        return 0.5
+    return 0.25
+
+
 def load_param_ranges(json_path: Path = None) -> dict:
     """
     Carga rangos parametricos desde config/param_ranges.json.
@@ -163,6 +174,8 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         'dam_height': row['dam_height'],
         'boulder_mass': row['boulder_mass'],
         'boulder_rot_z': rot_z,
+        'friction_coefficient': float(row.get('friction_coefficient', 0.3)),
+        'slope_inv': float(row.get('slope_inv', 20.0)),
         'dp': dp,
         'success': False,
         'result': None,
@@ -182,22 +195,30 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         # --- PASO 1: Geometry Builder ---
         logger.info(f"\n{'='*60}")
         mu_s = row.get('friction_coefficient', 0.3)
+        slope_inv = row.get('slope_inv', 20.0)
+
+        # Boulder position: al inicio de la rampa (x=6.5, z ajustado a pendiente)
+        from canal_generator import get_boulder_position
+        bx, by, bz = get_boulder_position(slope_inv)
+
         logger.info(f"\n{'='*60}")
         logger.info(f"CASO {case_id}: dam_h={row['dam_height']:.3f}m, "
                      f"mass={row['boulder_mass']:.3f}kg, rot_z={rot_z:.1f}deg, "
-                     f"mu_s={mu_s:.3f}, dp={dp}")
+                     f"mu_s={mu_s:.3f}, slope=1:{slope_inv:.0f}, dp={dp}")
         logger.info(f"{'='*60}")
 
         params = CaseParams(
             case_name=case_id,
             dp=dp,
             dam_height=row['dam_height'],
+            dam_length=1.5,  # 1.5m segun sketch de Moris
             boulder_mass=row['boulder_mass'],
             boulder_scale=0.04,
-            boulder_pos=(8.5, 0.5, 0.1),
+            boulder_pos=(bx, by, bz),
             boulder_rot=(0.0, 0.0, rot_z),
             material="pvc",
             friction_coefficient=mu_s,
+            slope_inv=slope_inv,
             time_max=config['defaults']['time_max'],
             time_out=config['defaults']['time_out'],
             ft_pause=config['defaults']['ft_pause'],
@@ -240,6 +261,8 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         case_result.dam_height = row['dam_height']
         case_result.boulder_mass = row['boulder_mass']
         case_result.boulder_rot_z = rot_z
+        case_result.friction_coefficient = float(mu_s)
+        case_result.slope_inv = float(slope_inv)
         case_result.dp = dp
         case_result.stl_file = config['paths'].get('boulder_stl', '').split('/')[-1]
         pipeline_result['result'] = case_result
@@ -286,13 +309,14 @@ def run_campaign(matrix_csv: Path, project_root: Path,
 
     # Validacion de columnas requeridas
     required_cols = ['case_id', 'dam_height', 'boulder_mass']
-    optional_cols = ['boulder_rot_z', 'friction_coefficient']
+    optional_cols = ['boulder_rot_z', 'friction_coefficient', 'slope_inv']
     missing = [c for c in required_cols if c not in matrix.columns]
     if missing:
         raise ValueError(f"CSV falta columnas requeridas: {missing}")
 
     has_rot = 'boulder_rot_z' in matrix.columns
     has_fric = 'friction_coefficient' in matrix.columns
+    has_slope = 'slope_inv' in matrix.columns
 
     logger.info(f"\n{'#'*60}")
     logger.info(f"# CAMPANA DE SIMULACION: {n_cases} casos")
@@ -300,21 +324,26 @@ def run_campaign(matrix_csv: Path, project_root: Path,
     logger.info(f"# dp={dp}m, GPU={config['defaults']['gpu_id']}")
     logger.info(f"# Parametros: dam_height, boulder_mass"
                 f"{', boulder_rot_z' if has_rot else ''}"
-                f"{', friction_coefficient' if has_fric else ''}")
+                f"{', friction_coefficient' if has_fric else ''}"
+                f"{', slope_inv' if has_slope else ''}")
     if has_fric:
         logger.info(f"# Friccion: [{matrix['friction_coefficient'].min():.3f}, "
                      f"{matrix['friction_coefficient'].max():.3f}]")
     if has_rot:
         logger.info(f"# Rotacion: [{matrix['boulder_rot_z'].min():.1f}, "
                      f"{matrix['boulder_rot_z'].max():.1f}] deg")
+    if has_slope:
+        logger.info(f"# Pendiente: [1:{matrix['slope_inv'].min():.0f}, "
+                     f"1:{matrix['slope_inv'].max():.0f}]")
     # Contar cuantos ya estan completados
     processed_dir_check = project_root / config['paths']['processed_dir']
     already_done = sum(1 for _, r in matrix.iterrows()
                        if (processed_dir_check / r.get('case_id', '') / 'ChronoExchange_mkbound_51.csv').exists())
     pending = n_cases - already_done
     logger.info(f"# Ya completados: {already_done}, Pendientes: {pending}")
-    logger.info(f"# Tiempo estimado: {pending} x ~18h = ~{pending*18:.0f}h "
-                f"(~{pending*18/24:.1f} dias)")
+    est_hours = estimate_case_hours(dp)
+    logger.info(f"# Tiempo estimado: {pending} x ~{est_hours:.1f}h = "
+                f"~{pending*est_hours:.0f}h (~{pending*est_hours/24:.1f} dias)")
     logger.info(f"{'#'*60}\n")
 
     all_results = []
@@ -393,19 +422,20 @@ def run_campaign(matrix_csv: Path, project_root: Path,
 
     # Tabla resumen
     logger.info(f"\nResumen:")
-    logger.info(f"{'Case':<12} {'dam_h':>6} {'mass':>6} {'Status':>8} "
+    logger.info(f"{'Case':<12} {'dam_h':>6} {'mass':>6} {'slope':>7} {'Status':>8} "
                 f"{'Disp(m)':>9} {'Rot(deg)':>9} {'Time(s)':>8}")
-    logger.info("-" * 70)
+    logger.info("-" * 78)
     for r in all_results:
+        slope_txt = f"1:{r.get('slope_inv', 20):.0f}"
         if r['success'] and r['result']:
             cr = r['result']
             status = "FALLO" if cr.failed else "ESTABLE"
             logger.info(f"{r['case_id']:<12} {r['dam_height']:>6.3f} {r['boulder_mass']:>6.3f} "
-                         f"{status:>8} {cr.max_displacement:>9.4f} "
+                         f"{slope_txt:>7} {status:>8} {cr.max_displacement:>9.4f} "
                          f"{cr.max_rotation:>9.1f} {r['duration_s']:>8.1f}")
         else:
             logger.info(f"{r['case_id']:<12} {r['dam_height']:>6.3f} {r['boulder_mass']:>6.3f} "
-                         f"{'ERROR':>8} {'---':>9} {'---':>9} {r['duration_s']:>8.1f}")
+                         f"{slope_txt:>7} {'ERROR':>8} {'---':>9} {'---':>9} {r['duration_s']:>8.1f}")
 
     return all_results
 
@@ -427,6 +457,7 @@ if __name__ == '__main__':
 
     # Default: gp_initial_batch.csv (campana 4D dp=0.003)
     matrix_csv = project_root / 'config' / 'gp_initial_batch.csv'
+    screening_matrix_csv = project_root / 'config' / 'screening_5d.csv'
 
     # Argumentos CLI
     n_samples = 5
@@ -441,12 +472,26 @@ if __name__ == '__main__':
         elif arg == '--prod':
             dp = config['defaults']['dp_prod']  # 0.003 para produccion
             logger.info(f"MODO PRODUCCION: dp={dp}")
+        elif arg == '--screening':
+            dp = 0.005
+            matrix_csv = screening_matrix_csv
+            logger.info(f"MODO SCREENING: dp={dp}, matriz={matrix_csv}")
+        elif arg == '--dp' and i+1 <= len(sys.argv):
+            dp = float(sys.argv[i+1])
+            logger.info(f"dp manual: {dp}")
         elif arg == '--matrix' and i+1 <= len(sys.argv):
             matrix_csv = project_root / sys.argv[i+1]
             logger.info(f"Matriz custom: {matrix_csv}")
 
+    screening_mode = '--screening' in sys.argv[1:]
+
     # Generar matriz si no existe
     if not matrix_csv.exists():
+        if screening_mode:
+            raise FileNotFoundError(
+                f"Matriz de screening no encontrada: {matrix_csv}. "
+                "Versiona o copia config/screening_5d.csv antes de lanzar."
+            )
         logger.info("Matriz no encontrada, generando con LHS...")
         generate_experiment_matrix(n_samples, output_csv=matrix_csv)
 

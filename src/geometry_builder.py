@@ -23,6 +23,7 @@ import numpy as np
 import trimesh
 from lxml import etree
 from scipy.spatial.transform import Rotation
+from canal_generator import generate_canal_stl, get_boulder_position
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +46,7 @@ class CaseParams:
     boulder_rot: tuple = (0.0, 0.0, 0.0)        # Rotacion euler XYZ en grados
     material: str = "pvc"                        # Material en Floating_Materials.xml
     friction_coefficient: float = 0.3            # Coef. friccion boulder-playa (Kfric Chrono)
+    slope_inv: float = 20.0                      # Inverso pendiente (20 = 1:20)
     mkbound: int = 51                            # MK del boulder
     time_max: float = 10.0                       # Duracion de simulacion (s)
     time_out: float = 10.0                       # Intervalo de output de particulas (s)
@@ -192,8 +194,18 @@ def compute_fillbox(boulder_props: dict, boulder_pos: tuple,
 # Reubicacion automatica de gauges
 # ---------------------------------------------------------------------------
 
+def _channel_bed_elevation(x: float, slope_inv: float,
+                           L_flat: float = 6.0,
+                           L_ramp: float = 9.0) -> float:
+    """Retorna la elevacion del fondo del canal en una posicion x."""
+    if x <= L_flat:
+        return 0.0
+    x_ramp = min(x - L_flat, L_ramp)
+    return x_ramp / slope_inv
+
+
 def relocate_gauges(tree: etree._ElementTree, boulder_props: dict,
-                    boulder_pos: tuple, dp: float) -> None:
+                    boulder_pos: tuple, dp: float, slope_inv: float) -> None:
     """
     Reubica los gauges (velocity y maxz) del XML segun la posicion del boulder.
 
@@ -227,7 +239,7 @@ def relocate_gauges(tree: etree._ElementTree, boulder_props: dict,
     boulder_xmax = float(bb_max[0])
     boulder_y = float(cm_domain[1])
     boulder_zmid = float((bb_min[2] + bb_max[2]) / 2)
-    floor_z = max(dp, 0.001)
+    floor_offset = max(dp, 0.001)
 
     logger.info(f"  Reubicando gauges: boulder x=[{boulder_xmin:.3f}, {boulder_xmax:.3f}], "
                 f"y={boulder_y:.3f}, z_mid={boulder_zmid:.3f}")
@@ -244,21 +256,24 @@ def relocate_gauges(tree: etree._ElementTree, boulder_props: dict,
         if abs(gx - cm_domain[0]) < 2.0:
             near_boulder.append(vg)
         else:
-            # Gauges lejos: solo bajar z al piso para asegurar contacto con agua
+            # Gauges lejos: bajar cerca del fondo local, no a z global=0.
             old_z = float(pt.get('z', 0))
-            pt.set('z', _fmt(floor_z, 4))
-            if abs(old_z - floor_z) > 0.01:
-                logger.info(f"    {vg.get('name')}: z {old_z:.3f} -> {floor_z:.4f} (al piso)")
+            local_z = _channel_bed_elevation(gx, slope_inv) + floor_offset
+            pt.set('z', _fmt(local_z, 4))
+            if abs(old_z - local_z) > 0.01:
+                logger.info(f"    {vg.get('name')}: z {old_z:.3f} -> {local_z:.4f} (fondo local)")
 
     # Redistribuir los gauges cercanos al boulder
     if len(near_boulder) >= 3:
         # Gauge 0: upstream de la cara frontal
         pt0 = near_boulder[0].find('point')
-        pt0.set('x', _fmt(boulder_xmin - dp, 4))
+        x0 = boulder_xmin - dp
+        z0 = _channel_bed_elevation(x0, slope_inv) + floor_offset
+        pt0.set('x', _fmt(x0, 4))
         pt0.set('y', _fmt(boulder_y, 4))
-        pt0.set('z', _fmt(floor_z, 4))
+        pt0.set('z', _fmt(z0, 4))
         near_boulder[0].set('comment', 'Auto: upstream del boulder')
-        logger.info(f"    {near_boulder[0].get('name')}: -> upstream x={boulder_xmin - dp:.4f}")
+        logger.info(f"    {near_boulder[0].get('name')}: -> upstream x={x0:.4f}, z={z0:.4f}")
 
         # Gauge 1: centroide a media altura
         pt1 = near_boulder[1].find('point')
@@ -270,25 +285,30 @@ def relocate_gauges(tree: etree._ElementTree, boulder_props: dict,
 
         # Gauge 2: downstream de la cara trasera
         pt2 = near_boulder[2].find('point')
-        pt2.set('x', _fmt(boulder_xmax + dp, 4))
+        x2 = boulder_xmax + dp
+        z2 = _channel_bed_elevation(x2, slope_inv) + floor_offset
+        pt2.set('x', _fmt(x2, 4))
         pt2.set('y', _fmt(boulder_y, 4))
-        pt2.set('z', _fmt(floor_z, 4))
+        pt2.set('z', _fmt(z2, 4))
         near_boulder[2].set('comment', 'Auto: downstream del boulder')
-        logger.info(f"    {near_boulder[2].get('name')}: -> downstream x={boulder_xmax + dp:.4f}")
+        logger.info(f"    {near_boulder[2].get('name')}: -> downstream x={x2:.4f}, z={z2:.4f}")
 
         # Gauges adicionales cerca: distribuir en Y (lateral izq/der)
         for i, vg in enumerate(near_boulder[3:], start=3):
             pt = vg.find('point')
+            x = float(cm_domain[0])
+            z = _channel_bed_elevation(x, slope_inv) + floor_offset
             y_offset = 0.15 * (1 if i % 2 == 0 else -1)
-            pt.set('x', _fmt(float(cm_domain[0]), 4))
+            pt.set('x', _fmt(x, 4))
             pt.set('y', _fmt(boulder_y + y_offset, 4))
-            pt.set('z', _fmt(floor_z, 4))
+            pt.set('z', _fmt(z, 4))
             vg.set('comment', f'Auto: lateral boulder y_offset={y_offset:+.2f}')
     elif near_boulder:
         # Menos de 3 gauges cerca: solo bajar z
         for vg in near_boulder:
             pt = vg.find('point')
-            pt.set('z', _fmt(floor_z, 4))
+            gx = float(pt.get('x', 0))
+            pt.set('z', _fmt(_channel_bed_elevation(gx, slope_inv) + floor_offset, 4))
 
     # --- MaxZ gauges ---
     maxz_gauges = list(gauges.iter('maxz'))
@@ -308,15 +328,17 @@ def relocate_gauges(tree: etree._ElementTree, boulder_props: dict,
         # Gauges cerca del boulder: reubicar a cara frontal
         if abs(gx - cm_domain[0]) < 2.0:
             pt0.set('y', _fmt(boulder_y, 4))
-            # z ligeramente sobre el piso
-            pt0.set('z', _fmt(floor_z, 4))
-            logger.info(f"    {mz.get('name')}: y->{boulder_y:.3f}, z->{floor_z:.4f}, "
+            # point0 debe quedar sobre el fondo local para no quedar enterrado en la rampa
+            local_z = _channel_bed_elevation(gx, slope_inv) + max(0.05, floor_offset)
+            pt0.set('z', _fmt(local_z, 4))
+            logger.info(f"    {mz.get('name')}: y->{boulder_y:.3f}, z->{local_z:.4f}, "
                         f"distlimit->{distlimit_val}")
         else:
-            # Lejos: bajar z al piso
+            # Lejos: ajustar respecto del fondo local, no del z absoluto.
             old_z = float(pt0.get('z', 0))
-            if old_z > floor_z + 0.05:
-                pt0.set('z', _fmt(floor_z + 0.05, 4))
+            local_z = _channel_bed_elevation(gx, slope_inv) + max(0.05, floor_offset)
+            if abs(old_z - local_z) > 0.01:
+                pt0.set('z', _fmt(local_z, 4))
 
     logger.info(f"  Gauges reubicados: {len(vel_gauges)} velocity, {len(maxz_gauges)} maxz")
 
@@ -372,11 +394,37 @@ def modify_xml(tree: etree._ElementTree, params: CaseParams,
     definition = root.find('.//geometry/definition')
     definition.set('dp', _fmt(params.dp, 4))
 
-    # --- Dam Break (altura de la columna de agua) ---
+    # --- Dominio (ajustar a canal parametrico) ---
+    L_flat = 6.0
+    L_ramp = 9.0
+    L_total = L_flat + L_ramp  # 15m
+    H_ramp = L_ramp / params.slope_inv
+    H_domain = max(1.5, H_ramp + 0.005) + 0.05  # margen para pointmax
+
+    pointmin = definition.find('pointmin')
+    pointmax = definition.find('pointmax')
+    if pointmin is not None:
+        pointmin.set('x', '-0.05')
+        pointmin.set('y', '-0.05')
+        pointmin.set('z', '-0.15')
+    if pointmax is not None:
+        pointmax.set('x', _fmt(L_total + 0.05, 2))
+        pointmax.set('y', '1.05')
+        pointmax.set('z', _fmt(H_domain, 2))
+
+    # --- Dam Break (altura y largo de la columna de agua) ---
     drawbox = root.find('.//drawbox')
     size_elem = drawbox.find('size')
     size_elem.set('x', _fmt(params.dam_length))
     size_elem.set('z', _fmt(params.dam_height))
+
+    # --- Canal STL (actualizar nombre del archivo) ---
+    canal_stl_name = f"canal_1to{int(params.slope_inv)}.stl"
+    for elem in root.iter('drawfilestl'):
+        fname = elem.get('file', '')
+        if 'Canal' in fname or 'canal' in fname:
+            elem.set('file', canal_stl_name)
+            break
 
     # --- Boulder: drawfilestl transforms ---
     drawfilestl = None
@@ -526,7 +574,7 @@ def modify_xml(tree: etree._ElementTree, params: CaseParams,
             outputtime.set('end', _fmt(params.time_max))
 
     # --- Reubicar gauges segun posicion del boulder ---
-    relocate_gauges(tree, boulder_props, params.boulder_pos, params.dp)
+    relocate_gauges(tree, boulder_props, params.boulder_pos, params.dp, params.slope_inv)
 
     return tree
 
@@ -576,7 +624,7 @@ def build_case(template_xml: Path, boulder_stl: Path, beach_stl: Path,
     particles_dim_min = dim_min / params.dp
     logger.info(f"  dp={params.dp}m -> dim_min/dp = {particles_dim_min:.1f} "
                 f"({dim_min:.4f}m / {params.dp}m)")
-    if particles_dim_min < 5:
+    if particles_dim_min < 10:
         logger.warning(f"  ATENCION: Solo {particles_dim_min:.1f} particulas en la "
                        f"dimension minima del boulder. Recomendado: >=10.")
 
@@ -597,13 +645,28 @@ def build_case(template_xml: Path, boulder_stl: Path, beach_stl: Path,
                pretty_print=True)
     logger.info(f"  XML generado: {xml_path}")
 
-    # 5. Copiar archivos auxiliares
+    # 5. Generar canal STL parametrico y copiar archivos
+    canal_stl_name = f"canal_1to{int(params.slope_inv)}.stl"
+    canal_stl_path = case_dir / canal_stl_name
+    generate_canal_stl(
+        slope_inv=params.slope_inv,
+        L_flat=6.0,
+        L_ramp=9.0,
+        L_platform=0.0,
+        output_path=canal_stl_path,
+    )
+
     shutil.copy2(str(boulder_stl), str(case_dir / boulder_stl.name))
-    shutil.copy2(str(beach_stl), str(case_dir / beach_stl.name))
     shutil.copy2(str(materials_xml), str(case_dir / materials_xml.name))
     logger.info(f"  Archivos copiados a {case_dir}")
 
-    # 6. Guardar resumen de propiedades (util para debug y ETL)
+    # 6. Generar PNG de verificacion del canal
+    try:
+        _save_canal_verification_png(case_dir, params)
+    except Exception as e:
+        logger.warning(f"  No se pudo generar PNG de verificacion: {e}")
+
+    # 7. Guardar resumen de propiedades (util para debug y ETL)
     summary_path = case_dir / "boulder_properties.txt"
     _write_properties_summary(summary_path, params, boulder_props, fillbox)
 
@@ -650,6 +713,58 @@ def _write_properties_summary(path: Path, params: CaseParams,
 
     with open(path, 'w') as f:
         f.write('\n'.join(lines) + '\n')
+
+
+def _save_canal_verification_png(case_dir: Path, params: CaseParams):
+    """Genera un PNG con vista lateral del canal para verificacion visual."""
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+
+    L_flat = 6.0
+    L_ramp = 9.0
+    H_ramp = L_ramp / params.slope_inv
+    L_total = L_flat + L_ramp
+    H = max(1.5, H_ramp + 0.005)
+    bx, by, bz = params.boulder_pos
+
+    fig, ax = plt.subplots(figsize=(12, 4))
+
+    # Fondo
+    ax.fill_between([0, L_flat], 0, -0.02, color='#9E9E9E', alpha=0.5)
+    ax.fill_between([L_flat, L_total], [0, H_ramp], -0.02, color='#90CAF9', alpha=0.5)
+    ax.plot([0, L_flat, L_total], [0, 0, H_ramp], 'k-', lw=2)
+
+    # Paredes
+    ax.plot([0, 0], [0, H], 'k-', lw=2)
+    ax.plot([L_total, L_total], [H_ramp, H], 'k-', lw=1.5)
+    ax.plot([0, L_total], [H, H], 'k--', lw=0.5, alpha=0.3)
+
+    # Dam
+    ax.fill([0, params.dam_length, params.dam_length, 0],
+            [0, 0, params.dam_height, params.dam_height],
+            color='#4FC3F7', alpha=0.5, edgecolor='#0277BD')
+
+    # Boulder
+    ax.plot(bx, bz + 0.015, 's', color='#795548', markersize=10,
+            markeredgecolor='k', zorder=5)
+
+    # Info
+    ax.set_title(f'{params.case_name}: slope=1:{params.slope_inv:.0f}, '
+                 f'dam_h={params.dam_height:.2f}m, mass={params.boulder_mass:.2f}kg, '
+                 f'mu={params.friction_coefficient:.2f}, rot_z={params.boulder_rot[2]:.0f}deg',
+                 fontsize=9)
+    ax.set_xlabel('X [m]')
+    ax.set_ylabel('Z [m]')
+    ax.set_xlim(-0.5, L_total + 0.5)
+    ax.set_ylim(-0.1, H + 0.1)
+    ax.set_aspect('equal')
+    ax.grid(True, alpha=0.15)
+
+    fig.tight_layout()
+    fig.savefig(str(case_dir / 'canal_verificacion.png'), dpi=150, facecolor='white')
+    plt.close(fig)
+    logger.info(f"  PNG verificacion: {case_dir / 'canal_verificacion.png'}")
 
 
 # ---------------------------------------------------------------------------
