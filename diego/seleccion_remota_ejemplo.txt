@@ -1,0 +1,34 @@
+# Una regla por linea.
+# Sintaxis valida:
+#   include:*.py
+#   exclude:*.bi4
+#   +config\*.json
+#   -cases\*\*_out\*.vtk
+
+# Codigo y configuracion
+include:*.py
+include:*.ps1
+include:*.bat
+include:*.json
+include:*.xml
+include:*.md
+include:*.txt
+
+# Resultados tabulares utiles
+include:*ChronoExchange_mkbound_*.csv
+include:*ChronoBody_forces.csv
+include:*GaugesVel_*.csv
+include:*GaugesMaxZ_*.csv
+include:*Run.csv
+include:*RunPARTs.csv
+include:*.xlsx
+
+# Geometrias
+include:*.stl
+
+# Excluir binarios pesados por defecto
+exclude:*.bi4
+exclude:*.vtk
+exclude:*.ply
+exclude:*.zip
+exclude:*.7z
