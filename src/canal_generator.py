@@ -148,7 +148,16 @@ def generate_canal_stl(
         vertices=np.array(vertices, dtype=np.float64),
         faces=np.array(faces, dtype=np.int64),
     )
-    mesh.fix_normals()
+    try:
+        mesh.fix_normals()
+    except ModuleNotFoundError as e:
+        missing_name = getattr(e, 'name', None)
+        if missing_name != 'networkx' and 'networkx' not in str(e):
+            raise
+        logger.warning(
+            "networkx no esta instalado; se omite fix_normals(). "
+            "La malla parametrica fue validada con GenCase sin ese paso."
+        )
 
     logger.info(f"  Canal: {len(mesh.vertices)} verts, {len(mesh.faces)} faces, "
                 f"watertight={mesh.is_watertight}")
