@@ -256,7 +256,8 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         )
         d_eq = boulder_props['d_eq']
 
-        case_result = process_case(processed_dir, d_eq=d_eq)
+        case_result = process_case(processed_dir, d_eq=d_eq,
+                                           boulder_mass=row['boulder_mass'])
         # Inyectar parametros de entrada para ML surrogate
         case_result.dam_height = row['dam_height']
         case_result.boulder_mass = row['boulder_mass']

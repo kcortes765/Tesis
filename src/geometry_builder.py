@@ -39,7 +39,7 @@ class CaseParams:
     case_name: str
     dp: float                                   # Distancia entre particulas (m)
     dam_height: float = 0.3                     # Altura columna de agua Dam Break (m)
-    dam_length: float = 3.0                     # Largo columna de agua (m, eje X)
+    dam_length: float = 1.5                     # Largo columna de agua (m, eje X) — sketch Moris
     boulder_mass: float = 1.06053               # Masa real del boulder (kg)
     boulder_scale: float = 0.04                 # Factor de escala uniforme del STL
     boulder_pos: tuple = (8.5, 0.5, 0.1)        # Posicion en el dominio (drawmove)

@@ -53,7 +53,7 @@ MODEL_PATH = PROJECT_ROOT / "data" / "gp_surrogate.pkl"
 PARAM_RANGES_PATH = PROJECT_ROOT / "config" / "param_ranges.json"
 
 # Defaults del estudio 2D
-DEFAULT_THRESHOLD = 0.10   # d_eq del boulder BLIR3@scale=0.04 [m]
+DEFAULT_THRESHOLD = 0.005  # 5% d_eq BLIR3@scale=0.04 = movimiento incipiente [m]
 DEFAULT_U_STOP = 2.0       # Criterio parada Echard 2011
 DEFAULT_MAX_BUDGET = 30    # Maximo total de simulaciones
 DEFAULT_GRID_SIZE = 50     # Grilla candidata 50x50

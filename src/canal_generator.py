@@ -92,8 +92,7 @@ def generate_canal_stl(
             # === PARED TRASERA x=0 (2 caras) ===
             [0, 4, 11], [0, 11, 7],
 
-            # === PARED FRONTAL x=L_end (2 caras) ===
-            [3, 6, 13], [3, 13, 10],
+            # === SIN PARED FRONTAL (abierto, evita reflexion) ===
         ]
 
     else:
@@ -140,8 +139,7 @@ def generate_canal_stl(
             # === PARED TRASERA x=0 (2 caras) ===
             [0, 3, 8], [0, 8, 5],
 
-            # === PARED FRONTAL x=L_end (2 caras) ===
-            [2, 4, 9], [2, 9, 7],
+            # === SIN PARED FRONTAL (abierto, evita reflexion) ===
         ]
 
     mesh = trimesh.Trimesh(

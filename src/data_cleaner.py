@@ -279,21 +279,26 @@ def compute_boulder_velocity(chrono_df: pd.DataFrame) -> pd.Series:
 # Analisis de fuerzas
 # ---------------------------------------------------------------------------
 
-def compute_forces(forces_df: pd.DataFrame, body: str = 'blir') -> dict:
+def compute_forces(forces_df: pd.DataFrame, body: str = 'blir',
+                    boulder_mass: float = 1.06) -> dict:
     """
     Extrae fuerzas maximas sobre un cuerpo.
 
     En ChronoBody_forces:
-    - fx/fy/fz = fuerzas SPH (presion + viscosidad)
+    - fx/fy/fz = fuerzas SPH (presion + viscosidad + gravedad)
     - cfx/cfy/cfz = fuerzas de contacto (Chrono)
     - mx/my/mz = momentos SPH
     - cmx/cmy/cmz = momentos de contacto
+
+    NOTA: fz incluye gravedad (peso = mass * g). Se resta para obtener
+    la fuerza hidrodinamica neta.
     """
-    # Fuerza SPH
+    # Fuerza SPH hidrodinamica (restar peso de fz)
+    weight = boulder_mass * 9.81  # N
     sph_force = np.sqrt(
         forces_df[f'{body}_fx']**2 +
         forces_df[f'{body}_fy']**2 +
-        forces_df[f'{body}_fz']**2
+        (forces_df[f'{body}_fz'] + weight)**2  # fz es negativa por gravedad
     )
 
     # Fuerza de contacto
@@ -347,6 +352,7 @@ def find_nearest_gauge(gauges: list, boulder_pos: tuple) -> tuple:
 # ---------------------------------------------------------------------------
 
 def process_case(case_dir: Path, d_eq: float,
+                 boulder_mass: float = 1.06,
                  disp_threshold_pct: float = 5.0,
                  rot_threshold_deg: float = 5.0) -> CaseResult:
     """
@@ -389,7 +395,7 @@ def process_case(case_dir: Path, d_eq: float,
     max_contact = 0.0
     if forces_csv.exists():
         forces_df = parse_chrono_forces(forces_csv)
-        forces = compute_forces(forces_df, body='blir')
+        forces = compute_forces(forces_df, body='blir', boulder_mass=boulder_mass)
         max_sph = forces['max_sph_force']
         max_contact = forces['max_contact_force']
         logger.info(f"  Fuerza SPH max: {max_sph:.4f}N, Contacto max: {max_contact:.4f}N")
