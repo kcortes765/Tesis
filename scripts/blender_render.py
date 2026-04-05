@@ -252,16 +252,18 @@ def create_channel_material():
     principled.inputs['Roughness'].default_value = 0.88
     principled.inputs['Metallic'].default_value = 0.0
 
-    # Bump sutil
-    musgrave = nodes.new('ShaderNodeTexMusgrave')
-    musgrave.location = (-200, -100)
-    musgrave.inputs['Scale'].default_value = 20.0
+    # Bump sutil (Noise Texture reemplaza Musgrave desde Blender 4.0)
+    noise = nodes.new('ShaderNodeTexNoise')
+    noise.location = (-200, -100)
+    noise.inputs['Scale'].default_value = 20.0
+    noise.inputs['Detail'].default_value = 8.0
+    noise.inputs['Roughness'].default_value = 0.7
 
     ch_bump = nodes.new('ShaderNodeBump')
     ch_bump.location = (0, -100)
     ch_bump.inputs['Strength'].default_value = 0.08
 
-    links.new(musgrave.outputs['Fac'], ch_bump.inputs['Height'])
+    links.new(noise.outputs['Fac'], ch_bump.inputs['Height'])
     links.new(ch_bump.outputs['Normal'], principled.inputs['Normal'])
 
     return mat
@@ -308,14 +310,14 @@ def setup_lighting():
 
 
 def setup_camera():
-    """Camara 3/4 apuntando al boulder."""
-    bpy.ops.object.camera_add(location=(6.5, -3.5, 1.5))
+    """Camara cercana 3/4 apuntando al boulder."""
+    bpy.ops.object.camera_add(location=(8.2, -0.8, 0.4))
     cam = bpy.context.object
     cam.name = "Camera_Hero"
-    cam.data.lens = 35  # 35mm
+    cam.data.lens = 50  # 50mm telephoto para acercarse
 
     # Target en el boulder
-    bpy.ops.object.empty_add(location=(8.5, 0.5, 0.15))
+    bpy.ops.object.empty_add(location=(8.5, 0.53, 0.14))
     target = bpy.context.object
     target.name = "CameraTarget"
 
@@ -325,7 +327,7 @@ def setup_camera():
     constraint.up_axis = 'UP_Y'
 
     bpy.context.scene.camera = cam
-    print(f"  Camara: 35mm en ({6.5}, {-3.5}, {1.5}) -> boulder")
+    print(f"  Camara: 50mm en (8.2, -0.8, 0.4) -> boulder close-up")
 
 
 # ═══════════════════════════════════════════════════════════════════════

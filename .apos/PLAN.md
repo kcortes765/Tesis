@@ -17,23 +17,21 @@
 - [x] Contact force descartado como criterio (CV=82%) — hallazgo científico
 - [x] dp render=0.01
 
-## Fase 3 — GP + Active Learning (EN PROGRESO, mar 2026)
-- [x] Matriz 50 LHS original: CANCELADA (solo 5 corridos)
-- [x] Estrategia nueva: GP + active learning en 2D (dam_h, mass)
-- [x] Research completado y persistido: docs/RESEARCH_GP_AL.md, docs/RESEARCH_EMPIRICAL_SANITY.md
-- [x] Batch inicial diseñado: 20 puntos LHS maximin (config/gp_initial_batch.csv)
-- [x] Pipeline verificado end-to-end local (canal 30m, dp=0.02, RTX 4060)
-- [x] 5 sims validacion corridas (SQLite: 6 filas, tendencias correctas)
-- [x] src/gp_active_learning.py (Matern 5/2, U-function, LOO Q2=0.92, 6 figuras)
-- [x] src/sanity_checks.py (monotonicidad, Ritter, magnitudes, fuerzas, suavidad)
-- [x] Sanity checks validados con datos reales
-- [x] Entrenar GP con datos reales + generar figuras (LOO Q2=0.92, 6 figuras en data/figures/gp/)
-- [x] Script deploy WS (scripts/deploy_ws.py)
-- [x] Cap 3 Metodologia expandido (647 lineas, GP+AL completo)
-- [ ] Deployar 20 casos a WS UCN
-- [ ] Active learning loop (U-function, ~10 sims adicionales)
-- [ ] Sobol indices del GP
+## Fase 3 — Campaña 4D dp=0.003 + Active Learning (EN PROGRESO, mar-jun 2026)
+- [x] Producción cambiada a dp=0.003 (DEC-029, supersede DEC-005)
+- [x] Pipeline actualizado a 4D: dam_h, mass, rot_z, friction_coefficient
+- [x] Fricción parametrizada via Kfric_User property override en Chrono
+- [x] GP generalizado a dimensiones arbitrarias (kernel ARD, grid nD, figuras slices)
+- [x] Investigación SOTA: GP+AL, multi-fidelidad, campaign design, Chrono friction
+- [x] Batch inicial 25 puntos LHS 4D diseñado (config/gp_initial_batch.csv)
+- [x] Campaña lanzada en WS: 5/25 completados (gp_001-gp_005)
+- [ ] Completar 25 sims iniciales (~14 abril)
+- [ ] Entrenar GP 4D con 25 puntos → LOO-CV → figuras
+- [ ] Active learning loop secuencial (~75 iteraciones)
+- [ ] Sobol indices analíticos desde GP
+- [ ] Superficie de fragilidad (Monte Carlo sobre GP)
 - [ ] Comparar umbral SPH vs Nandasena/Nott
+- [ ] Modos de transporte desde datos de rotación Chrono
 
 ## Fase 4 — Tesis escrita (EN CURSO)
 - [x] Cap 1: Introducción
@@ -44,32 +42,28 @@
 - [ ] Cap 6: Resultados Paramétricos (depende de Fase 3)
 - [ ] Cap 7: Conclusiones
 
-## Fase 5 — Multi-forma (PENDIENTE)
-- [ ] Email Moris → 6 STLs adicionales
-- [ ] 245 sims (7 formas × 35 casos)
-- [ ] Análisis multi-forma
+## Fase 5 — Multi-forma (SEMESTRE 2, ago-nov 2026)
+- [ ] Solicitar 9 STLs escaneados a Moris
+- [ ] Calcular descriptores geométricos (CSF, aspect ratio, sphericity)
+- [ ] ~25 sims dp=0.003 por forma adicional (GP transfiere desde primera geometría)
+- [ ] GP unificado con forma como variable continua
+- [ ] Sobol actualizado con dimensión de forma
 
-## Fase 6 — Paper 1: GNN (PENDIENTE)
-- [ ] Setup GNN en laptop (Geoelements GNS)
-- [ ] Entrenar incrementalmente
-- [ ] GNN refinada con 295 casos totales
-- [ ] Submit → Coastal Engineering / CMAME
+## Fase 6 — Parametrizar pendiente de playa (PENDIENTE)
+- [ ] Moris pidió 5ta variable: pendiente de playa
+- [ ] Requiere nuevo STL de canal o geometría paramétrica
+- [ ] Evaluar viabilidad e impacto en presupuesto de sims
 
-## Fase 7 — Paper 2: Tailings (FUTURO)
-- [ ] CB-Geo MPM setup
-- [ ] Diff-GNS inverso
-- [ ] Transfer Learning (bonus)
-- [ ] Submit → CMAME / Computers and Geotechnics
-
-## Timeline (revisado 2026-03-20 v2)
+## Timeline (revisado 2026-03-30 v3)
 ```
-MAR 2026:      Compilar plan + batch inicial → deployar a WS
-ABR:           Sanity check → active learning loop → umbral → Sobol → Cap 6
-MAY-JUN:       245 sims multi-forma (si STLs Moris) → Cap 7 → Conclusiones
-JUL-AGO:       Setup GNN + Paper 1
-SEP:           Submit Paper 1
+MAR 2026:      Pipeline 4D + lanzar 25 sims dp=0.003 ✓
+ABR:           25 sims completan → entrenar GP 4D → iniciar AL
+MAY-JUN:       AL loop (~75 iter) → Sobol → fragilidad → Cap 6
+JUL:           Exposición 1 + cierre semestre 1
+AGO-OCT:       Multi-forma (9 STLs × ~25 sims) → GP unificado
+NOV:           Cap 7 + revisión tesis completa
 DIC:           Defensa tesis
 ```
 
 ## Prioridad actual
-Deploy 20 casos a WS → batch produccion dp=0.004 → recolectar → re-entrenar GP → AL loop → Sobol → Cap 6.
+Esperar 25 sims dp=0.003 4D (~14 abril) → recolectar → entrenar GP 4D → AL loop secuencial → Sobol → fragilidad → Cap 6.

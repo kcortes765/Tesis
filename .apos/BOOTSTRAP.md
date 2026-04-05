@@ -23,33 +23,30 @@ Tier 3 (continuidad fuerte, handoff explícito, decisiones trazables).
 
 ## ESTADO ACTUAL
 
-**Fase:** Fase 3 en ejecución. GP+AL implementado y verificado. Listo para producción en WS.
+**Fase:** Fase 3 — Screening 5D pendiente de relanzamiento con fixes críticos.
 
 **Progreso real:**
-- Pipeline completo y **verificado end-to-end** en laptop (7 módulos en src/)
-- Convergencia CERRADA: dp=0.004 producción
-- GP+AL implementado: src/gp_active_learning.py (Matérn 5/2, U-function, LOO Q2=0.92)
-- Sanity checks: src/sanity_checks.py (5 checks, todos PASS con datos reales)
-- SQLite: 6 resultados reales (5 validación dp=0.02 + 1 referencia)
-- Figuras GP generadas: data/figures/gp/ (6 PNG+PDF)
-- Batch producción diseñado: 20 casos LHS (config/gp_initial_batch.csv)
-- Deploy script: scripts/deploy_ws.py (creado, no ejecutado)
-- Cap 3 expandido: 647 líneas con GP+AL
-- Research persistido en docs/RESEARCH_*.md
-- Sistema autónomo probado: agente.ps1 -All (8/8 features)
+- Pipeline **5D** verificado: dam_h, mass, rot_z, friction, slope_inv
+- Canal paramétrico con trimesh (6m plano + 9m rampa, sin pared frontal)
+- 4 fixes críticos aplicados post-revisión ChatGPT 5.4 Pro
+- Convergencia anterior (canal 30m) **NO válida** para geometría actual — pendiente rehacer
+- Screening 5D: 25 puntos LHS (config/screening_5d.csv), pendiente relanzamiento
+- Formulario B corregido post-Moris
+- Revisión externa completa en review/
 
-**Bloqueado:** No. 20 sims producción corriendo en WS.
-**Riesgo:** Verificar que las sims completaron sin error.
+**Bloqueado:** No. WS disponible.
+**Riesgo:** Screening anterior usaba código con errores (pared frontal, threshold incorrecto). Debe cancelarse y relanzar.
 
 ---
 
 ## SIGUIENTE ACCIÓN
 
-1. **Verificar que 20 sims completaron** en WS (lanzadas 2026-03-22 00:01)
-2. **En WS**: `git add data/ && git commit -m "results: 20 cases dp=0.004" && git push`
-3. **En laptop**: `git pull` → verificar SQLite tiene 20+ filas
-4. **Re-entrenar GP** con 20 puntos → LOO, Sobol, figuras
-5. **Correr sanity checks** sobre datos producción
+1. **En WS**: cancelar screening actual, borrar sc_*, `git pull`, relanzar `python src/main_orchestrator.py --screening`
+2. **Esperar ~50h** para 25 casos screening dp=0.005
+3. **Analizar resultados**: reflexión, dominio 15m, TimeMax, tendencias por variable
+4. **Convergencia dp**: 1 caso referencia (1:20) a 6-7 niveles dp → encontrar dp producción
+5. **Test VRAM**: caso extremo (1:5 + dam_h=0.50) al dp elegido
+6. **Campaña producción 5D** al dp convergido (~100 sims)
 6. **AL loop**: proponer puntos → simular en WS → repetir hasta U_min >= 2.0
 7. **Cap 6**: resultados paramétricos con figuras finales
 
