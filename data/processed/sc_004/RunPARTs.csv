@@ -1,0 +1,30 @@
+Part;TimeStep [s];Steps;DTsMin;PartRuntime [s];NpSave;NpSim;NpNew;NpOut;NctSim;NpAlloc [X];NctAlloc [X];SimRuntime [s];NpbSim;NpfSim;NpNormal;NpOutPos;NpOutRho;NpOutMov;DtMin [s];DtMax [s];MemCPU [MiB];MemGPU [MiB];MemGPU_Cells [MiB];NpAlloc;NctAlloc
+0;0;0;0;0.000000;6,503,079;6,503,079;0;0;1,111,656;1.000020;6.895347;0.000000;2,318,854;4,184,225;6,503,079;0;0;0;0;0;558.219015;941.214146;116.962532;6,503,207;7,665,254
+1;10.00001765859262;294,203;0;5203.019753;6,204,865;6,204,865;0;298,214;2,972,970;1.048082;2.578315;5203.019753;2,318,854;3,886,011;6,204,865;298,214;0;0;1.499992829977122e-05;3.524371333104763e-05;1507.789328;1263.715103;116.962532;6,503,207;7,665,254
+
+# Part:  Number of output file with particles data.
+# TimeStep [s]:  Physical time of simulation.
+# Steps:  Number of calculation steps since the previous PART.
+# DTsMin:  Number of times the Dt is updated with the minimum allowed value (can be 2 times per step when Symplectic is used).
+# PartRuntime [s]:  Runtime of last PART simulation.
+# NpSave:  Number of selected particles to save.
+# NpSim:  Number of particles used in simulation (normal + periodic particles).
+# NpNew:  Number of new fluid particles created by inlet conditions since the previous PART.
+# NpOut:  Number of excluded fluid particles since the previous PART.
+# NctSim:  Number of cells used in simulation for particle search.
+# NpAlloc [X]:  Over-allocation memory for particles NpAlloc/NpSim.
+# NctAlloc [X]:  Over-allocation memory for cells NctAlloc/NctSim.
+# SimRuntime [s]:  Total runtime of simulation (initialisation tasks not included).
+# NpbSim:  Number of fixed and moving particles (includes periodic particles).
+# NpfSim:  Number of fluid and floating particles (includes periodic particles).
+# NpNormal:  Total number of particles without periodic particles.
+# NpOutPos:  Number of excluded particles due to invalid position.
+# NpOutRho:  Number of excluded particles due to invalid density.
+# NpOutMov:  Number of excluded particles due to invalid movement.
+# DtMin [s]:  Minimum value of Dt since the previous PART.
+# DtMax [s]:  Maximum value of Dt since the previous PART.
+# MemCPU [MiB]:  Current CPU memory allocated (only includes the most memory intensive objects).
+# MemGPU [MiB]:  Current GPU memory allocated (only includes the most memory intensive objects).
+# MemGPU_Cells [MiB]:  Current GPU memory allocated for cells according to NctAlloc.
+# NpAlloc:  Number of supported particles with memory allocated.
+# NctAlloc:  Number of supported cells with memory allocated.
