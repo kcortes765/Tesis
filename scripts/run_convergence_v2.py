@@ -231,8 +231,8 @@ def run_single_dp(dp, config, d_eq):
     elapsed = (time.time() - start) / 60
     logger.info(f"  [3/3] Analisis OK — {elapsed:.1f} min total")
 
-    # Contar particulas desde Run.csv
-    n_particles = _read_particle_count(processed_dir)
+    # Leer metricas de Run.csv (Np, MemGpu, MemGpuCells)
+    run_metrics = _read_run_metrics(processed_dir)
 
     # Leer series temporales para archivo detallado
     _save_temporal_data(processed_dir, case_name, dp)
@@ -248,30 +248,65 @@ def run_single_dp(dp, config, d_eq):
         "max_water_height_m": cr.max_water_height,
         "sim_time_s": cr.sim_time_reached,
         "n_timesteps": cr.n_timesteps,
-        "n_particles": n_particles,
+        "n_particles": run_metrics["n_particles"],
+        "mem_gpu_mb": run_metrics["mem_gpu_mb"],
+        "mem_gpu_cells_mb": run_metrics["mem_gpu_cells_mb"],
         "tiempo_min": elapsed,
-        "vram_estimated_gb": n_particles * 120 / 1e9 if n_particles else None,
         "_case_result": cr,
     })
     return entry
 
 
-def _read_particle_count(processed_dir):
+def _parse_run_csv_int(val):
+    """Parsea entero desde Run.csv que puede tener separador de miles (ej: '46,492,272')."""
+    if val is None:
+        return None
+    s = str(val).strip().replace(",", "")
+    try:
+        return int(float(s))
+    except (ValueError, TypeError):
+        return None
+
+
+def _parse_run_csv_float(val):
+    """Parsea float desde Run.csv (ej: '23,456.78' o '23456.78')."""
+    if val is None:
+        return None
+    s = str(val).strip()
+    # Si tiene multiples comas antes del punto, son separadores de miles
+    if s.count(",") > 1 or ("," in s and "." in s):
+        s = s.replace(",", "")
+    elif "," in s and "." not in s:
+        s = s.replace(",", "")
+    try:
+        return float(s)
+    except (ValueError, TypeError):
+        return None
+
+
+def _read_run_metrics(processed_dir):
+    """Lee Np, MemGpu, MemGpuCells desde Run.csv."""
+    result = {"n_particles": None, "mem_gpu_mb": None, "mem_gpu_cells_mb": None}
     run_csv = processed_dir / "Run.csv"
     if not run_csv.exists():
         for f in processed_dir.rglob("Run.csv"):
             run_csv = f
             break
     if not run_csv.exists():
-        return None
+        return result
     try:
         df = pd.read_csv(run_csv, sep=";", nrows=1)
         for col in df.columns:
-            if "np" in col.lower().strip():
-                return int(float(df[col].iloc[0]))
-    except Exception:
-        pass
-    return None
+            col_lower = col.strip().lower()
+            if col_lower == "np":
+                result["n_particles"] = _parse_run_csv_int(df[col].iloc[0])
+            elif "memgpucells" in col_lower or "memgpu cells" in col_lower:
+                result["mem_gpu_cells_mb"] = _parse_run_csv_float(df[col].iloc[0])
+            elif "memgpu" in col_lower and "cells" not in col_lower:
+                result["mem_gpu_mb"] = _parse_run_csv_float(df[col].iloc[0])
+    except Exception as e:
+        logger.warning(f"  Error leyendo Run.csv: {e}")
+    return result
 
 
 def _save_temporal_data(processed_dir, case_name, dp):
@@ -369,10 +404,17 @@ def run_gci_analysis(df_ok):
 
     for name in primary:
         r = results[name]
+        if r["conv_type"] != "monotonic":
+            logger.info(f"  {name}: convergencia {r['conv_type']} -> GCI NO APLICA "
+                        f"(Celik 2008 requiere monotonica)")
+            continue
         gci_pct = r["GCI_fine"] * 100
+        if np.isnan(gci_pct):
+            logger.info(f"  {name}: GCI no calculable (valores degenerados)")
+            continue
         verdict = "OK" if gci_pct < 5 else "ACEPTABLE" if gci_pct < 10 else "INSUFICIENTE"
         logger.info(f"  {name}: GCI={gci_pct:.2f}%, p={r['p']:.2f}, "
-                    f"tipo={r['conv_type']}, AR={r['AR']:.3f} -> {verdict}")
+                    f"AR={r['AR']:.3f} -> {verdict}")
 
     # Rotation diagnostico
     if "rotation" in results:
@@ -479,13 +521,20 @@ def run_convergence_study(desde_dp=None, solo_analisis=False):
         # Guardar CSV incremental (por si crashea entre dp)
         _save_results_csv(resultados)
 
-        # Guardar en SQLite
+        # Guardar en SQLite con metadata completa
         if cr:
+            cr.dam_height = BASE_PARAMS["dam_height"]
+            cr.boulder_mass = BASE_PARAMS["boulder_mass"]
+            cr.boulder_rot_z = BASE_PARAMS["boulder_rot"][2]
+            cr.friction_coefficient = BASE_PARAMS["friction_coefficient"]
+            cr.slope_inv = BASE_PARAMS["slope_inv"]
+            cr.dp = dp
+            cr.stl_file = "BLIR3.stl"
             try:
                 save_to_sqlite([cr], PROJECT_ROOT / "data" / "results.sqlite",
                                table="convergence_v2")
-            except Exception:
-                pass
+            except Exception as e:
+                logger.error(f"  SQLite fallo para dp={dp}: {e}")
 
         update_status(dp, i, len(dp_to_run), f"TERMINADO dp={dp}", resultados, t0)
 
@@ -522,7 +571,7 @@ def _print_summary(resultados, total_min):
     logger.info(f"{'='*65}")
 
     if ok:
-        header = (f"{'dp':>8}  {'Np':>10}  {'VRAM_GB':>8}  "
+        header = (f"{'dp':>8}  {'Np':>10}  {'MemGPU':>8}  "
                   f"{'disp(m)':>10}  {'d%':>5}  "
                   f"{'vel(m/s)':>9}  {'d%':>5}  "
                   f"{'Fsph(N)':>9}  {'d%':>5}  "
@@ -538,14 +587,15 @@ def _print_summary(resultados, total_min):
             fsph = r["max_sph_force_N"]
             rot = r["max_rotation_deg"]
             np_val = r.get("n_particles", 0) or 0
-            vram = r.get("vram_estimated_gb", 0) or 0
+            mem_gpu = r.get("mem_gpu_mb", 0) or 0
+            mem_str = f"{mem_gpu/1024:.1f}GB" if mem_gpu > 0 else "?"
 
             d_disp = _delta_pct(disp, prev.get("disp"))
             d_vel = _delta_pct(vel, prev.get("vel"))
             d_fsph = _delta_pct(fsph, prev.get("fsph"))
 
             logger.info(
-                f"{dp:>8.4f}  {np_val:>10.0f}  {vram:>8.1f}  "
+                f"{dp:>8.4f}  {np_val:>10.0f}  {mem_str:>8}  "
                 f"{disp:>10.6f}  {d_disp:>5}  "
                 f"{vel:>9.4f}  {d_vel:>5}  "
                 f"{fsph:>9.4f}  {d_fsph:>5}  "
