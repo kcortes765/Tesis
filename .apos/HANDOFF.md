@@ -1,57 +1,67 @@
 # HANDOFF — Thesis OS
 
-**Última sesión:** 2026-04-03 (sesión 7, mega-sesión)
+**Última sesión:** 2026-04-06 (sesión 9)
 
 ## Qué se hizo
 
-### Formulario B + administrativo
-- Formulario B generado, revisado con Moris, corregido según feedback (quitar ML de objetivos, agregar pendiente playa, ser más general)
-- Bibliografía convertida a APA 7a edición
-- Carta Gantt generada (Excel + PDF) alineada con programa Omerovic
-- Correo para Moris redactado
+### Screening Round 2 importado y analizado
+- 15/15 casos dp=0.004 importados desde WS via git (ZIP 44 MB)
+- Scripts: `collect_ws_results.py` (WS→ZIP), `import_screening.py` (ZIP→laptop, generalizado)
+- Análisis profundo: temporal, dominio, reflexión, fuerzas, Spearman, variables aisladas, replicación
+- 7 figuras de análisis + 5 figuras dashboard autocontenidas en `data/figures/`
 
-### Pipeline 4D → 5D
-- dp producción cambiado a 0.003 (DEC-029)
-- Parametrizada fricción via Kfric_User property override en Chrono
-- Canal paramétrico generado con trimesh (6m plano + 9m rampa, pendiente variable 1:5 a 1:30)
-- Pipeline actualizado a 5D: dam_h, mass, rot_z, friction, slope_inv
-- GP generalizado a dimensiones arbitrarias
-- Screening 5D: 25 puntos LHS en config/screening_5d.csv
+### Hallazgos Round 2
+- **Fricción domina** (rho=-0.916, p<0.001) a dam_h=0.20
+- **Masa significativa** (rho=-0.605, p=0.017)
+- **dam_h no significativo** en R2 (artefacto de diseño dirigido con 5/15 a dam_h=0.20)
+- **sc2_007 sorpresa:** dam_h=0.12 + fric=0.1 + mass=0.8 → FALLO 1097mm
+- **sc2_010 water_h=0.0:** NO es bug de gauges — gauges SÍ se adaptan al slope (confirmado en código). Es resultado físico: agua insuficiente a esa posición en slope 1:5
+- **Replicación sc_008 vs sc2_015:** consistente (3.1mm vs 2.1mm, ambos ESTABLE)
+- **Reflexión sc2_005:** señal en V12 pero boulder ESTABLE, no problemática
 
-### Campañas en WS
-- Campaña 4D dp=0.003: 9/25 completados, resto falló por WinError 4551 (Windows Security)
-- Screening 5D dp=0.005: lanzado, cancelado para relanzar con fixes críticos
+### Round 3 diseñado (EN ESPERA)
+- 10 casos verificación: baseline, rot_z, fricción transición, sc2_007 decomposición, slope×friction
+- `config/screening_round3.csv` listo
+- **NO lanzar aún** — convergencia dp va primero
 
-### Revisión externa (ChatGPT 5.4 Pro)
-- Documento completo de contexto generado (review/CONTEXTO_COMPLETO_REVISION.md)
-- Revisión recibida: 4 problemas críticos identificados y corregidos:
-  - C1: Pared frontal del canal removida (evita reflexión de ola)
-  - C2: dam_length default corregido de 3.0 a 1.5m
-  - C3: Threshold GP alineado con ETL: 0.005m (incipiente real, no 0.10m)
-  - C4: Fuerza SPH corregida restando gravedad (mass×9.81)
-- Issues importantes identificados (pendientes): rot_z sin simetría demostrada, LHS sin corner anchors, inercia off-diagonal descartada, sanity_checks desactualizado
-- Issues estratégicos para paper: falta control geométrico, análisis dimensional, clasificación de modos
+### Convergencia dp v2 preparada (LISTO PARA WS)
+- `scripts/run_convergence_v2.py` — revisado y validado por 3 revisores
+- Caso fijo Moris: dam_h=0.30, mass=1.0, fric=0.3, slope=1:20, canal 15m, altura 1.5m
+- dp core: 0.010, 0.008, 0.006, 0.005, 0.004, 0.003, 0.002
+- dp exploratorios: 0.0015, 0.001 (si caben en VRAM)
+- Primarias: displacement, velocity, SPH force (GCI Celik 2008)
+- Rotation como diagnóstico (promueve si monotónica)
+- GCI solo para métricas monotónicas, MemGpu leído correctamente de Run.csv
+- CSV incremental + status JSON para monitoreo remoto
 
 ## Qué cambió
-- 4 fixes críticos en: canal_generator.py, geometry_builder.py, gp_active_learning.py, data_cleaner.py, main_orchestrator.py
-- Nuevas decisiones: DEC-029 a DEC-031 (dp=0.003, batch 4D, orientación a publicación)
-- Canal paramétrico: src/canal_generator.py (nuevo módulo)
-- review/: carpeta con contexto completo para revisión externa + 17 archivos
-- Memorias: excelencia, pensamiento crítico, timeline 2 semestres
+- `scripts/collect_ws_results.py` — recolector WS (nuevo)
+- `scripts/import_screening.py` — importador generalizado para cualquier round (nuevo)
+- `scripts/import_round2.py` — importador original R2 (legacy, reemplazado por import_screening.py)
+- `scripts/analisis_round2_profundo.py` — análisis deep R2 (nuevo)
+- `scripts/figuras_round2.py` — dashboard + figuras autocontenidas R2 (nuevo)
+- `scripts/run_convergence_v2.py` — convergencia nueva configuración (nuevo)
+- `config/screening_round3.csv` — matriz Round 3 (nuevo, en espera)
+- `data/processed/sc2_001..015/` — datos completos R2 extraídos
+- `data/results/results_round2.csv` — CSV consolidado R2
+- `data/results.sqlite` — actualizado con 15 casos R2
+- `data/figures/` — 12+ figuras nuevas de análisis R2
 
 ## Qué debe hacer el siguiente agente
-1. **En WS**: cancelar screening actual, borrar sc_*, git pull, relanzar `python src/main_orchestrator.py --screening`
-2. **Cuando screening termine (~50h)**: analizar 25 resultados — reflexión, TimeMax, dominio, tendencias
-3. **Convergencia**: 1 caso referencia (1:20) a 6-7 niveles dp (0.01 a 0.0015) → encontrar dp producción
-4. **Test VRAM**: caso extremo (1:5 + dam_h=0.50) al dp elegido → confirmar que cabe
-5. **Abordar issues importantes**: LHS con corner anchors, sanity_checks.py actualizar, inercia off-diagonal
+1. **Lanzar convergencia en WS:** `git pull && python scripts/run_convergence_v2.py`
+2. **Esperar resultados** (~días, dp gruesos rápidos, finos lentos)
+3. **Importar y analizar:** `--solo-analisis` o recolectar datos
+4. **Decidir dp producción** basado en GCI < 5% en las 3 primarias
+5. **Lanzar Round 3** al dp que salga de convergencia (si es 0.003 o 0.002, ajustar)
+6. **Después de Round 3:** diseñar LHS 5D (o 4D si rot_z no importa) → producción + AL
 
 ## Qué no debe asumir
-- El screening actual en WS usa código VIEJO (con pared frontal, threshold 0.10, dam_length inconsistente) — hay que cancelarlo y relanzar
-- Los 9 resultados dp=0.003 de la campaña 4D anterior están en data/processed/gp_001-009 pero son con geometría vieja (30m, 7.5m plano) — NO usar para producción
-- Sfric deshabilitado en DualSPHysics v5.4 — solo Kfric funciona
-- rot_z 0-90° asume simetría sin demostrar
-- La revisión externa identificó que "movimiento incipiente" y "transporte" son problemas distintos — threshold ya corregido a 0.005m
+- La convergencia anterior (Fase 2, DEC-029) está **descartada** — fue con configuración distinta (canal viejo, sin slope paramétrico, sin fricción). Se rehace desde cero.
+- dp=0.003 como producción (DEC-029) es **provisional** hasta que la convergencia nueva lo confirme o cambie.
+- Los datos R2 a dp=0.004 son screening exploratorio, no producción.
+- water_h=0.0 en sc2_010 NO es un bug — es físico. Los gauges SÍ se adaptan al slope.
+- El criterio ESTABLE/FALLO en `import_round2.py` usa solo desplazamiento. `import_screening.py` usa desplazamiento OR rotación (unificado con data_cleaner).
+- Round 3 está diseñado pero NO lanzado. Convergencia va primero.
 
 ## Contexto mínimo para retomar
-Leer: BOOTSTRAP.md → este HANDOFF → review/REVISION_CHATGPT54_20260403.md → DECISIONS.md
+Leer: BOOTSTRAP.md → este HANDOFF → data/figures/screening_round2_analysis_deep.md → config/screening_round3.csv

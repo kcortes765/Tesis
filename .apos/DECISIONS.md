@@ -162,3 +162,19 @@ Append-only. Si algo cambia, no se borra: se marca como revertido o supersedido.
 **Fecha:** 2026-03-25
 **Decisión:** Todo el trabajo apunta a calidad de paper (Coastal Engineering / CMAME). La tesis es el vehículo, no el techo.
 **Razón:** Kevin tiene 1 año completo, WS dedicada, y objetivo explícito de publicar. Las decisiones deben maximizar calidad científica, no minimizar esfuerzo.
+
+## DEC-032: Convergencia dp v2 — descartar estudio anterior
+**Fecha:** 2026-04-06
+**Decisión:** La convergencia de Fase 2 (DEC-005/DEC-029, dp 0.020→0.005) queda descartada. Se rehace con la configuración actual: canal paramétrico 15m, slope 1:20, friction 0.3, BLIR3 @ 0.04.
+**Razón:** El estudio anterior fue con canal fijo (sin slope paramétrico), posición del boulder hardcodeada, material lime-stone, sin fricción Chrono. La configuración cambió sustancialmente al agregar 5D. dp producción queda TBD hasta que la convergencia nueva lo confirme.
+**Supersede:** DEC-029 queda provisional — el dp de producción saldrá de la convergencia v2.
+
+## DEC-033: Convergencia dp — caso referencia Moris
+**Fecha:** 2026-04-06
+**Decisión:** Convergencia con dam_h=0.30m (especificación Moris), no 0.50m. Dominio 1.5m sin reducir.
+**Razón:** dam_h=0.30 es el caso de referencia del tutor, está en zona FALLO (medible), y no hay evidencia de que el rango paramétrico necesite ir hasta 0.50m (R1/R2 muestran que >0.30 es FALLO obvio). El dominio se mantiene a 1.5m para condiciones comparables con producción.
+
+## DEC-034: Métricas primarias de convergencia
+**Fecha:** 2026-04-06
+**Decisión:** Decidir dp con displacement + velocity + SPH force. Rotation como diagnóstico (promueve solo si monotónica). No usar contact_force, water_h ni flow_vel como criterio.
+**Razón:** Rotation mostró comportamiento oscilatorio en el estudio anterior (GCI no aplica bajo Celik 2008). SPH force con baja variabilidad es buena señal en convergencia, no debilidad. Contact force descartada (DEC-006, CV=82%). water_h/flow_vel tienen debilidad de postproceso (gauge nearest).

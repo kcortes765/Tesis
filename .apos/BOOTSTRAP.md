@@ -23,31 +23,29 @@ Tier 3 (continuidad fuerte, handoff explícito, decisiones trazables).
 
 ## ESTADO ACTUAL
 
-**Fase:** Fase 3 — Screening 5D pendiente de relanzamiento con fixes críticos.
+**Fase:** Fase 3 — Convergencia dp nueva lista para WS → Round 3 → Producción 5D.
 
 **Progreso real:**
-- Pipeline **5D** verificado: dam_h, mass, rot_z, friction, slope_inv
-- Canal paramétrico con trimesh (6m plano + 9m rampa, sin pared frontal)
-- 4 fixes críticos aplicados post-revisión ChatGPT 5.4 Pro
-- Convergencia anterior (canal 30m) **NO válida** para geometría actual — pendiente rehacer
-- Screening 5D: 25 puntos LHS (config/screening_5d.csv), pendiente relanzamiento
-- Formulario B corregido post-Moris
-- Revisión externa completa en review/
+- Pipeline **5D** verificado con canal paramétrico
+- Screening R1 **completo** (24/25 dp=0.005): dominio ok, TimeMax ok, sin reflexión
+- Screening R2 **completo** (15/15 dp=0.004): fricción domina (rho=-0.92), frontera multidimensional
+- Convergencia anterior descartada (configuración cambió). **Nueva convergencia preparada.**
+- Round 3 diseñado (10 casos) pero **en espera** hasta dp convergido
+- Script convergencia v2 validado y pusheado
 
-**Bloqueado:** No. WS disponible.
-**Riesgo:** Screening anterior usaba código con errores (pared frontal, threshold incorrecto). Debe cancelarse y relanzar.
+**Bloqueado:** No. WS libre para lanzar convergencia.
+**Riesgo:** dp=0.0015/0.001 probablemente no caben en VRAM 32GB.
 
 ---
 
 ## SIGUIENTE ACCIÓN
 
-1. **En WS**: cancelar screening actual, borrar sc_*, `git pull`, relanzar `python src/main_orchestrator.py --screening`
-2. **Esperar ~50h** para 25 casos screening dp=0.005
-3. **Analizar resultados**: reflexión, dominio 15m, TimeMax, tendencias por variable
-4. **Convergencia dp**: 1 caso referencia (1:20) a 6-7 niveles dp → encontrar dp producción
-5. **Test VRAM**: caso extremo (1:5 + dam_h=0.50) al dp elegido
-6. **Campaña producción 5D** al dp convergido (~100 sims)
-6. **AL loop**: proponer puntos → simular en WS → repetir hasta U_min >= 2.0
+1. **Lanzar convergencia dp v2 en WS** (`python scripts/run_convergence_v2.py`)
+2. **Analizar convergencia**: GCI/Richardson → elegir dp producción
+3. **Lanzar Round 3** al dp convergido (10 casos verificación)
+4. **Analizar Round 3**: decidir 4D o 5D para producción
+5. **Diseñar LHS 5D** (o 4D) → **campaña producción** al dp convergido
+6. **AL loop**: proponer puntos → simular → repetir hasta convergencia GP
 7. **Cap 6**: resultados paramétricos con figuras finales
 
 ---

@@ -1,35 +1,36 @@
 # STATUS — Thesis OS
 
-**Última actualización:** 2026-04-03 (sesión 7)
+**Última actualización:** 2026-04-06 (sesión 9)
 
 ## Estado general
-Activo — Screening 5D pendiente de relanzamiento con fixes críticos. WS disponible.
+Activo — Convergencia dp v2 lista para lanzar en WS.
 
 ## Fase actual
-Fase 3 — Screening 5D → Convergencia → Producción.
+Fase 3 — Convergencia dp nueva → Round 3 verificación → Producción 5D.
 
 ## Qué está listo
-- Pipeline 5D verificado (12/12 checks): dam_h, mass, rot_z, friction, slope_inv
-- Canal paramétrico con trimesh (sin pared frontal, evita reflexión)
-- 4 fixes críticos aplicados (revisión ChatGPT 5.4 Pro)
-- Formulario B corregido post-Moris (pendiente envío a Omerovic)
-- Carta Gantt Excel + PDF
+- Pipeline 5D verificado con canal paramétrico (sin pared frontal)
+- Screening R1 completo (24/25 dp=0.005) + análisis
+- Screening R2 completo (15/15 dp=0.004) + análisis profundo
+- R2 hallazgos: fricción domina (rho=-0.92), masa segunda, frontera multidimensional
+- Gauges se adaptan correctamente al slope (confirmado en código)
+- Round 3 diseñado (10 casos, `config/screening_round3.csv`)
+- Convergencia v2 script listo (`scripts/run_convergence_v2.py`), validado por revisores
+- Importador generalizado (`scripts/import_screening.py`)
 
 ## Qué falta
-- **Relanzar screening 5D** con código corregido (25 casos dp=0.005, ~50h)
-- Analizar resultados screening: reflexión, dominio, TimeMax, tendencias
-- **Convergencia dp** con canal nuevo (1 caso 1:20 a 6-7 niveles dp)
-- **Test VRAM** caso extremo (1:5 + dam_h=0.50) al dp elegido
-- Campaña producción 5D (~100 sims al dp convergido)
-- Issues importantes: corner anchors en LHS, sanity_checks actualizar, inercia off-diagonal
-- Issues estratégicos: control geométrico, análisis dimensional, modos de transporte
-- Enviar Formulario B a Omerovic
+- **Convergencia dp v2** — lanzar en WS (7 core + 2 exploratorios)
+- **Decidir dp producción** basado en GCI
+- **Round 3** (10 casos al dp convergido) — verificación final
+- **Diseñar LHS 5D** (o 4D si rot_z no importa tras R3)
+- **Campaña producción + AL loop**
+- **Cap 6** con resultados paramétricos
 
 ## Riesgos activos
-- Canal 15m sin pared frontal: verificar que partículas no leakean por el borde abierto
-- rot_z 0-90° asume simetría no demostrada para STL irregular
-- Presupuesto: 18.4h/caso real vs estimaciones menores — plan multi-forma podría no cerrar
-- WinError 4551 en WS (Windows Security) — excepción ya agregada, pero monitorear
+- dp=0.002 podría ser el límite VRAM del RTX 5090 con canal 15m
+- dp=0.0015 y 0.001 probablemente no caben (~133M+ partículas de fluido)
+- Convergencia anterior (DEC-029) descartada — dp producción TBD
+- Criterio ESTABLE/FALLO inconsistente entre scripts legacy y nuevo
 
 ## Próximo hito
-Screening 5D completo → análisis → convergencia dp → definir dp producción.
+Convergencia dp completada → dp producción elegido → Round 3 lanzado.

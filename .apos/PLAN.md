@@ -17,17 +17,20 @@
 - [x] Contact force descartado como criterio (CV=82%) — hallazgo científico
 - [x] dp render=0.01
 
-## Fase 3 — Campaña 4D dp=0.003 + Active Learning (EN PROGRESO, mar-jun 2026)
-- [x] Producción cambiada a dp=0.003 (DEC-029, supersede DEC-005)
-- [x] Pipeline actualizado a 4D: dam_h, mass, rot_z, friction_coefficient
-- [x] Fricción parametrizada via Kfric_User property override en Chrono
-- [x] GP generalizado a dimensiones arbitrarias (kernel ARD, grid nD, figuras slices)
-- [x] Investigación SOTA: GP+AL, multi-fidelidad, campaign design, Chrono friction
-- [x] Batch inicial 25 puntos LHS 4D diseñado (config/gp_initial_batch.csv)
-- [x] Campaña lanzada en WS: 5/25 completados (gp_001-gp_005)
-- [ ] Completar 25 sims iniciales (~14 abril)
-- [ ] Entrenar GP 4D con 25 puntos → LOO-CV → figuras
-- [ ] Active learning loop secuencial (~75 iteraciones)
+## Fase 3 — Convergencia nueva + Screening 5D + Producción (EN PROGRESO, mar-jun 2026)
+- [x] Pipeline actualizado a 5D: dam_h, mass, rot_z, friction, slope_inv
+- [x] Canal paramétrico con slope variable (canal_generator.py)
+- [x] Screening R1 completo (24/25 dp=0.005) — dominio, TimeMax, reflexión validados
+- [x] Screening R2 completo (15/15 dp=0.004) — fricción domina, frontera multidimensional
+- [x] Análisis profundo R2 con figuras autocontenidas
+- [x] Round 3 diseñado (10 casos, config/screening_round3.csv)
+- [x] Convergencia dp v2 script preparado y validado (run_convergence_v2.py)
+- [ ] **Convergencia dp v2** — lanzar en WS (7 core + 2 exploratorios)
+- [ ] **Elegir dp producción** basado en GCI (Celik 2008)
+- [ ] **Round 3** al dp convergido (10 casos verificación)
+- [ ] **Decidir 4D o 5D** (si rot_z no importa en R3 → 4D)
+- [ ] Diseñar LHS 5D (o 4D) con active learning
+- [ ] Campaña producción + AL loop
 - [ ] Sobol indices analíticos desde GP
 - [ ] Superficie de fragilidad (Monte Carlo sobre GP)
 - [ ] Comparar umbral SPH vs Nandasena/Nott
@@ -66,4 +69,4 @@ DIC:           Defensa tesis
 ```
 
 ## Prioridad actual
-Esperar 25 sims dp=0.003 4D (~14 abril) → recolectar → entrenar GP 4D → AL loop secuencial → Sobol → fragilidad → Cap 6.
+Convergencia dp v2 en WS → elegir dp → Round 3 → diseñar LHS 5D → producción + AL → Sobol → Cap 6.
