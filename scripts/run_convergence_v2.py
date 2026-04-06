@@ -593,7 +593,7 @@ def _print_summary(resultados, total_min):
             rot = r["max_rotation_deg"]
             np_val = r.get("n_particles", 0) or 0
             mem_gpu = r.get("mem_gpu_mb", 0) or 0
-            mem_str = f"{mem_gpu/1024:.1f}GB" if mem_gpu > 0 else "?"
+            mem_str = f"{mem_gpu:.0f}MiB" if 0 < mem_gpu < 1024 else f"{mem_gpu/1024:.1f}GB" if mem_gpu >= 1024 else "?"
 
             d_disp = _delta_pct(disp, prev.get("disp"))
             d_vel = _delta_pct(vel, prev.get("vel"))
