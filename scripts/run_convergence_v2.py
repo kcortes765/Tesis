@@ -203,7 +203,7 @@ def run_single_dp(dp, config, d_eq):
 
     # 2. Simulacion
     try:
-        run_result = run_case(case_dir, config, processed_dir)
+        run_result = run_case(case_dir, config, processed_dir, dp=dp)
     except Exception as e:
         entry["error"] = f"Sim exception: {e}"
         entry["tiempo_min"] = (time.time() - start) / 60
@@ -301,9 +301,11 @@ def _read_run_metrics(processed_dir):
             if col_lower == "np":
                 result["n_particles"] = _parse_run_csv_int(df[col].iloc[0])
             elif "memgpucells" in col_lower or "memgpu cells" in col_lower:
-                result["mem_gpu_cells_mb"] = _parse_run_csv_float(df[col].iloc[0])
+                raw = _parse_run_csv_float(df[col].iloc[0])
+                result["mem_gpu_cells_mb"] = raw / (1024 * 1024) if raw and raw > 1e6 else raw
             elif "memgpu" in col_lower and "cells" not in col_lower:
-                result["mem_gpu_mb"] = _parse_run_csv_float(df[col].iloc[0])
+                raw = _parse_run_csv_float(df[col].iloc[0])
+                result["mem_gpu_mb"] = raw / (1024 * 1024) if raw and raw > 1e6 else raw
     except Exception as e:
         logger.warning(f"  Error leyendo Run.csv: {e}")
     return result
@@ -376,12 +378,15 @@ def run_gci_analysis(df_ok):
 
         logger.info(f"  Mallas: dp={dps[0]}, {dps[1]}, {dps[2]}")
         logger.info(f"  Valores: {phi1:.6f}, {phi2:.6f}, {phi3:.6f} {unit}")
-        logger.info(f"  Orden aparente p = {p:.2f}")
         logger.info(f"  Tipo convergencia: {conv_type}")
-        logger.info(f"  Richardson extrap: {gci['phi_ext']:.6f} {unit}")
-        logger.info(f"  GCI_fine = {gci['GCI_fine']*100:.2f}%")
-        logger.info(f"  GCI_med  = {gci['GCI_med']*100:.2f}%")
-        logger.info(f"  AR = {gci['AR']:.3f} ({'asintotico' if gci['in_asymptotic'] else 'NO asintotico'})")
+        if conv_type == "monotonic":
+            logger.info(f"  Orden aparente p = {p:.2f}")
+            logger.info(f"  Richardson extrap: {gci['phi_ext']:.6f} {unit}")
+            logger.info(f"  GCI_fine = {gci['GCI_fine']*100:.2f}%")
+            logger.info(f"  GCI_med  = {gci['GCI_med']*100:.2f}%")
+            logger.info(f"  AR = {gci['AR']:.3f} ({'asintotico' if gci['in_asymptotic'] else 'NO asintotico'})")
+        else:
+            logger.info(f"  GCI/Richardson NO APLICA para convergencia {conv_type} (Celik 2008)")
 
         # Deltas entre niveles consecutivos
         logger.info(f"  Deltas entre niveles:")
