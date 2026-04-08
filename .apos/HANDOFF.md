@@ -1,67 +1,57 @@
 # HANDOFF — Thesis OS
 
-**Última sesión:** 2026-04-06 (sesión 9)
+**Última sesión:** 2026-04-08 (sesión 10)
 
 ## Qué se hizo
 
-### Screening Round 2 importado y analizado
-- 15/15 casos dp=0.004 importados desde WS via git (ZIP 44 MB)
-- Scripts: `collect_ws_results.py` (WS→ZIP), `import_screening.py` (ZIP→laptop, generalizado)
-- Análisis profundo: temporal, dominio, reflexión, fuerzas, Spearman, variables aisladas, replicación
-- 7 figuras de análisis + 5 figuras dashboard autocontenidas en `data/figures/`
+### Convergencia dp v2 corrida e importada
+- La WS ejecutó `scripts/run_convergence_v2.py` y se importaron 7/8 casos exitosos.
+- Resultados disponibles en `data/results/convergencia_v2.csv`, `data/results/convergencia_v2_gci.json`, `data/logs/convergencia_v2.log` y `data/results/convergencia_v2_temporal/`.
+- `dp=0.0015` falló en GenCase; `dp=0.001` no se corrió.
 
-### Hallazgos Round 2
-- **Fricción domina** (rho=-0.916, p<0.001) a dam_h=0.20
-- **Masa significativa** (rho=-0.605, p=0.017)
-- **dam_h no significativo** en R2 (artefacto de diseño dirigido con 5/15 a dam_h=0.20)
-- **sc2_007 sorpresa:** dam_h=0.12 + fric=0.1 + mass=0.8 → FALLO 1097mm
-- **sc2_010 water_h=0.0:** NO es bug de gauges — gauges SÍ se adaptan al slope (confirmado en código). Es resultado físico: agua insuficiente a esa posición en slope 1:5
-- **Replicación sc_008 vs sc2_015:** consistente (3.1mm vs 2.1mm, ambos ESTABLE)
-- **Reflexión sc2_005:** señal en V12 pero boulder ESTABLE, no problemática
+### Diagnóstico técnico de la convergencia nueva
+- El forcing hidráulico converge bien en los dp finos: `max_flow_velocity` y `max_water_height` cambian muy poco entre `dp=0.004`, `0.003` y `0.002`.
+- El onset también converge razonablemente: los tiempos de cruce de `5% d_eq` y `50 mm` son muy cercanos entre `dp=0.004`, `0.003` y `0.002`.
+- Lo que NO converge limpio es la trayectoria post-falla a 10 s del caso Moris (`dam_h=0.30`): `max_displacement` baja de `1.966 m` a `1.753 m` entre `dp=0.003` y `0.002`, y la respuesta rotacional cambia de rama.
+- `SPH force` pico es oscilatoria y no sirve como primaria robusta para decidir dp en este caso.
+- La métrica actual de rotación acumula `|omega|`, no ángulo neto; sirve como diagnóstico bruto, pero no como observable fino.
 
-### Round 3 diseñado (EN ESPERA)
-- 10 casos verificación: baseline, rot_z, fricción transición, sc2_007 decomposición, slope×friction
-- `config/screening_round3.csv` listo
-- **NO lanzar aún** — convergencia dp va primero
+### Revisión de la convergencia anterior
+- La convergencia anterior SÍ llegó a `dp=0.003` y fue válida para su configuración original.
+- No es transferible a la configuración actual 5D: canal paramétrico, slope, fricción Chrono y nueva posición del bloque cambian el problema numérico.
+- Se detectó desalineación de trazabilidad: los documentos finales viejos muestran 7 dp, pero algunos scripts versionados aún reflejan una etapa intermedia.
 
-### Convergencia dp v2 preparada (LISTO PARA WS)
-- `scripts/run_convergence_v2.py` — revisado y validado por 3 revisores
-- Caso fijo Moris: dam_h=0.30, mass=1.0, fric=0.3, slope=1:20, canal 15m, altura 1.5m
-- dp core: 0.010, 0.008, 0.006, 0.005, 0.004, 0.003, 0.002
-- dp exploratorios: 0.0015, 0.001 (si caben en VRAM)
-- Primarias: displacement, velocity, SPH force (GCI Celik 2008)
-- Rotation como diagnóstico (promueve si monotónica)
-- GCI solo para métricas monotónicas, MemGpu leído correctamente de Run.csv
-- CSV incremental + status JSON para monitoreo remoto
+### Preparación para reunión con Moris
+- Se armó la línea técnica: el problema no parece ser el solver, sino la métrica elegida para convergencia.
+- La pregunta central para el profe es si el dp debe justificarse con métricas de onset/incidental motion o con trayectoria completa post-falla.
 
 ## Qué cambió
-- `scripts/collect_ws_results.py` — recolector WS (nuevo)
-- `scripts/import_screening.py` — importador generalizado para cualquier round (nuevo)
-- `scripts/import_round2.py` — importador original R2 (legacy, reemplazado por import_screening.py)
-- `scripts/analisis_round2_profundo.py` — análisis deep R2 (nuevo)
-- `scripts/figuras_round2.py` — dashboard + figuras autocontenidas R2 (nuevo)
-- `scripts/run_convergence_v2.py` — convergencia nueva configuración (nuevo)
-- `config/screening_round3.csv` — matriz Round 3 (nuevo, en espera)
-- `data/processed/sc2_001..015/` — datos completos R2 extraídos
-- `data/results/results_round2.csv` — CSV consolidado R2
-- `data/results.sqlite` — actualizado con 15 casos R2
-- `data/figures/` — 12+ figuras nuevas de análisis R2
+- `data/results/convergencia_v2.csv` — tabla consolidada de convergencia nueva
+- `data/results/convergencia_v2_gci.json` — GCI / Richardson v2
+- `data/results/convergencia_v2_temporal/` — series temporales exchange/forces por dp
+- `data/logs/convergencia_v2.log` — log completo de ejecución
+- `scripts/analisis_convergencia_v2.py` — análisis local profundo de la v2
+- `data/figures/convergencia_v2_analisis.md` + figuras `conv2_*` — diagnóstico visual y textual
 
 ## Qué debe hacer el siguiente agente
-1. **Lanzar convergencia en WS:** `git pull && python scripts/run_convergence_v2.py`
-2. **Esperar resultados** (~días, dp gruesos rápidos, finos lentos)
-3. **Importar y analizar:** `--solo-analisis` o recolectar datos
-4. **Decidir dp producción** basado en GCI < 5% en las 3 primarias
-5. **Lanzar Round 3** al dp que salga de convergencia (si es 0.003 o 0.002, ajustar)
-6. **Después de Round 3:** diseñar LHS 5D (o 4D si rot_z no importa) → producción + AL
+1. Tomar la reunión con Moris y aclarar criterio metodológico:
+   - ¿Definir dp por onset/incidental motion o por trayectoria completa post-falla?
+   - ¿Quiere validación cerca de la frontera ESTABLE/FALLO?
+2. Si el profe acepta onset como criterio principal:
+   - extraer formalmente las métricas de onset de la v2 ya corrida
+   - redactar el argumento metodológico para justificar `dp=0.003` como resolución de trabajo
+3. Si el profe pide cierre riguroso en frontera:
+   - diseñar una convergencia v3 corta con `dp=0.004`, `0.003`, `0.002` en 1–2 casos cerca del umbral
+4. Corregir persistencia/documentación secundaria:
+   - revisar por qué el log reporta guardado en `convergence_v2` pero la `results.sqlite` local no muestra esa tabla
+   - dejar una versión reproducible y limpia del análisis viejo/nuevo
 
 ## Qué no debe asumir
-- La convergencia anterior (Fase 2, DEC-029) está **descartada** — fue con configuración distinta (canal viejo, sin slope paramétrico, sin fricción). Se rehace desde cero.
-- dp=0.003 como producción (DEC-029) es **provisional** hasta que la convergencia nueva lo confirme o cambie.
-- Los datos R2 a dp=0.004 son screening exploratorio, no producción.
-- water_h=0.0 en sc2_010 NO es un bug — es físico. Los gauges SÍ se adaptan al slope.
-- El criterio ESTABLE/FALLO en `import_round2.py` usa solo desplazamiento. `import_screening.py` usa desplazamiento OR rotación (unificado con data_cleaner).
-- Round 3 está diseñado pero NO lanzado. Convergencia va primero.
+- La convergencia v2 NO “falló” en bloque; mostró convergencia de forcing/onset pero no de trayectoria post-falla larga.
+- `dp=0.003` todavía NO está cerrado formalmente como producción en la configuración nueva.
+- La convergencia anterior no está invalidada históricamente; está invalidada como evidencia transferible al setup actual.
+- `max_rotation` actual no representa un ángulo neto físico; integra `|omega|`.
+- `dp=0.0015` no es una referencia útil de convergencia: falló en GenCase y su escalamiento apunta a límite de memoria/tamaño.
 
 ## Contexto mínimo para retomar
-Leer: BOOTSTRAP.md → este HANDOFF → data/figures/screening_round2_analysis_deep.md → config/screening_round3.csv
+Leer: `BOOTSTRAP.md` → este `HANDOFF.md` → `data/results/convergencia_v2.csv` → `data/logs/convergencia_v2.log` → `data/figures/convergencia_v2_analisis.md` → `.apos/DECISIONS.md`

@@ -1,6 +1,6 @@
 # PLAN — Thesis OS
 
-**Última actualización:** 2026-03-21
+**Última actualización:** 2026-04-08
 
 ## Fase 1 — Infraestructura (COMPLETADA, feb 2026)
 - [x] Pipeline: geometry_builder → batch_runner → data_cleaner → ml_surrogate
@@ -9,64 +9,44 @@
 - [x] Limpieza .bi4 en try/finally, notificaciones ntfy.sh
 - [x] Correcciones físicas: massbody, inercia trimesh, FtPause=0.5
 
-## Fase 2 — Convergencia (COMPLETADA, mar 2026)
-- [x] 7 niveles de dp testeados (dp=0.020 → dp=0.003)
-- [x] Convergencia alcanzada: 3 métricas primarias < 5% entre dp=0.004 y dp=0.003
-- [x] dp=0.004 = producción; dp=0.003 = referencia más fina posible (hardware limit)
-- [x] dp=0.002/0.0025 inviable: >43 GB VRAM, excede RTX 5090 32GB
-- [x] Contact force descartado como criterio (CV=82%) — hallazgo científico
-- [x] dp render=0.01
+## Fase 2 — Convergencia original (COMPLETADA, mar 2026)
+- [x] 7 niveles de dp testeados hasta `dp=0.003`
+- [x] Convergencia válida para la configuración antigua
+- [x] Contact force descartado como criterio
+- [x] Resultado histórico documentado en tesis/reportes
+- [ ] Reconciliar scripts versionados con la versión final histórica (deuda de trazabilidad)
 
-## Fase 3 — Convergencia nueva + Screening 5D + Producción (EN PROGRESO, mar-jun 2026)
+## Fase 3 — Setup 5D actual (EN PROGRESO, mar-jun 2026)
 - [x] Pipeline actualizado a 5D: dam_h, mass, rot_z, friction, slope_inv
-- [x] Canal paramétrico con slope variable (canal_generator.py)
-- [x] Screening R1 completo (24/25 dp=0.005) — dominio, TimeMax, reflexión validados
-- [x] Screening R2 completo (15/15 dp=0.004) — fricción domina, frontera multidimensional
-- [x] Análisis profundo R2 con figuras autocontenidas
-- [x] Round 3 diseñado (10 casos, config/screening_round3.csv)
-- [x] Convergencia dp v2 script preparado y validado (run_convergence_v2.py)
-- [ ] **Convergencia dp v2** — lanzar en WS (7 core + 2 exploratorios)
-- [ ] **Elegir dp producción** basado en GCI (Celik 2008)
-- [ ] **Round 3** al dp convergido (10 casos verificación)
-- [ ] **Decidir 4D o 5D** (si rot_z no importa en R3 → 4D)
+- [x] Canal paramétrico con slope variable
+- [x] Screening R1 completo (24/25 dp=0.005)
+- [x] Screening R2 completo (15/15 dp=0.004)
+- [x] Análisis profundo R2
+- [x] Round 3 diseñado (`config/screening_round3.csv`)
+- [x] Convergencia v2 preparada
+- [x] Convergencia v2 corrida en WS e importada
+- [ ] **Cerrar criterio de convergencia** (onset vs trayectoria completa)
+- [ ] **Elegir dp producción** en la configuración nueva
+- [ ] Extraer métricas de onset de la v2 existente
+- [ ] **Decidir con Moris** si hace falta una v3 corta cerca de la frontera
+- [ ] Si hace falta: correr v3 (`dp=0.004`, `0.003`, `0.002`) en 1–2 casos de umbral
+- [ ] Lanzar Round 3 con el dp ya defendido
+- [ ] Decidir 4D o 5D para producción
 - [ ] Diseñar LHS 5D (o 4D) con active learning
 - [ ] Campaña producción + AL loop
 - [ ] Sobol indices analíticos desde GP
 - [ ] Superficie de fragilidad (Monte Carlo sobre GP)
 - [ ] Comparar umbral SPH vs Nandasena/Nott
-- [ ] Modos de transporte desde datos de rotación Chrono
 
 ## Fase 4 — Tesis escrita (EN CURSO)
 - [x] Cap 1: Introducción
-- [x] Cap 2: Marco Teórico (30+ refs)
+- [x] Cap 2: Marco Teórico
 - [x] Cap 3: Metodología Numérica
-- [x] Cap 4: Resultados Convergencia
+- [x] Cap 4: Resultados Convergencia original
 - [x] Cap 5: Pipeline Computacional
-- [ ] Cap 6: Resultados Paramétricos (depende de Fase 3)
+- [ ] Cap 6: Resultados Paramétricos
 - [ ] Cap 7: Conclusiones
-
-## Fase 5 — Multi-forma (SEMESTRE 2, ago-nov 2026)
-- [ ] Solicitar 9 STLs escaneados a Moris
-- [ ] Calcular descriptores geométricos (CSF, aspect ratio, sphericity)
-- [ ] ~25 sims dp=0.003 por forma adicional (GP transfiere desde primera geometría)
-- [ ] GP unificado con forma como variable continua
-- [ ] Sobol actualizado con dimensión de forma
-
-## Fase 6 — Parametrizar pendiente de playa (PENDIENTE)
-- [ ] Moris pidió 5ta variable: pendiente de playa
-- [ ] Requiere nuevo STL de canal o geometría paramétrica
-- [ ] Evaluar viabilidad e impacto en presupuesto de sims
-
-## Timeline (revisado 2026-03-30 v3)
-```
-MAR 2026:      Pipeline 4D + lanzar 25 sims dp=0.003 ✓
-ABR:           25 sims completan → entrenar GP 4D → iniciar AL
-MAY-JUN:       AL loop (~75 iter) → Sobol → fragilidad → Cap 6
-JUL:           Exposición 1 + cierre semestre 1
-AGO-OCT:       Multi-forma (9 STLs × ~25 sims) → GP unificado
-NOV:           Cap 7 + revisión tesis completa
-DIC:           Defensa tesis
-```
+- [ ] Actualizar relato metodológico de convergencia para distinguir Fase 2 vs Fase 3
 
 ## Prioridad actual
-Convergencia dp v2 en WS → elegir dp → Round 3 → diseñar LHS 5D → producción + AL → Sobol → Cap 6.
+Reunión con Moris → criterio metodológico claro → decidir si basta onset de v2 o si hace falta v3 cerca de la frontera → elegir dp → Round 3.
