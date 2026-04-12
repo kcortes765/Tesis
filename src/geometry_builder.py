@@ -23,7 +23,7 @@ import numpy as np
 import trimesh
 from lxml import etree
 from scipy.spatial.transform import Rotation
-from canal_generator import generate_canal_stl, get_boulder_position
+from canal_generator import generate_canal_stl, get_boulder_position, get_bed_elevation
 
 logger = logging.getLogger(__name__)
 
@@ -188,6 +188,26 @@ def compute_fillbox(boulder_props: dict, boulder_pos: tuple,
         'size_y': float(fb_size[1]),
         'size_z': float(fb_size[2]),
     }
+
+
+def adjust_boulder_support(boulder_props: dict, boulder_pos: tuple,
+                           slope_inv: float) -> tuple:
+    """
+    Ajusta la cota z para que el STL apoye justo sobre la playa.
+
+    Usa la geometria ya escalada+rotada del STL y la compara contra el perfil
+    del fondo del canal. Si el boulder queda enterrado, lo eleva; si queda
+    flotando, lo baja hasta el primer punto de contacto.
+    """
+    pos = np.array(boulder_pos, dtype=np.float64)
+    vertices_domain = boulder_props['mesh'].vertices + pos
+    bed_z = get_bed_elevation(vertices_domain[:, 0], slope_inv=slope_inv)
+    min_gap = float(np.min(vertices_domain[:, 2] - bed_z))
+    if abs(min_gap) <= 1e-6:
+        return boulder_pos, min_gap
+
+    pos[2] -= min_gap
+    return (float(pos[0]), float(pos[1]), float(pos[2])), min_gap
 
 
 # ---------------------------------------------------------------------------
@@ -618,6 +638,19 @@ def build_case(template_xml: Path, boulder_stl: Path, beach_stl: Path,
         rotation_deg=params.boulder_rot,
         mass_kg=params.boulder_mass,
     )
+
+    adjusted_pos, support_gap = adjust_boulder_support(
+        boulder_props,
+        params.boulder_pos,
+        params.slope_inv,
+    )
+    if abs(support_gap) > 1e-6:
+        action = "elevando" if support_gap < 0 else "bajando"
+        logger.info(
+            f"  Ajuste apoyo boulder: {action} {abs(support_gap)*1000:.3f} mm "
+            f"para dejar contacto exacto con la playa"
+        )
+        params.boulder_pos = adjusted_pos
 
     # Verificar resolucion
     dim_min = min(boulder_props['bbox_size'])

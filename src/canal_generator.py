@@ -12,6 +12,7 @@ Autor: Kevin Cortes (UCN 2026)
 """
 
 import logging
+import math
 from pathlib import Path
 import numpy as np
 import trimesh
@@ -176,6 +177,43 @@ def get_boulder_position(slope_inv: float, L_flat: float = 6.0,
     x = L_flat + offset_from_ramp_start
     z = offset_from_ramp_start / slope_inv
     return (x, y_center, z)
+
+
+def get_slope_angle_deg(slope_inv: float) -> float:
+    """Retorna el angulo de la rampa z(x) en grados."""
+    return math.degrees(math.atan(1.0 / slope_inv))
+
+
+def get_boulder_rotation(slope_inv: float, rot_z: float = 0.0) -> tuple:
+    """
+    Retorna la rotacion Euler XYZ del boulder.
+
+    - angy inclina el bloque para dejarlo paralelo a la rampa x-z.
+    - angz mantiene la orientacion en planta definida por el usuario.
+
+    El signo de angy es negativo porque la playa asciende en +x.
+    """
+    slope_pitch_deg = -get_slope_angle_deg(slope_inv)
+    return (0.0, slope_pitch_deg, rot_z)
+
+
+def get_bed_elevation(x, slope_inv: float, L_flat: float = 6.0,
+                      L_ramp: float = 9.0):
+    """
+    Retorna la cota del fondo del canal para una coordenada x.
+
+    Acepta escalar o arreglo numpy.
+    """
+    is_scalar = np.isscalar(x)
+    x_arr = np.asarray(x, dtype=np.float64)
+    ramp_end = L_flat + L_ramp
+    ramp_height = L_ramp / slope_inv
+    z_arr = np.where(
+        x_arr <= L_flat,
+        0.0,
+        np.where(x_arr <= ramp_end, (x_arr - L_flat) / slope_inv, ramp_height),
+    )
+    return float(z_arr) if is_scalar else z_arr
 
 
 if __name__ == '__main__':

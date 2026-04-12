@@ -36,7 +36,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from geometry_builder import CaseParams, build_case, compute_boulder_properties
-from canal_generator import get_boulder_position
+from canal_generator import get_boulder_position, get_boulder_rotation
 from batch_runner import load_config, run_case
 from data_cleaner import process_case, save_to_sqlite
 
@@ -54,6 +54,7 @@ DP_ALL = DP_CORE + DP_EXPLORATORY
 # Caso fijo — Moris + centro del rango parametrico
 SLOPE_INV = 20.0
 BOULDER_POS = get_boulder_position(slope_inv=SLOPE_INV)
+BOULDER_ROT = get_boulder_rotation(slope_inv=SLOPE_INV, rot_z=0.0)
 
 BASE_PARAMS = {
     "dam_height": 0.30,
@@ -61,7 +62,7 @@ BASE_PARAMS = {
     "boulder_mass": 1.0,
     "boulder_scale": 0.04,
     "boulder_pos": BOULDER_POS,
-    "boulder_rot": (0.0, 0.0, 0.0),
+    "boulder_rot": BOULDER_ROT,
     "material": "pvc",
     "friction_coefficient": 0.3,
     "slope_inv": SLOPE_INV,

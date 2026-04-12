@@ -198,8 +198,9 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         slope_inv = row.get('slope_inv', 20.0)
 
         # Boulder position: al inicio de la rampa (x=6.5, z ajustado a pendiente)
-        from canal_generator import get_boulder_position
+        from canal_generator import get_boulder_position, get_boulder_rotation
         bx, by, bz = get_boulder_position(slope_inv)
+        boulder_rot = get_boulder_rotation(slope_inv=slope_inv, rot_z=rot_z)
 
         logger.info(f"\n{'='*60}")
         logger.info(f"CASO {case_id}: dam_h={row['dam_height']:.3f}m, "
@@ -215,7 +216,7 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
             boulder_mass=row['boulder_mass'],
             boulder_scale=0.04,
             boulder_pos=(bx, by, bz),
-            boulder_rot=(0.0, 0.0, rot_z),
+            boulder_rot=boulder_rot,
             material="pvc",
             friction_coefficient=mu_s,
             slope_inv=slope_inv,

@@ -98,6 +98,7 @@ def generate_case_xmls(deploy_dir, matrix_df, dp):
     # Import geometry_builder desde el proyecto
     sys.path.insert(0, str(PROJECT_ROOT / "src"))
     from geometry_builder import CaseParams, build_case
+    from canal_generator import get_boulder_position, get_boulder_rotation
 
     config_path = PROJECT_ROOT / "config" / "dsph_config.json"
     with open(config_path) as f:
@@ -113,6 +114,9 @@ def generate_case_xmls(deploy_dir, matrix_df, dp):
     for _, row in matrix_df.iterrows():
         case_id = row["case_id"]
         rot_z = float(row.get("boulder_rot_z", 0.0))
+        slope_inv = float(row.get("slope_inv", 20.0))
+        boulder_pos = get_boulder_position(slope_inv=slope_inv)
+        boulder_rot = get_boulder_rotation(slope_inv=slope_inv, rot_z=rot_z)
 
         params = CaseParams(
             case_name=case_id,
@@ -120,9 +124,10 @@ def generate_case_xmls(deploy_dir, matrix_df, dp):
             dam_height=row["dam_height"],
             boulder_mass=row["boulder_mass"],
             boulder_scale=0.04,
-            boulder_pos=(8.5, 0.5, 0.1),
-            boulder_rot=(0.0, 0.0, rot_z),
+            boulder_pos=boulder_pos,
+            boulder_rot=boulder_rot,
             material="pvc",
+            slope_inv=slope_inv,
             time_max=config["defaults"]["time_max"],
             time_out=config["defaults"]["time_out"],
             ft_pause=config["defaults"]["ft_pause"],

@@ -344,6 +344,7 @@ def main() -> None:
     base.DP_ALL = list(args.dps)
     base.SLOPE_INV = args.slope_inv
     base.BOULDER_POS = base.get_boulder_position(slope_inv=args.slope_inv)
+    base.BOULDER_ROT = base.get_boulder_rotation(slope_inv=args.slope_inv, rot_z=args.rot_z)
     base.BASE_PARAMS.update(
         {
             "dam_height": args.dam_height,
@@ -351,7 +352,7 @@ def main() -> None:
             "boulder_mass": args.mass,
             "boulder_scale": 0.04,
             "boulder_pos": base.BOULDER_POS,
-            "boulder_rot": (0.0, 0.0, args.rot_z),
+            "boulder_rot": base.BOULDER_ROT,
             "material": args.material,
             "friction_coefficient": args.friction,
             "slope_inv": args.slope_inv,
