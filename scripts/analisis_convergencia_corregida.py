@@ -52,6 +52,16 @@ def parse_mu_from_name(name: str) -> float | None:
     return int(digits) / (10 ** (len(digits) - 1))
 
 
+def scout_generation_rank(name: str) -> int:
+    if name.startswith("scout_fix3_"):
+        return 3
+    if name.startswith("scout_fix2_"):
+        return 2
+    if name.startswith("scout_fix_"):
+        return 1
+    return 0
+
+
 def classify_joint(disp_m: float, rot_deg: float | None = None) -> str:
     rot_deg = np.nan if rot_deg is None else rot_deg
     if disp_m > DISP_THRESHOLD_M:
@@ -76,6 +86,7 @@ def load_scouts() -> pd.DataFrame:
             {
                 "file": path.name,
                 "mu": mu,
+                "generation_rank": scout_generation_rank(path.name),
                 "repeat": "r" in path.stem,
                 "status": row.get("status"),
                 "dp": row.get("dp"),
@@ -90,6 +101,8 @@ def load_scouts() -> pd.DataFrame:
     out = pd.DataFrame(rows)
     if out.empty:
         raise FileNotFoundError("No se encontraron scouts corregidos en data/results.")
+    latest_rank = out.groupby("mu")["generation_rank"].transform("max")
+    out = out[out["generation_rank"] == latest_rank].copy()
     out = out.sort_values(["mu", "repeat", "file"]).reset_index(drop=True)
     out["class_joint"] = out.apply(
         lambda r: classify_joint(r["disp_m"], r["rot_deg"]), axis=1
@@ -290,6 +303,7 @@ def write_summary(scouts: pd.DataFrame, conv700: pd.DataFrame, conv710: pd.DataF
     summary.append("# Historia corregida de convergencia\n")
     summary.append(f"- Umbral exacto: {DISP_THRESHOLD_MM:.3f} mm (0.05*d_eq)\n")
     summary.append("- Geometria corregida: bloque alineado con la pendiente y apoyo exacto.\n")
+    summary.append("- Scouts usados: solo la generacion corregida mas reciente por mu (fix3 > fix2 > fix).\n")
 
     summary.append("\n## Scouts corregidos\n")
     for _, row in scouts.sort_values(["mu", "repeat"]).iterrows():
@@ -313,6 +327,10 @@ def write_summary(scouts: pd.DataFrame, conv700: pd.DataFrame, conv710: pd.DataF
 
     conv_block("Convergencia corregida mu=0.700", conv700)
     conv_block("Convergencia corregida mu=0.710", conv710)
+    if len(conv710) < 3:
+        summary.append(
+            f"- Nota: mu=0.710 sigue parcial; solo hay {len(conv710)} niveles dp consolidados.\n"
+        )
 
     summary.append("\n## Figuras generadas\n")
     for name in [
