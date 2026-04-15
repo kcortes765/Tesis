@@ -80,7 +80,6 @@ con la geometria corregida del bloque.
 
 ## Notas
 
-- Si mu=0.710 aun no tiene dp=0.002, eso debe declararse como estado parcial, no ocultarse.
 - Las figuras conv2_* sirven para contar el pivot metodologico, no como evidencia final del setup corregido.
 - Si existe 03b_corrected_convergence_metrics_legacy.png, se conserva solo como respaldo; la figura principal es 03_corrected_convergence_metrics_clean.png.
 '@
@@ -219,11 +218,13 @@ Resultados actualmente consolidados:
 
 - dp=0.004: disp=5.081 mm, rot=4.79 deg, vel=0.1000 m/s, Fsph=16.442 N, class=FALLO
 - dp=0.003: disp=1.437 mm, rot=4.93 deg, vel=0.1001 m/s, Fsph=8.433 N, class=ESTABLE
+- dp=0.002: disp=1.809 mm, rot=7.44 deg, vel=0.0700 m/s, Fsph=8.054 N, class=FALLO
 
-Estado:
+Lectura:
 
-- dp=0.002 aun no esta consolidado al momento de este paquete
-- por tanto, mu=0.710 debe mostrarse como convergencia parcial
+- el desplazamiento fino tambien queda bajo el umbral
+- la fuerza SPH baja con fuerza al refinar
+- la clasificacion vuelve a cambiar por rotacion acumulada, no por desplazamiento
 
 ## 11. Tema metodologico abierto
 
@@ -242,8 +243,8 @@ Eso deja abierta la pregunta metodologica:
 - los resultados pre-fix ya no son defendibles para cerrar esta decision
 - la banda corregida de frontera queda en mu ~ 0.69-0.71
 - mu=0.700 ya muestra que displacement y forcing bajan al refinar dp
-- mu=0.710 ya muestra alta sensibilidad entre dp=0.004 y dp=0.003
-- el cierre final del lado fallo todavia depende de completar o no dp=0.002 en mu=0.710
+- mu=0.710 confirma el mismo patron: displacement bajo en la malla fina y fallo por rotacion acumulada
+- en ambos casos marginales, el problema metodologico dominante pasa a ser la metrica de rotacion acumulada
 
 ## 13. Preguntas concretas para discutir con el profesor
 
@@ -261,8 +262,6 @@ Este paquete incluye:
 - figuras corrected_story para la historia corregida
 - resumen corto de corrected_story
 - registro objetivo de hechos, decisiones y estado actual
-
-Si luego se completa mu=0.710 dp=0.002, este paquete debe regenerarse.
 '@
 
 $copiedList = if ($copied.Count -gt 0) { ($copied | ForEach-Object { "- $_" }) -join "`r`n" } else { "- No se copiaron figuras." }

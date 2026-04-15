@@ -327,10 +327,6 @@ def write_summary(scouts: pd.DataFrame, conv700: pd.DataFrame, conv710: pd.DataF
 
     conv_block("Convergencia corregida mu=0.700", conv700)
     conv_block("Convergencia corregida mu=0.710", conv710)
-    if len(conv710) < 3:
-        summary.append(
-            f"- Nota: mu=0.710 sigue parcial; solo hay {len(conv710)} niveles dp consolidados.\n"
-        )
 
     summary.append("\n## Figuras generadas\n")
     for name in [
