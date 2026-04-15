@@ -14,10 +14,15 @@ if (-not $OutputDir) {
 
 $CorrectedStoryDir = Join-Path $ProjectRoot "data\figures\corrected_story"
 $CorrectedStoryScript = Join-Path $ProjectRoot "scripts\analisis_convergencia_corregida.py"
+$Clean03Script = Join-Path $ProjectRoot "scripts\plot_03_convergence_metrics_only.py"
 
 if (Test-Path $CorrectedStoryScript) {
     Write-Host "Generando/actualizando figuras corrected_story..."
     & python $CorrectedStoryScript
+}
+if (Test-Path $Clean03Script) {
+    Write-Host "Generando version limpia del grafico 03..."
+    & python $Clean03Script
 }
 
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
@@ -25,7 +30,8 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 $filesToCopy = @(
     @{ Src = Join-Path $CorrectedStoryDir "corrected_scout_overview.png"; Dst = "01_corrected_scout_overview.png" },
     @{ Src = Join-Path $CorrectedStoryDir "corrected_scout_zoom.png"; Dst = "02_corrected_scout_zoom.png" },
-    @{ Src = Join-Path $CorrectedStoryDir "corrected_convergence_metrics.png"; Dst = "03_corrected_convergence_metrics.png" },
+    @{ Src = Join-Path $CorrectedStoryDir "03_corrected_convergence_metrics_clean.png"; Dst = "03_corrected_convergence_metrics_clean.png" },
+    @{ Src = Join-Path $CorrectedStoryDir "corrected_convergence_metrics.png"; Dst = "03b_corrected_convergence_metrics_legacy.png" },
     @{ Src = Join-Path $CorrectedStoryDir "corrected_temporal_fine.png"; Dst = "04_corrected_temporal_fine.png" },
     @{ Src = Join-Path $CorrectedStoryDir "corrected_story_summary.md"; Dst = "05_corrected_story_summary.md" },
     @{ Src = Join-Path $ProjectRoot "data\figures\conv2_dashboard.png"; Dst = "10_conv2_dashboard.png" },
@@ -63,8 +69,8 @@ con la geometria corregida del bloque.
 2. 02_corrected_scout_zoom.png
    Muestra el zoom de la banda irregular alrededor del umbral en mu ~ 0.69-0.71.
 
-3. 03_corrected_convergence_metrics.png
-   Compara las convergencias corregidas en mu=0.700 y mu=0.710 contra dp.
+3. 03_corrected_convergence_metrics_clean.png
+   Compara las convergencias corregidas en mu=0.700 y mu=0.710 contra dp con eje categorico.
 
 4. 04_corrected_temporal_fine.png
    Muestra desplazamiento temporal y rotacion acumulada de los casos finos disponibles.
@@ -76,6 +82,7 @@ con la geometria corregida del bloque.
 
 - Si mu=0.710 aun no tiene dp=0.002, eso debe declararse como estado parcial, no ocultarse.
 - Las figuras conv2_* sirven para contar el pivot metodologico, no como evidencia final del setup corregido.
+- Si existe 03b_corrected_convergence_metrics_legacy.png, se conserva solo como respaldo; la figura principal es 03_corrected_convergence_metrics_clean.png.
 '@
 
 $registro = @'
