@@ -74,6 +74,7 @@ BASE_PARAMS = {
 STATUS_FILE = PROJECT_ROOT / "data" / "logs" / "convergencia_v2_status.json"
 RESULTS_CSV = PROJECT_ROOT / "data" / "results" / "convergencia_v2.csv"
 LOG_FILE = PROJECT_ROOT / "data" / "logs" / "convergencia_v2.log"
+PROCESS_CASE_KWARGS = {}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -221,8 +222,12 @@ def run_single_dp(dp, config, d_eq):
 
     # 3. Analisis — extraer TODA la info
     try:
-        cr = process_case(processed_dir, d_eq=d_eq,
-                          boulder_mass=BASE_PARAMS["boulder_mass"])
+        cr = process_case(
+            processed_dir,
+            d_eq=d_eq,
+            boulder_mass=BASE_PARAMS["boulder_mass"],
+            **PROCESS_CASE_KWARGS,
+        )
     except Exception as e:
         entry["status"] = "FALLO_ANALISIS"
         entry["error"] = f"Analisis: {e}"
@@ -247,6 +252,11 @@ def run_single_dp(dp, config, d_eq):
         "max_contact_force_N": cr.max_contact_force,
         "max_flow_velocity_ms": cr.max_flow_velocity,
         "max_water_height_m": cr.max_water_height,
+        "criterion_mode": cr.classification_mode,
+        "criterion_class": "FALLO" if cr.failed else "ESTABLE",
+        "criterion_reference_time_s": cr.reference_time_s,
+        "flow_gauge_id": cr.flow_gauge_id,
+        "water_gauge_id": cr.water_gauge_id,
         "sim_time_s": cr.sim_time_reached,
         "n_timesteps": cr.n_timesteps,
         "n_particles": run_metrics["n_particles"],
@@ -472,6 +482,8 @@ def run_convergence_study(desde_dp=None, solo_analisis=False):
     logger.info(f"Boulder pos: {BOULDER_POS}")
     logger.info(f"Metricas primarias: displacement, velocity, SPH force")
     logger.info(f"Diagnostico: rotation")
+    if PROCESS_CASE_KWARGS:
+        logger.info(f"Process case kwargs: {PROCESS_CASE_KWARGS}")
     logger.info("=" * 65)
 
     config = load_config(PROJECT_ROOT / "config" / "dsph_config.json")

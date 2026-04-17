@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 data_cleaner.py — Modulo 3 del Pipeline SPH-IncipientMotion
 
@@ -17,8 +19,10 @@ Formato CSV (DualSPHysics):
 
 Criterio de falla (incipient motion):
   - Desplazamiento del centro de masa > umbral (% de d_eq)
-  - Rotacion neta > umbral (grados)
-  - Umbrales pendientes de validacion academica
+  - Rotacion acumulada > umbral (grados)
+  - El modo de clasificacion puede ser combinado o privilegiar solo displacement
+  - Se puede usar una referencia temporal posterior al release para evitar
+    contaminar displacement con un transitorio inicial de soltado
 
 Autor: Kevin Cortes (UCN 2026)
 """
@@ -26,6 +30,7 @@ Autor: Kevin Cortes (UCN 2026)
 import logging
 from pathlib import Path
 from dataclasses import dataclass
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -49,14 +54,14 @@ class CaseResult:
     # Cinematica del boulder
     max_displacement: float      # Desplazamiento maximo del CM (m)
     max_displacement_rel: float  # Desplazamiento relativo (% de d_eq)
-    max_rotation: float          # Rotacion maxima neta (grados)
+    max_rotation: float          # Rotacion acumulada maxima (grados)
     max_velocity: float          # Velocidad maxima del boulder (m/s)
 
     # Fuerzas sobre el boulder
     max_sph_force: float         # Fuerza SPH maxima (N)
     max_contact_force: float     # Fuerza de contacto maxima (N)
 
-    # Flujo (en el gauge mas cercano al boulder)
+    # Flujo (en gauge representativo externo al boulder)
     max_flow_velocity: float     # Velocidad maxima del flujo (m/s)
     max_water_height: float      # Altura maxima del agua (m)
 
@@ -68,6 +73,12 @@ class CaseResult:
     # Metadata
     sim_time_reached: float      # Tiempo simulado alcanzado (s)
     n_timesteps: int             # Numero de filas en ChronoExchange
+    reference_time_s: float = 0.0
+    classification_mode: str = "combined"
+    flow_gauge_id: str = ""
+    flow_gauge_distance: float = float("nan")
+    water_gauge_id: str = ""
+    water_gauge_distance: float = float("nan")
 
     # Parametros de entrada (para ML surrogate)
     dam_height: float = 0.0      # Altura columna de agua (m)
@@ -235,11 +246,29 @@ def parse_all_gauges(case_dir: Path) -> dict:
 # Analisis de cinematica del boulder
 # ---------------------------------------------------------------------------
 
-def compute_displacement(chrono_df: pd.DataFrame) -> pd.Series:
-    """Calcula desplazamiento del CM respecto a posicion inicial (magnitud 3D)."""
-    cx0 = chrono_df['cx'].iloc[0]
-    cy0 = chrono_df['cy'].iloc[0]
-    cz0 = chrono_df['cz'].iloc[0]
+def _resolve_reference_index(chrono_df: pd.DataFrame,
+                             reference_time_s: Optional[float]) -> int:
+    """Retorna el indice de referencia para metricas temporales."""
+    if reference_time_s is None:
+        return 0
+
+    valid = chrono_df.index[chrono_df['time'] >= reference_time_s]
+    if len(valid) == 0:
+        logger.warning(
+            "  reference_time_s=%.3f fuera de rango; se usa la ultima fila como referencia",
+            reference_time_s,
+        )
+        return len(chrono_df) - 1
+    return int(valid[0])
+
+
+def compute_displacement(chrono_df: pd.DataFrame,
+                         reference_time_s: Optional[float] = None) -> pd.Series:
+    """Calcula desplazamiento del CM respecto a una referencia temporal dada."""
+    ref_idx = _resolve_reference_index(chrono_df, reference_time_s)
+    cx0 = chrono_df['cx'].iloc[ref_idx]
+    cy0 = chrono_df['cy'].iloc[ref_idx]
+    cz0 = chrono_df['cz'].iloc[ref_idx]
 
     return np.sqrt(
         (chrono_df['cx'] - cx0)**2 +
@@ -248,22 +277,27 @@ def compute_displacement(chrono_df: pd.DataFrame) -> pd.Series:
     )
 
 
-def compute_rotation(chrono_df: pd.DataFrame) -> pd.Series:
+def compute_rotation(chrono_df: pd.DataFrame,
+                     reference_time_s: Optional[float] = None) -> pd.Series:
     """
     Calcula rotacion acumulada integrando velocidad angular.
 
     Aproximacion: integral trapezoidal de |omega| sobre el tiempo.
     Resultado en grados.
     """
+    ref_idx = _resolve_reference_index(chrono_df, reference_time_s)
+    segment = chrono_df.iloc[ref_idx:].copy()
     omega_mag = np.sqrt(
-        chrono_df['omega_x']**2 +
-        chrono_df['omega_y']**2 +
-        chrono_df['omega_z']**2
+        segment['omega_x']**2 +
+        segment['omega_y']**2 +
+        segment['omega_z']**2
     )
-    dt = chrono_df['time'].diff().fillna(0)
-    # Integral acumulada (trapezoidal)
+    dt = segment['time'].diff().fillna(0)
     rotation_rad = np.cumsum(omega_mag * dt)
-    return np.degrees(rotation_rad)
+
+    rotation_deg = pd.Series(0.0, index=chrono_df.index, dtype=float)
+    rotation_deg.loc[segment.index] = np.degrees(rotation_rad)
+    return rotation_deg
 
 
 def compute_boulder_velocity(chrono_df: pd.DataFrame) -> pd.Series:
@@ -347,6 +381,112 @@ def find_nearest_gauge(gauges: list, boulder_pos: tuple) -> tuple:
     return best[0], best[1], best_dist
 
 
+def _velocity_magnitude(gauge_df: pd.DataFrame) -> pd.Series:
+    return np.sqrt(gauge_df['velx']**2 + gauge_df['vely']**2 + gauge_df['velz']**2)
+
+
+def _external_gauge_candidates(gauges: list, boulder_pos: tuple,
+                               exclusion_radius_m: float) -> list[tuple]:
+    bx, by, bz = boulder_pos
+    candidates = []
+    for gauge_id, df, (gx, gy, gz) in gauges:
+        dx = gx - bx
+        dy = gy - by
+        dz = gz - bz
+        dist = float(np.sqrt(dx**2 + dy**2 + dz**2))
+        radial = float(np.sqrt(dx**2 + dz**2))
+        outside = radial > exclusion_radius_m
+        upstream = gx <= bx
+        candidates.append((gauge_id, df, dist, outside, upstream, dx))
+    return candidates
+
+
+def find_representative_velocity_gauge(gauges: list, boulder_pos: tuple,
+                                       d_eq: float) -> tuple:
+    """
+    Selecciona un gauge de velocidad representativo del flujo incidente.
+
+    Prioriza gauges fuera del cuerpo, aguas arriba y con señal valida.
+    """
+    if not gauges:
+        return None, None, float('inf')
+
+    exclusion_radius = max(0.5 * d_eq, 0.05)
+    ranked = []
+    for gauge_id, df, dist, outside, upstream, dx in _external_gauge_candidates(
+        gauges, boulder_pos, exclusion_radius
+    ):
+        vel_mag = _velocity_magnitude(df).dropna()
+        peak = float(vel_mag.max()) if len(vel_mag) else 0.0
+        score = (
+            0 if outside and upstream and peak > 0 else
+            1 if outside and peak > 0 else
+            2 if outside and upstream else
+            3 if outside else
+            4,
+            abs(dx),
+            dist,
+            -peak,
+        )
+        ranked.append((score, gauge_id, df, dist))
+
+    ranked.sort(key=lambda item: item[0])
+    _, gauge_id, df, dist = ranked[0]
+    return gauge_id, df, dist
+
+
+def find_representative_maxz_gauge(gauges: list, boulder_pos: tuple,
+                                   d_eq: float) -> tuple:
+    """Selecciona un gauge de maxz cercano pero fuera del cuerpo."""
+    if not gauges:
+        return None, None, float('inf')
+
+    exclusion_radius = max(0.5 * d_eq, 0.05)
+    ranked = []
+    for gauge_id, df, dist, outside, upstream, dx in _external_gauge_candidates(
+        gauges, boulder_pos, exclusion_radius
+    ):
+        valid = df['zmax'].dropna()
+        peak = float(valid.max()) if len(valid) else 0.0
+        score = (
+            0 if outside and upstream and peak > 0 else
+            1 if outside and peak > 0 else
+            2 if outside else
+            3,
+            abs(dx),
+            dist,
+            -peak,
+        )
+        ranked.append((score, gauge_id, df, dist))
+
+    ranked.sort(key=lambda item: item[0])
+    _, gauge_id, df, dist = ranked[0]
+    return gauge_id, df, dist
+
+
+def classify_failure(max_disp: float, max_rot: float,
+                     disp_threshold_m: float, rot_threshold_deg: float,
+                     classification_mode: str = "combined") -> tuple[bool, bool, bool]:
+    """Evalua moved/rotated y decide failed segun el modo pedido."""
+    moved = max_disp > disp_threshold_m
+    rotated = max_rot > rot_threshold_deg
+
+    mode = classification_mode.lower()
+    if mode == "combined":
+        failed = moved or rotated
+    elif mode == "displacement_only":
+        failed = moved
+    elif mode == "rotation_only":
+        failed = rotated
+    else:
+        raise ValueError(
+            f"classification_mode invalido: {classification_mode}. "
+            "Usa combined|displacement_only|rotation_only"
+        )
+
+    return moved, rotated, failed
+
+
 # ---------------------------------------------------------------------------
 # Funcion principal: procesar un caso completo
 # ---------------------------------------------------------------------------
@@ -354,7 +494,9 @@ def find_nearest_gauge(gauges: list, boulder_pos: tuple) -> tuple:
 def process_case(case_dir: Path, d_eq: float,
                  boulder_mass: float = 1.06,
                  disp_threshold_pct: float = 5.0,
-                 rot_threshold_deg: float = 5.0) -> CaseResult:
+                 rot_threshold_deg: float = 5.0,
+                 reference_time_s: Optional[float] = None,
+                 classification_mode: str = "combined") -> CaseResult:
     """
     Procesa todos los CSVs de un caso y determina si hubo incipient motion.
 
@@ -363,6 +505,8 @@ def process_case(case_dir: Path, d_eq: float,
         d_eq: Diametro equivalente esferico del boulder (m).
         disp_threshold_pct: Umbral de desplazamiento (% de d_eq).
         rot_threshold_deg: Umbral de rotacion (grados).
+        reference_time_s: Referencia temporal para displacement/rotation.
+        classification_mode: combined | displacement_only | rotation_only.
 
     Returns:
         CaseResult con metricas y criterio de falla.
@@ -376,8 +520,13 @@ def process_case(case_dir: Path, d_eq: float,
         raise FileNotFoundError(f"No se encontro ChronoExchange CSV en {case_dir}")
     chrono_df = parse_chrono_exchange(chrono_csvs[0])
 
-    displacement = compute_displacement(chrono_df)
-    rotation = compute_rotation(chrono_df)
+    ref_idx = _resolve_reference_index(chrono_df, reference_time_s)
+    ref_time_used = float(chrono_df['time'].iloc[ref_idx])
+    if reference_time_s is not None:
+        logger.info(f"  Baseline temporal: t_ref={ref_time_used:.4f}s")
+
+    displacement = compute_displacement(chrono_df, reference_time_s=reference_time_s)
+    rotation = compute_rotation(chrono_df, reference_time_s=reference_time_s)
     velocity = compute_boulder_velocity(chrono_df)
 
     max_disp = float(displacement.max())
@@ -386,7 +535,7 @@ def process_case(case_dir: Path, d_eq: float,
     max_vel = float(velocity.max())
 
     logger.info(f"  Desplazamiento max: {max_disp:.6f}m ({max_disp_rel:.2f}% de d_eq={d_eq:.4f}m)")
-    logger.info(f"  Rotacion max: {max_rot:.2f} grados")
+    logger.info(f"  Rotacion acumulada max: {max_rot:.2f} grados")
     logger.info(f"  Velocidad max boulder: {max_vel:.4f} m/s")
 
     # --- 2. ChronoBody_forces ---
@@ -408,32 +557,52 @@ def process_case(case_dir: Path, d_eq: float,
     # Posicion inicial del boulder
     boulder_pos = (chrono_df['cx'].iloc[0], chrono_df['cy'].iloc[0], chrono_df['cz'].iloc[0])
 
-    # Velocidad del flujo (gauge mas cercano)
+    # Velocidad del flujo (gauge representativo del flujo incidente)
     max_flow_vel = 0.0
+    flow_gauge_id = ""
+    flow_gauge_dist = float("nan")
     if gauges['velocity']:
-        gid, gdf, gdist = find_nearest_gauge(gauges['velocity'], boulder_pos)
-        vel_mag = np.sqrt(gdf['velx']**2 + gdf['vely']**2 + gdf['velz']**2)
+        gid, gdf, gdist = find_representative_velocity_gauge(
+            gauges['velocity'], boulder_pos, d_eq
+        )
+        vel_mag = _velocity_magnitude(gdf)
         max_flow_vel = float(vel_mag.max())
+        flow_gauge_id = f"V{gid}"
+        flow_gauge_dist = gdist
         logger.info(f"  Flujo max (gauge V{gid}, dist={gdist:.2f}m): {max_flow_vel:.4f} m/s")
 
-    # Altura del agua (gauge mas cercano)
+    # Altura del agua (gauge representativo cercano pero fuera del cuerpo)
     max_water_h = 0.0
+    water_gauge_id = ""
+    water_gauge_dist = float("nan")
     if gauges['maxz']:
-        gid, gdf, gdist = find_nearest_gauge(gauges['maxz'], boulder_pos)
+        gid, gdf, gdist = find_representative_maxz_gauge(
+            gauges['maxz'], boulder_pos, d_eq
+        )
         valid_zmax = gdf['zmax'].dropna()
         if len(valid_zmax) > 0:
             max_water_h = float(valid_zmax.max())
+        water_gauge_id = f"hmax{gid}"
+        water_gauge_dist = gdist
         logger.info(f"  Agua max (gauge hmax{gid}, dist={gdist:.2f}m): {max_water_h:.4f}m")
 
     # --- 4. Criterio de falla ---
     disp_threshold_m = d_eq * (disp_threshold_pct / 100.0)
-    moved = max_disp > disp_threshold_m
-    rotated = max_rot > rot_threshold_deg
-    failed = moved or rotated
+    moved, rotated, failed = classify_failure(
+        max_disp=max_disp,
+        max_rot=max_rot,
+        disp_threshold_m=disp_threshold_m,
+        rot_threshold_deg=rot_threshold_deg,
+        classification_mode=classification_mode,
+    )
 
-    status = "FALLO (movimiento)" if failed else "ESTABLE"
-    logger.info(f"  Criterio: {status} (umbral disp={disp_threshold_pct}% d_eq={disp_threshold_m:.4f}m, "
-                f"rot={rot_threshold_deg} deg)")
+    status = "FALLO" if failed else "ESTABLE"
+    logger.info(
+        f"  Criterio ({classification_mode}): {status} "
+        f"(umbral disp={disp_threshold_pct}% d_eq={disp_threshold_m:.4f}m, "
+        f"rot={rot_threshold_deg} deg)"
+    )
+    logger.info(f"  Flags criterio: moved={moved}, rotated={rotated}")
 
     return CaseResult(
         case_name=case_name,
@@ -450,6 +619,12 @@ def process_case(case_dir: Path, d_eq: float,
         failed=failed,
         sim_time_reached=float(chrono_df['time'].iloc[-1]),
         n_timesteps=len(chrono_df),
+        reference_time_s=ref_time_used,
+        classification_mode=classification_mode,
+        flow_gauge_id=flow_gauge_id,
+        flow_gauge_distance=flow_gauge_dist,
+        water_gauge_id=water_gauge_id,
+        water_gauge_distance=water_gauge_dist,
     )
 
 
@@ -492,8 +667,16 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
             dam_height REAL,
             boulder_mass REAL,
             boulder_rot_z REAL,
+            friction_coefficient REAL,
+            slope_inv REAL,
             dp REAL,
-            stl_file TEXT
+            stl_file TEXT,
+            reference_time_s REAL,
+            classification_mode TEXT,
+            flow_gauge_id TEXT,
+            flow_gauge_distance REAL,
+            water_gauge_id TEXT,
+            water_gauge_distance REAL
         )
     """)
 
@@ -501,7 +684,10 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
     existing_cols = {row[1] for row in cursor.execute(f"PRAGMA table_info({table})").fetchall()}
     for col, coltype in [('dam_height', 'REAL'), ('boulder_mass', 'REAL'),
                          ('boulder_rot_z', 'REAL'), ('friction_coefficient', 'REAL'),
-                         ('slope_inv', 'REAL'), ('dp', 'REAL'), ('stl_file', 'TEXT')]:
+                         ('slope_inv', 'REAL'), ('dp', 'REAL'), ('stl_file', 'TEXT'),
+                         ('reference_time_s', 'REAL'), ('classification_mode', 'TEXT'),
+                         ('flow_gauge_id', 'TEXT'), ('flow_gauge_distance', 'REAL'),
+                         ('water_gauge_id', 'TEXT'), ('water_gauge_distance', 'REAL')]:
         if col not in existing_cols:
             cursor.execute(f"ALTER TABLE {table} ADD COLUMN {col} {coltype}")
             logger.info(f"  SQLite: columna '{col}' agregada a tabla '{table}'")
@@ -516,9 +702,12 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
                 moved, rotated, failed,
                 sim_time_reached, n_timesteps,
                 dam_height, boulder_mass, boulder_rot_z,
-                friction_coefficient, slope_inv, dp, stl_file
+                friction_coefficient, slope_inv, dp, stl_file,
+                reference_time_s, classification_mode,
+                flow_gauge_id, flow_gauge_distance,
+                water_gauge_id, water_gauge_distance
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         """, (
             row['case_name'],
@@ -532,6 +721,9 @@ def save_to_sqlite(results: list, db_path: Path, table: str = 'results'):
             row.get('boulder_rot_z', 0.0), row.get('friction_coefficient', 0.0),
             row.get('slope_inv', 20.0),
             row.get('dp', 0.0), row.get('stl_file', ''),
+            row.get('reference_time_s', 0.0), row.get('classification_mode', 'combined'),
+            row.get('flow_gauge_id', ''), row.get('flow_gauge_distance', float('nan')),
+            row.get('water_gauge_id', ''), row.get('water_gauge_distance', float('nan')),
         ))
 
     conn.commit()

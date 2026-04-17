@@ -256,6 +256,7 @@ def _patch_runner(prefix: str, sqlite_table: str) -> None:
                 processed_dir,
                 d_eq=d_eq,
                 boulder_mass=base.BASE_PARAMS["boulder_mass"],
+                **base.PROCESS_CASE_KWARGS,
             )
         except Exception as exc:
             entry["status"] = "FALLO_ANALISIS"
@@ -279,6 +280,13 @@ def _patch_runner(prefix: str, sqlite_table: str) -> None:
                 "max_contact_force_N": case_result.max_contact_force,
                 "max_flow_velocity_ms": case_result.max_flow_velocity,
                 "max_water_height_m": case_result.max_water_height,
+                "criterion_mode": case_result.classification_mode,
+                "criterion_class": "FALLO" if case_result.failed else "ESTABLE",
+                "criterion_reference_time_s": case_result.reference_time_s,
+                "moved": case_result.moved,
+                "rotated": case_result.rotated,
+                "flow_gauge_id": case_result.flow_gauge_id,
+                "water_gauge_id": case_result.water_gauge_id,
                 "sim_time_s": case_result.sim_time_reached,
                 "n_timesteps": case_result.n_timesteps,
                 "n_particles": run_metrics["n_particles"],
@@ -324,6 +332,17 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--time-max", type=float, default=10.0)
     parser.add_argument("--ft-pause", type=float, default=0.5)
     parser.add_argument("--chrono-savedata", type=float, default=0.001)
+    parser.add_argument(
+        "--classification-mode",
+        choices=["combined", "displacement_only", "rotation_only"],
+        default="displacement_only",
+    )
+    parser.add_argument(
+        "--reference-time",
+        type=float,
+        default=None,
+        help="Referencia temporal para displacement/rotation.",
+    )
     parser.add_argument("--dps", type=_parse_dps, default=[0.004, 0.003, 0.002])
     parser.add_argument("--prefix")
     parser.add_argument("--desde", type=float)
@@ -361,6 +380,10 @@ def main() -> None:
             "chrono_savedata": args.chrono_savedata,
         }
     )
+    base.PROCESS_CASE_KWARGS = {
+        "classification_mode": args.classification_mode,
+        "reference_time_s": args.reference_time,
+    }
 
     base.STATUS_FILE = outputs["status"]
     base.RESULTS_CSV = outputs["csv"]
@@ -394,6 +417,10 @@ def main() -> None:
     base.logger.info(f"csv: {base.RESULTS_CSV}")
     base.logger.info(f"gci: {outputs['gci']}")
     base.logger.info(f"sqlite table: {sqlite_table}")
+    base.logger.info(
+        f"criterion: mode={args.classification_mode}, "
+        f"reference_time={args.reference_time}"
+    )
 
     base.run_convergence_study(desde_dp=args.desde, solo_analisis=args.solo_analisis)
 
