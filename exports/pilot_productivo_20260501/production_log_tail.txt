@@ -1,0 +1,220 @@
+02:17:35 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+02:17:35 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_frontier\prod_pilot_frontier_Def.xml
+02:17:35 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+02:17:35 INFO:   Canal: 10 verts, 12 faces, watertight=False
+02:17:35 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_frontier\canal_1to20.stl
+02:17:35 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_frontier
+02:17:35 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_frontier\canal_verificacion.png
+02:17:35 INFO:   [1/3] Geometry: OK (prod_pilot_frontier_Def.xml)
+02:17:35 INFO:   Timeout: sin limite (dp=0.003)
+02:17:35 INFO: === Ejecutando caso: prod_pilot_frontier ===
+02:17:35 INFO:   [prod_pilot_frontier] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe prod_pilot_frontier_Def prod_pilot_frontier_out/prod_pilot_frontier -save:all
+02:17:42 INFO:   [prod_pilot_frontier] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 prod_pilot_frontier_out/prod_pilot_frontier prod_pilot_frontier_out
+06:27:07 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+06:27:07 INFO:   [prod_pilot_frontier] Simulacion completada exitosamente
+06:27:07 INFO:   [prod_pilot_frontier] Limpieza desactivada (cleanup_binaries=false)
+06:27:07 INFO:   [prod_pilot_frontier] Duracion total: 14971.4s
+06:27:07 INFO:   [2/3] Simulacion: OK (14971.4s, 24 CSVs)
+06:27:07 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+06:27:07 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+06:27:07 INFO:   Densidad:    1886.0 kg/m^3
+06:27:07 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+06:27:07 INFO:   d_eq:        0.1004 m (10.0 cm)
+06:27:07 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+06:27:07 INFO:   dim_min/dp:  (requiere dp para calcular)
+06:27:07 INFO: Procesando caso: prod_pilot_frontier
+06:27:07 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+06:27:07 INFO:   Baseline temporal: t_ref=0.5000s
+06:27:07 INFO:   Desplazamiento max: 0.005042m (5.02% de d_eq=0.1004m)
+06:27:07 INFO:   Rotacion acumulada max: 5.08 grados
+06:27:07 INFO:   Velocidad max boulder: 0.1000 m/s
+06:27:07 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+06:27:07 INFO:   Fuerza SPH max: 9.1751N, Contacto max: 10753.7615N
+06:27:07 INFO:   Gauges: 12 velocity, 8 maxZ
+06:27:07 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8167 m/s
+06:27:07 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0680m
+06:27:07 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+06:27:07 INFO:   Flags criterio: moved=True, rotated=True
+06:27:07 INFO:   [3/3] Analisis: OK → FALLO (disp=0.0050m, rot=5.1deg)
+06:27:07 INFO: 
+  >>> prod_pilot_frontier: MOVIMIENTO en 4h 9min
+06:27:07 INFO:       disp=0.0050m  rot=5.1deg  vel=0.100m/s  F_sph=9.2N
+06:27:07 INFO:       V_flujo=0.817m/s  H_agua=0.0680m
+06:27:07 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+06:27:07 INFO: 
+=================================================================
+  CASO 4/5 [prod_pilot_stronger_hydraulic]  [##################------------] 60%
+  h=0.250m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 3   Fallidos: 0   Quedan: 1
+  Tiempo transcurrido: 12h 28min
+  Promedio: 249.5 min/caso (ultimos 3)
+  ETA: 4h 9min restantes  -->  fin ~01/05 10:36
+  Tasa exito: 100% (3/3)
+=================================================================
+06:27:07 INFO: 
+============================================================
+06:27:07 INFO: 
+============================================================
+06:27:07 INFO: CASO prod_pilot_stronger_hydraulic: dam_h=0.250m, mass=1.000kg, rot_z=0.0deg, mu_s=0.300, slope=1:20, dp=0.003
+06:27:07 INFO: ============================================================
+06:27:07 INFO: Calculando propiedades del boulder para caso 'prod_pilot_stronger_hydraulic'...
+06:27:07 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+06:27:07 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+06:27:07 INFO:   Densidad:    1886.0 kg/m^3
+06:27:07 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+06:27:07 INFO:   d_eq:        0.1004 m (10.0 cm)
+06:27:07 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+06:27:07 INFO:   dim_min/dp:  (requiere dp para calcular)
+06:27:07 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+06:27:07 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+06:27:07 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+06:27:07 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+06:27:07 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+06:27:07 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+06:27:07 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+06:27:07 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+06:27:07 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+06:27:07 INFO:     V05: -> upstream x=6.4139, z=0.0237
+06:27:07 INFO:     V06: -> centroide x=6.4794
+06:27:07 INFO:     V07: -> downstream x=6.5904, z=0.0325
+06:27:07 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+06:27:07 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+06:27:07 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+06:27:07 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+06:27:07 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_stronger_hydraulic\prod_pilot_stronger_hydraulic_Def.xml
+06:27:07 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+06:27:07 INFO:   Canal: 10 verts, 12 faces, watertight=False
+06:27:07 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_stronger_hydraulic\canal_1to20.stl
+06:27:07 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_stronger_hydraulic
+06:27:07 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_stronger_hydraulic\canal_verificacion.png
+06:27:07 INFO:   [1/3] Geometry: OK (prod_pilot_stronger_hydraulic_Def.xml)
+06:27:07 INFO:   Timeout: sin limite (dp=0.003)
+06:27:07 INFO: === Ejecutando caso: prod_pilot_stronger_hydraulic ===
+06:27:07 INFO:   [prod_pilot_stronger_hydraulic] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe prod_pilot_stronger_hydraulic_Def prod_pilot_stronger_hydraulic_out/prod_pilot_stronger_hydraulic -save:all
+06:27:14 INFO:   [prod_pilot_stronger_hydraulic] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 prod_pilot_stronger_hydraulic_out/prod_pilot_stronger_hydraulic prod_pilot_stronger_hydraulic_out
+11:52:16 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+11:52:16 INFO:   [prod_pilot_stronger_hydraulic] Simulacion completada exitosamente
+11:52:16 INFO:   [prod_pilot_stronger_hydraulic] Limpieza desactivada (cleanup_binaries=false)
+11:52:16 INFO:   [prod_pilot_stronger_hydraulic] Duracion total: 19508.8s
+11:52:16 INFO:   [2/3] Simulacion: OK (19508.8s, 24 CSVs)
+11:52:16 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+11:52:16 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+11:52:16 INFO:   Densidad:    1886.0 kg/m^3
+11:52:16 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+11:52:16 INFO:   d_eq:        0.1004 m (10.0 cm)
+11:52:16 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+11:52:16 INFO:   dim_min/dp:  (requiere dp para calcular)
+11:52:16 INFO: Procesando caso: prod_pilot_stronger_hydraulic
+11:52:16 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+11:52:16 INFO:   Baseline temporal: t_ref=0.5000s
+11:52:16 INFO:   Desplazamiento max: 1.347182m (1341.54% de d_eq=0.1004m)
+11:52:16 INFO:   Rotacion acumulada max: 55.78 grados
+11:52:16 INFO:   Velocidad max boulder: 0.7211 m/s
+11:52:16 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+11:52:16 INFO:   Fuerza SPH max: 9.9565N, Contacto max: 151389.3832N
+11:52:16 INFO:   Gauges: 12 velocity, 8 maxZ
+11:52:16 INFO:   Flujo max (gauge V05, dist=0.07m): 0.9426 m/s
+11:52:16 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0743m
+11:52:16 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+11:52:16 INFO:   Flags criterio: moved=True, rotated=True
+11:52:16 INFO:   [3/3] Analisis: OK → FALLO (disp=1.3472m, rot=55.8deg)
+11:52:16 INFO: 
+  >>> prod_pilot_stronger_hydraulic: MOVIMIENTO en 5h 25min
+11:52:16 INFO:       disp=1.3472m  rot=55.8deg  vel=0.721m/s  F_sph=10.0N
+11:52:16 INFO:       V_flujo=0.943m/s  H_agua=0.0743m
+11:52:16 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+11:52:16 INFO: 
+=================================================================
+  CASO 5/5 [prod_pilot_slope_check]  [########################------] 80%
+  h=0.200m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 4   Fallidos: 0   Quedan: 0
+  Tiempo transcurrido: 17h 53min
+  Promedio: 268.4 min/caso (ultimos 4)
+  ETA: 0s restantes  -->  fin ~01/05 11:52
+  Tasa exito: 100% (4/4)
+=================================================================
+11:52:16 INFO: 
+============================================================
+11:52:16 INFO: 
+============================================================
+11:52:16 INFO: CASO prod_pilot_slope_check: dam_h=0.200m, mass=1.000kg, rot_z=0.0deg, mu_s=0.680, slope=1:10, dp=0.003
+11:52:16 INFO: ============================================================
+11:52:16 INFO: Calculando propiedades del boulder para caso 'prod_pilot_slope_check'...
+11:52:16 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -5.710593137499643, 0.0)):
+11:52:16 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+11:52:16 INFO:   Densidad:    1886.0 kg/m^3
+11:52:16 INFO:   Centro masa: [-0.021440, 0.011875, 0.016404] m (local)
+11:52:16 INFO:   d_eq:        0.1004 m (10.0 cm)
+11:52:16 INFO:   Bbox size:   0.1699 x 0.2100 x 0.0477 m
+11:52:16 INFO:   dim_min/dp:  (requiere dp para calcular)
+11:52:16 INFO:   Ajuste apoyo boulder: elevando 0.510 mm para dejar contacto exacto con la playa
+11:52:16 INFO:   dp=0.003m -> dim_min/dp = 15.9 (0.0477m / 0.003m)
+11:52:16 INFO:   Fillbox seed: (6.4786, 0.5119, 0.0669)
+11:52:16 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.066
+11:52:16 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+11:52:16 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+11:52:16 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+11:52:16 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+11:52:16 INFO:     V08: z 0.150 -> 0.2780 (fondo local)
+11:52:16 INFO:     V09: z 0.150 -> 0.2780 (fondo local)
+11:52:16 INFO:     V10: z 0.150 -> 0.2780 (fondo local)
+11:52:16 INFO:     V11: z 0.200 -> 0.3530 (fondo local)
+11:52:16 INFO:     V12: z 0.300 -> 0.6030 (fondo local)
+11:52:16 INFO:     V05: -> upstream x=6.4138, z=0.0444
+11:52:16 INFO:     V06: -> centroide x=6.4786
+11:52:16 INFO:     V07: -> downstream x=6.5897, z=0.0620
+11:52:16 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+11:52:16 INFO:     hmax04: y->0.512, z->0.2000, distlimit->0.04
+11:52:16 INFO:     hmax05: y->0.512, z->0.2750, distlimit->0.04
+11:52:16 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+11:52:16 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_slope_check\prod_pilot_slope_check_Def.xml
+11:52:16 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:10, H_ramp=0.9000m, L_end=15.0m, W=1.0m, H=1.5m
+11:52:16 INFO:   Canal: 10 verts, 12 faces, watertight=False
+11:52:16 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_slope_check\canal_1to10.stl
+11:52:16 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_slope_check
+11:52:16 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\prod_pilot_slope_check\canal_verificacion.png
+11:52:16 INFO:   [1/3] Geometry: OK (prod_pilot_slope_check_Def.xml)
+11:52:16 INFO:   Timeout: sin limite (dp=0.003)
+11:52:16 INFO: === Ejecutando caso: prod_pilot_slope_check ===
+11:52:16 INFO:   [prod_pilot_slope_check] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe prod_pilot_slope_check_Def prod_pilot_slope_check_out/prod_pilot_slope_check -save:all
+11:52:23 INFO:   [prod_pilot_slope_check] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 prod_pilot_slope_check_out/prod_pilot_slope_check prod_pilot_slope_check_out
+16:04:48 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+16:04:48 INFO:   [prod_pilot_slope_check] Simulacion completada exitosamente
+16:04:48 INFO:   [prod_pilot_slope_check] Limpieza desactivada (cleanup_binaries=false)
+16:04:48 INFO:   [prod_pilot_slope_check] Duracion total: 15152.3s
+16:04:48 INFO:   [2/3] Simulacion: OK (15152.3s, 24 CSVs)
+16:04:48 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -5.710593137499643, 0.0)):
+16:04:48 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+16:04:48 INFO:   Densidad:    1886.0 kg/m^3
+16:04:48 INFO:   Centro masa: [-0.021440, 0.011875, 0.016404] m (local)
+16:04:48 INFO:   d_eq:        0.1004 m (10.0 cm)
+16:04:48 INFO:   Bbox size:   0.1699 x 0.2100 x 0.0477 m
+16:04:48 INFO:   dim_min/dp:  (requiere dp para calcular)
+16:04:48 INFO: Procesando caso: prod_pilot_slope_check
+16:04:48 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+16:04:48 INFO:   Baseline temporal: t_ref=0.5000s
+16:04:48 INFO:   Desplazamiento max: 0.001426m (1.42% de d_eq=0.1004m)
+16:04:48 INFO:   Rotacion acumulada max: 7.43 grados
+16:04:48 INFO:   Velocidad max boulder: 0.1000 m/s
+16:04:49 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+16:04:49 INFO:   Fuerza SPH max: 9.3186N, Contacto max: 10799.7508N
+16:04:49 INFO:   Gauges: 12 velocity, 8 maxZ
+16:04:49 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7698 m/s
+16:04:49 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.1169m
+16:04:49 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+16:04:49 INFO:   Flags criterio: moved=False, rotated=True
+16:04:49 INFO:   [3/3] Analisis: OK → ESTABLE (disp=0.0014m, rot=7.4deg)
+16:04:49 INFO: 
+  >>> prod_pilot_slope_check: ESTABLE en 4h 12min
+16:04:49 INFO:       disp=0.0014m  rot=7.4deg  vel=0.100m/s  F_sph=9.3N
+16:04:49 INFO:       V_flujo=0.770m/s  H_agua=0.1169m
+16:04:49 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+16:04:49 INFO: 
+############################################################
+16:04:49 INFO: # PRODUCCION COMPLETADA
+16:04:49 INFO: # Exitosos: 5/5
+16:04:49 INFO: # Fallidos: 0/5
+16:04:49 INFO: # Tiempo total: 22.1h (0.9d)
+16:04:49 INFO: ############################################################

@@ -1,0 +1,10 @@
+cache/
+transfers/raw/
+snapshots/*
+!snapshots/README.md
+snapshots/large/
+evidence/**/raw-*
+evidence/**/*.tmp
+**/*.bak
+**/*.secret
+.env

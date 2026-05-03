@@ -1,0 +1,6 @@
+case_id,dam_height,boulder_mass,boulder_rot_z,friction_coefficient,slope_inv
+prod_pilot_stable_high_mu,0.20,1.0,0,0.75,20
+prod_pilot_fail_low_mu,0.20,1.0,0,0.60,20
+prod_pilot_frontier,0.20,1.0,0,0.6806,20
+prod_pilot_stronger_hydraulic,0.25,1.0,0,0.30,20
+prod_pilot_slope_check,0.20,1.0,0,0.68,10

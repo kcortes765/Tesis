@@ -28,6 +28,9 @@ from data_cleaner import process_case, save_to_sqlite
 
 logger = logging.getLogger(__name__)
 
+PRODUCTION_CLASSIFICATION_MODE = "displacement_only"
+PRODUCTION_REFERENCE_TIME_S = 0.5
+
 # Notificaciones (opcional — no falla si no esta)
 try:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
@@ -257,8 +260,13 @@ def run_pipeline_case(row: pd.Series, project_root: Path,
         )
         d_eq = boulder_props['d_eq']
 
-        case_result = process_case(processed_dir, d_eq=d_eq,
-                                           boulder_mass=row['boulder_mass'])
+        case_result = process_case(
+            processed_dir,
+            d_eq=d_eq,
+            boulder_mass=row['boulder_mass'],
+            reference_time_s=PRODUCTION_REFERENCE_TIME_S,
+            classification_mode=PRODUCTION_CLASSIFICATION_MODE,
+        )
         # Inyectar parametros de entrada para ML surrogate
         case_result.dam_height = row['dam_height']
         case_result.boulder_mass = row['boulder_mass']

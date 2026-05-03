@@ -1,0 +1,40 @@
+blocked_combinations:
+  - command_contains: "run_production.py"
+    flags: ["--pilot", "--prod"]
+    reason: "Modo piloto y produccion ambiguos."
+
+requires_dry_run:
+  - "--prod"
+  - "production"
+  - "run_production.py"
+  - "sbatch"
+  - "cuda"
+  - "gpu"
+
+requires_limits:
+  - flag: "--max-cases"
+    when:
+      - "--prod"
+      - "run_production.py"
+      - "batch"
+
+requires_matrix:
+  - "run_production.py"
+  - "--prod"
+
+critical_patterns:
+  - "rm -rf"
+  - "del /s"
+  - "Remove-Item -Recurse"
+  - "rmdir /s"
+  - "format "
+  - "DROP DATABASE"
+  - "git clean -fdx"
+
+production_requires:
+  - dry_run_evidence
+  - max_cases
+  - explicit_matrix
+  - output_dir
+  - no_overwrite
+  - approval_token

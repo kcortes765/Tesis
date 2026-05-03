@@ -39,3 +39,33 @@ Thumbs.db
 
 # Agent internal state
 .agente/
+
+# DualSPHysics heavy outputs
+cases/**/Part*
+cases/**/*_out/
+cases/**/*.bi4
+cases/**/*.vtk
+cases/**/*.vtp
+cases/**/*.dat
+cases/**/*.out
+cases/**/*.bin
+cases/**/*.csv
+cases/**/*.xml
+cases/**/*.stl
+
+# Keep processed results under data/results versionable if desired
+!data/results/*.csv
+!data/results/*_gci.json
+!data/results.sqlite
+
+# Codex local context
+.codex_context/
+
+# Runtime production state and heavy processed outputs
+data/production_status.json
+data/production_*.log
+data/processed/
+
+# Lightweight audited exports are intended to be versionable
+!exports/
+!exports/**

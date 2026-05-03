@@ -1,37 +1,55 @@
-# STATUS — Thesis OS
+# STATUS
 
-**Última actualización:** 2026-04-08 (sesión 10)
+Ultima actualizacion: 2026-05-01
+Proyecto: SPH-IncipientMotion / Tesis UCN 2026
+Ruta: C:\Users\Admin\Desktop\SPH-Tesis
+Estado actual: convergencia cerrada; piloto productivo de 5 casos completado; export liviano listo para sincronizar.
 
-## Estado general
-Activo — Convergencia dp v2 completada; criterio final de dp aún abierto.
+## Hechos verificados
+- El piloto productivo termino `completed`, 5/5 casos OK, 0 fallos numericos, tiempo total 22.11 h.
+- `data/production_status.json` reporta `phase=completed`, `completed=5`, `failed=0`, `progress=5/5`.
+- `exports/pilot_productivo_20260501/` contiene export liviano trazable de 18 archivos y ~55 KB.
+- La convergencia de frontera ya incluye el probe fino `conv_probe_dp002_f06625`, que termino OK y estable por `displacement_only`.
+- La carpeta `data/figures/derived_convergence_graphics/` contiene figuras/tablas regeneradas con `conv_edge_*`, `conv_reassure_*`, `conv_repeat_*` y `conv_probe_*`.
+- `docs/CONFIGURACION_PRODUCTIVA_TESIS.md` existe como documento de configuracion productiva oficial.
+- `config/pilot_productivo_20260430.csv` existe como matriz piloto explicita de 5 casos.
+- `scripts/run_production.py` ya acepta `--matrix`, `--max-cases`, `--allow-large` y `--dry-run`.
+- `apos-system/` existe como semilla local APOS-X con docs, adaptador Codex y `apos-run`.
+- `.agents/skills` contiene solo tres skills visibles: `apos`, `apos-status` y `guardar`.
+- `apos-run` bloqueo correctamente `run_production.py --pilot --prod` en preflight.
 
-## Fase actual
-Fase 3 — Interpretar convergencia nueva → decidir criterio de dp con Moris → Round 3 / v3 focalizada si hace falta.
+## Decisiones activas
+- Adoptar `dp=0.003` como malla operativa de produccion, sin vender convergencia asintotica fuerte.
+- Usar `classification_mode=displacement_only` como criterio primario.
+- Usar `reference_time_s=0.5` para medir desplazamiento desde una referencia temporal posterior al settling inicial.
+- Tratar la rotacion como diagnostico, no como criterio primario de falla.
+- No correr mas convergencia por ahora.
+- No lanzar campana parametrica grande hasta validar el piloto productivo.
+- Migrar APOS localmente hacia APOS-X sin tocar skills globales/system.
 
-## Qué está listo
-- Pipeline 5D verificado con canal paramétrico
-- Screening R1 completo (24/25 dp=0.005) + análisis
-- Screening R2 completo (15/15 dp=0.004) + análisis profundo
-- R2 hallazgos: fricción domina, masa segunda, frontera multidimensional
-- Round 3 diseñado (10 casos, `config/screening_round3.csv`)
-- Convergencia v2 corrida: 7/8 dp exitosos, `dp=0.0015` falló en GenCase
-- Datos completos v2 importados (`convergencia_v2.csv`, `convergencia_v2_gci.json`, temporales, log)
-- Diagnóstico técnico preliminar: forcing y onset convergen mejor que la trayectoria post-falla
+## Inferencias vigentes
+- El piloto productivo debe servir como prueba operacional completa del pipeline antes de cualquier tanda grande.
+- APOS local necesita modernizacion: los archivos historicos quedaron desfasados y faltan componentes APOS-X.
+- El safe-harness debe envolver o complementar las guardas ya agregadas a `run_production.py`.
 
-## Qué falta
-- **Definir criterio de convergencia válido para la tesis** (onset vs trayectoria completa)
-- **Elegir dp producción** en la configuración nueva
-- **Reunión con Moris** para cerrar enfoque metodológico
-- **Round 3** o convergencia v3 focalizada, según lo que pida el profe
-- Diseñar LHS 5D (o 4D si rot_z no importa tras R3)
-- Campaña producción + AL loop
-- Cap 6 con resultados paramétricos
+## Pendientes criticos
+- Revisar cientificamente el export del piloto antes de definir primera tanda productiva.
+- Sincronizar por Git solo codigo/config/docs/APOS/exports livianos.
+- Completar instalacion local APOS-X: estructura, politica, ledger append-only y evidencia de migracion.
+- Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Riesgos activos
-- El caso Moris `dam_h=0.30` puede no ser el caso correcto para decidir dp si la pregunta científica es incipient motion
-- `SPH force` pico y `max_rotation` actual no son métricas robustas para convergencia fina
-- `dp=0.002` es muy costoso (~34 h) y `dp=0.0015` parece exceder límites prácticos
-- Persistencia inconsistente: el log reporta guardado en `convergence_v2`, pero la `results.sqlite` local no muestra esa tabla
+- Un comando productivo sin matriz explicita o sin limite de casos podria lanzar demasiadas simulaciones.
+- La memoria APOS historica tiene encoding mojibake y estado desfasado; no debe usarse como fuente unica.
+- Las rutas globales historicas `C:\Seba` y `C:\Users\kevin` no existen en esta WS.
+- El piloto actual consume GPU; no abrir otra tanda encima.
 
-## Próximo hito
-Reunión con Moris → criterio metodológico claro → decisión: extraer onset de v2 o correr v3 cerca de la frontera.
+## Evidencia reciente
+- `data/production_status.json`
+- `data/production_20260430_1758.log`
+- `exports/pilot_productivo_20260501/pilot_summary.csv`
+- `exports/pilot_productivo_20260501/pilot_summary.md`
+- `data/results/conv_probe_dp002_f06625.csv`
+- `data/figures/derived_convergence_graphics/master_convergence_frontier.csv`
+- `docs/CONFIGURACION_PRODUCTIVA_TESIS.md`
+- `config/pilot_productivo_20260430.csv`

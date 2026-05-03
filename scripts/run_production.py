@@ -29,7 +29,13 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / 'src'))
 
-from main_orchestrator import load_param_ranges, generate_experiment_matrix, run_pipeline_case
+from main_orchestrator import (
+    PRODUCTION_CLASSIFICATION_MODE,
+    PRODUCTION_REFERENCE_TIME_S,
+    load_param_ranges,
+    generate_experiment_matrix,
+    run_pipeline_case,
+)
 from batch_runner import load_config
 from data_cleaner import save_to_sqlite
 from ml_surrogate import run_surrogate
@@ -162,6 +168,81 @@ def _progress_banner(i, n_pending, n_total, desde, status, case_durations,
 MAX_FAIL_RATE = 0.30  # Abort si >30% de los casos fallan
 
 
+def _resolve_project_path(raw_path: str) -> Path:
+    """Resuelve rutas absolutas o relativas a la raiz del proyecto."""
+    path = Path(raw_path)
+    if not path.is_absolute():
+        path = PROJECT_ROOT / path
+    return path
+
+
+def _validate_matrix_safety(matrix: pd.DataFrame, matrix_csv: Path,
+                            max_cases: int, allow_large: bool) -> None:
+    """Evita lanzar matrices grandes por accidente."""
+    if max_cases < 1:
+        raise ValueError("--max-cases debe ser >= 1")
+
+    n_cases = len(matrix)
+    if n_cases > max_cases and not allow_large:
+        raise SystemExit(
+            f"ABORT: matriz {matrix_csv} tiene {n_cases} casos, "
+            f"supera --max-cases={max_cases}. "
+            "Usa una matriz mas pequena o agrega --allow-large de forma explicita."
+        )
+
+
+def _dry_run_report(matrix: pd.DataFrame, matrix_csv: Path,
+                    config: dict, dp: float, mode: str) -> None:
+    """Lista configuracion/casos sin crear carpetas ni llamar simuladores."""
+    cases_dir = PROJECT_ROOT / config['paths']['cases_dir']
+    processed_dir = PROJECT_ROOT / config['paths']['processed_dir']
+    db_path = PROJECT_ROOT / 'data' / 'results.sqlite'
+
+    logger.info("\n%s", "#" * 65)
+    logger.info("# DRY RUN PILOTO/PRODUCCION - NO SE EJECUTA GPU")
+    logger.info("# Matriz: %s", matrix_csv)
+    logger.info("# Casos: %d", len(matrix))
+    logger.info("# Columnas: %s", ", ".join(matrix.columns))
+    logger.info("# dp: %s", dp)
+    logger.info("# modo: %s", mode)
+    logger.info("# classification_mode: %s", PRODUCTION_CLASSIFICATION_MODE)
+    logger.info("# reference_time_s: %.3f", PRODUCTION_REFERENCE_TIME_S)
+    logger.info("# cases_dir: %s", cases_dir)
+    logger.info("# processed_dir: %s", processed_dir)
+    logger.info("# sqlite: %s", db_path)
+    logger.info("# production log: data/production_YYYYMMDD_HHMM.log")
+    logger.info("%s", "#" * 65)
+
+    for i, (_, row) in enumerate(matrix.iterrows(), 1):
+        case_id = row['case_id']
+        dam_height = float(row['dam_height'])
+        boulder_mass = float(row['boulder_mass'])
+        rot_z = float(row.get('boulder_rot_z', 0.0))
+        friction = float(row.get('friction_coefficient', 0.3))
+        slope_inv = float(row.get('slope_inv', 20.0))
+
+        logger.info(
+            "[DRY RUN] %02d/%02d %s | dam_height=%.3f | mass=%.3f | "
+            "rot_z=%.1f | mu=%.4f | slope=1:%.0f | dp=%.4f | "
+            "classification_mode=%s | reference_time_s=%.3f",
+            i,
+            len(matrix),
+            case_id,
+            dam_height,
+            boulder_mass,
+            rot_z,
+            friction,
+            slope_inv,
+            dp,
+            PRODUCTION_CLASSIFICATION_MODE,
+            PRODUCTION_REFERENCE_TIME_S,
+        )
+        logger.info("          case_dir: %s", cases_dir / case_id)
+        logger.info("          processed_dir: %s", processed_dir / case_id)
+
+    logger.info("\nDRY RUN completado. No se llamo GenCase ni DualSPHysics.")
+
+
 # ---------------------------------------------------------------------------
 # Pre-flight
 # ---------------------------------------------------------------------------
@@ -217,7 +298,11 @@ def run_production(args):
     """Pipeline de produccion completo."""
     config_path = PROJECT_ROOT / 'config' / 'dsph_config.json'
     config = load_config(config_path)
-    matrix_csv = PROJECT_ROOT / 'config' / 'experiment_matrix.csv'
+    matrix_csv = (
+        _resolve_project_path(args.matrix)
+        if args.matrix
+        else PROJECT_ROOT / 'config' / 'experiment_matrix.csv'
+    )
 
     # Cargar rangos
     param_ranges = load_param_ranges()
@@ -234,15 +319,16 @@ def run_production(args):
     ranges_json = PROJECT_ROOT / 'config' / 'param_ranges.json'
     with open(ranges_json) as f:
         ranges_cfg = json.load(f)
+    sampling_cfg = ranges_cfg.get('sampling', {})
     if args.pilot:
-        n_samples = ranges_cfg['sampling'].get('n_samples_pilot', 100)
+        n_samples = sampling_cfg.get('n_samples_pilot', 100)
         logger.info(f"MODO PILOTO: {n_samples} muestras")
     elif args.prod:
-        n_samples = ranges_cfg['sampling']['n_samples_prod']
+        n_samples = sampling_cfg.get('n_samples_prod', sampling_cfg.get('n_samples_initial', 25))
     else:
-        n_samples = ranges_cfg['sampling']['n_samples_dev']
+        n_samples = sampling_cfg.get('n_samples_dev', 5)
 
-    # Solo generar?
+    # Solo generar? Siempre escribe en la matriz seleccionada.
     if args.generate:
         n = args.generate
         generate_experiment_matrix(n, output_csv=matrix_csv, param_ranges=param_ranges)
@@ -257,6 +343,7 @@ def run_production(args):
     # Leer matriz
     matrix = pd.read_csv(matrix_csv)
     n_total = len(matrix)
+    _validate_matrix_safety(matrix, matrix_csv, args.max_cases, args.allow_large)
 
     # Recovery: saltar casos ya completados
     desde = args.desde if args.desde else 0
@@ -265,13 +352,18 @@ def run_production(args):
         matrix = matrix.iloc[desde:]
 
     n_pending = len(matrix)
+    mode = 'prod' if args.prod else 'dev'
+
+    if args.dry_run:
+        _dry_run_report(matrix, matrix_csv, config, dp, mode)
+        return
 
     # Status inicial
     campaign_start = datetime.now()
     status = {
         'phase': 'production',
         'dp': dp,
-        'mode': 'prod' if args.prod else 'dev',
+        'mode': mode,
         'total_cases': n_total,
         'desde': desde,
         'pending': n_pending,
@@ -485,6 +577,12 @@ if __name__ == '__main__':
                         help='Estudio piloto (n_samples_pilot del JSON)')
     parser.add_argument('--generate', type=int, default=0,
                         help='Solo generar N muestras LHS y salir')
+    parser.add_argument('--matrix',
+                        help='CSV explicito de casos. Ruta absoluta o relativa al proyecto')
+    parser.add_argument('--max-cases', type=int, default=5,
+                        help='Guardia de seguridad: aborta si la matriz supera N casos')
+    parser.add_argument('--allow-large', action='store_true',
+                        help='Permite matrices con mas filas que --max-cases')
     parser.add_argument('--desde', type=int, default=0,
                         help='Recovery: continuar desde caso N (0-indexed)')
     parser.add_argument('--dry-run', action='store_true',

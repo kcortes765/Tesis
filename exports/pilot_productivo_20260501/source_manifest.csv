@@ -1,0 +1,7 @@
+relative_path,bytes,last_write_time
+scripts/run_production.py,22515,2026-04-30T17:42:45
+src/main_orchestrator.py,20032,2026-04-30T17:07:22
+config/pilot_productivo_20260430.csv,296,2026-04-30T17:42:21
+data/production_status.json,511,2026-05-01T16:04:49
+data/production_20260430_1758.log,30960,2026-05-01T16:04:49
+data/results.sqlite,528384,2026-05-01T16:04:49

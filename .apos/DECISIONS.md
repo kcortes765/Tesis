@@ -178,3 +178,33 @@ Append-only. Si algo cambia, no se borra: se marca como revertido o supersedido.
 **Fecha:** 2026-04-06
 **Decisión:** Decidir dp con displacement + velocity + SPH force. Rotation como diagnóstico (promueve solo si monotónica). No usar contact_force, water_h ni flow_vel como criterio.
 **Razón:** Rotation mostró comportamiento oscilatorio en el estudio anterior (GCI no aplica bajo Celik 2008). SPH force con baja variabilidad es buena señal en convergencia, no debilidad. Contact force descartada (DEC-006, CV=82%). water_h/flow_vel tienen debilidad de postproceso (gauge nearest).
+
+## DEC-20260501-001 - Migrar APOS local a APOS-X sin tocar global
+
+Fecha: 2026-05-01
+Estado: aceptada
+Tipo: migracion
+Alcance: proyecto
+
+### Decision
+Preparar este proyecto para APOS-X local-first: memoria `.apos/` austera, trazabilidad append-only, politica de contexto, evidencia de migracion y base versionada `apos-system/`.
+
+### Contexto
+El estado APOS historico estaba desfasado respecto al cierre real de convergencia y faltaban archivos centrales de APOS-X. El piloto productivo de 5 casos esta en ejecucion, por lo que no se deben tocar outputs ni lanzar simulaciones nuevas.
+
+### Evidencia
+- `.apos/snapshots/apox-migration-20260501_001524`
+- `.apos/evidence/migration/apox-readiness-20260501.md`
+- `data/production_status.json`
+
+### Alternativas consideradas
+- Modificar skills globales: descartado por riesgo y porque la especificacion exige confirmacion explicita.
+- Esperar a que termine el piloto: descartado para memoria/docs locales, aceptado para cualquier ejecucion productiva.
+
+### Consecuencias
+- Los nuevos chats deben partir por `.apos/CONTEXT_POLICY.md` e `.apos/INDEX.md`.
+- Las skills y el harness se preparan localmente antes de cualquier instalacion global.
+- Las entradas antiguas de `DECISIONS.md` se conservan aunque tengan encoding historico.
+
+### Supersede / relacionadas
+- Relacionada con DEC-026 y DEC-028.
