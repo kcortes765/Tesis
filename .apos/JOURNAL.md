@@ -303,3 +303,43 @@ Auditar el fin del lote batch2, crear un export liviano trazable y actualizar AP
 - Batch2 no es campana parametrica completa.
 - La rotacion sigue siendo diagnostica, no criterio primario.
 - No versionar outputs crudos pesados.
+
+## 2026-05-06 00:00 - Sincronizacion WS a Git
+
+### Objetivo
+Transferir al PC local por Git el estado versionable de la WS, incluyendo codigo, APOS, docs, configs, resultados livianos, exports y tablas de convergencia/batch2.
+
+### Acciones
+- Se audito `git status`, remoto y rama actual.
+- Se detecto que un `git add -A` inicial intentaria versionar ~11 GB, incluyendo blobs crudos de DualSPHysics de hasta ~2.1 GB.
+- Se actualizo `.gitignore` para permitir exports livianos pero excluir binarios crudos dentro de `exports/`.
+- Se excluyeron artefactos temporales contaminados: `CODEX_START_HERE.md` y `codex_context_sph.zip`.
+- Se verifico que el paquete versionable quedaba en ~492 MB y sin archivos >50 MB.
+- Se hizo commit y push a `origin/master`.
+
+### Archivos modificados
+- `.gitignore`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/JOURNAL.md`
+- multiples archivos versionables de codigo, docs, configs, resultados, exports y figuras.
+
+### Comandos importantes
+```text
+git add -A
+git commit -m "Sync WS thesis results and batch2 export"
+git push origin master
+```
+
+### Resultados
+- Commit creado: `646c567 Sync WS thesis results and batch2 export`.
+- Push exitoso: `master -> origin/master`.
+- Estado posterior: `master...origin/master` sin diferencias.
+
+### Proximos pasos
+- En el PC local: `git pull origin master`.
+- Luego auditar `exports/batch2_productivo_20260505/batch2_summary.csv`.
+
+### Advertencias metodologicas
+- No se subieron binarios crudos pesados (`*.bi4`, `*.ibi4`, VTK, `Part*`, `*_out/`).
+- Para traer absolutamente los crudos, usar disco externo, storage separado o Git LFS configurado deliberadamente.

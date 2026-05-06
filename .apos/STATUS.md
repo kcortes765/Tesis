@@ -3,7 +3,7 @@
 Ultima actualizacion: 2026-05-06
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta: C:\Users\Admin\Desktop\SPH-Tesis
-Estado actual: convergencia cerrada; piloto productivo exportado; batch2 productivo chico completado y exportado.
+Estado actual: convergencia cerrada; piloto productivo exportado; batch2 productivo chico completado/exportado; sincronizacion Git WS->PC preparada.
 
 ## Hechos verificados
 - Convergencia cerrada para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
@@ -23,6 +23,7 @@ Estado actual: convergencia cerrada; piloto productivo exportado; batch2 product
 - `scripts/run_production.py` acepta `--matrix`, `--max-cases`, `--allow-large` y `--dry-run`.
 - `.agents/skills` contiene solo tres skills visibles: `apos`, `apos-status` y `guardar`.
 - `apos-system/` existe como semilla local APOS-X con docs, adaptador Codex y `apos-run`.
+- Se hizo commit y push a `origin/master`: `646c567 Sync WS thesis results and batch2 export`.
 
 ## Decisiones activas
 - Adoptar `dp=0.003` como malla operativa de produccion, sin vender convergencia asintotica fuerte.
@@ -63,3 +64,4 @@ Estado actual: convergencia cerrada; piloto productivo exportado; batch2 product
 - `exports/batch2_productivo_20260505/batch2_summary.md`
 - `exports/batch2_productivo_20260505/production_status.json`
 - `exports/batch2_productivo_20260505/production_log_tail.txt`
+- Git commit `646c567`

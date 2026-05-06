@@ -2,11 +2,12 @@
 
 ## Proxima accion recomendada
 1. Leer `exports/batch2_productivo_20260505/batch2_summary.csv` y `batch2_summary.md`.
-2. Auditar cientificamente el patron piloto + batch2: frontera base, efecto de `H`, efecto de `slope_inv=10`, y rotacion diagnostica.
-3. Decidir si el siguiente paso es:
+2. En el PC local, ejecutar `git pull origin master` para recibir el commit `646c567`.
+3. Auditar cientificamente el patron piloto + batch2: frontera base, efecto de `H`, efecto de `slope_inv=10`, y rotacion diagnostica.
+4. Decidir si el siguiente paso es:
    - mini-batch dirigido de pocos casos, o
    - primer surrogate exploratorio con los datos existentes.
-4. Si se corre otro lote, crear matriz explicita, ejecutar dry-run y mantener `--max-cases`.
+5. Si se corre otro lote, crear matriz explicita, ejecutar dry-run y mantener `--max-cases`.
 
 ## Contexto minimo para continuar
 - Convergencia cerrada: `dp=0.003` queda como malla operativa.
@@ -15,6 +16,7 @@
 - Rotacion: diagnostico.
 - Piloto productivo: 5/5 OK, export en `exports/pilot_productivo_20260501/`.
 - Batch2 productivo chico: 8/8 OK, export en `exports/batch2_productivo_20260505/`.
+- Sincronizacion Git WS->PC: push a `origin/master` en commit `646c567`.
 - Batch2 produjo 3 FALLO y 5 ESTABLE por desplazamiento.
 - Frontera base reforzada: `H=0.20`, `slope=1:20`, FALLO en `mu=0.675`, ESTABLE en `mu=0.685` y `0.700`.
 - Hidraulica fuerte `H=0.225` fallo en `mu=0.680` y `0.720`.
