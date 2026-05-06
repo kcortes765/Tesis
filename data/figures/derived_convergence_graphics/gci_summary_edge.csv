@@ -1,0 +1,17 @@
+prefix,mu,metric,column,conv_type,in_asymptotic,GCI_fine,GCI_med,AR,is_primary
+conv_edge_f0675_full,0.675,displacement,max_displacement_m,monotonic,False,7.223320158737512,3.498377829833252,0.37640336868171775,True
+conv_edge_f0675_full,0.675,velocity,max_velocity_ms,monotonic,False,0.13296642585103793,2.3981589428934514e-05,3.562631735348572e-05,True
+conv_edge_f0675_full,0.675,sph_force,max_sph_force_N,oscillatory,False,0.008448474191002172,0.5627919718110989,13.158445186904425,True
+conv_edge_f0675_full,0.675,rotation,max_rotation_deg,oscillatory,False,0.09145908264445067,0.025128318778721893,0.054271466328698725,False
+conv_edge_f0680_full,0.68,displacement,max_displacement_m,oscillatory,False,0.9271815447762563,0.17441364769678627,0.0639750890641664,True
+conv_edge_f0680_full,0.68,velocity,max_velocity_ms,monotonic,False,0.13309862114088472,1.79137431441277e-05,2.6585678603887432e-05,True
+conv_edge_f0680_full,0.68,sph_force,max_sph_force_N,divergent,False,0.014371829112925397,0.5602773070990261,7.7006245893922,True
+conv_edge_f0680_full,0.68,rotation,max_rotation_deg,monotonic,False,0.6413413937316147,0.575146780509637,0.5963908948586493,False
+conv_edge_f0681_full,0.681,displacement,max_displacement_m,divergent,False,1.7517702563428739,1.4644683967485927,0.4274234963898706,True
+conv_edge_f0681_full,0.681,velocity,max_velocity_ms,monotonic,False,0.1327789021293599,1.2135016646181986e-05,1.805287049923363e-05,True
+conv_edge_f0681_full,0.681,sph_force,max_sph_force_N,oscillatory,False,0.0018178771241120892,0.5618339569125914,61.04898156891025,True
+conv_edge_f0681_full,0.681,rotation,max_rotation_deg,oscillatory,False,0.0829526826553092,0.017431892773939524,0.04150965024896136,False
+conv_edge_f0685_full,0.685,displacement,max_displacement_m,divergent,False,0.28266162643720244,0.9972762562183396,0.696921061473662,True
+conv_edge_f0685_full,0.685,velocity,max_velocity_ms,oscillatory,False,0.13263520663690453,4.335553347227792e-06,6.45684973972903e-06,True
+conv_edge_f0685_full,0.685,sph_force,max_sph_force_N,oscillatory,False,0.025983223690182907,0.577558268360946,4.390740165042393,True
+conv_edge_f0685_full,0.685,rotation,max_rotation_deg,oscillatory,False,0.268200436461267,0.2125792942546919,0.29618860863688806,False

@@ -1,0 +1,335 @@
+02:20:44 INFO: =================================================================
+02:20:44 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+02:20:44 INFO: =================================================================
+02:20:44 INFO: prefix: conv_edge_f0681_full
+02:20:44 INFO: caso: dam_h=0.2, mass=1.0, fric=0.681, slope=1:20, rot_z=0.0
+02:20:44 INFO: dps: [0.005, 0.004, 0.003, 0.002]
+02:20:44 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_edge_f0681_full.csv
+02:20:44 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_edge_f0681_full_gci.json
+02:20:44 INFO: sqlite table: convergence_conv_edge_f0681_full
+02:20:44 INFO: criterion: mode=displacement_only, reference_time=None
+02:20:44 INFO: =================================================================
+02:20:44 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+02:20:44 INFO: =================================================================
+02:20:44 INFO: dp a probar: [0.005, 0.004, 0.003, 0.002]
+02:20:44 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.681, slope=1:20
+02:20:44 INFO: Boulder pos: (6.5, 0.5, 0.025)
+02:20:44 INFO: Metricas primarias: displacement, velocity, SPH force
+02:20:44 INFO: Diagnostico: rotation
+02:20:44 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+02:20:44 INFO: =================================================================
+02:20:44 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+02:20:44 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+02:20:44 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+02:20:44 INFO:   Densidad:    1886.0 kg/m^3
+02:20:44 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+02:20:44 INFO:   d_eq:        0.1004 m (10.0 cm)
+02:20:44 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+02:20:44 INFO:   dim_min/dp:  (requiere dp para calcular)
+02:20:44 INFO: d_eq = 0.100421 m
+02:20:44 INFO: 
+=================================================================
+02:20:44 INFO: [1/4] dp = 0.005
+02:20:44 INFO: =================================================================
+02:20:44 INFO: Calculando propiedades del boulder para caso 'conv_edge_f0681_full_dp0005'...
+02:20:44 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+02:20:44 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+02:20:44 INFO:   Densidad:    1886.0 kg/m^3
+02:20:44 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+02:20:44 INFO:   d_eq:        0.1004 m (10.0 cm)
+02:20:44 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+02:20:44 INFO:   dim_min/dp:  (requiere dp para calcular)
+02:20:44 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+02:20:44 INFO:   dp=0.005m -> dim_min/dp = 8.6 (0.0429m / 0.005m)
+02:20:44 WARNING:   ATENCION: Solo 8.6 particulas en la dimension minima del boulder. Recomendado: >=10.
+02:20:44 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+02:20:44 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+02:20:44 INFO:     V01: z 0.100 -> 0.0050 (fondo local)
+02:20:44 INFO:     V02: z 0.100 -> 0.0050 (fondo local)
+02:20:44 INFO:     V03: z 0.100 -> 0.0050 (fondo local)
+02:20:44 INFO:     V04: z 0.100 -> 0.0050 (fondo local)
+02:20:44 INFO:     V11: z 0.200 -> 0.1800 (fondo local)
+02:20:44 INFO:     V05: -> upstream x=6.4119, z=0.0256
+02:20:44 INFO:     V06: -> centroide x=6.4794
+02:20:44 INFO:     V07: -> downstream x=6.5924, z=0.0346
+02:20:44 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+02:20:44 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+02:20:44 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+02:20:44 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+02:20:44 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0005\conv_edge_f0681_full_dp0005_Def.xml
+02:20:44 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+02:20:44 INFO:   Canal: 10 verts, 12 faces, watertight=False
+02:20:44 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0005\canal_1to20.stl
+02:20:44 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0005
+02:20:44 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0005\canal_verificacion.png
+02:20:44 INFO:   [1/3] Geometry OK
+02:20:44 INFO:   Timeout: sin limite (dp=0.005)
+02:20:44 INFO: === Ejecutando caso: conv_edge_f0681_full_dp0005 ===
+02:20:44 INFO:   [conv_edge_f0681_full_dp0005] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_edge_f0681_full_dp0005_Def conv_edge_f0681_full_dp0005_out/conv_edge_f0681_full_dp0005 -save:all
+02:20:46 INFO:   [conv_edge_f0681_full_dp0005] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_edge_f0681_full_dp0005_out/conv_edge_f0681_full_dp0005 conv_edge_f0681_full_dp0005_out
+03:08:30 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+03:08:30 INFO:   [conv_edge_f0681_full_dp0005] Simulacion completada exitosamente
+03:08:30 INFO:   [conv_edge_f0681_full_dp0005] Limpieza desactivada (cleanup_binaries=false)
+03:08:30 INFO:   [conv_edge_f0681_full_dp0005] Duracion total: 2865.6s
+03:08:30 INFO:   [2/3] Sim OK (2866s)
+03:08:30 INFO: Procesando caso: conv_edge_f0681_full_dp0005
+03:08:30 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+03:08:30 INFO:   Desplazamiento max: 0.005966m (5.94% de d_eq=0.1004m)
+03:08:30 INFO:   Rotacion acumulada max: 4.29 grados
+03:08:30 INFO:   Velocidad max boulder: 0.1000 m/s
+03:08:30 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+03:08:30 INFO:   Fuerza SPH max: 12.0024N, Contacto max: 10523.2050N
+03:08:30 INFO:   Gauges: 12 velocity, 8 maxZ
+03:08:30 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8080 m/s
+03:08:30 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0715m
+03:08:30 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+03:08:30 INFO:   Flags criterio: moved=True, rotated=False
+03:08:30 INFO:   [3/3] Analisis OK - 47.8 min total
+03:08:30 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_edge_f0681_full
+03:08:30 INFO: 
+=================================================================
+03:08:30 INFO: [2/4] dp = 0.004
+03:08:30 INFO: =================================================================
+03:08:30 INFO: Calculando propiedades del boulder para caso 'conv_edge_f0681_full_dp0004'...
+03:08:30 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+03:08:30 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+03:08:30 INFO:   Densidad:    1886.0 kg/m^3
+03:08:30 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+03:08:30 INFO:   d_eq:        0.1004 m (10.0 cm)
+03:08:30 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+03:08:30 INFO:   dim_min/dp:  (requiere dp para calcular)
+03:08:30 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+03:08:30 INFO:   dp=0.004m -> dim_min/dp = 10.7 (0.0429m / 0.004m)
+03:08:30 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+03:08:30 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+03:08:30 INFO:     V01: z 0.100 -> 0.0040 (fondo local)
+03:08:30 INFO:     V02: z 0.100 -> 0.0040 (fondo local)
+03:08:30 INFO:     V03: z 0.100 -> 0.0040 (fondo local)
+03:08:30 INFO:     V04: z 0.100 -> 0.0040 (fondo local)
+03:08:30 INFO:     V11: z 0.200 -> 0.1790 (fondo local)
+03:08:30 INFO:     V05: -> upstream x=6.4129, z=0.0246
+03:08:30 INFO:     V06: -> centroide x=6.4794
+03:08:30 INFO:     V07: -> downstream x=6.5914, z=0.0336
+03:08:30 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+03:08:30 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+03:08:30 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+03:08:30 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+03:08:30 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0004\conv_edge_f0681_full_dp0004_Def.xml
+03:08:30 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+03:08:30 INFO:   Canal: 10 verts, 12 faces, watertight=False
+03:08:30 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0004\canal_1to20.stl
+03:08:30 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0004
+03:08:30 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0004\canal_verificacion.png
+03:08:30 INFO:   [1/3] Geometry OK
+03:08:30 INFO:   Timeout: sin limite (dp=0.004)
+03:08:30 INFO: === Ejecutando caso: conv_edge_f0681_full_dp0004 ===
+03:08:30 INFO:   [conv_edge_f0681_full_dp0004] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_edge_f0681_full_dp0004_Def conv_edge_f0681_full_dp0004_out/conv_edge_f0681_full_dp0004 -save:all
+03:08:34 INFO:   [conv_edge_f0681_full_dp0004] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_edge_f0681_full_dp0004_out/conv_edge_f0681_full_dp0004 conv_edge_f0681_full_dp0004_out
+04:37:36 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+04:37:36 INFO:   [conv_edge_f0681_full_dp0004] Simulacion completada exitosamente
+04:37:36 INFO:   [conv_edge_f0681_full_dp0004] Limpieza desactivada (cleanup_binaries=false)
+04:37:36 INFO:   [conv_edge_f0681_full_dp0004] Duracion total: 5346.1s
+04:37:36 INFO:   [2/3] Sim OK (5346s)
+04:37:36 INFO: Procesando caso: conv_edge_f0681_full_dp0004
+04:37:36 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+04:37:36 INFO:   Desplazamiento max: 0.007365m (7.33% de d_eq=0.1004m)
+04:37:36 INFO:   Rotacion acumulada max: 5.36 grados
+04:37:36 INFO:   Velocidad max boulder: 0.1000 m/s
+04:37:36 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+04:37:36 INFO:   Fuerza SPH max: 16.4628N, Contacto max: 2799.0507N
+04:37:36 INFO:   Gauges: 12 velocity, 8 maxZ
+04:37:36 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7598 m/s
+04:37:36 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0681m
+04:37:36 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+04:37:36 INFO:   Flags criterio: moved=True, rotated=True
+04:37:36 INFO:   [3/3] Analisis OK - 89.1 min total
+04:37:36 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_edge_f0681_full
+04:37:36 INFO: 
+=================================================================
+04:37:36 INFO: [3/4] dp = 0.003
+04:37:36 INFO: =================================================================
+04:37:36 INFO: Calculando propiedades del boulder para caso 'conv_edge_f0681_full_dp0003'...
+04:37:36 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+04:37:36 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+04:37:36 INFO:   Densidad:    1886.0 kg/m^3
+04:37:36 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+04:37:36 INFO:   d_eq:        0.1004 m (10.0 cm)
+04:37:36 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+04:37:36 INFO:   dim_min/dp:  (requiere dp para calcular)
+04:37:36 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+04:37:36 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+04:37:36 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+04:37:36 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+04:37:36 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+04:37:36 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+04:37:36 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+04:37:36 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+04:37:36 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+04:37:36 INFO:     V05: -> upstream x=6.4139, z=0.0237
+04:37:36 INFO:     V06: -> centroide x=6.4794
+04:37:36 INFO:     V07: -> downstream x=6.5904, z=0.0325
+04:37:36 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+04:37:36 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+04:37:36 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+04:37:36 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+04:37:36 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0003\conv_edge_f0681_full_dp0003_Def.xml
+04:37:36 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+04:37:36 INFO:   Canal: 10 verts, 12 faces, watertight=False
+04:37:36 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0003\canal_1to20.stl
+04:37:36 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0003
+04:37:36 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0003\canal_verificacion.png
+04:37:36 INFO:   [1/3] Geometry OK
+04:37:36 INFO:   Timeout: sin limite (dp=0.003)
+04:37:36 INFO: === Ejecutando caso: conv_edge_f0681_full_dp0003 ===
+04:37:36 INFO:   [conv_edge_f0681_full_dp0003] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_edge_f0681_full_dp0003_Def conv_edge_f0681_full_dp0003_out/conv_edge_f0681_full_dp0003 -save:all
+04:37:43 INFO:   [conv_edge_f0681_full_dp0003] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_edge_f0681_full_dp0003_out/conv_edge_f0681_full_dp0003 conv_edge_f0681_full_dp0003_out
+08:46:37 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+08:46:37 INFO:   [conv_edge_f0681_full_dp0003] Simulacion completada exitosamente
+08:46:37 INFO:   [conv_edge_f0681_full_dp0003] Limpieza desactivada (cleanup_binaries=false)
+08:46:37 INFO:   [conv_edge_f0681_full_dp0003] Duracion total: 14940.1s
+08:46:37 INFO:   [2/3] Sim OK (14940s)
+08:46:37 INFO: Procesando caso: conv_edge_f0681_full_dp0003
+08:46:37 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+08:46:37 INFO:   Desplazamiento max: 0.004296m (4.28% de d_eq=0.1004m)
+08:46:37 INFO:   Rotacion acumulada max: 5.20 grados
+08:46:37 INFO:   Velocidad max boulder: 0.1000 m/s
+08:46:37 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+08:46:37 INFO:   Fuerza SPH max: 8.3522N, Contacto max: 10752.8337N
+08:46:37 INFO:   Gauges: 12 velocity, 8 maxZ
+08:46:37 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7299 m/s
+08:46:37 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0682m
+08:46:37 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+08:46:37 INFO:   Flags criterio: moved=False, rotated=True
+08:46:37 INFO:   [3/3] Analisis OK - 249.0 min total
+08:46:37 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_edge_f0681_full
+08:46:37 INFO: 
+=================================================================
+08:46:37 INFO: [4/4] dp = 0.002
+08:46:37 INFO: =================================================================
+08:46:37 INFO: Calculando propiedades del boulder para caso 'conv_edge_f0681_full_dp0002'...
+08:46:37 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+08:46:37 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+08:46:37 INFO:   Densidad:    1886.0 kg/m^3
+08:46:37 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+08:46:37 INFO:   d_eq:        0.1004 m (10.0 cm)
+08:46:37 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+08:46:37 INFO:   dim_min/dp:  (requiere dp para calcular)
+08:46:37 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+08:46:37 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+08:46:37 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+08:46:37 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+08:46:37 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+08:46:37 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+08:46:37 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+08:46:37 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+08:46:37 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+08:46:37 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+08:46:37 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+08:46:37 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+08:46:37 INFO:     V05: -> upstream x=6.4149, z=0.0227
+08:46:37 INFO:     V06: -> centroide x=6.4794
+08:46:37 INFO:     V07: -> downstream x=6.5894, z=0.0315
+08:46:37 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+08:46:37 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+08:46:37 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+08:46:37 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+08:46:37 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0002\conv_edge_f0681_full_dp0002_Def.xml
+08:46:37 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+08:46:37 INFO:   Canal: 10 verts, 12 faces, watertight=False
+08:46:37 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0002\canal_1to20.stl
+08:46:37 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0002
+08:46:37 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_edge_f0681_full_dp0002\canal_verificacion.png
+08:46:37 INFO:   [1/3] Geometry OK
+08:46:37 INFO:   Timeout: sin limite (dp=0.002)
+08:46:37 INFO: === Ejecutando caso: conv_edge_f0681_full_dp0002 ===
+08:46:37 INFO:   [conv_edge_f0681_full_dp0002] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_edge_f0681_full_dp0002_Def conv_edge_f0681_full_dp0002_out/conv_edge_f0681_full_dp0002 -save:all
+08:47:00 INFO:   [conv_edge_f0681_full_dp0002] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_edge_f0681_full_dp0002_out/conv_edge_f0681_full_dp0002 conv_edge_f0681_full_dp0002_out
+03:40:43 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+03:40:43 INFO:   [conv_edge_f0681_full_dp0002] Simulacion completada exitosamente
+03:40:43 INFO:   [conv_edge_f0681_full_dp0002] Limpieza desactivada (cleanup_binaries=false)
+03:40:43 INFO:   [conv_edge_f0681_full_dp0002] Duracion total: 68045.9s
+03:40:43 INFO:   [2/3] Sim OK (68046s)
+03:40:43 INFO: Procesando caso: conv_edge_f0681_full_dp0002
+03:40:43 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+03:40:43 INFO:   Desplazamiento max: 0.001836m (1.83% de d_eq=0.1004m)
+03:40:43 INFO:   Rotacion acumulada max: 7.12 grados
+03:40:43 INFO:   Velocidad max boulder: 0.0699 m/s
+03:40:43 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+03:40:43 INFO:   Fuerza SPH max: 8.4019N, Contacto max: 12983.9593N
+03:40:43 INFO:   Gauges: 12 velocity, 8 maxZ
+03:40:43 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7402 m/s
+03:40:43 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0649m
+03:40:43 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+03:40:43 INFO:   Flags criterio: moved=False, rotated=True
+03:40:43 INFO:   [3/3] Analisis OK - 1134.1 min total
+03:40:43 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_edge_f0681_full
+03:40:43 INFO: 
+=================================================================
+03:40:43 INFO: RESUMEN CONVERGENCIA
+03:40:43 INFO: =================================================================
+03:40:43 INFO:       dp          Np    MemGPU     disp(m)     d%   vel(m/s)     d%    Fsph(N)     d%   rot(deg)    t(min)
+03:40:43 INFO: ----------------------------------------------------------------------------------------------------------
+03:40:43 INFO:   0.0050     4691009    938MiB    0.005966            0.1000           12.0024              4.29      47.8
+03:40:43 INFO:   0.0040     8152043     1.5GB    0.007365  23.4%     0.1000   0.0%    16.4628  37.2%       5.36      89.1
+03:40:43 INFO:   0.0030    17525854     3.3GB    0.004296  41.7%     0.1000   0.0%     8.3522  49.3%       5.20     249.0
+03:40:43 INFO:   0.0020    51862438     9.7GB    0.001836  57.3%     0.0699  30.1%     8.4019   0.6%       7.12    1134.1
+03:40:43 INFO: 
+4/4 exitosos, total 1520.0 min
+03:40:43 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_edge_f0681_full.csv
+03:40:43 INFO: 
+=================================================================
+03:40:43 INFO: ANALISIS GCI (Celik 2008)
+03:40:43 INFO: =================================================================
+03:40:43 INFO: 
+--- displacement (PRIMARIA) ---
+03:40:43 INFO:   Mallas: dp=0.002, 0.003, 0.004
+03:40:43 INFO:   Valores: 0.001836, 0.004296, 0.007365 m
+03:40:43 INFO:   Tipo convergencia: divergent
+03:40:43 INFO:   GCI/Richardson NO APLICA para convergencia divergent (Celik 2008)
+03:40:43 INFO:   Deltas entre niveles:
+03:40:43 INFO:     dp 0.0020 -> 0.0030: delta=0.002460 m (134.0%)
+03:40:43 INFO:     dp 0.0030 -> 0.0040: delta=0.003068 m (71.4%)
+03:40:43 INFO:     dp 0.0040 -> 0.0050: delta=0.001398 m (19.0%)
+03:40:43 INFO: 
+--- velocity (PRIMARIA) ---
+03:40:43 INFO:   Mallas: dp=0.002, 0.003, 0.004
+03:40:43 INFO:   Valores: 0.069854, 0.099998, 0.100000 m/s
+03:40:43 INFO:   Tipo convergencia: monotonic
+03:40:43 INFO:   Orden aparente p = 4.00
+03:40:43 INFO:   Richardson extrap: 0.062434 m/s
+03:40:43 INFO:   GCI_fine = 13.28%
+03:40:43 INFO:   GCI_med  = 0.00%
+03:40:43 INFO:   AR = 0.000 (NO asintotico)
+03:40:43 INFO:   Deltas entre niveles:
+03:40:43 INFO:     dp 0.0020 -> 0.0030: delta=0.030144 m/s (43.2%)
+03:40:43 INFO:     dp 0.0030 -> 0.0040: delta=0.000002 m/s (0.0%)
+03:40:43 INFO:     dp 0.0040 -> 0.0050: delta=0.000000 m/s (0.0%)
+03:40:43 INFO: 
+--- sph_force (PRIMARIA) ---
+03:40:43 INFO:   Mallas: dp=0.002, 0.003, 0.004
+03:40:43 INFO:   Valores: 8.401850, 8.352211, 16.462801 N
+03:40:43 INFO:   Tipo convergencia: oscillatory
+03:40:43 INFO:   GCI/Richardson NO APLICA para convergencia oscillatory (Celik 2008)
+03:40:43 INFO:   Deltas entre niveles:
+03:40:43 INFO:     dp 0.0020 -> 0.0030: delta=0.049639 N (0.6%)
+03:40:43 INFO:     dp 0.0030 -> 0.0040: delta=8.110590 N (97.1%)
+03:40:43 INFO:     dp 0.0040 -> 0.0050: delta=4.460438 N (27.1%)
+03:40:43 INFO: 
+--- rotation (DIAGNOSTICO) ---
+03:40:43 INFO:   Mallas: dp=0.002, 0.003, 0.004
+03:40:43 INFO:   Valores: 7.123979, 5.203381, 5.360155 deg
+03:40:43 INFO:   Tipo convergencia: oscillatory
+03:40:43 INFO:   GCI/Richardson NO APLICA para convergencia oscillatory (Celik 2008)
+03:40:43 INFO:   Deltas entre niveles:
+03:40:43 INFO:     dp 0.0020 -> 0.0030: delta=1.920598 deg (27.0%)
+03:40:43 INFO:     dp 0.0030 -> 0.0040: delta=0.156774 deg (3.0%)
+03:40:43 INFO:     dp 0.0040 -> 0.0050: delta=1.071744 deg (20.0%)
+03:40:43 INFO: 
+=================================================================
+03:40:43 INFO: VEREDICTO
+03:40:43 INFO: =================================================================
+03:40:43 INFO:   displacement: convergencia divergent -> GCI NO APLICA
+03:40:43 INFO:   velocity: GCI=13.28%, p=4.00, AR=0.000 -> INSUFICIENTE
+03:40:43 INFO:   sph_force: convergencia oscillatory -> GCI NO APLICA
+03:40:43 INFO: 
+GCI JSON: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_edge_f0681_full_gci.json

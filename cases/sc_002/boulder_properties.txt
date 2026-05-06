@@ -1,0 +1,28 @@
+# Boulder Properties — sc_002
+# Generado por geometry_builder.py
+
+stl_scale:       0.04
+stl_rotation:    (0.0, 0.0, 14.93)
+domain_position: (6.5, 0.5, 0.03333333333333333)
+mass_kg:         0.9796
+material:        pvc
+dp:              0.005
+
+volume_m3:       0.00053023
+density_kgm3:    1847.5
+d_eq_m:          0.100421
+bbox_size:       0.1840 x 0.2003 x 0.0399
+dim_min_m:       0.0399
+dim_min_over_dp: 8.0
+
+center_mass_local:  [-0.022096, 0.006398, 0.018456]
+center_mass_domain: [6.477904, 0.506398, 0.051789]
+
+inertia_tensor (kg*m^2):
+  [0.0020935972, -3.9996518e-05, -1.0168024e-05]
+  [-3.9996518e-05, 0.0013946792, 6.3898688e-05]
+  [-1.0168024e-05, 6.3898688e-05, 0.003334152]
+
+fillbox_seed:    (6.4779, 0.5064, 0.0518)
+fillbox_point:   (5.8964, -0.1119, -0.4672)
+fillbox_size:    (1.1840, 1.2003, 1.0399)

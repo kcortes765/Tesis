@@ -1,0 +1,481 @@
+00:31:33 INFO: =================================================================
+00:31:33 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+00:31:33 INFO: =================================================================
+00:31:33 INFO: prefix: conv_probe_dp002_f06625
+00:31:33 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6625, slope=1:20, rot_z=0.0
+00:31:33 INFO: dps: [0.002]
+00:31:33 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+00:31:33 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625_gci.json
+00:31:33 INFO: sqlite table: convergence_conv_probe_dp002_f06625
+00:31:33 INFO: criterion: mode=displacement_only, reference_time=None
+00:31:33 INFO: =================================================================
+00:31:33 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+00:31:33 INFO: =================================================================
+00:31:33 INFO: dp a probar: [0.002]
+00:31:33 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6625, slope=1:20
+00:31:33 INFO: Boulder pos: (6.5, 0.5, 0.025)
+00:31:33 INFO: Metricas primarias: displacement, velocity, SPH force
+00:31:33 INFO: Diagnostico: rotation
+00:31:33 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+00:31:33 INFO: =================================================================
+00:31:33 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+00:31:33 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+00:31:33 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+00:31:33 INFO:   Densidad:    1886.0 kg/m^3
+00:31:33 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+00:31:33 INFO:   d_eq:        0.1004 m (10.0 cm)
+00:31:33 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+00:31:33 INFO:   dim_min/dp:  (requiere dp para calcular)
+00:31:33 INFO: d_eq = 0.100421 m
+00:31:33 INFO: 
+=================================================================
+00:31:33 INFO: [1/1] dp = 0.002
+00:31:33 INFO: =================================================================
+00:31:33 INFO: Calculando propiedades del boulder para caso 'conv_probe_dp002_f06625_dp0002'...
+00:31:33 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+00:31:33 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+00:31:33 INFO:   Densidad:    1886.0 kg/m^3
+00:31:33 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+00:31:33 INFO:   d_eq:        0.1004 m (10.0 cm)
+00:31:33 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+00:31:33 INFO:   dim_min/dp:  (requiere dp para calcular)
+00:31:33 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+00:31:33 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+00:31:33 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+00:31:33 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+00:31:33 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+00:31:33 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+00:31:33 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+00:31:33 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+00:31:33 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+00:31:33 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+00:31:33 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+00:31:33 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+00:31:33 INFO:     V05: -> upstream x=6.4149, z=0.0227
+00:31:33 INFO:     V06: -> centroide x=6.4794
+00:31:33 INFO:     V07: -> downstream x=6.5894, z=0.0315
+00:31:33 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+00:31:33 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+00:31:33 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+00:31:33 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+00:31:33 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\conv_probe_dp002_f06625_dp0002_Def.xml
+00:31:33 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+00:31:33 INFO:   Canal: 10 verts, 12 faces, watertight=False
+00:31:33 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_1to20.stl
+00:31:33 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002
+00:31:34 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_verificacion.png
+00:31:34 INFO:   [1/3] Geometry OK
+00:31:34 INFO:   Timeout: sin limite (dp=0.002)
+00:31:34 INFO: === Ejecutando caso: conv_probe_dp002_f06625_dp0002 ===
+00:31:34 INFO:   [conv_probe_dp002_f06625_dp0002] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_probe_dp002_f06625_dp0002_Def conv_probe_dp002_f06625_dp0002_out/conv_probe_dp002_f06625_dp0002 -save:all
+00:31:58 INFO:   [conv_probe_dp002_f06625_dp0002] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_probe_dp002_f06625_dp0002_out/conv_probe_dp002_f06625_dp0002 conv_probe_dp002_f06625_dp0002_out
+19:03:12 INFO: =================================================================
+19:03:12 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+19:03:12 INFO: =================================================================
+19:03:12 INFO: prefix: conv_probe_dp002_f06625
+19:03:12 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6625, slope=1:20, rot_z=0.0
+19:03:12 INFO: dps: [0.002]
+19:03:12 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:03:12 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625_gci.json
+19:03:12 INFO: sqlite table: convergence_conv_probe_dp002_f06625
+19:03:12 INFO: criterion: mode=displacement_only, reference_time=None
+19:03:12 INFO: =================================================================
+19:03:12 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+19:03:12 INFO: =================================================================
+19:03:12 INFO: dp a probar: [0.002]
+19:03:12 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6625, slope=1:20
+19:03:12 INFO: Boulder pos: (6.5, 0.5, 0.025)
+19:03:12 INFO: Metricas primarias: displacement, velocity, SPH force
+19:03:12 INFO: Diagnostico: rotation
+19:03:12 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+19:03:12 INFO: =================================================================
+19:03:12 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+19:03:12 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:03:12 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:03:12 INFO:   Densidad:    1886.0 kg/m^3
+19:03:12 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:03:12 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:03:12 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:03:12 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:03:12 INFO: d_eq = 0.100421 m
+19:03:12 INFO: 
+=================================================================
+19:03:12 INFO: [1/1] dp = 0.002
+19:03:12 INFO: =================================================================
+19:03:12 INFO: Calculando propiedades del boulder para caso 'conv_probe_dp002_f06625_dp0002'...
+19:03:12 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:03:12 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:03:12 INFO:   Densidad:    1886.0 kg/m^3
+19:03:12 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:03:12 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:03:12 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:03:12 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:03:12 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+19:03:12 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+19:03:12 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+19:03:12 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+19:03:12 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+19:03:12 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+19:03:12 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+19:03:12 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+19:03:12 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+19:03:12 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+19:03:12 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+19:03:12 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+19:03:12 INFO:     V05: -> upstream x=6.4149, z=0.0227
+19:03:12 INFO:     V06: -> centroide x=6.4794
+19:03:12 INFO:     V07: -> downstream x=6.5894, z=0.0315
+19:03:12 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+19:03:12 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+19:03:12 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+19:03:12 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+19:03:12 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\conv_probe_dp002_f06625_dp0002_Def.xml
+19:03:12 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+19:03:12 INFO:   Canal: 10 verts, 12 faces, watertight=False
+19:03:12 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_1to20.stl
+19:03:12 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002
+19:03:12 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_verificacion.png
+19:03:12 INFO:   [1/3] Geometry OK
+19:03:12 INFO:   Timeout: sin limite (dp=0.002)
+19:03:12 INFO: === Ejecutando caso: conv_probe_dp002_f06625_dp0002 ===
+19:03:13 WARNING:   rmtree locked, retry 1/3...
+19:03:14 WARNING:   rmtree locked, retry 2/3...
+19:03:16 ERROR:   [conv_probe_dp002_f06625_dp0002] ERROR INESPERADO: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\SPH-Tesis\src\batch_runner.py", line 282, in run_case
+    shutil.rmtree(str(out_dir))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 750, in rmtree
+    return _rmtree_unsafe(path, onerror)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 620, in _rmtree_unsafe
+    onerror(os.unlink, fullname, sys.exc_info())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 618, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:16 INFO:   [conv_probe_dp002_f06625_dp0002] Limpieza desactivada (cleanup_binaries=false)
+19:03:16 INFO:   [conv_probe_dp002_f06625_dp0002] Duracion total: 3.6s
+19:03:16 ERROR:   [2/3] Sim FALLO: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:16 INFO: 
+=================================================================
+19:03:16 INFO: RESUMEN CONVERGENCIA
+19:03:16 INFO: =================================================================
+19:03:16 WARNING: 
+Fallidos:
+19:03:16 WARNING:   dp=0.002: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:16 INFO: 
+0/1 exitosos, total 0.1 min
+19:03:16 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:03:48 INFO: =================================================================
+19:03:48 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+19:03:48 INFO: =================================================================
+19:03:48 INFO: prefix: conv_probe_dp002_f06625
+19:03:48 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6625, slope=1:20, rot_z=0.0
+19:03:48 INFO: dps: [0.002]
+19:03:48 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:03:48 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625_gci.json
+19:03:48 INFO: sqlite table: convergence_conv_probe_dp002_f06625
+19:03:48 INFO: criterion: mode=displacement_only, reference_time=None
+19:03:48 INFO: =================================================================
+19:03:48 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+19:03:48 INFO: =================================================================
+19:03:48 INFO: dp a probar: [0.002]
+19:03:48 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6625, slope=1:20
+19:03:48 INFO: Boulder pos: (6.5, 0.5, 0.025)
+19:03:48 INFO: Metricas primarias: displacement, velocity, SPH force
+19:03:48 INFO: Diagnostico: rotation
+19:03:48 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+19:03:48 INFO: =================================================================
+19:03:48 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+19:03:48 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:03:48 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:03:48 INFO:   Densidad:    1886.0 kg/m^3
+19:03:48 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:03:48 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:03:48 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:03:48 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:03:48 INFO: d_eq = 0.100421 m
+19:03:48 INFO: 
+=================================================================
+19:03:48 INFO: [1/1] dp = 0.002
+19:03:48 INFO: =================================================================
+19:03:48 INFO: Calculando propiedades del boulder para caso 'conv_probe_dp002_f06625_dp0002'...
+19:03:48 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:03:48 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:03:48 INFO:   Densidad:    1886.0 kg/m^3
+19:03:48 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:03:48 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:03:48 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:03:48 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:03:48 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+19:03:48 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+19:03:48 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+19:03:48 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+19:03:48 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+19:03:48 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+19:03:48 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+19:03:48 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+19:03:48 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+19:03:48 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+19:03:48 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+19:03:48 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+19:03:48 INFO:     V05: -> upstream x=6.4149, z=0.0227
+19:03:48 INFO:     V06: -> centroide x=6.4794
+19:03:48 INFO:     V07: -> downstream x=6.5894, z=0.0315
+19:03:48 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+19:03:48 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+19:03:48 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+19:03:48 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+19:03:48 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\conv_probe_dp002_f06625_dp0002_Def.xml
+19:03:48 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+19:03:48 INFO:   Canal: 10 verts, 12 faces, watertight=False
+19:03:48 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_1to20.stl
+19:03:48 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002
+19:03:48 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_verificacion.png
+19:03:48 INFO:   [1/3] Geometry OK
+19:03:48 INFO:   Timeout: sin limite (dp=0.002)
+19:03:48 INFO: === Ejecutando caso: conv_probe_dp002_f06625_dp0002 ===
+19:03:48 WARNING:   rmtree locked, retry 1/3...
+19:03:49 WARNING:   rmtree locked, retry 2/3...
+19:03:51 ERROR:   [conv_probe_dp002_f06625_dp0002] ERROR INESPERADO: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\SPH-Tesis\src\batch_runner.py", line 282, in run_case
+    shutil.rmtree(str(out_dir))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 750, in rmtree
+    return _rmtree_unsafe(path, onerror)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 620, in _rmtree_unsafe
+    onerror(os.unlink, fullname, sys.exc_info())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 618, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:51 INFO:   [conv_probe_dp002_f06625_dp0002] Limpieza desactivada (cleanup_binaries=false)
+19:03:51 INFO:   [conv_probe_dp002_f06625_dp0002] Duracion total: 3.0s
+19:03:51 ERROR:   [2/3] Sim FALLO: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:51 INFO: 
+=================================================================
+19:03:51 INFO: RESUMEN CONVERGENCIA
+19:03:51 INFO: =================================================================
+19:03:51 WARNING: 
+Fallidos:
+19:03:51 WARNING:   dp=0.002: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:03:51 INFO: 
+0/1 exitosos, total 0.1 min
+19:03:51 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:04:30 INFO: =================================================================
+19:04:30 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+19:04:30 INFO: =================================================================
+19:04:30 INFO: prefix: conv_probe_dp002_f06625
+19:04:30 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6625, slope=1:20, rot_z=0.0
+19:04:30 INFO: dps: [0.002]
+19:04:30 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:04:30 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625_gci.json
+19:04:30 INFO: sqlite table: convergence_conv_probe_dp002_f06625
+19:04:30 INFO: criterion: mode=displacement_only, reference_time=None
+19:04:30 INFO: =================================================================
+19:04:30 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+19:04:30 INFO: =================================================================
+19:04:30 INFO: dp a probar: [0.002]
+19:04:30 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6625, slope=1:20
+19:04:30 INFO: Boulder pos: (6.5, 0.5, 0.025)
+19:04:30 INFO: Metricas primarias: displacement, velocity, SPH force
+19:04:30 INFO: Diagnostico: rotation
+19:04:30 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+19:04:30 INFO: =================================================================
+19:04:30 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+19:04:30 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:04:30 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:04:30 INFO:   Densidad:    1886.0 kg/m^3
+19:04:30 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:04:30 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:04:30 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:04:30 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:04:30 INFO: d_eq = 0.100421 m
+19:04:30 INFO: 
+=================================================================
+19:04:30 INFO: [1/1] dp = 0.002
+19:04:30 INFO: =================================================================
+19:04:30 INFO: Calculando propiedades del boulder para caso 'conv_probe_dp002_f06625_dp0002'...
+19:04:30 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:04:30 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:04:30 INFO:   Densidad:    1886.0 kg/m^3
+19:04:30 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:04:30 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:04:30 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:04:30 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:04:30 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+19:04:30 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+19:04:30 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+19:04:30 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+19:04:30 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+19:04:30 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+19:04:30 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+19:04:30 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+19:04:30 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+19:04:30 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+19:04:30 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+19:04:30 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+19:04:30 INFO:     V05: -> upstream x=6.4149, z=0.0227
+19:04:30 INFO:     V06: -> centroide x=6.4794
+19:04:30 INFO:     V07: -> downstream x=6.5894, z=0.0315
+19:04:30 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+19:04:30 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+19:04:30 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+19:04:30 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+19:04:30 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\conv_probe_dp002_f06625_dp0002_Def.xml
+19:04:30 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+19:04:30 INFO:   Canal: 10 verts, 12 faces, watertight=False
+19:04:30 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_1to20.stl
+19:04:30 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002
+19:04:30 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_verificacion.png
+19:04:30 INFO:   [1/3] Geometry OK
+19:04:30 INFO:   Timeout: sin limite (dp=0.002)
+19:04:30 INFO: === Ejecutando caso: conv_probe_dp002_f06625_dp0002 ===
+19:04:30 WARNING:   rmtree locked, retry 1/3...
+19:04:31 WARNING:   rmtree locked, retry 2/3...
+19:04:33 ERROR:   [conv_probe_dp002_f06625_dp0002] ERROR INESPERADO: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+Traceback (most recent call last):
+  File "C:\Users\Admin\Desktop\SPH-Tesis\src\batch_runner.py", line 282, in run_case
+    shutil.rmtree(str(out_dir))
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 750, in rmtree
+    return _rmtree_unsafe(path, onerror)
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 620, in _rmtree_unsafe
+    onerror(os.unlink, fullname, sys.exc_info())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\shutil.py", line 618, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:04:33 INFO:   [conv_probe_dp002_f06625_dp0002] Limpieza desactivada (cleanup_binaries=false)
+19:04:33 INFO:   [conv_probe_dp002_f06625_dp0002] Duracion total: 3.0s
+19:04:33 ERROR:   [2/3] Sim FALLO: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:04:33 INFO: 
+=================================================================
+19:04:33 INFO: RESUMEN CONVERGENCIA
+19:04:33 INFO: =================================================================
+19:04:33 WARNING: 
+Fallidos:
+19:04:33 WARNING:   dp=0.002: Error inesperado: PermissionError: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Admin\\Desktop\\SPH-Tesis\\cases\\conv_probe_dp002_f06625_dp0002\\conv_probe_dp002_f06625_dp0002_out\\Run.out'
+19:04:33 INFO: 
+0/1 exitosos, total 0.1 min
+19:04:33 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+19:38:52 ERROR:   [conv_probe_dp002_f06625_dp0002] DualSPHysics FALLO (returncode=1)
+19:38:52 ERROR:     stderr: *** Exception (JBinaryData::SaveFileListApp) at DualSPHysics/source/JBinaryData.cpp:1757
+19:38:52 ERROR:     stderr: Text: Cannot open the file.
+19:38:52 ERROR:     stderr: File: conv_probe_dp002_f06625_dp0002_out/data/PartMotionRef.ibi4
+19:38:52 ERROR:   [conv_probe_dp002_f06625_dp0002] ERROR: DualSPHysics fallo para caso 'conv_probe_dp002_f06625_dp0002' (returncode=1): *** Exception (JBinaryData::SaveFileListApp) at DualSPHysics/source/JBinaryData.cpp:1757
+Text: Cannot open the file.
+File: conv_probe_dp002_f06625_dp0002_out/data/PartMotionRef.ibi4
+19:38:52 INFO:   [conv_probe_dp002_f06625_dp0002] Limpieza desactivada (cleanup_binaries=false)
+19:38:52 INFO:   [conv_probe_dp002_f06625_dp0002] Duracion total: 68838.5s
+19:38:52 ERROR:   [2/3] Sim FALLO: DualSPHysics fallo para caso 'conv_probe_dp002_f06625_dp0002' (returncode=1): *** Exception (JBinaryData::SaveFileListApp) at DualSPHysics/source/JBinaryData.cpp:1757
+Text: Cannot open the file.
+File: conv_probe_dp002_f06625_dp0002_out/data/PartMotionRef.ibi4
+19:38:52 INFO: 
+=================================================================
+19:38:52 INFO: RESUMEN CONVERGENCIA
+19:38:52 INFO: =================================================================
+19:38:52 WARNING: 
+Fallidos:
+19:38:52 WARNING:   dp=0.002: DualSPHysics fallo para caso 'conv_probe_dp002_f06625_dp0002' (returncode=1): *** Exception (JBinaryData::SaveFileListApp) at DualSPHysics/source/JBinaryData.cpp:1757
+Text: Cannot open the file.
+File: conv_probe_dp002_f06625_dp0002_out/data/PartMotionRef.ibi4
+19:38:52 INFO: 
+0/1 exitosos, total 1147.3 min
+19:38:52 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+10:57:16 INFO: =================================================================
+10:57:16 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+10:57:16 INFO: =================================================================
+10:57:16 INFO: prefix: conv_probe_dp002_f06625
+10:57:16 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6625, slope=1:20, rot_z=0.0
+10:57:16 INFO: dps: [0.002]
+10:57:16 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv
+10:57:16 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625_gci.json
+10:57:16 INFO: sqlite table: convergence_conv_probe_dp002_f06625
+10:57:16 INFO: criterion: mode=displacement_only, reference_time=0.5
+10:57:16 INFO: =================================================================
+10:57:16 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+10:57:16 INFO: =================================================================
+10:57:16 INFO: dp a probar: [0.002]
+10:57:16 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6625, slope=1:20
+10:57:16 INFO: Boulder pos: (6.5, 0.5, 0.025)
+10:57:16 INFO: Metricas primarias: displacement, velocity, SPH force
+10:57:16 INFO: Diagnostico: rotation
+10:57:16 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': 0.5}
+10:57:16 INFO: =================================================================
+10:57:16 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+10:57:16 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+10:57:16 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+10:57:16 INFO:   Densidad:    1886.0 kg/m^3
+10:57:16 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+10:57:16 INFO:   d_eq:        0.1004 m (10.0 cm)
+10:57:16 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+10:57:16 INFO:   dim_min/dp:  (requiere dp para calcular)
+10:57:16 INFO: d_eq = 0.100421 m
+10:57:16 INFO: 
+=================================================================
+10:57:16 INFO: [1/1] dp = 0.002
+10:57:16 INFO: =================================================================
+10:57:16 INFO: Calculando propiedades del boulder para caso 'conv_probe_dp002_f06625_dp0002'...
+10:57:16 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+10:57:16 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+10:57:16 INFO:   Densidad:    1886.0 kg/m^3
+10:57:16 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+10:57:16 INFO:   d_eq:        0.1004 m (10.0 cm)
+10:57:16 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+10:57:16 INFO:   dim_min/dp:  (requiere dp para calcular)
+10:57:16 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+10:57:16 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+10:57:16 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+10:57:16 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+10:57:16 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+10:57:16 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+10:57:16 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+10:57:16 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+10:57:16 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+10:57:16 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+10:57:16 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+10:57:16 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+10:57:16 INFO:     V05: -> upstream x=6.4149, z=0.0227
+10:57:16 INFO:     V06: -> centroide x=6.4794
+10:57:16 INFO:     V07: -> downstream x=6.5894, z=0.0315
+10:57:16 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+10:57:16 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+10:57:16 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+10:57:16 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+10:57:16 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\conv_probe_dp002_f06625_dp0002_Def.xml
+10:57:16 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+10:57:16 INFO:   Canal: 10 verts, 12 faces, watertight=False
+10:57:16 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_1to20.stl
+10:57:16 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002
+10:57:16 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_probe_dp002_f06625_dp0002\canal_verificacion.png
+10:57:16 INFO:   [1/3] Geometry OK
+10:57:16 INFO:   Timeout: sin limite (dp=0.002)
+10:57:16 INFO: === Ejecutando caso: conv_probe_dp002_f06625_dp0002 ===
+10:57:16 INFO:   [conv_probe_dp002_f06625_dp0002] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_probe_dp002_f06625_dp0002_Def conv_probe_dp002_f06625_dp0002_out/conv_probe_dp002_f06625_dp0002 -save:all
+10:57:40 INFO:   [conv_probe_dp002_f06625_dp0002] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_probe_dp002_f06625_dp0002_out/conv_probe_dp002_f06625_dp0002 conv_probe_dp002_f06625_dp0002_out
+05:57:19 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+05:57:19 INFO:   [conv_probe_dp002_f06625_dp0002] Simulacion completada exitosamente
+05:57:19 INFO:   [conv_probe_dp002_f06625_dp0002] Limpieza desactivada (cleanup_binaries=false)
+05:57:19 INFO:   [conv_probe_dp002_f06625_dp0002] Duracion total: 68402.4s
+05:57:19 INFO:   [2/3] Sim OK (68402s)
+05:57:19 INFO: Procesando caso: conv_probe_dp002_f06625_dp0002
+05:57:19 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+05:57:19 INFO:   Baseline temporal: t_ref=0.5000s
+05:57:19 INFO:   Desplazamiento max: 0.002837m (2.82% de d_eq=0.1004m)
+05:57:19 INFO:   Rotacion acumulada max: 7.29 grados
+05:57:19 INFO:   Velocidad max boulder: 0.0781 m/s
+05:57:19 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+05:57:19 INFO:   Fuerza SPH max: 8.3993N, Contacto max: 13299.8051N
+05:57:19 INFO:   Gauges: 12 velocity, 8 maxZ
+05:57:19 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7414 m/s
+05:57:19 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0648m
+05:57:19 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+05:57:19 INFO:   Flags criterio: moved=False, rotated=True
+05:57:19 INFO:   [3/3] Analisis OK - 1140.1 min total
+05:57:19 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_probe_dp002_f06625
+05:57:19 INFO: 
+=================================================================
+05:57:19 INFO: RESUMEN CONVERGENCIA
+05:57:19 INFO: =================================================================
+05:57:19 INFO:       dp          Np    MemGPU     disp(m)     d%   vel(m/s)     d%    Fsph(N)     d%   rot(deg)    t(min)
+05:57:19 INFO: ----------------------------------------------------------------------------------------------------------
+05:57:19 INFO:   0.0020    51862438     9.8GB    0.002837            0.0781            8.3993              7.29    1140.1
+05:57:19 INFO: 
+1/1 exitosos, total 1140.1 min
+05:57:19 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_probe_dp002_f06625.csv

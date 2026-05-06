@@ -1,0 +1,2 @@
+dp;case_name;status;max_displacement_m;max_rotation_deg;max_velocity_ms;max_sph_force_N;max_contact_force_N;max_flow_velocity_ms;max_water_height_m;sim_time_s;n_timesteps;n_particles;mem_gpu_mb;mem_gpu_cells_mb;tiempo_min
+0.004;scout_fix3_f0705_dp0004_dp0004;OK;0.0036731182937664816;4.578647796054039;0.09999977830475426;16.483142223854042;2907.286566229755;0.0;0.126923;9.999002;9500;8152043;1557.2743377685547;119.73717498779297;89.51533957322438

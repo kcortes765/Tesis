@@ -1,0 +1,8 @@
+part_000.bin https://litter.catbox.moe/9rbudh.bin
+part_001.bin https://litter.catbox.moe/9e1lwu.bin
+part_002.bin https://litter.catbox.moe/gnu7df.bin
+part_003.bin https://litter.catbox.moe/iq0am3.bin
+part_004.bin https://litter.catbox.moe/0cz4i0.bin
+part_005.bin https://litter.catbox.moe/xh1eaz.bin
+part_006.bin https://litter.catbox.moe/na6c5o.bin
+part_007.bin https://litter.catbox.moe/hetewp.bin

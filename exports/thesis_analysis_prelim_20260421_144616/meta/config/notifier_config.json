@@ -1,0 +1,54 @@
+{
+  "enabled": true,
+  "default_topic": "seba-os-2026",
+  "ntfy_base_url": "https://ntfy.sh",
+  "projects": {
+    "tesis": {
+      "topic": "sph-kevin-tesis-2026",
+      "enabled": true,
+      "notifications_path": "C:\\Seba\\Tesis\\.apos\\NOTIFICATIONS.md"
+    },
+    "estudios": {
+      "topic": "seba-os-2026",
+      "enabled": true,
+      "notifications_path": null
+    },
+    "vida": {
+      "topic": "seba-os-2026",
+      "enabled": true,
+      "notifications_path": null
+    },
+    "seba_os": {
+      "topic": "seba-os-2026",
+      "enabled": true,
+      "notifications_path": null
+    }
+  },
+  "task_watching": {
+    "enabled": true,
+    "notify_on_status_change": [
+      "doing->done",
+      "next->doing",
+      "*->waiting"
+    ],
+    "priority_map": {
+      "p0": "urgent",
+      "p1": "high",
+      "p2": "default",
+      "p3": "low",
+      "p4": "min"
+    }
+  },
+  "quiet_hours": {
+    "enabled": false,
+    "start": "23:00",
+    "end": "07:00",
+    "timezone": "America/Santiago",
+    "override_on_urgent": true
+  },
+  "log": {
+    "enabled": true,
+    "path": "C:\\Seba\\seba_os\\shared\\notification_log.json",
+    "max_entries": 100
+  }
+}

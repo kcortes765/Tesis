@@ -1,10 +1,10 @@
 # PLAN
 
 ## Objetivo activo
-Cerrar la transicion desde convergencia a produccion controlada y preparar APOS-X local para continuidad confiable entre chats.
+Cerrar la transicion desde convergencia a produccion controlada, auditar piloto + batch2, y preparar el siguiente diseno sin lanzar una campana grande.
 
 ## Fase actual
-Piloto productivo en ejecucion + migracion APOS-X local.
+Batch2 completado y exportado; siguiente paso es analisis cientifico y decision de diseno.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como malla operativa.
@@ -15,13 +15,18 @@ Piloto productivo en ejecucion + migracion APOS-X local.
 - [x] Lanzar piloto real de 5 casos.
 - [x] Esperar fin del piloto y auditar resultados.
 - [x] Crear export liviano del piloto productivo.
-- [ ] Revisar cientificamente el export del piloto.
-- [ ] Implementar `apos-system/` local con skills y safe-harness.
-- [ ] Instalar skills repo-locales en `.agents/skills` solo despues de validar.
-- [ ] Disenar primera tanda productiva real con limite explicito y dry-run previo.
+- [x] Crear matriz batch2 chica de 8 casos.
+- [x] Ejecutar preflight y dry-run batch2.
+- [x] Lanzar batch2 real en background.
+- [x] Esperar fin de batch2 y auditar resultados.
+- [x] Crear export liviano batch2.
+- [ ] Revisar cientificamente el export del piloto y batch2 juntos.
+- [ ] Decidir mini-batch dirigido o primer surrogate exploratorio.
+- [ ] Si hay otro lote: crear matriz explicita, dry-run y limite `--max-cases`.
+- [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
-- No iniciar otra tanda sin revisar el export y hacer dry-run.
+- No iniciar otra tanda hasta revisar cientificamente batch2.
 - No tocar global/system sin confirmacion explicita.
 
 ## Fuera de alcance por ahora

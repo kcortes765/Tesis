@@ -196,3 +196,110 @@ Preparar un paquete liviano, trazable y sincronizable por Git del piloto product
 - No lanzar campana grande todavia.
 - No versionar `data/processed/` crudo ni `cases/`.
 - La rotacion sigue siendo diagnostica, no criterio primario.
+
+## 2026-05-03 18:38 - Lanzamiento batch2 productivo chico
+
+### Objetivo
+Ejecutar un lote chico de 8 casos para refinar frontera cerca de `mu≈0.6806`, explorar sensibilidad hidraulica moderada y verificar la rama `slope_inv=10` sin lanzar campana grande.
+
+### Acciones
+- Se verifico que no habia `DualSPHysics`, `GenCase` ni `python` corriendo.
+- Se creo `config/batch2_productivo_20260503.csv`.
+- Se ejecuto APOS preflight.
+- Se ejecuto APOS matrix dry-run.
+- Se ejecuto dry-run real de `scripts/run_production.py`.
+- Se lanzo el batch real en background con `Start-Process`.
+
+### Archivos revisados
+- `.apos/STATUS.md`
+- `data/production_status.json`
+- `scripts/run_production.py`
+- `src/main_orchestrator.py`
+
+### Archivos modificados
+- `config/batch2_productivo_20260503.csv`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+
+### Comandos importantes
+```text
+python apos-system\harness\apos-run.py preflight --cmd "python scripts\run_production.py --prod --matrix config\batch2_productivo_20260503.csv --max-cases 8 --dry-run --no-notify"
+python apos-system\harness\apos-run.py dry-run --matrix config\batch2_productivo_20260503.csv --max-cases 8
+python scripts\run_production.py --prod --matrix config\batch2_productivo_20260503.csv --max-cases 8 --dry-run --no-notify
+Start-Process python scripts\run_production.py --prod --matrix config\batch2_productivo_20260503.csv --max-cases 8 --no-notify
+```
+
+### Resultados
+- Dry-run listo: 8/8 casos, `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- Batch real lanzado.
+- `data/production_status.json` reporta `total_cases=8`, `progress=1/8`, `current_case=batch2_base_mu0675`.
+- Procesos activos observados: `python` y `DualSPHysics5.4_win64`.
+
+### Proximos pasos
+- Monitorear hasta completar o fallar.
+- Al terminar, generar export liviano batch2.
+- No lanzar nuevas simulaciones encima.
+
+### Advertencias metodologicas
+- Este lote no es campana grande ni active learning todavia.
+- Mantener rotacion como diagnostico.
+- Fallo numerico no equivale a fallo fisico.
+
+## 2026-05-06 00:00 - Cierre y export liviano batch2
+
+### Objetivo
+Auditar el fin del lote batch2, crear un export liviano trazable y actualizar APOS para continuar sin depender del chat.
+
+### Acciones
+- Se verifico `data/production_status.json`.
+- Se verifico que no habia procesos `DualSPHysics`, `GenCase` ni `python` corriendo.
+- Se reviso el tail de `data/production_20260503_1838.log`.
+- Se leyeron resultados batch2 desde `data/results.sqlite`.
+- Se inventariaron carpetas `data/processed/batch2_*`.
+- Se creo `exports/batch2_productivo_20260505/`.
+- Se actualizo APOS vivo: `STATUS`, `HANDOFF`, `PLAN`, `INDEX`, `RISKS`.
+
+### Archivos revisados
+- `data/production_status.json`
+- `data/production_20260503_1838.log`
+- `data/results.sqlite`
+- `data/processed/batch2_*`
+- `config/batch2_productivo_20260503.csv`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/JOURNAL.md`
+
+### Archivos creados
+- `exports/batch2_productivo_20260505/README.md`
+- `exports/batch2_productivo_20260505/batch2_summary.csv`
+- `exports/batch2_productivo_20260505/batch2_summary.md`
+- `exports/batch2_productivo_20260505/production_status.json`
+- `exports/batch2_productivo_20260505/production_log_tail.txt`
+- `exports/batch2_productivo_20260505/processed_inventory.csv`
+- `exports/batch2_productivo_20260505/source_manifest.csv`
+- `exports/batch2_productivo_20260505/processed_run_metrics/*.csv`
+
+### Resultados
+- Batch2 termino `completed`, 8/8 OK, 0 fallos numericos, 34.55 h.
+- Export de 24 archivos, ~69 KB.
+- Clases por `displacement_only`: 3 FALLO y 5 ESTABLE.
+- Frontera base reforzada: `H=0.20`, `slope=1:20`, FALLO en `mu=0.675`, ESTABLE en `mu=0.685` y `mu=0.700`.
+- Hidraulica fuerte `H=0.225` fallo en `mu=0.680` y `mu=0.720`.
+- `slope=1:10` fue estable por desplazamiento en `mu=0.600` y `mu=0.650`, con rotacion diagnostica.
+
+### Proximos pasos
+- Auditar cientificamente piloto + batch2.
+- Decidir mini-batch dirigido o primer surrogate exploratorio.
+- No lanzar campana grande sin matriz revisada, dry-run y limite explicito.
+
+### Advertencias metodologicas
+- Batch2 no es campana parametrica completa.
+- La rotacion sigue siendo diagnostica, no criterio primario.
+- No versionar outputs crudos pesados.

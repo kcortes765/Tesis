@@ -1,0 +1,9 @@
+case_id,dam_height,boulder_mass,boulder_rot_z,friction_coefficient,slope_inv
+batch2_base_mu0675,0.20,1.0,0,0.6750,20
+batch2_base_mu0685,0.20,1.0,0,0.6850,20
+batch2_base_mu0700,0.20,1.0,0,0.7000,20
+batch2_h0225_mu0680,0.225,1.0,0,0.6800,20
+batch2_h0225_mu0720,0.225,1.0,0,0.7200,20
+batch2_h0175_mu0680,0.175,1.0,0,0.6800,20
+batch2_slope10_mu0600,0.20,1.0,0,0.6000,10
+batch2_slope10_mu0650,0.20,1.0,0,0.6500,10

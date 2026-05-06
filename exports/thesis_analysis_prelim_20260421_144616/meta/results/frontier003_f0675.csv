@@ -1,0 +1,2 @@
+dp;case_name;status;max_displacement_m;max_rotation_deg;max_velocity_ms;max_sph_force_N;max_contact_force_N;max_flow_velocity_ms;max_water_height_m;sim_time_s;n_timesteps;n_particles;mem_gpu_mb;mem_gpu_cells_mb;tiempo_min
+0.003;frontier003_f0675_dp0003;OK;0.006015587834950291;5.332407382314178;0.09999563351966925;8.287064993938506;10767.29615584203;0.0;0.12969;9.999012;9500;17525854;3338.452796936035;247.95160675048828;248.065367603302

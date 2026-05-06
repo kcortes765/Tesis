@@ -1,0 +1,20 @@
+{
+  "phase": "completed",
+  "dp": 0.003,
+  "mode": "prod",
+  "total_cases": 8,
+  "desde": 0,
+  "pending": 8,
+  "completed": 8,
+  "failed": 0,
+  "current_case": "batch2_slope10_mu0650",
+  "start_time": "2026-05-03T18:38:04.208380",
+  "dry_run": false,
+  "updated": "2026-05-05T05:10:47.989070",
+  "progress": "8/8",
+  "eta": "2026-05-05T00:55:23.298202",
+  "avg_case_seconds": 15577.0,
+  "eta_human": "0.0h (0.0d)",
+  "end_time": "2026-05-05T05:10:47.989070",
+  "total_elapsed_hours": 34.55
+}

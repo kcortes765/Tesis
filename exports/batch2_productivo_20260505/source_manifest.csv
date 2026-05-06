@@ -1,0 +1,7 @@
+source,exported_as,note
+C:\Users\Admin\Desktop\SPH-Tesis\data\production_status.json,production_status.json,estado final de ejecucion
+C:\Users\Admin\Desktop\SPH-Tesis\config\batch2_productivo_20260503.csv,batch2_productivo_20260503.csv,matriz explicita batch2
+C:\Users\Admin\Desktop\SPH-Tesis\data\production_20260503_1838.log,production_log_tail.txt,tail liviano del log productivo
+C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite,batch2_summary.csv,metricas resumidas desde tabla results
+C:\Users\Admin\Desktop\SPH-Tesis\data\processed\batch2_*\Run.csv,processed_run_metrics/*_Run.csv,metricas livianas de runtime
+C:\Users\Admin\Desktop\SPH-Tesis\data\processed\batch2_*\RunPARTs.csv,processed_run_metrics/*_RunPARTs.csv,metricas livianas por parte

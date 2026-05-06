@@ -60,6 +60,8 @@ cases/**/*.stl
 
 # Codex local context
 .codex_context/
+CODEX_START_HERE.md
+codex_context_sph.zip
 
 # Runtime production state and heavy processed outputs
 data/production_status.json
@@ -69,3 +71,22 @@ data/processed/
 # Lightweight audited exports are intended to be versionable
 !exports/
 !exports/**
+
+# But never version raw/heavy simulation payloads inside exports
+exports/**/*.bi4
+exports/**/*.cbi4
+exports/**/*.obi4
+exports/**/*.ibi4
+exports/**/*.vtk
+exports/**/*.vtp
+exports/**/*.ply
+exports/**/*.bin
+exports/**/*.zip
+exports/**/cases_complete/
+exports/**/case_archives/
+exports/**/*_out/
+exports/**/Part*
+exports/**/*_All.vtk
+exports/**/*_Fluid.vtk
+exports/**/*_Bound.vtk
+exports/**/*_FreePt.vtk

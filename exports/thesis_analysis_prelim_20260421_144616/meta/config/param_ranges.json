@@ -1,0 +1,47 @@
+{
+    "_status": "4D PRODUCCION - dp=0.003, 25 puntos LHS iniciales + active learning",
+    "_updated": "2026-03-25",
+    "_justification": {
+        "dam_height": "0.10m captura no-movimiento (0.30m ya produce transporte completo). 0.50m limite superior realista. Ref: Imamura 2008.",
+        "boulder_mass": "Vol BLIR3@scale=0.04 = 530cm3. Rango 0.80-1.60kg = densidades 1500-3100 kg/m3. Caso Diego: 1.06kg (2000 kg/m3).",
+        "boulder_rot_z": "0-90 deg cubre orientaciones unicas (simetria aproximada). Ref: Oetjen et al. 2020.",
+        "friction_coefficient": "Kfric Chrono (unico activo en v5.4, Sfric=Kfric). Rango 0.1-0.8 cubre PVC/acero (lab, ~0.15-0.25) a roca/roca (campo, ~0.6-0.7). Ref: Nott 2003, Nandasena 2011."
+    },
+    "parameters": {
+        "dam_height": {
+            "min": 0.10,
+            "max": 0.50,
+            "unit": "m",
+            "description": "Altura columna de agua (Dam Break). 0.10 para no-movimiento, 0.50 para transporte extremo."
+        },
+        "boulder_mass": {
+            "min": 0.80,
+            "max": 1.60,
+            "unit": "kg",
+            "description": "Masa del boulder (densidad implicita 1500-3100 kg/m3 para BLIR3@scale=0.04, vol=530cm3)"
+        },
+        "boulder_rot_z": {
+            "min": 0,
+            "max": 90,
+            "unit": "deg",
+            "description": "Angulo de orientacion del boulder (rotacion Z)"
+        },
+        "friction_coefficient": {
+            "min": 0.1,
+            "max": 0.8,
+            "unit": "-",
+            "description": "Coeficiente de friccion Kfric (Chrono). Se aplica a boulder y playa via property override."
+        }
+    },
+    "pending_parameters": {
+        "stl_file": {
+            "options": ["BLIR3.stl"],
+            "description": "Geometria del boulder - pendiente 9 STLs adicionales escaneados en terreno"
+        }
+    },
+    "sampling": {
+        "n_samples_initial": 25,
+        "n_samples_al_budget": 75,
+        "seed": 42
+    }
+}

@@ -2,6 +2,20 @@
 
 > Ultima actualizacion: 2026-03-22 00:30
 
+## Actualizacion critica 2026-04-30
+
+El estado operativo anterior de este archivo esta desactualizado. Para retomar ahora, leer primero:
+
+1. `.apos/ROADMAP_PRODUCTIVA_2026-04-30.md`
+2. `.apos/HANDOFF.md`
+3. `.apos/STATUS.md`
+
+Resumen actual:
+- `conv_probe_dp002_f06625` termino `OK`.
+- `dp=0.002`, `mu=0.6625`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- Resultado: `ESTABLE` por desplazamiento (`disp_pct_deq=2.82%`, `moved=False`, `rotated=True`).
+- Siguiente paso: cerrar convergencia con figuras/tablas actualizadas, documentar `dp=0.003` como malla operativa, congelar configuracion productiva y disenar piloto productivo.
+
 ## Sistema de continuidad
 
 Este proyecto usa **APOS**. Para retomar, leer:

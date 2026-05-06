@@ -1,0 +1,28 @@
+# Boulder Properties — conv3_f05_full_dp0005
+# Generado por geometry_builder.py
+
+stl_scale:       0.04
+stl_rotation:    (0.0, 0.0, 0.0)
+domain_position: (6.5, 0.5, 0.025)
+mass_kg:         1.0
+material:        pvc
+dp:              0.005
+
+volume_m3:       0.00053023
+density_kgm3:    1886.0
+d_eq_m:          0.100421
+bbox_size:       0.1710 x 0.2100 x 0.0399
+dim_min_m:       0.0399
+dim_min_over_dp: 8.0
+
+center_mass_local:  [-0.019701, 0.011875, 0.018456]
+center_mass_domain: [6.480299, 0.511875, 0.043456]
+
+inertia_tensor (kg*m^2):
+  [0.002069509, -0.00021302189, 6.7762485e-06]
+  [-0.00021302189, 0.0014914101, 6.5701541e-05]
+  [6.7762485e-06, 6.5701541e-05, 0.0034035851]
+
+fillbox_seed:    (6.4803, 0.5119, 0.0435)
+fillbox_point:   (5.9170, -0.1021, -0.4755)
+fillbox_size:    (1.1710, 1.2100, 1.0399)

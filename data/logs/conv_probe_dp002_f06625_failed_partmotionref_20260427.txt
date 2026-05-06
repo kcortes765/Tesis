@@ -1,0 +1,5 @@
+conv_probe_dp002_f06625_dp0002:
+  estado: FALLO_SIM
+  causa: DualSPHysics returncode=1 al escribir PartMotionRef.ibi4
+  evidencia disponible: ChronoExchange truncado, 310 filas, t=9.690004-9.999010 s
+  decision: no usable para clasificacion displacement_only; repetir exactamente el mismo caso

@@ -1,0 +1,96 @@
+09:05:05 INFO: =================================================================
+09:05:05 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+09:05:05 INFO: =================================================================
+09:05:05 INFO: prefix: scout_fix3_f0690_dp0004
+09:05:05 INFO: caso: dam_h=0.2, mass=1.0, fric=0.69, slope=1:20, rot_z=0.0
+09:05:05 INFO: dps: [0.004]
+09:05:05 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\scout_fix3_f0690_dp0004.csv
+09:05:05 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\scout_fix3_f0690_dp0004_gci.json
+09:05:05 INFO: sqlite table: convergence_scout_fix3_f0690_dp0004
+09:05:05 INFO: =================================================================
+09:05:05 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+09:05:05 INFO: =================================================================
+09:05:05 INFO: dp a probar: [0.004]
+09:05:05 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.69, slope=1:20
+09:05:05 INFO: Boulder pos: (6.5, 0.5, 0.025)
+09:05:05 INFO: Metricas primarias: displacement, velocity, SPH force
+09:05:05 INFO: Diagnostico: rotation
+09:05:05 INFO: =================================================================
+09:05:05 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+09:05:05 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+09:05:05 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+09:05:05 INFO:   Densidad:    1886.0 kg/m^3
+09:05:05 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+09:05:05 INFO:   d_eq:        0.1004 m (10.0 cm)
+09:05:05 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+09:05:05 INFO:   dim_min/dp:  (requiere dp para calcular)
+09:05:05 INFO: d_eq = 0.100421 m
+09:05:05 INFO: 
+=================================================================
+09:05:05 INFO: [1/1] dp = 0.004
+09:05:05 INFO: =================================================================
+09:05:05 INFO: Calculando propiedades del boulder para caso 'scout_fix3_f0690_dp0004_dp0004'...
+09:05:05 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+09:05:05 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+09:05:05 INFO:   Densidad:    1886.0 kg/m^3
+09:05:05 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+09:05:05 INFO:   d_eq:        0.1004 m (10.0 cm)
+09:05:05 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+09:05:05 INFO:   dim_min/dp:  (requiere dp para calcular)
+09:05:05 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+09:05:05 INFO:   dp=0.004m -> dim_min/dp = 10.7 (0.0429m / 0.004m)
+09:05:05 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+09:05:05 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+09:05:05 INFO:     V01: z 0.100 -> 0.0040 (fondo local)
+09:05:05 INFO:     V02: z 0.100 -> 0.0040 (fondo local)
+09:05:05 INFO:     V03: z 0.100 -> 0.0040 (fondo local)
+09:05:05 INFO:     V04: z 0.100 -> 0.0040 (fondo local)
+09:05:05 INFO:     V11: z 0.200 -> 0.1790 (fondo local)
+09:05:05 INFO:     V05: -> upstream x=6.4129, z=0.0246
+09:05:05 INFO:     V06: -> centroide x=6.4794
+09:05:05 INFO:     V07: -> downstream x=6.5914, z=0.0336
+09:05:05 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+09:05:05 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+09:05:05 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+09:05:05 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+09:05:05 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix3_f0690_dp0004_dp0004\scout_fix3_f0690_dp0004_dp0004_Def.xml
+09:05:05 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+09:05:05 INFO:   Canal: 10 verts, 12 faces, watertight=False
+09:05:05 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix3_f0690_dp0004_dp0004\canal_1to20.stl
+09:05:05 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix3_f0690_dp0004_dp0004
+09:05:05 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix3_f0690_dp0004_dp0004\canal_verificacion.png
+09:05:05 INFO:   [1/3] Geometry OK
+09:05:05 INFO:   Timeout: sin limite (dp=0.004)
+09:05:05 INFO: === Ejecutando caso: scout_fix3_f0690_dp0004_dp0004 ===
+09:05:05 INFO:   [scout_fix3_f0690_dp0004_dp0004] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe scout_fix3_f0690_dp0004_dp0004_Def scout_fix3_f0690_dp0004_dp0004_out/scout_fix3_f0690_dp0004_dp0004 -save:all
+09:05:08 INFO:   [scout_fix3_f0690_dp0004_dp0004] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 scout_fix3_f0690_dp0004_dp0004_out/scout_fix3_f0690_dp0004_dp0004 scout_fix3_f0690_dp0004_dp0004_out
+10:34:41 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+10:34:41 INFO:   [scout_fix3_f0690_dp0004_dp0004] Simulacion completada exitosamente
+10:34:41 INFO:   [scout_fix3_f0690_dp0004_dp0004] Limpieza desactivada (cleanup_binaries=false)
+10:34:41 INFO:   [scout_fix3_f0690_dp0004_dp0004] Duracion total: 5375.8s
+10:34:41 INFO:   [2/3] Sim OK (5376s)
+10:34:41 INFO: Procesando caso: scout_fix3_f0690_dp0004_dp0004
+10:34:41 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+10:34:41 INFO:   Desplazamiento max: 0.004323m (4.30% de d_eq=0.1004m)
+10:34:41 INFO:   Rotacion max: 4.81 grados
+10:34:41 INFO:   Velocidad max boulder: 0.1000 m/s
+10:34:41 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+10:34:41 INFO:   Fuerza SPH max: 16.4958N, Contacto max: 2841.2986N
+10:34:41 INFO:   Gauges: 12 velocity, 8 maxZ
+10:34:41 INFO:   Flujo max (gauge V06, dist=0.00m): 0.0000 m/s
+10:34:41 INFO:   Agua max (gauge hmax04, dist=1.02m): 0.1261m
+10:34:41 INFO:   Criterio: ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+10:34:41 INFO:   [3/3] Analisis OK - 89.6 min total
+10:34:41 INFO:   SQLite: columna 'friction_coefficient' agregada a tabla 'convergence_scout_fix3_f0690_dp0004'
+10:34:41 INFO:   SQLite: columna 'slope_inv' agregada a tabla 'convergence_scout_fix3_f0690_dp0004'
+10:34:41 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_scout_fix3_f0690_dp0004
+10:34:41 INFO: 
+=================================================================
+10:34:41 INFO: RESUMEN CONVERGENCIA
+10:34:41 INFO: =================================================================
+10:34:41 INFO:       dp          Np    MemGPU     disp(m)     d%   vel(m/s)     d%    Fsph(N)     d%   rot(deg)    t(min)
+10:34:41 INFO: ----------------------------------------------------------------------------------------------------------
+10:34:41 INFO:   0.0040     8152043     1.5GB    0.004323            0.1000           16.4958              4.81      89.6
+10:34:41 INFO: 
+1/1 exitosos, total 89.6 min
+10:34:41 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\scout_fix3_f0690_dp0004.csv

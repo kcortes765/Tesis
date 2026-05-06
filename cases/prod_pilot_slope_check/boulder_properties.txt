@@ -1,0 +1,28 @@
+# Boulder Properties — prod_pilot_slope_check
+# Generado por geometry_builder.py
+
+stl_scale:       0.04
+stl_rotation:    (0.0, -5.710593137499643, 0.0)
+domain_position: (6.5, 0.5, 0.050509611073396576)
+mass_kg:         1.0
+material:        pvc
+dp:              0.003
+
+volume_m3:       0.00053023
+density_kgm3:    1886.0
+d_eq_m:          0.100421
+bbox_size:       0.1699 x 0.2100 x 0.0477
+dim_min_m:       0.0477
+dim_min_over_dp: 15.9
+
+center_mass_local:  [-0.021440, 0.011875, 0.016404]
+center_mass_domain: [6.478560, 0.511875, 0.066914]
+
+inertia_tensor (kg*m^2):
+  [0.0020813758, -0.00021850225, -0.00012544468]
+  [-0.00021850225, 0.0014914101, 4.4179007e-05]
+  [-0.00012544468, 4.4179007e-05, 0.0033917183]
+
+fillbox_seed:    (6.4786, 0.5119, 0.0669)
+fillbox_point:   (5.9168, -0.1021, -0.4579)
+fillbox_size:    (1.1699, 1.2100, 1.0477)

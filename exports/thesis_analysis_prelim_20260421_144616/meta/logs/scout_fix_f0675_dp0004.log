@@ -1,0 +1,68 @@
+20:44:28 INFO: =================================================================
+20:44:28 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+20:44:28 INFO: =================================================================
+20:44:28 INFO: prefix: scout_fix_f0675_dp0004
+20:44:28 INFO: caso: dam_h=0.2, mass=1.0, fric=0.675, slope=1:20, rot_z=0.0
+20:44:28 INFO: dps: [0.004]
+20:44:28 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\scout_fix_f0675_dp0004.csv
+20:44:28 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\scout_fix_f0675_dp0004_gci.json
+20:44:28 INFO: sqlite table: convergence_scout_fix_f0675_dp0004
+20:44:28 INFO: =================================================================
+20:44:28 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+20:44:28 INFO: =================================================================
+20:44:28 INFO: dp a probar: [0.004]
+20:44:28 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.675, slope=1:20
+20:44:28 INFO: Boulder pos: (6.5, 0.5, 0.025)
+20:44:28 INFO: Metricas primarias: displacement, velocity, SPH force
+20:44:28 INFO: Diagnostico: rotation
+20:44:28 INFO: =================================================================
+20:44:28 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+20:44:28 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, 0.0, 0.0)):
+20:44:28 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:44:28 INFO:   Densidad:    1886.0 kg/m^3
+20:44:28 INFO:   Centro masa: [-0.019701, 0.011875, 0.018456] m (local)
+20:44:28 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:44:28 INFO:   Bbox size:   0.1710 x 0.2100 x 0.0399 m
+20:44:28 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:44:28 INFO: d_eq = 0.100421 m
+20:44:28 INFO: 
+=================================================================
+20:44:28 INFO: [1/1] dp = 0.004
+20:44:28 INFO: =================================================================
+20:44:28 INFO: Calculando propiedades del boulder para caso 'scout_fix_f0675_dp0004_dp0004'...
+20:44:28 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, 0.0, 0.0)):
+20:44:28 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:44:28 INFO:   Densidad:    1886.0 kg/m^3
+20:44:28 INFO:   Centro masa: [-0.019701, 0.011875, 0.018456] m (local)
+20:44:28 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:44:28 INFO:   Bbox size:   0.1710 x 0.2100 x 0.0399 m
+20:44:28 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:44:28 INFO:   dp=0.004m -> dim_min/dp = 10.0 (0.0399m / 0.004m)
+20:44:28 WARNING:   ATENCION: Solo 10.0 particulas en la dimension minima del boulder. Recomendado: >=10.
+20:44:28 INFO:   Fillbox seed: (6.4803, 0.5119, 0.0435)
+20:44:28 INFO:   Reubicando gauges: boulder x=[6.417, 6.588], y=0.512, z_mid=0.044
+20:44:28 INFO:     V01: z 0.100 -> 0.0040 (fondo local)
+20:44:28 INFO:     V02: z 0.100 -> 0.0040 (fondo local)
+20:44:28 INFO:     V03: z 0.100 -> 0.0040 (fondo local)
+20:44:28 INFO:     V04: z 0.100 -> 0.0040 (fondo local)
+20:44:28 INFO:     V11: z 0.200 -> 0.1790 (fondo local)
+20:44:28 INFO:     V05: -> upstream x=6.4130, z=0.0247
+20:44:28 INFO:     V06: -> centroide x=6.4803
+20:44:28 INFO:     V07: -> downstream x=6.5921, z=0.0336
+20:44:28 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+20:44:28 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+20:44:28 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+20:44:28 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+20:44:28 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix_f0675_dp0004_dp0004\scout_fix_f0675_dp0004_dp0004_Def.xml
+20:44:28 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+20:44:28 INFO:   Canal: 10 verts, 12 faces, watertight=False
+20:44:28 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix_f0675_dp0004_dp0004\canal_1to20.stl
+20:44:28 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix_f0675_dp0004_dp0004
+20:44:28 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\scout_fix_f0675_dp0004_dp0004\canal_verificacion.png
+20:44:28 INFO:   [1/3] Geometry OK
+20:44:28 INFO:   Timeout: sin limite (dp=0.004)
+20:44:28 INFO: === Ejecutando caso: scout_fix_f0675_dp0004_dp0004 ===
+20:44:28 INFO:   [scout_fix_f0675_dp0004_dp0004] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe scout_fix_f0675_dp0004_dp0004_Def scout_fix_f0675_dp0004_dp0004_out/scout_fix_f0675_dp0004_dp0004 -save:all
+20:44:32 INFO:   [scout_fix_f0675_dp0004_dp0004] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 scout_fix_f0675_dp0004_dp0004_out/scout_fix_f0675_dp0004_dp0004 scout_fix_f0675_dp0004_dp0004_out
+22:06:27 INFO:   [scout_fix_f0675_dp0004_dp0004] Limpieza desactivada (cleanup_binaries=false)
+22:06:27 INFO:   [scout_fix_f0675_dp0004_dp0004] Duracion total: 4918.9s

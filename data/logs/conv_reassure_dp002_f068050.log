@@ -1,0 +1,100 @@
+20:51:03 INFO: =================================================================
+20:51:03 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+20:51:03 INFO: =================================================================
+20:51:03 INFO: prefix: conv_reassure_dp002_f068050
+20:51:03 INFO: caso: dam_h=0.2, mass=1.0, fric=0.6805, slope=1:20, rot_z=0.0
+20:51:03 INFO: dps: [0.002]
+20:51:03 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_reassure_dp002_f068050.csv
+20:51:03 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_reassure_dp002_f068050_gci.json
+20:51:03 INFO: sqlite table: convergence_conv_reassure_dp002_f068050
+20:51:03 INFO: criterion: mode=displacement_only, reference_time=None
+20:51:03 INFO: =================================================================
+20:51:03 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+20:51:03 INFO: =================================================================
+20:51:03 INFO: dp a probar: [0.002]
+20:51:03 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.6805, slope=1:20
+20:51:03 INFO: Boulder pos: (6.5, 0.5, 0.025)
+20:51:03 INFO: Metricas primarias: displacement, velocity, SPH force
+20:51:03 INFO: Diagnostico: rotation
+20:51:03 INFO: Process case kwargs: {'classification_mode': 'displacement_only', 'reference_time_s': None}
+20:51:03 INFO: =================================================================
+20:51:03 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+20:51:03 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+20:51:03 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:51:03 INFO:   Densidad:    1886.0 kg/m^3
+20:51:03 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+20:51:03 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:51:03 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+20:51:03 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:51:03 INFO: d_eq = 0.100421 m
+20:51:03 INFO: 
+=================================================================
+20:51:03 INFO: [1/1] dp = 0.002
+20:51:03 INFO: =================================================================
+20:51:03 INFO: Calculando propiedades del boulder para caso 'conv_reassure_dp002_f068050_dp0002'...
+20:51:03 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+20:51:03 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:51:03 INFO:   Densidad:    1886.0 kg/m^3
+20:51:03 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+20:51:03 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:51:03 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+20:51:03 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:51:03 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+20:51:03 INFO:   dp=0.002m -> dim_min/dp = 21.5 (0.0429m / 0.002m)
+20:51:03 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+20:51:03 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+20:51:03 INFO:     V01: z 0.100 -> 0.0020 (fondo local)
+20:51:03 INFO:     V02: z 0.100 -> 0.0020 (fondo local)
+20:51:03 INFO:     V03: z 0.100 -> 0.0020 (fondo local)
+20:51:03 INFO:     V04: z 0.100 -> 0.0020 (fondo local)
+20:51:03 INFO:     V08: z 0.150 -> 0.1395 (fondo local)
+20:51:03 INFO:     V09: z 0.150 -> 0.1395 (fondo local)
+20:51:03 INFO:     V10: z 0.150 -> 0.1395 (fondo local)
+20:51:03 INFO:     V11: z 0.200 -> 0.1770 (fondo local)
+20:51:03 INFO:     V05: -> upstream x=6.4149, z=0.0227
+20:51:03 INFO:     V06: -> centroide x=6.4794
+20:51:03 INFO:     V07: -> downstream x=6.5894, z=0.0315
+20:51:03 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+20:51:03 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+20:51:03 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+20:51:03 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+20:51:03 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_reassure_dp002_f068050_dp0002\conv_reassure_dp002_f068050_dp0002_Def.xml
+20:51:03 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+20:51:03 INFO:   Canal: 10 verts, 12 faces, watertight=False
+20:51:03 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_reassure_dp002_f068050_dp0002\canal_1to20.stl
+20:51:03 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_reassure_dp002_f068050_dp0002
+20:51:04 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\conv_reassure_dp002_f068050_dp0002\canal_verificacion.png
+20:51:04 INFO:   [1/3] Geometry OK
+20:51:04 INFO:   Timeout: sin limite (dp=0.002)
+20:51:04 INFO: === Ejecutando caso: conv_reassure_dp002_f068050_dp0002 ===
+20:51:04 INFO:   [conv_reassure_dp002_f068050_dp0002] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe conv_reassure_dp002_f068050_dp0002_Def conv_reassure_dp002_f068050_dp0002_out/conv_reassure_dp002_f068050_dp0002 -save:all
+20:51:26 INFO:   [conv_reassure_dp002_f068050_dp0002] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 conv_reassure_dp002_f068050_dp0002_out/conv_reassure_dp002_f068050_dp0002 conv_reassure_dp002_f068050_dp0002_out
+16:10:00 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+16:10:00 INFO:   [conv_reassure_dp002_f068050_dp0002] Simulacion completada exitosamente
+16:10:00 INFO:   [conv_reassure_dp002_f068050_dp0002] Limpieza desactivada (cleanup_binaries=false)
+16:10:00 INFO:   [conv_reassure_dp002_f068050_dp0002] Duracion total: 69536.0s
+16:10:00 INFO:   [2/3] Sim OK (69536s)
+16:10:00 INFO: Procesando caso: conv_reassure_dp002_f068050_dp0002
+16:10:00 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+16:10:00 INFO:   Desplazamiento max: 0.002649m (2.64% de d_eq=0.1004m)
+16:10:00 INFO:   Rotacion acumulada max: 7.98 grados
+16:10:00 INFO:   Velocidad max boulder: 0.0698 m/s
+16:10:00 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+16:10:00 INFO:   Fuerza SPH max: 7.8908N, Contacto max: 12907.5501N
+16:10:00 INFO:   Gauges: 12 velocity, 8 maxZ
+16:10:00 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7881 m/s
+16:10:00 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0656m
+16:10:00 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+16:10:00 INFO:   Flags criterio: moved=False, rotated=True
+16:10:00 INFO:   [3/3] Analisis OK - 1158.9 min total
+16:10:00 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_conv_reassure_dp002_f068050
+16:10:00 INFO: 
+=================================================================
+16:10:00 INFO: RESUMEN CONVERGENCIA
+16:10:00 INFO: =================================================================
+16:10:00 INFO:       dp          Np    MemGPU     disp(m)     d%   vel(m/s)     d%    Fsph(N)     d%   rot(deg)    t(min)
+16:10:00 INFO: ----------------------------------------------------------------------------------------------------------
+16:10:00 INFO:   0.0020    51862438     9.7GB    0.002649            0.0698            7.8908              7.98    1158.9
+16:10:00 INFO: 
+1/1 exitosos, total 1158.9 min
+16:10:00 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\conv_reassure_dp002_f068050.csv

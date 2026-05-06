@@ -1,0 +1,164 @@
+20:30:53 INFO: =================================================================
+20:30:53 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+20:30:53 INFO: =================================================================
+20:30:53 INFO: prefix: frontier003_f0682
+20:30:53 INFO: caso: dam_h=0.2, mass=1.0, fric=0.682, slope=1:20, rot_z=0.0
+20:30:53 INFO: dps: [0.003]
+20:30:53 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\frontier003_f0682.csv
+20:30:53 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\frontier003_f0682_gci.json
+20:30:53 INFO: sqlite table: convergence_frontier003_f0682
+20:30:53 INFO: =================================================================
+20:30:53 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+20:30:53 INFO: =================================================================
+20:30:53 INFO: dp a probar: [0.003]
+20:30:53 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.682, slope=1:20
+20:30:53 INFO: Boulder pos: (6.5, 0.5, 0.025)
+20:30:53 INFO: Metricas primarias: displacement, velocity, SPH force
+20:30:53 INFO: Diagnostico: rotation
+20:30:53 INFO: =================================================================
+20:30:53 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+20:30:53 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+20:30:53 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:30:53 INFO:   Densidad:    1886.0 kg/m^3
+20:30:53 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+20:30:53 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:30:53 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+20:30:53 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:30:53 INFO: d_eq = 0.100421 m
+20:30:53 INFO: 
+=================================================================
+20:30:53 INFO: [1/1] dp = 0.003
+20:30:53 INFO: =================================================================
+20:30:53 INFO: Calculando propiedades del boulder para caso 'frontier003_f0682_dp0003'...
+20:30:53 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+20:30:53 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+20:30:53 INFO:   Densidad:    1886.0 kg/m^3
+20:30:53 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+20:30:53 INFO:   d_eq:        0.1004 m (10.0 cm)
+20:30:53 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+20:30:53 INFO:   dim_min/dp:  (requiere dp para calcular)
+20:30:53 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+20:30:53 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+20:30:53 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+20:30:53 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+20:30:53 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+20:30:53 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+20:30:53 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+20:30:53 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+20:30:53 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+20:30:53 INFO:     V05: -> upstream x=6.4139, z=0.0237
+20:30:53 INFO:     V06: -> centroide x=6.4794
+20:30:53 INFO:     V07: -> downstream x=6.5904, z=0.0325
+20:30:53 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+20:30:53 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+20:30:53 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+20:30:53 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+20:30:53 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\frontier003_f0682_dp0003_Def.xml
+20:30:53 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+20:30:53 INFO:   Canal: 10 verts, 12 faces, watertight=False
+20:30:53 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\canal_1to20.stl
+20:30:53 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003
+20:30:53 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\canal_verificacion.png
+20:30:53 INFO:   [1/3] Geometry OK
+20:30:53 INFO:   Timeout: sin limite (dp=0.003)
+20:30:53 INFO: === Ejecutando caso: frontier003_f0682_dp0003 ===
+20:30:53 INFO:   [frontier003_f0682_dp0003] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe frontier003_f0682_dp0003_Def frontier003_f0682_dp0003_out/frontier003_f0682_dp0003 -save:all
+20:31:00 INFO:   [frontier003_f0682_dp0003] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 frontier003_f0682_dp0003_out/frontier003_f0682_dp0003 frontier003_f0682_dp0003_out
+20:39:11 INFO:   [frontier003_f0682_dp0003] Limpieza desactivada (cleanup_binaries=false)
+20:39:11 INFO:   [frontier003_f0682_dp0003] Duracion total: 498.1s
+23:37:52 INFO: =================================================================
+23:37:52 INFO: CONVERGENCIA CORTA CERCA DE LA FRONTERA
+23:37:52 INFO: =================================================================
+23:37:52 INFO: prefix: frontier003_f0682
+23:37:52 INFO: caso: dam_h=0.2, mass=1.0, fric=0.682, slope=1:20, rot_z=0.0
+23:37:52 INFO: dps: [0.003]
+23:37:52 INFO: csv: C:\Users\Admin\Desktop\SPH-Tesis\data\results\frontier003_f0682.csv
+23:37:52 INFO: gci: C:\Users\Admin\Desktop\SPH-Tesis\data\results\frontier003_f0682_gci.json
+23:37:52 INFO: sqlite table: convergence_frontier003_f0682
+23:37:52 INFO: =================================================================
+23:37:52 INFO: ESTUDIO DE CONVERGENCIA v2 — Config nueva (Moris)
+23:37:52 INFO: =================================================================
+23:37:52 INFO: dp a probar: [0.003]
+23:37:52 INFO: Caso fijo: dam_h=0.2m, mass=1.0kg, fric=0.682, slope=1:20
+23:37:52 INFO: Boulder pos: (6.5, 0.5, 0.025)
+23:37:52 INFO: Metricas primarias: displacement, velocity, SPH force
+23:37:52 INFO: Diagnostico: rotation
+23:37:52 INFO: =================================================================
+23:37:52 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+23:37:52 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:37:52 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:37:52 INFO:   Densidad:    1886.0 kg/m^3
+23:37:52 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:37:52 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:37:52 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:37:52 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:37:52 INFO: d_eq = 0.100421 m
+23:37:52 INFO: 
+=================================================================
+23:37:52 INFO: [1/1] dp = 0.003
+23:37:52 INFO: =================================================================
+23:37:52 INFO: Calculando propiedades del boulder para caso 'frontier003_f0682_dp0003'...
+23:37:52 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:37:52 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:37:52 INFO:   Densidad:    1886.0 kg/m^3
+23:37:52 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:37:52 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:37:52 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:37:52 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:37:52 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+23:37:52 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+23:37:52 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+23:37:52 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+23:37:52 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+23:37:52 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+23:37:52 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+23:37:52 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+23:37:52 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+23:37:52 INFO:     V05: -> upstream x=6.4139, z=0.0237
+23:37:52 INFO:     V06: -> centroide x=6.4794
+23:37:52 INFO:     V07: -> downstream x=6.5904, z=0.0325
+23:37:52 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+23:37:52 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+23:37:52 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+23:37:52 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+23:37:52 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\frontier003_f0682_dp0003_Def.xml
+23:37:52 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+23:37:52 INFO:   Canal: 10 verts, 12 faces, watertight=False
+23:37:52 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\canal_1to20.stl
+23:37:52 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003
+23:37:52 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\frontier003_f0682_dp0003\canal_verificacion.png
+23:37:52 INFO:   [1/3] Geometry OK
+23:37:52 INFO:   Timeout: sin limite (dp=0.003)
+23:37:52 INFO: === Ejecutando caso: frontier003_f0682_dp0003 ===
+23:37:52 INFO:   [frontier003_f0682_dp0003] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe frontier003_f0682_dp0003_Def frontier003_f0682_dp0003_out/frontier003_f0682_dp0003 -save:all
+23:37:59 INFO:   [frontier003_f0682_dp0003] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 frontier003_f0682_dp0003_out/frontier003_f0682_dp0003 frontier003_f0682_dp0003_out
+03:46:28 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+03:46:28 INFO:   [frontier003_f0682_dp0003] Simulacion completada exitosamente
+03:46:28 INFO:   [frontier003_f0682_dp0003] Limpieza desactivada (cleanup_binaries=false)
+03:46:28 INFO:   [frontier003_f0682_dp0003] Duracion total: 14916.3s
+03:46:28 INFO:   [2/3] Sim OK (14916s)
+03:46:28 INFO: Procesando caso: frontier003_f0682_dp0003
+03:46:28 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+03:46:28 INFO:   Desplazamiento max: 0.004268m (4.25% de d_eq=0.1004m)
+03:46:28 INFO:   Rotacion max: 5.33 grados
+03:46:28 INFO:   Velocidad max boulder: 0.1000 m/s
+03:46:28 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+03:46:28 INFO:   Fuerza SPH max: 10.4862N, Contacto max: 10750.3524N
+03:46:28 INFO:   Gauges: 12 velocity, 8 maxZ
+03:46:28 INFO:   Flujo max (gauge V06, dist=0.00m): 0.0000 m/s
+03:46:28 INFO:   Agua max (gauge hmax04, dist=1.02m): 0.1307m
+03:46:28 INFO:   Criterio: FALLO (movimiento) (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+03:46:28 INFO:   [3/3] Analisis OK - 248.6 min total
+03:46:28 INFO:   SQLite: columna 'friction_coefficient' agregada a tabla 'convergence_frontier003_f0682'
+03:46:28 INFO:   SQLite: columna 'slope_inv' agregada a tabla 'convergence_frontier003_f0682'
+03:46:28 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:convergence_frontier003_f0682
+03:46:28 INFO: 
+=================================================================
+03:46:28 INFO: RESUMEN CONVERGENCIA
+03:46:28 INFO: =================================================================
+03:46:28 INFO:       dp          Np    MemGPU     disp(m)     d%   vel(m/s)     d%    Fsph(N)     d%   rot(deg)    t(min)
+03:46:28 INFO: ----------------------------------------------------------------------------------------------------------
+03:46:28 INFO:   0.0030    17525854     3.3GB    0.004268            0.1000           10.4862              5.33     248.6
+03:46:28 INFO: 
+1/1 exitosos, total 248.6 min
+03:46:28 INFO: CSV: C:\Users\Admin\Desktop\SPH-Tesis\data\results\frontier003_f0682.csv

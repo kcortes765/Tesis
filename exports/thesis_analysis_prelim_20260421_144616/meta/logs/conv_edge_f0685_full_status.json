@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-04-21 10:09:12",
+  "dp_actual": 0.002,
+  "estado": "CORRIENDO dp=0.002",
+  "progreso": "3/4",
+  "completados_ok": 3,
+  "tiempo_min": 388.4,
+  "dp_pendientes": [
+    0.002
+  ]
+}
