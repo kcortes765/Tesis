@@ -1,0 +1,867 @@
+19:33:48 INFO: dsph_bin auto-detected: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows
+19:33:48 INFO: Rangos cargados de param_ranges.json: ['dam_height', 'boulder_mass', 'boulder_rot_z', 'friction_coefficient']
+19:33:48 INFO: MODO PRODUCCION: dp=0.003
+19:33:48 INFO: Pre-flight check...
+19:33:48 INFO:   OK: gencase -> C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe
+19:33:48 INFO:   OK: dualsphysics_gpu -> C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe
+19:33:48 INFO:   OK: template XML -> C:\Users\Admin\Desktop\SPH-Tesis\config\template_base.xml
+19:33:48 INFO:   OK: boulder STL -> C:\Users\Admin\Desktop\SPH-Tesis\models\BLIR3.stl
+19:33:48 INFO:   Disco libre: 1357.0 GB
+19:33:48 INFO: Pre-flight OK.
+
+19:33:48 INFO: 
+############################################################
+19:33:48 INFO: # PRODUCCION: 10 casos pendientes (de 10 total)
+19:33:48 INFO: # dp=0.003, GPU=0
+19:33:48 INFO: # EJECUCION REAL
+19:33:48 INFO: ############################################################
+
+19:33:48 INFO: 
+=================================================================
+  CASO 1/10 [batch3_base_mu0678]  [------------------------------] 0%
+  h=0.200m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 0   Fallidos: 0   Quedan: 9
+  Tiempo transcurrido: 0s
+  ETA: calculando tras primer caso...
+=================================================================
+19:33:48 INFO: 
+============================================================
+19:33:48 INFO: 
+============================================================
+19:33:48 INFO: CASO batch3_base_mu0678: dam_h=0.200m, mass=1.000kg, rot_z=0.0deg, mu_s=0.678, slope=1:20, dp=0.003
+19:33:48 INFO: ============================================================
+19:33:48 INFO: Calculando propiedades del boulder para caso 'batch3_base_mu0678'...
+19:33:48 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:33:48 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:33:48 INFO:   Densidad:    1886.0 kg/m^3
+19:33:48 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:33:48 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:33:48 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:33:48 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:33:48 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+19:33:48 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+19:33:48 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+19:33:48 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+19:33:48 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+19:33:48 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+19:33:48 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+19:33:48 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+19:33:48 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+19:33:48 INFO:     V05: -> upstream x=6.4139, z=0.0237
+19:33:48 INFO:     V06: -> centroide x=6.4794
+19:33:48 INFO:     V07: -> downstream x=6.5904, z=0.0325
+19:33:48 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+19:33:48 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+19:33:48 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+19:33:48 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+19:33:48 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0678\batch3_base_mu0678_Def.xml
+19:33:48 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+19:33:48 INFO:   Canal: 10 verts, 12 faces, watertight=False
+19:33:48 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0678\canal_1to20.stl
+19:33:48 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0678
+19:33:48 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0678\canal_verificacion.png
+19:33:48 INFO:   [1/3] Geometry: OK (batch3_base_mu0678_Def.xml)
+19:33:48 INFO:   Timeout: sin limite (dp=0.003)
+19:33:48 INFO: === Ejecutando caso: batch3_base_mu0678 ===
+19:33:48 INFO:   [batch3_base_mu0678] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_base_mu0678_Def batch3_base_mu0678_out/batch3_base_mu0678 -save:all
+19:33:55 INFO:   [batch3_base_mu0678] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_base_mu0678_out/batch3_base_mu0678 batch3_base_mu0678_out
+23:47:17 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+23:47:17 INFO:   [batch3_base_mu0678] Simulacion completada exitosamente
+23:47:17 INFO:   [batch3_base_mu0678] Limpieza desactivada (cleanup_binaries=false)
+23:47:17 INFO:   [batch3_base_mu0678] Duracion total: 15209.2s
+23:47:17 INFO:   [2/3] Simulacion: OK (15209.2s, 24 CSVs)
+23:47:17 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:47:17 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:47:17 INFO:   Densidad:    1886.0 kg/m^3
+23:47:17 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:47:17 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:47:17 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:47:17 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:47:17 INFO: Procesando caso: batch3_base_mu0678
+23:47:17 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+23:47:17 INFO:   Baseline temporal: t_ref=0.5000s
+23:47:17 INFO:   Desplazamiento max: 0.006562m (6.53% de d_eq=0.1004m)
+23:47:17 INFO:   Rotacion acumulada max: 5.56 grados
+23:47:17 INFO:   Velocidad max boulder: 0.1000 m/s
+23:47:17 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+23:47:17 INFO:   Fuerza SPH max: 8.7861N, Contacto max: 10761.4541N
+23:47:17 INFO:   Gauges: 12 velocity, 8 maxZ
+23:47:17 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7301 m/s
+23:47:17 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0683m
+23:47:17 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+23:47:17 INFO:   Flags criterio: moved=True, rotated=True
+23:47:17 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0066m, rot=5.6deg)
+23:47:17 INFO: 
+  >>> batch3_base_mu0678: MOVIMIENTO en 4h 13min
+23:47:17 INFO:       disp=0.0066m  rot=5.6deg  vel=0.100m/s  F_sph=8.8N
+23:47:17 INFO:       V_flujo=0.730m/s  H_agua=0.0683m
+23:47:17 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+23:47:17 INFO: 
+=================================================================
+  CASO 2/10 [batch3_base_mu0680]  [###---------------------------] 10%
+  h=0.200m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 1   Fallidos: 0   Quedan: 8
+  Tiempo transcurrido: 4h 13min
+  Promedio: 253.5 min/caso (ultimos 1)
+  ETA: 1d 9h restantes  -->  fin ~09/05 09:35
+  Tasa exito: 100% (1/1)
+=================================================================
+23:47:17 INFO: 
+============================================================
+23:47:17 INFO: 
+============================================================
+23:47:17 INFO: CASO batch3_base_mu0680: dam_h=0.200m, mass=1.000kg, rot_z=0.0deg, mu_s=0.680, slope=1:20, dp=0.003
+23:47:17 INFO: ============================================================
+23:47:17 INFO: Calculando propiedades del boulder para caso 'batch3_base_mu0680'...
+23:47:17 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:47:17 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:47:17 INFO:   Densidad:    1886.0 kg/m^3
+23:47:17 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:47:17 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:47:17 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:47:17 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:47:17 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+23:47:17 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+23:47:17 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+23:47:17 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+23:47:17 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+23:47:17 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+23:47:17 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+23:47:17 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+23:47:17 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+23:47:17 INFO:     V05: -> upstream x=6.4139, z=0.0237
+23:47:17 INFO:     V06: -> centroide x=6.4794
+23:47:17 INFO:     V07: -> downstream x=6.5904, z=0.0325
+23:47:17 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+23:47:17 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+23:47:17 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+23:47:17 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+23:47:17 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0680\batch3_base_mu0680_Def.xml
+23:47:17 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+23:47:17 INFO:   Canal: 10 verts, 12 faces, watertight=False
+23:47:17 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0680\canal_1to20.stl
+23:47:17 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0680
+23:47:17 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0680\canal_verificacion.png
+23:47:17 INFO:   [1/3] Geometry: OK (batch3_base_mu0680_Def.xml)
+23:47:17 INFO:   Timeout: sin limite (dp=0.003)
+23:47:17 INFO: === Ejecutando caso: batch3_base_mu0680 ===
+23:47:17 INFO:   [batch3_base_mu0680] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_base_mu0680_Def batch3_base_mu0680_out/batch3_base_mu0680 -save:all
+23:47:24 INFO:   [batch3_base_mu0680] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_base_mu0680_out/batch3_base_mu0680 batch3_base_mu0680_out
+04:00:03 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+04:00:03 INFO:   [batch3_base_mu0680] Simulacion completada exitosamente
+04:00:03 INFO:   [batch3_base_mu0680] Limpieza desactivada (cleanup_binaries=false)
+04:00:03 INFO:   [batch3_base_mu0680] Duracion total: 15166.0s
+04:00:03 INFO:   [2/3] Simulacion: OK (15166.0s, 24 CSVs)
+04:00:03 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+04:00:03 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+04:00:03 INFO:   Densidad:    1886.0 kg/m^3
+04:00:03 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+04:00:03 INFO:   d_eq:        0.1004 m (10.0 cm)
+04:00:03 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+04:00:03 INFO:   dim_min/dp:  (requiere dp para calcular)
+04:00:03 INFO: Procesando caso: batch3_base_mu0680
+04:00:04 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+04:00:04 INFO:   Baseline temporal: t_ref=0.5000s
+04:00:04 INFO:   Desplazamiento max: 0.008121m (8.09% de d_eq=0.1004m)
+04:00:04 INFO:   Rotacion acumulada max: 5.86 grados
+04:00:04 INFO:   Velocidad max boulder: 0.1000 m/s
+04:00:04 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+04:00:04 INFO:   Fuerza SPH max: 8.3732N, Contacto max: 10755.3023N
+04:00:04 INFO:   Gauges: 12 velocity, 8 maxZ
+04:00:04 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7599 m/s
+04:00:04 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0689m
+04:00:04 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+04:00:04 INFO:   Flags criterio: moved=True, rotated=True
+04:00:04 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0081m, rot=5.9deg)
+04:00:04 INFO: 
+  >>> batch3_base_mu0680: MOVIMIENTO en 4h 12min
+04:00:04 INFO:       disp=0.0081m  rot=5.9deg  vel=0.100m/s  F_sph=8.4N
+04:00:04 INFO:       V_flujo=0.760m/s  H_agua=0.0689m
+04:00:04 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+04:00:04 INFO: 
+=================================================================
+  CASO 3/10 [batch3_base_mu0682]  [######------------------------] 20%
+  h=0.200m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 2   Fallidos: 0   Quedan: 7
+  Tiempo transcurrido: 8h 26min
+  Promedio: 253.1 min/caso (ultimos 2)
+  ETA: 1d 5h restantes  -->  fin ~09/05 09:32
+  Tasa exito: 100% (2/2)
+=================================================================
+04:00:04 INFO: 
+============================================================
+04:00:04 INFO: 
+============================================================
+04:00:04 INFO: CASO batch3_base_mu0682: dam_h=0.200m, mass=1.000kg, rot_z=0.0deg, mu_s=0.682, slope=1:20, dp=0.003
+04:00:04 INFO: ============================================================
+04:00:04 INFO: Calculando propiedades del boulder para caso 'batch3_base_mu0682'...
+04:00:04 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+04:00:04 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+04:00:04 INFO:   Densidad:    1886.0 kg/m^3
+04:00:04 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+04:00:04 INFO:   d_eq:        0.1004 m (10.0 cm)
+04:00:04 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+04:00:04 INFO:   dim_min/dp:  (requiere dp para calcular)
+04:00:04 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+04:00:04 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+04:00:04 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+04:00:04 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+04:00:04 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+04:00:04 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+04:00:04 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+04:00:04 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+04:00:04 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+04:00:04 INFO:     V05: -> upstream x=6.4139, z=0.0237
+04:00:04 INFO:     V06: -> centroide x=6.4794
+04:00:04 INFO:     V07: -> downstream x=6.5904, z=0.0325
+04:00:04 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+04:00:04 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+04:00:04 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+04:00:04 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+04:00:04 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0682\batch3_base_mu0682_Def.xml
+04:00:04 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+04:00:04 INFO:   Canal: 10 verts, 12 faces, watertight=False
+04:00:04 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0682\canal_1to20.stl
+04:00:04 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0682
+04:00:04 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_base_mu0682\canal_verificacion.png
+04:00:04 INFO:   [1/3] Geometry: OK (batch3_base_mu0682_Def.xml)
+04:00:04 INFO:   Timeout: sin limite (dp=0.003)
+04:00:04 INFO: === Ejecutando caso: batch3_base_mu0682 ===
+04:00:04 INFO:   [batch3_base_mu0682] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_base_mu0682_Def batch3_base_mu0682_out/batch3_base_mu0682 -save:all
+04:00:11 INFO:   [batch3_base_mu0682] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_base_mu0682_out/batch3_base_mu0682 batch3_base_mu0682_out
+08:13:22 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+08:13:22 INFO:   [batch3_base_mu0682] Simulacion completada exitosamente
+08:13:22 INFO:   [batch3_base_mu0682] Limpieza desactivada (cleanup_binaries=false)
+08:13:22 INFO:   [batch3_base_mu0682] Duracion total: 15197.9s
+08:13:22 INFO:   [2/3] Simulacion: OK (15197.9s, 24 CSVs)
+08:13:22 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+08:13:22 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+08:13:22 INFO:   Densidad:    1886.0 kg/m^3
+08:13:22 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+08:13:22 INFO:   d_eq:        0.1004 m (10.0 cm)
+08:13:22 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+08:13:22 INFO:   dim_min/dp:  (requiere dp para calcular)
+08:13:22 INFO: Procesando caso: batch3_base_mu0682
+08:13:22 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+08:13:22 INFO:   Baseline temporal: t_ref=0.5000s
+08:13:22 INFO:   Desplazamiento max: 0.004268m (4.25% de d_eq=0.1004m)
+08:13:22 INFO:   Rotacion acumulada max: 5.33 grados
+08:13:22 INFO:   Velocidad max boulder: 0.1000 m/s
+08:13:22 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+08:13:22 INFO:   Fuerza SPH max: 10.4862N, Contacto max: 10750.3524N
+08:13:22 INFO:   Gauges: 12 velocity, 8 maxZ
+08:13:22 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7517 m/s
+08:13:22 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0679m
+08:13:22 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+08:13:22 INFO:   Flags criterio: moved=False, rotated=True
+08:13:22 INFO:   [3/3] Analisis: OK \u2192 ESTABLE (disp=0.0043m, rot=5.3deg)
+08:13:22 INFO: 
+  >>> batch3_base_mu0682: ESTABLE en 4h 13min
+08:13:22 INFO:       disp=0.0043m  rot=5.3deg  vel=0.100m/s  F_sph=10.5N
+08:13:22 INFO:       V_flujo=0.752m/s  H_agua=0.0679m
+08:13:22 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+08:13:22 INFO: 
+=================================================================
+  CASO 4/10 [batch3_lowH_mu0600]  [#########---------------------] 30%
+  h=0.175m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 3   Fallidos: 0   Quedan: 6
+  Tiempo transcurrido: 12h 39min
+  Promedio: 253.2 min/caso (ultimos 3)
+  ETA: 1d 1h restantes  -->  fin ~09/05 09:32
+  Tasa exito: 100% (3/3)
+=================================================================
+08:13:22 INFO: 
+============================================================
+08:13:22 INFO: 
+============================================================
+08:13:22 INFO: CASO batch3_lowH_mu0600: dam_h=0.175m, mass=1.000kg, rot_z=0.0deg, mu_s=0.600, slope=1:20, dp=0.003
+08:13:22 INFO: ============================================================
+08:13:22 INFO: Calculando propiedades del boulder para caso 'batch3_lowH_mu0600'...
+08:13:22 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+08:13:22 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+08:13:22 INFO:   Densidad:    1886.0 kg/m^3
+08:13:22 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+08:13:22 INFO:   d_eq:        0.1004 m (10.0 cm)
+08:13:22 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+08:13:22 INFO:   dim_min/dp:  (requiere dp para calcular)
+08:13:22 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+08:13:22 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+08:13:22 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+08:13:22 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+08:13:22 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+08:13:22 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+08:13:22 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+08:13:22 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+08:13:22 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+08:13:22 INFO:     V05: -> upstream x=6.4139, z=0.0237
+08:13:22 INFO:     V06: -> centroide x=6.4794
+08:13:22 INFO:     V07: -> downstream x=6.5904, z=0.0325
+08:13:22 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+08:13:22 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+08:13:22 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+08:13:22 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+08:13:22 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0600\batch3_lowH_mu0600_Def.xml
+08:13:22 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+08:13:22 INFO:   Canal: 10 verts, 12 faces, watertight=False
+08:13:22 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0600\canal_1to20.stl
+08:13:22 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0600
+08:13:22 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0600\canal_verificacion.png
+08:13:22 INFO:   [1/3] Geometry: OK (batch3_lowH_mu0600_Def.xml)
+08:13:22 INFO:   Timeout: sin limite (dp=0.003)
+08:13:22 INFO: === Ejecutando caso: batch3_lowH_mu0600 ===
+08:13:22 INFO:   [batch3_lowH_mu0600] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_lowH_mu0600_Def batch3_lowH_mu0600_out/batch3_lowH_mu0600 -save:all
+08:13:29 INFO:   [batch3_lowH_mu0600] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_lowH_mu0600_out/batch3_lowH_mu0600 batch3_lowH_mu0600_out
+11:47:11 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+11:47:11 INFO:   [batch3_lowH_mu0600] Simulacion completada exitosamente
+11:47:11 INFO:   [batch3_lowH_mu0600] Limpieza desactivada (cleanup_binaries=false)
+11:47:11 INFO:   [batch3_lowH_mu0600] Duracion total: 12829.0s
+11:47:11 INFO:   [2/3] Simulacion: OK (12829.0s, 24 CSVs)
+11:47:11 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+11:47:11 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+11:47:11 INFO:   Densidad:    1886.0 kg/m^3
+11:47:11 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+11:47:11 INFO:   d_eq:        0.1004 m (10.0 cm)
+11:47:11 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+11:47:11 INFO:   dim_min/dp:  (requiere dp para calcular)
+11:47:11 INFO: Procesando caso: batch3_lowH_mu0600
+11:47:11 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+11:47:11 INFO:   Baseline temporal: t_ref=0.5000s
+11:47:11 INFO:   Desplazamiento max: 0.001237m (1.23% de d_eq=0.1004m)
+11:47:11 INFO:   Rotacion acumulada max: 4.82 grados
+11:47:11 INFO:   Velocidad max boulder: 0.1000 m/s
+11:47:11 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+11:47:11 INFO:   Fuerza SPH max: 8.7737N, Contacto max: 28587.3848N
+11:47:11 INFO:   Gauges: 12 velocity, 8 maxZ
+11:47:11 INFO:   Flujo max (gauge V05, dist=0.07m): 0.6843 m/s
+11:47:11 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0669m
+11:47:11 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+11:47:11 INFO:   Flags criterio: moved=False, rotated=False
+11:47:11 INFO:   [3/3] Analisis: OK \u2192 ESTABLE (disp=0.0012m, rot=4.8deg)
+11:47:11 INFO: 
+  >>> batch3_lowH_mu0600: ESTABLE en 3h 33min
+11:47:11 INFO:       disp=0.0012m  rot=4.8deg  vel=0.100m/s  F_sph=8.8N
+11:47:11 INFO:       V_flujo=0.684m/s  H_agua=0.0669m
+11:47:11 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+11:47:11 INFO: 
+=================================================================
+  CASO 5/10 [batch3_lowH_mu0640]  [############------------------] 40%
+  h=0.175m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 4   Fallidos: 0   Quedan: 5
+  Tiempo transcurrido: 16h 13min
+  Promedio: 243.3 min/caso (ultimos 4)
+  ETA: 20h 16min restantes  -->  fin ~09/05 08:03
+  Tasa exito: 100% (4/4)
+=================================================================
+11:47:11 INFO: 
+============================================================
+11:47:11 INFO: 
+============================================================
+11:47:11 INFO: CASO batch3_lowH_mu0640: dam_h=0.175m, mass=1.000kg, rot_z=0.0deg, mu_s=0.640, slope=1:20, dp=0.003
+11:47:11 INFO: ============================================================
+11:47:11 INFO: Calculando propiedades del boulder para caso 'batch3_lowH_mu0640'...
+11:47:11 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+11:47:11 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+11:47:11 INFO:   Densidad:    1886.0 kg/m^3
+11:47:11 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+11:47:11 INFO:   d_eq:        0.1004 m (10.0 cm)
+11:47:11 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+11:47:11 INFO:   dim_min/dp:  (requiere dp para calcular)
+11:47:11 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+11:47:11 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+11:47:11 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+11:47:11 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+11:47:11 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+11:47:11 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+11:47:11 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+11:47:11 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+11:47:11 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+11:47:11 INFO:     V05: -> upstream x=6.4139, z=0.0237
+11:47:11 INFO:     V06: -> centroide x=6.4794
+11:47:11 INFO:     V07: -> downstream x=6.5904, z=0.0325
+11:47:11 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+11:47:11 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+11:47:11 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+11:47:11 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+11:47:11 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0640\batch3_lowH_mu0640_Def.xml
+11:47:11 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+11:47:11 INFO:   Canal: 10 verts, 12 faces, watertight=False
+11:47:11 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0640\canal_1to20.stl
+11:47:11 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0640
+11:47:12 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0640\canal_verificacion.png
+11:47:12 INFO:   [1/3] Geometry: OK (batch3_lowH_mu0640_Def.xml)
+11:47:12 INFO:   Timeout: sin limite (dp=0.003)
+11:47:12 INFO: === Ejecutando caso: batch3_lowH_mu0640 ===
+11:47:12 INFO:   [batch3_lowH_mu0640] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_lowH_mu0640_Def batch3_lowH_mu0640_out/batch3_lowH_mu0640 -save:all
+11:47:19 INFO:   [batch3_lowH_mu0640] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_lowH_mu0640_out/batch3_lowH_mu0640 batch3_lowH_mu0640_out
+15:21:26 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+15:21:26 INFO:   [batch3_lowH_mu0640] Simulacion completada exitosamente
+15:21:26 INFO:   [batch3_lowH_mu0640] Limpieza desactivada (cleanup_binaries=false)
+15:21:26 INFO:   [batch3_lowH_mu0640] Duracion total: 12854.6s
+15:21:26 INFO:   [2/3] Simulacion: OK (12854.6s, 24 CSVs)
+15:21:26 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+15:21:26 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+15:21:26 INFO:   Densidad:    1886.0 kg/m^3
+15:21:26 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+15:21:26 INFO:   d_eq:        0.1004 m (10.0 cm)
+15:21:26 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+15:21:26 INFO:   dim_min/dp:  (requiere dp para calcular)
+15:21:26 INFO: Procesando caso: batch3_lowH_mu0640
+15:21:26 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+15:21:26 INFO:   Baseline temporal: t_ref=0.5000s
+15:21:26 INFO:   Desplazamiento max: 0.001237m (1.23% de d_eq=0.1004m)
+15:21:26 INFO:   Rotacion acumulada max: 4.94 grados
+15:21:26 INFO:   Velocidad max boulder: 0.1000 m/s
+15:21:26 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+15:21:26 INFO:   Fuerza SPH max: 8.7792N, Contacto max: 28525.4456N
+15:21:26 INFO:   Gauges: 12 velocity, 8 maxZ
+15:21:26 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7454 m/s
+15:21:26 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0664m
+15:21:26 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+15:21:26 INFO:   Flags criterio: moved=False, rotated=False
+15:21:26 INFO:   [3/3] Analisis: OK \u2192 ESTABLE (disp=0.0012m, rot=4.9deg)
+15:21:26 INFO: 
+  >>> batch3_lowH_mu0640: ESTABLE en 3h 34min
+15:21:26 INFO:       disp=0.0012m  rot=4.9deg  vel=0.100m/s  F_sph=8.8N
+15:21:26 INFO:       V_flujo=0.745m/s  H_agua=0.0664m
+15:21:26 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+15:21:26 INFO: 
+=================================================================
+  CASO 6/10 [batch3_lowH_mu0660]  [###############---------------] 50%
+  h=0.175m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 5   Fallidos: 0   Quedan: 4
+  Tiempo transcurrido: 19h 47min
+  Promedio: 237.5 min/caso (ultimos 5)
+  ETA: 15h 50min restantes  -->  fin ~09/05 07:11
+  Tasa exito: 100% (5/5)
+=================================================================
+15:21:26 INFO: 
+============================================================
+15:21:26 INFO: 
+============================================================
+15:21:26 INFO: CASO batch3_lowH_mu0660: dam_h=0.175m, mass=1.000kg, rot_z=0.0deg, mu_s=0.660, slope=1:20, dp=0.003
+15:21:26 INFO: ============================================================
+15:21:26 INFO: Calculando propiedades del boulder para caso 'batch3_lowH_mu0660'...
+15:21:26 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+15:21:26 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+15:21:26 INFO:   Densidad:    1886.0 kg/m^3
+15:21:26 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+15:21:26 INFO:   d_eq:        0.1004 m (10.0 cm)
+15:21:26 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+15:21:26 INFO:   dim_min/dp:  (requiere dp para calcular)
+15:21:26 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+15:21:26 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+15:21:26 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+15:21:26 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+15:21:26 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+15:21:26 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+15:21:26 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+15:21:26 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+15:21:26 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+15:21:26 INFO:     V05: -> upstream x=6.4139, z=0.0237
+15:21:26 INFO:     V06: -> centroide x=6.4794
+15:21:26 INFO:     V07: -> downstream x=6.5904, z=0.0325
+15:21:26 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+15:21:26 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+15:21:26 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+15:21:26 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+15:21:26 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0660\batch3_lowH_mu0660_Def.xml
+15:21:26 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+15:21:26 INFO:   Canal: 10 verts, 12 faces, watertight=False
+15:21:26 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0660\canal_1to20.stl
+15:21:26 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0660
+15:21:27 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_lowH_mu0660\canal_verificacion.png
+15:21:27 INFO:   [1/3] Geometry: OK (batch3_lowH_mu0660_Def.xml)
+15:21:27 INFO:   Timeout: sin limite (dp=0.003)
+15:21:27 INFO: === Ejecutando caso: batch3_lowH_mu0660 ===
+15:21:27 INFO:   [batch3_lowH_mu0660] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_lowH_mu0660_Def batch3_lowH_mu0660_out/batch3_lowH_mu0660 -save:all
+15:21:33 INFO:   [batch3_lowH_mu0660] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_lowH_mu0660_out/batch3_lowH_mu0660 batch3_lowH_mu0660_out
+18:52:07 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+18:52:07 INFO:   [batch3_lowH_mu0660] Simulacion completada exitosamente
+18:52:07 INFO:   [batch3_lowH_mu0660] Limpieza desactivada (cleanup_binaries=false)
+18:52:07 INFO:   [batch3_lowH_mu0660] Duracion total: 12640.4s
+18:52:07 INFO:   [2/3] Simulacion: OK (12640.4s, 24 CSVs)
+18:52:07 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+18:52:07 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+18:52:07 INFO:   Densidad:    1886.0 kg/m^3
+18:52:07 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+18:52:07 INFO:   d_eq:        0.1004 m (10.0 cm)
+18:52:07 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+18:52:07 INFO:   dim_min/dp:  (requiere dp para calcular)
+18:52:07 INFO: Procesando caso: batch3_lowH_mu0660
+18:52:07 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+18:52:07 INFO:   Baseline temporal: t_ref=0.5000s
+18:52:07 INFO:   Desplazamiento max: 0.001238m (1.23% de d_eq=0.1004m)
+18:52:07 INFO:   Rotacion acumulada max: 4.53 grados
+18:52:07 INFO:   Velocidad max boulder: 0.1000 m/s
+18:52:07 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+18:52:07 INFO:   Fuerza SPH max: 8.8038N, Contacto max: 28412.4179N
+18:52:07 INFO:   Gauges: 12 velocity, 8 maxZ
+18:52:07 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7266 m/s
+18:52:07 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0661m
+18:52:07 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+18:52:07 INFO:   Flags criterio: moved=False, rotated=False
+18:52:07 INFO:   [3/3] Analisis: OK \u2192 ESTABLE (disp=0.0012m, rot=4.5deg)
+18:52:07 INFO: 
+  >>> batch3_lowH_mu0660: ESTABLE en 3h 30min
+18:52:07 INFO:       disp=0.0012m  rot=4.5deg  vel=0.100m/s  F_sph=8.8N
+18:52:07 INFO:       V_flujo=0.727m/s  H_agua=0.0661m
+18:52:07 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+18:52:07 INFO: 
+=================================================================
+  CASO 7/10 [batch3_highH_mu0760]  [##################------------] 60%
+  h=0.225m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 6   Fallidos: 0   Quedan: 3
+  Tiempo transcurrido: 23h 18min
+  Promedio: 233.1 min/caso (ultimos 6)
+  ETA: 11h 39min restantes  -->  fin ~09/05 06:31
+  Tasa exito: 100% (6/6)
+=================================================================
+18:52:07 INFO: 
+============================================================
+18:52:07 INFO: 
+============================================================
+18:52:07 INFO: CASO batch3_highH_mu0760: dam_h=0.225m, mass=1.000kg, rot_z=0.0deg, mu_s=0.760, slope=1:20, dp=0.003
+18:52:07 INFO: ============================================================
+18:52:07 INFO: Calculando propiedades del boulder para caso 'batch3_highH_mu0760'...
+18:52:07 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+18:52:07 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+18:52:07 INFO:   Densidad:    1886.0 kg/m^3
+18:52:07 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+18:52:07 INFO:   d_eq:        0.1004 m (10.0 cm)
+18:52:07 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+18:52:07 INFO:   dim_min/dp:  (requiere dp para calcular)
+18:52:07 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+18:52:07 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+18:52:07 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+18:52:07 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+18:52:07 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+18:52:07 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+18:52:07 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+18:52:07 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+18:52:07 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+18:52:07 INFO:     V05: -> upstream x=6.4139, z=0.0237
+18:52:07 INFO:     V06: -> centroide x=6.4794
+18:52:07 INFO:     V07: -> downstream x=6.5904, z=0.0325
+18:52:07 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+18:52:07 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+18:52:07 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+18:52:07 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+18:52:07 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0760\batch3_highH_mu0760_Def.xml
+18:52:07 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+18:52:07 INFO:   Canal: 10 verts, 12 faces, watertight=False
+18:52:07 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0760\canal_1to20.stl
+18:52:07 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0760
+18:52:07 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0760\canal_verificacion.png
+18:52:07 INFO:   [1/3] Geometry: OK (batch3_highH_mu0760_Def.xml)
+18:52:07 INFO:   Timeout: sin limite (dp=0.003)
+18:52:07 INFO: === Ejecutando caso: batch3_highH_mu0760 ===
+18:52:07 INFO:   [batch3_highH_mu0760] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_highH_mu0760_Def batch3_highH_mu0760_out/batch3_highH_mu0760 -save:all
+18:52:15 INFO:   [batch3_highH_mu0760] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_highH_mu0760_out/batch3_highH_mu0760 batch3_highH_mu0760_out
+23:46:35 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+23:46:35 INFO:   [batch3_highH_mu0760] Simulacion completada exitosamente
+23:46:35 INFO:   [batch3_highH_mu0760] Limpieza desactivada (cleanup_binaries=false)
+23:46:35 INFO:   [batch3_highH_mu0760] Duracion total: 17667.8s
+23:46:35 INFO:   [2/3] Simulacion: OK (17667.8s, 24 CSVs)
+23:46:35 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:46:35 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:46:35 INFO:   Densidad:    1886.0 kg/m^3
+23:46:35 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:46:35 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:46:35 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:46:35 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:46:35 INFO: Procesando caso: batch3_highH_mu0760
+23:46:35 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+23:46:35 INFO:   Baseline temporal: t_ref=0.5000s
+23:46:35 INFO:   Desplazamiento max: 0.044965m (44.78% de d_eq=0.1004m)
+23:46:35 INFO:   Rotacion acumulada max: 11.15 grados
+23:46:35 INFO:   Velocidad max boulder: 0.1003 m/s
+23:46:35 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+23:46:35 INFO:   Fuerza SPH max: 9.3826N, Contacto max: 70106.9936N
+23:46:35 INFO:   Gauges: 12 velocity, 8 maxZ
+23:46:35 INFO:   Flujo max (gauge V05, dist=0.07m): 0.9298 m/s
+23:46:35 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0731m
+23:46:35 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+23:46:35 INFO:   Flags criterio: moved=True, rotated=True
+23:46:35 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0450m, rot=11.2deg)
+23:46:35 INFO: 
+  >>> batch3_highH_mu0760: MOVIMIENTO en 4h 54min
+23:46:35 INFO:       disp=0.0450m  rot=11.2deg  vel=0.100m/s  F_sph=9.4N
+23:46:35 INFO:       V_flujo=0.930m/s  H_agua=0.0731m
+23:46:35 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+23:46:35 INFO: 
+=================================================================
+  CASO 8/10 [batch3_highH_mu0800]  [#####################---------] 70%
+  h=0.225m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 7   Fallidos: 0   Quedan: 2
+  Tiempo transcurrido: 1d 4h
+  Promedio: 241.8 min/caso (ultimos 7)
+  ETA: 8h 3min restantes  -->  fin ~09/05 07:50
+  Tasa exito: 100% (7/7)
+=================================================================
+23:46:35 INFO: 
+============================================================
+23:46:35 INFO: 
+============================================================
+23:46:35 INFO: CASO batch3_highH_mu0800: dam_h=0.225m, mass=1.000kg, rot_z=0.0deg, mu_s=0.800, slope=1:20, dp=0.003
+23:46:35 INFO: ============================================================
+23:46:35 INFO: Calculando propiedades del boulder para caso 'batch3_highH_mu0800'...
+23:46:35 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+23:46:35 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+23:46:35 INFO:   Densidad:    1886.0 kg/m^3
+23:46:35 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+23:46:35 INFO:   d_eq:        0.1004 m (10.0 cm)
+23:46:35 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+23:46:35 INFO:   dim_min/dp:  (requiere dp para calcular)
+23:46:35 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+23:46:35 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+23:46:35 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+23:46:35 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+23:46:35 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+23:46:35 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+23:46:35 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+23:46:35 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+23:46:35 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+23:46:35 INFO:     V05: -> upstream x=6.4139, z=0.0237
+23:46:35 INFO:     V06: -> centroide x=6.4794
+23:46:35 INFO:     V07: -> downstream x=6.5904, z=0.0325
+23:46:35 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+23:46:35 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+23:46:35 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+23:46:35 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+23:46:35 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0800\batch3_highH_mu0800_Def.xml
+23:46:35 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+23:46:35 INFO:   Canal: 10 verts, 12 faces, watertight=False
+23:46:35 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0800\canal_1to20.stl
+23:46:35 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0800
+23:46:35 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_highH_mu0800\canal_verificacion.png
+23:46:35 INFO:   [1/3] Geometry: OK (batch3_highH_mu0800_Def.xml)
+23:46:35 INFO:   Timeout: sin limite (dp=0.003)
+23:46:35 INFO: === Ejecutando caso: batch3_highH_mu0800 ===
+23:46:35 INFO:   [batch3_highH_mu0800] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_highH_mu0800_Def batch3_highH_mu0800_out/batch3_highH_mu0800 -save:all
+23:46:43 INFO:   [batch3_highH_mu0800] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_highH_mu0800_out/batch3_highH_mu0800 batch3_highH_mu0800_out
+04:39:15 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+04:39:15 INFO:   [batch3_highH_mu0800] Simulacion completada exitosamente
+04:39:15 INFO:   [batch3_highH_mu0800] Limpieza desactivada (cleanup_binaries=false)
+04:39:15 INFO:   [batch3_highH_mu0800] Duracion total: 17560.0s
+04:39:15 INFO:   [2/3] Simulacion: OK (17560.0s, 24 CSVs)
+04:39:15 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+04:39:15 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+04:39:15 INFO:   Densidad:    1886.0 kg/m^3
+04:39:15 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+04:39:15 INFO:   d_eq:        0.1004 m (10.0 cm)
+04:39:15 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+04:39:15 INFO:   dim_min/dp:  (requiere dp para calcular)
+04:39:15 INFO: Procesando caso: batch3_highH_mu0800
+04:39:15 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+04:39:15 INFO:   Baseline temporal: t_ref=0.5000s
+04:39:15 INFO:   Desplazamiento max: 0.025835m (25.73% de d_eq=0.1004m)
+04:39:15 INFO:   Rotacion acumulada max: 8.56 grados
+04:39:15 INFO:   Velocidad max boulder: 0.1003 m/s
+04:39:15 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+04:39:15 INFO:   Fuerza SPH max: 9.9992N, Contacto max: 70091.9364N
+04:39:16 INFO:   Gauges: 12 velocity, 8 maxZ
+04:39:16 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8810 m/s
+04:39:16 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0722m
+04:39:16 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+04:39:16 INFO:   Flags criterio: moved=True, rotated=True
+04:39:16 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0258m, rot=8.6deg)
+04:39:16 INFO: 
+  >>> batch3_highH_mu0800: MOVIMIENTO en 4h 52min
+04:39:16 INFO:       disp=0.0258m  rot=8.6deg  vel=0.100m/s  F_sph=10.0N
+04:39:16 INFO:       V_flujo=0.881m/s  H_agua=0.0722m
+04:39:16 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+04:39:16 INFO: 
+=================================================================
+  CASO 9/10 [batch3_midH_mu0700]  [########################------] 80%
+  h=0.210m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 8   Fallidos: 0   Quedan: 1
+  Tiempo transcurrido: 1d 9h
+  Promedio: 248.2 min/caso (ultimos 8)
+  ETA: 4h 8min restantes  -->  fin ~09/05 08:47
+  Tasa exito: 100% (8/8)
+=================================================================
+04:39:16 INFO: 
+============================================================
+04:39:16 INFO: 
+============================================================
+04:39:16 INFO: CASO batch3_midH_mu0700: dam_h=0.210m, mass=1.000kg, rot_z=0.0deg, mu_s=0.700, slope=1:20, dp=0.003
+04:39:16 INFO: ============================================================
+04:39:16 INFO: Calculando propiedades del boulder para caso 'batch3_midH_mu0700'...
+04:39:16 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+04:39:16 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+04:39:16 INFO:   Densidad:    1886.0 kg/m^3
+04:39:16 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+04:39:16 INFO:   d_eq:        0.1004 m (10.0 cm)
+04:39:16 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+04:39:16 INFO:   dim_min/dp:  (requiere dp para calcular)
+04:39:16 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+04:39:16 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+04:39:16 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+04:39:16 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+04:39:16 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+04:39:16 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+04:39:16 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+04:39:16 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+04:39:16 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+04:39:16 INFO:     V05: -> upstream x=6.4139, z=0.0237
+04:39:16 INFO:     V06: -> centroide x=6.4794
+04:39:16 INFO:     V07: -> downstream x=6.5904, z=0.0325
+04:39:16 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+04:39:16 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+04:39:16 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+04:39:16 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+04:39:16 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0700\batch3_midH_mu0700_Def.xml
+04:39:16 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+04:39:16 INFO:   Canal: 10 verts, 12 faces, watertight=False
+04:39:16 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0700\canal_1to20.stl
+04:39:16 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0700
+04:39:16 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0700\canal_verificacion.png
+04:39:16 INFO:   [1/3] Geometry: OK (batch3_midH_mu0700_Def.xml)
+04:39:16 INFO:   Timeout: sin limite (dp=0.003)
+04:39:16 INFO: === Ejecutando caso: batch3_midH_mu0700 ===
+04:39:16 INFO:   [batch3_midH_mu0700] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_midH_mu0700_Def batch3_midH_mu0700_out/batch3_midH_mu0700 -save:all
+04:39:23 INFO:   [batch3_midH_mu0700] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_midH_mu0700_out/batch3_midH_mu0700 batch3_midH_mu0700_out
+09:06:23 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+09:06:23 INFO:   [batch3_midH_mu0700] Simulacion completada exitosamente
+09:06:23 INFO:   [batch3_midH_mu0700] Limpieza desactivada (cleanup_binaries=false)
+09:06:23 INFO:   [batch3_midH_mu0700] Duracion total: 16027.7s
+09:06:23 INFO:   [2/3] Simulacion: OK (16027.7s, 24 CSVs)
+09:06:23 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+09:06:23 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+09:06:23 INFO:   Densidad:    1886.0 kg/m^3
+09:06:23 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+09:06:23 INFO:   d_eq:        0.1004 m (10.0 cm)
+09:06:23 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+09:06:23 INFO:   dim_min/dp:  (requiere dp para calcular)
+09:06:23 INFO: Procesando caso: batch3_midH_mu0700
+09:06:23 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+09:06:24 INFO:   Baseline temporal: t_ref=0.5000s
+09:06:24 INFO:   Desplazamiento max: 0.024054m (23.95% de d_eq=0.1004m)
+09:06:24 INFO:   Rotacion acumulada max: 8.27 grados
+09:06:24 INFO:   Velocidad max boulder: 0.1001 m/s
+09:06:24 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+09:06:24 INFO:   Fuerza SPH max: 8.8332N, Contacto max: 7833.5979N
+09:06:24 INFO:   Gauges: 12 velocity, 8 maxZ
+09:06:24 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8700 m/s
+09:06:24 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0698m
+09:06:24 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+09:06:24 INFO:   Flags criterio: moved=True, rotated=True
+09:06:24 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0241m, rot=8.3deg)
+09:06:24 INFO: 
+  >>> batch3_midH_mu0700: MOVIMIENTO en 4h 27min
+09:06:24 INFO:       disp=0.0241m  rot=8.3deg  vel=0.100m/s  F_sph=8.8N
+09:06:24 INFO:       V_flujo=0.870m/s  H_agua=0.0698m
+09:06:24 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+09:06:24 INFO: 
+=================================================================
+  CASO 10/10 [batch3_midH_mu0740]  [###########################---] 90%
+  h=0.210m | M=1.000kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 9   Fallidos: 0   Quedan: 0
+  Tiempo transcurrido: 1d 13h
+  Promedio: 250.3 min/caso (ultimos 9)
+  ETA: 0s restantes  -->  fin ~09/05 09:06
+  Tasa exito: 100% (9/9)
+=================================================================
+09:06:24 INFO: 
+============================================================
+09:06:24 INFO: 
+============================================================
+09:06:24 INFO: CASO batch3_midH_mu0740: dam_h=0.210m, mass=1.000kg, rot_z=0.0deg, mu_s=0.740, slope=1:20, dp=0.003
+09:06:24 INFO: ============================================================
+09:06:24 INFO: Calculando propiedades del boulder para caso 'batch3_midH_mu0740'...
+09:06:24 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+09:06:24 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+09:06:24 INFO:   Densidad:    1886.0 kg/m^3
+09:06:24 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+09:06:24 INFO:   d_eq:        0.1004 m (10.0 cm)
+09:06:24 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+09:06:24 INFO:   dim_min/dp:  (requiere dp para calcular)
+09:06:24 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+09:06:24 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+09:06:24 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+09:06:24 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+09:06:24 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+09:06:24 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+09:06:24 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+09:06:24 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+09:06:24 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+09:06:24 INFO:     V05: -> upstream x=6.4139, z=0.0237
+09:06:24 INFO:     V06: -> centroide x=6.4794
+09:06:24 INFO:     V07: -> downstream x=6.5904, z=0.0325
+09:06:24 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+09:06:24 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+09:06:24 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+09:06:24 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+09:06:24 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0740\batch3_midH_mu0740_Def.xml
+09:06:24 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+09:06:24 INFO:   Canal: 10 verts, 12 faces, watertight=False
+09:06:24 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0740\canal_1to20.stl
+09:06:24 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0740
+09:06:24 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch3_midH_mu0740\canal_verificacion.png
+09:06:24 INFO:   [1/3] Geometry: OK (batch3_midH_mu0740_Def.xml)
+09:06:24 INFO:   Timeout: sin limite (dp=0.003)
+09:06:24 INFO: === Ejecutando caso: batch3_midH_mu0740 ===
+09:06:24 INFO:   [batch3_midH_mu0740] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch3_midH_mu0740_Def batch3_midH_mu0740_out/batch3_midH_mu0740 -save:all
+09:06:31 INFO:   [batch3_midH_mu0740] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch3_midH_mu0740_out/batch3_midH_mu0740 batch3_midH_mu0740_out
+13:35:25 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+13:35:25 INFO:   [batch3_midH_mu0740] Simulacion completada exitosamente
+13:35:25 INFO:   [batch3_midH_mu0740] Limpieza desactivada (cleanup_binaries=false)
+13:35:25 INFO:   [batch3_midH_mu0740] Duracion total: 16140.8s
+13:35:25 INFO:   [2/3] Simulacion: OK (16140.8s, 24 CSVs)
+13:35:25 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+13:35:25 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+13:35:25 INFO:   Densidad:    1886.0 kg/m^3
+13:35:25 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+13:35:25 INFO:   d_eq:        0.1004 m (10.0 cm)
+13:35:25 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+13:35:25 INFO:   dim_min/dp:  (requiere dp para calcular)
+13:35:25 INFO: Procesando caso: batch3_midH_mu0740
+13:35:25 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+13:35:25 INFO:   Baseline temporal: t_ref=0.5000s
+13:35:25 INFO:   Desplazamiento max: 0.008593m (8.56% de d_eq=0.1004m)
+13:35:25 INFO:   Rotacion acumulada max: 6.27 grados
+13:35:25 INFO:   Velocidad max boulder: 0.1002 m/s
+13:35:25 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+13:35:25 INFO:   Fuerza SPH max: 9.0003N, Contacto max: 7806.2800N
+13:35:25 INFO:   Gauges: 12 velocity, 8 maxZ
+13:35:25 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8681 m/s
+13:35:25 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0695m
+13:35:25 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+13:35:25 INFO:   Flags criterio: moved=True, rotated=True
+13:35:25 INFO:   [3/3] Analisis: OK \u2192 FALLO (disp=0.0086m, rot=6.3deg)
+13:35:25 INFO: 
+  >>> batch3_midH_mu0740: MOVIMIENTO en 4h 29min
+13:35:25 INFO:       disp=0.0086m  rot=6.3deg  vel=0.100m/s  F_sph=9.0N
+13:35:25 INFO:       V_flujo=0.868m/s  H_agua=0.0695m
+13:35:25 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+13:35:25 INFO: 
+############################################################
+13:35:25 INFO: # PRODUCCION COMPLETADA
+13:35:25 INFO: # Exitosos: 10/10
+13:35:25 INFO: # Fallidos: 0/10
+13:35:25 INFO: # Tiempo total: 42.0h (1.8d)
+13:35:25 INFO: ############################################################
+13:35:25 INFO: 
+Re-entrenando GP surrogate con datos frescos...
+13:35:25 INFO: Datos reales: 45 casos de results.sqlite
+C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\sklearn\gaussian_process\kernels.py:450: ConvergenceWarning: The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 10.0. Increasing the bound and calling fit again may find a better value.
+  warnings.warn(
+C:\Users\Admin\AppData\Local\Programs\Python\Python310\lib\site-packages\sklearn\gaussian_process\kernels.py:450: ConvergenceWarning: The optimal value found for dimension 2 of parameter k1__k2__length_scale is close to the specified upper bound 10.0. Increasing the bound and calling fit again may find a better value.
+  warnings.warn(
+13:35:25 INFO: GP entrenado. Kernel: 1.89**2 * Matern(length_scale=[2.73, 10, 10], nu=2.5) + WhiteKernel(noise_level=0.034)
+13:35:25 INFO:   Log-marginal likelihood: -8.048
+13:35:25 INFO: LOO: R²=0.9278, RMSE=0.8447 m
+13:35:26 INFO:   Figura: gp_2d_slices
+13:35:27 INFO:   Figura: gp_loo_validation
+13:35:27 INFO:   Figura: gp_1d_slices
+13:35:27 INFO: Modelo exportado: C:\Users\Admin\Desktop\SPH-Tesis\data\gp_surrogate.pkl

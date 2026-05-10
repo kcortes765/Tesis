@@ -1,10 +1,10 @@
 # PLAN
 
 ## Objetivo activo
-Cerrar la transicion desde convergencia a produccion controlada, auditar piloto + batch2, y preparar el siguiente diseno sin lanzar una campana grande.
+Ejecutar batch3 productivo dirigido y usar piloto + batch2 + batch3 para decidir el siguiente paso cientifico sin lanzar una campana grande.
 
 ## Fase actual
-Batch2 completado y exportado; siguiente paso es analisis cientifico y decision de diseno.
+Batch3 productivo dirigido completado y exportado liviano para sincronizacion por Git.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como malla operativa.
@@ -20,13 +20,17 @@ Batch2 completado y exportado; siguiente paso es analisis cientifico y decision 
 - [x] Lanzar batch2 real en background.
 - [x] Esperar fin de batch2 y auditar resultados.
 - [x] Crear export liviano batch2.
-- [ ] Revisar cientificamente el export del piloto y batch2 juntos.
-- [ ] Decidir mini-batch dirigido o primer surrogate exploratorio.
-- [ ] Si hay otro lote: crear matriz explicita, dry-run y limite `--max-cases`.
+- [x] Crear matriz batch3 productiva dirigida de 10 casos.
+- [x] Ejecutar dry-run batch3.
+- [x] Lanzar batch3 real.
+- [x] Esperar fin de batch3 y auditar resultados.
+- [x] Crear export liviano batch3.
+- [ ] Revisar cientificamente el export del piloto, batch2 y batch3 juntos.
+- [ ] Decidir mini-batch adicional o primer surrogate exploratorio.
 - [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
-- No iniciar otra tanda hasta revisar cientificamente batch2.
+- No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3.
 - No tocar global/system sin confirmacion explicita.
 
 ## Fuera de alcance por ahora

@@ -1,0 +1,18 @@
+
+Datos: 45 total (45 reales + 0 sinteticos)
+
+Generando figuras...
+
+============================================================
+  RESUMEN GP SURROGATE
+============================================================
+  Datos reales:    45
+  Datos sinteticos: 0
+  Features:        ['dam_height', 'boulder_mass', 'boulder_rot_z']
+  Target:          max_displacement
+  Kernel:          1.89**2 * Matern(length_scale=[2.73, 10, 10], nu=2.5) + WhiteKernel(noise_level=0.034)
+  R² (LOO):        0.9278
+  RMSE (LOO):      0.8447 m
+  Modelo:          C:\Users\Admin\Desktop\SPH-Tesis\data\gp_surrogate.pkl
+  Figuras:         C:\Users\Admin\Desktop\SPH-Tesis\data\figuras_ml
+============================================================

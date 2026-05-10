@@ -343,3 +343,109 @@ git push origin master
 ### Advertencias metodologicas
 - No se subieron binarios crudos pesados (`*.bi4`, `*.ibi4`, VTK, `Part*`, `*_out/`).
 - Para traer absolutamente los crudos, usar disco externo, storage separado o Git LFS configurado deliberadamente.
+
+## 2026-05-07 19:33 - Lanzamiento batch3 productivo dirigido
+
+### Objetivo
+Lanzar un lote productivo dirigido de 10 casos con `dp=0.003` para mejorar el mapa local de estabilidad sin abrir una campana grande ni volver a convergencia.
+
+### Acciones
+- Se verifico que no habia procesos `DualSPHysics`, `GenCase` ni runners `python` activos.
+- Se reviso `git status` sin limpiar ni revertir nada.
+- Se confirmo que `scripts/run_production.py` acepta `--matrix`, `--max-cases`, `--dry-run` y `--no-notify`.
+- Se confirmo que `src/main_orchestrator.py` usa `PRODUCTION_CLASSIFICATION_MODE="displacement_only"` y `PRODUCTION_REFERENCE_TIME_S=0.5`.
+- Se confirmo `config/dsph_config.json`: `dp_prod=0.003`.
+- Se creo `config/batch3_productivo.csv` con 10 casos.
+- Se ejecuto dry-run obligatorio.
+- Se lanzo batch3 real en background.
+- Se actualizo APOS vivo para reflejar batch3 corriendo.
+
+### Archivos revisados
+- `.apos/BOOTSTRAP.md`
+- `.agents/skills/guardar/SKILL.md`
+- `scripts/run_production.py`
+- `src/main_orchestrator.py`
+- `config/dsph_config.json`
+- `data/production_status.json`
+
+### Archivos modificados
+- `config/batch3_productivo.csv`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+- `.apos/JOURNAL.md`
+
+### Comandos importantes
+```text
+python scripts\run_production.py --prod --matrix config\batch3_productivo.csv --max-cases 10 --dry-run --no-notify
+python scripts\run_production.py --prod --matrix config\batch3_productivo.csv --max-cases 10 --no-notify
+```
+
+### Resultados
+- Dry-run correcto: 10 casos, `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- Batch3 real lanzado el 2026-05-07 19:33 aprox.
+- `data/production_status.json`: `phase=production`, `total_cases=10`, `completed=0`, `failed=0`, `current_case=batch3_base_mu0678`, `progress=1/10`.
+- Procesos activos: `python.exe` runner y `DualSPHysics5.4_win64.exe`.
+- Log productivo: `data/production_20260507_1933.log`.
+
+### Proximos pasos
+- Monitorear batch3 hasta completar o fallar.
+- Al terminar, generar export liviano `exports/batch3_productivo_YYYYMMDD/`.
+- No lanzar otra tanda encima.
+
+### Advertencias metodologicas
+- Batch3 es produccion dirigida, no convergencia.
+- No cambiar `dp`, criterio ni referencia temporal durante el lote.
+- La rotacion sigue siendo diagnostica.
+
+## 2026-05-09 13:55 - Cierre y export liviano batch3
+
+### Objetivo
+Registrar el cierre de batch3 productivo dirigido y preparar datos livianos para sincronizar con la IA/local via Git.
+
+### Acciones
+- Se verifico `data/production_status.json`: `phase=completed`, `completed=10`, `failed=0`, tiempo total 42.03 h.
+- Se reviso `data/production_20260507_1933.log` y los directorios `data/processed/batch3_*`.
+- Se extrajeron metricas desde `data/results.sqlite` y `Run.csv`.
+- Se creo `exports/batch3_productivo_20260509/` siguiendo el patron de piloto y batch2.
+- Se actualizaron `STATUS.md`, `HANDOFF.md` y `PLAN.md` para reflejar que batch3 ya termino.
+
+### Archivos revisados
+- `data/production_status.json`
+- `data/production_20260507_1933.log`
+- `data/results.sqlite`
+- `data/processed/batch3_*`
+- `config/batch3_productivo.csv`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+
+### Archivos creados
+- `exports/batch3_productivo_20260509/README.md`
+- `exports/batch3_productivo_20260509/batch3_summary.csv`
+- `exports/batch3_productivo_20260509/batch3_summary.md`
+- `exports/batch3_productivo_20260509/production_status.json`
+- `exports/batch3_productivo_20260509/production_log_tail.txt`
+- `exports/batch3_productivo_20260509/processed_inventory.csv`
+- `exports/batch3_productivo_20260509/source_manifest.csv`
+- `exports/batch3_productivo_20260509/processed_run_metrics/*`
+
+### Resultados
+- Batch3: 10/10 OK, 0 fallos numericos.
+- Clasificacion por desplazamiento: 6 FALLO, 4 ESTABLE.
+- Base `H=0.20`, `slope=1:20`: FALLO en `mu=0.678` y `0.680`; ESTABLE en `mu=0.682`.
+- `H=0.175`: estable en todos los puntos corridos (`mu=0.600`, `0.640`, `0.660`).
+- `H=0.210` y `H=0.225`: fallan en los puntos corridos, incluso con fricciones altas.
+
+### Proximos pasos
+- Hacer commit/push de export liviano y APOS actualizado.
+- En la IA/local, auditar piloto + batch2 + batch3 juntos antes de disenar otro lote.
+
+### Advertencias metodologicas
+- Batch3 no es convergencia ni mapa completo de fragilidad.
+- No afirmar convergencia asintotica fuerte.
+- La rotacion se mantiene como diagnostico, no como criterio primario.

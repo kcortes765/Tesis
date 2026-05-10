@@ -1,0 +1,20 @@
+{
+  "phase": "completed",
+  "dp": 0.003,
+  "mode": "prod",
+  "total_cases": 10,
+  "desde": 0,
+  "pending": 10,
+  "completed": 10,
+  "failed": 0,
+  "current_case": "batch3_midH_mu0740",
+  "start_time": "2026-05-07T19:33:48.296324",
+  "dry_run": false,
+  "updated": "2026-05-09T13:35:25.429290",
+  "progress": "10/10",
+  "eta": "2026-05-09T09:06:24.242822",
+  "avg_case_seconds": 15017.3,
+  "eta_human": "0.0h (0.0d)",
+  "end_time": "2026-05-09T13:35:25.429290",
+  "total_elapsed_hours": 42.03
+}

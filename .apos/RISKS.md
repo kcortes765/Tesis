@@ -44,3 +44,12 @@ Probabilidad: media
 Evidencia: 5/8 casos batch2 tienen `rotated=True`, pero solo `moved=True` define FALLO bajo `displacement_only`.
 Mitigacion: reportar rotacion en columna separada; no cambiar `criterion_class` por rotacion.
 Relacionado: `src/data_cleaner.py`, `exports/batch2_productivo_20260505/batch2_summary.csv`
+
+## RISK-20260507-001 - Batch3 productivo en ejecucion
+
+Estado: activo
+Severidad: alta
+Probabilidad: media
+Evidencia: `data/production_status.json` reporta `total_cases=10`, `progress=1/10`, `current_case=batch3_base_mu0678`, y hay procesos `python.exe` + `DualSPHysics5.4_win64.exe` activos.
+Mitigacion: no lanzar otra tanda, no borrar outputs, monitorear solo lectura; si falla un caso, diagnosticar antes de relanzar.
+Relacionado: `config/batch3_productivo.csv`, `scripts/run_production.py`, `data/production_20260507_1933.log`
