@@ -3,10 +3,11 @@
 Ultima actualizacion: 2026-05-10
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica local: C:\Seba\Tesis
-Estado actual: repo canonico unico actualizado a `origin/master` con piloto, batch2 y batch3; APOS unificado en esta carpeta; datos locales nuevos identificados y separados por origen.
+Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con piloto, batch2, batch3, verificacion preproduccion, web de convergencia y analisis STL b02; APOS unificado en esta carpeta; datos locales nuevos identificados y separados por origen.
 
 ## Hechos verificados
 - `C:\Seba\Tesis` esta actualizado a `origin/master` en commit `3c443e9 Add batch3 production export`.
+- Commit local de reconciliacion `0e98b65 Reconcile local APOS and verification assets` fue pusheado a `origin/master`.
 - En esta laptop, `C:\Seba\Tesis` es una junction hacia `C:\Users\kevin\projects\Tesis`; ambos paths representan la misma carpeta, no dos repos.
 - No queda una segunda carpeta canonica: `C:\Seba\Tesis_origin_master_clean_20260510_123639` fue solo un worktree temporal de rescate.
 - El worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` fue retirado tras respaldar su `.apos` en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339\temp_worktree_before_remove`.
@@ -53,7 +54,7 @@ Estado actual: repo canonico unico actualizado a `origin/master` con piloto, bat
 - Revisar cientificamente piloto + batch2 + batch3 juntos.
 - Decidir si el siguiente paso es surrogate exploratorio, mini-batch adicional o incorporacion controlada de geometria.
 - Revisar `stash@{0}` solo para recuperar cambios locales explicitamente valiosos.
-- Verificar en GitHub que los STL/metricas de bloques y la verificacion preproduccion quedaron versionados tras el push.
+- Revisar cientificamente los resultados ya versionados para decidir surrogate/mini-batch/geometria.
 
 ## Riesgos activos
 - Riesgo de mezclar origen WS/GitHub con origen laptop/local si no se cita el export o path.
@@ -71,3 +72,4 @@ Estado actual: repo canonico unico actualizado a `origin/master` con piloto, bat
 - `exports/batch3_productivo_20260509/`
 - `models/bloques/b02_variantes_20260510/`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
+- `0e98b65 Reconcile local APOS and verification assets`

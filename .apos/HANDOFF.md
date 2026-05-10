@@ -9,7 +9,7 @@
 ## Contexto minimo para continuar
 - `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
 - En esta laptop, `C:\Seba\Tesis` es una junction hacia `C:\Users\kevin\projects\Tesis`; ambos paths son la misma carpeta.
-- `C:\Seba\Tesis` esta actualizado a `origin/master` en commit `3c443e9`.
+- `C:\Seba\Tesis` esta actualizado y pusheado a `origin/master` en commit `0e98b65`.
 - La carpeta temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` ya fue retirada; su `.apos` quedo respaldado en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339\temp_worktree_before_remove`.
 - Los cambios trackeados locales previos quedaron guardados en `stash@{0}` y backup externo.
 - Backup externo: `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.

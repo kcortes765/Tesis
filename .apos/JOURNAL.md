@@ -562,14 +562,14 @@ git diff --cached --name-only | Select-String -Pattern '\.(bi4|ibi4|vtk|vtp|zip)
 - No se stagearon crudos pesados tipo `.bi4`, `.ibi4`, VTK, `Part*`, zip ni carpetas `*_out/`.
 - El set versionable nuevo pesa aproximadamente 5.5 MB.
 - El backup externo de seguridad sigue disponible en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.
-- Se creo el commit local `af09d09 Reconcile local APOS and verification assets`.
+- Se creo el commit local de reconciliacion, luego amendido para registrar el retiro del worktree temporal.
 - Se retiro el worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` luego de respaldar su `.apos`.
+- El commit final de reconciliacion quedo como `0e98b65` y fue pusheado a `origin/master`.
 
 ### Errores / bloqueos
 - `git diff --cached --check` reporta whitespace en SVG/artefactos generados; no afecta ejecucion ni trazabilidad.
 
 ### Proximos pasos
-- Pushear el commit local si la red/GitHub lo acepta.
 - En la siguiente sesion, analizar piloto + batch2 + batch3 para decidir surrogate o mini-batch.
 
 ### Advertencias metodologicas
