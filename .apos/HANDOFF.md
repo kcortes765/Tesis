@@ -1,68 +1,69 @@
 # HANDOFF
 
 ## Proxima accion recomendada
-1. Traer por Git el export liviano `exports/batch3_productivo_20260509/`.
-2. Auditar cientificamente piloto + batch2 + batch3 juntos.
-3. Revisar si el siguiente paso es mini-batch adicional, comparacion analitica, benchmark/sanity, o surrogate exploratorio.
-4. No lanzar otra tanda antes de esa lectura.
+1. Continuar exclusivamente desde `C:\Seba\Tesis`.
+2. Revisar piloto + batch2 + batch3 juntos desde los exports livianos.
+3. Decidir si se entrena surrogate exploratorio o se disena un mini-batch adicional.
+4. Si se abre geometria, partir por los STL `b02` ya analizados y un sanity de contacto por geometria.
 
 ## Contexto minimo para continuar
-- Convergencia cerrada: `dp=0.003` queda como malla operativa.
+- `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
+- En esta laptop, `C:\Seba\Tesis` es una junction hacia `C:\Users\kevin\projects\Tesis`; ambos paths son la misma carpeta.
+- `C:\Seba\Tesis` esta actualizado a `origin/master` en commit `3c443e9`.
+- La carpeta temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` ya fue retirada; su `.apos` quedo respaldado en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339\temp_worktree_before_remove`.
+- Los cambios trackeados locales previos quedaron guardados en `stash@{0}` y backup externo.
+- Backup externo: `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.
+- Data WS/GitHub: exports livianos versionados.
+- Data laptop/local: STL, web, figuras, scripts y documentos locales; usar solo si se versionan o se cita el path.
+- Convergencia cerrada: `dp=0.003` queda como resolucion operativa.
 - Criterio primario: `displacement_only`.
 - Referencia temporal: `reference_time_s=0.5`.
 - Rotacion: diagnostico.
-- Piloto productivo: 5/5 OK, export en `exports/pilot_productivo_20260501/`.
-- Batch2 productivo chico: 8/8 OK, export en `exports/batch2_productivo_20260505/`.
-- Batch3 productivo dirigido: 10/10 OK, 0 fallos numericos, 42.03 h, export en `exports/batch3_productivo_20260509/`.
-- Batch3 produjo 6 FALLO y 4 ESTABLE por desplazamiento.
-- Base `H=0.20`, `slope=1:20`: FALLO en `mu=0.678` y `0.680`; ESTABLE en `mu=0.682`.
-- `H=0.175`: ESTABLE en `mu=0.600`, `0.640`, `0.660`.
-- `H=0.210`: FALLO en `mu=0.700`, `0.740`.
-- `H=0.225`: FALLO en `mu=0.760`, `0.800`.
-- Guardas de seguridad ya incorporadas en `scripts/run_production.py`.
-- Las skills visibles repo-locales son solo tres: `/apos`, `/apos-status` y `/guardar`.
+- Piloto: 5/5 OK, export en `exports/pilot_productivo_20260501/`.
+- Batch2: 8/8 OK, export en `exports/batch2_productivo_20260505/`.
+- Batch3: 10/10 OK, 0 fallos numericos, export en `exports/batch3_productivo_20260509/`.
+- Batch3 base `H=0.20`, `slope=1:20`: FALLO en `mu=0.678` y `0.680`; ESTABLE en `mu=0.682`.
+- Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
+- El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
 ## Archivos a leer primero
 1. `.apos/CONTEXT_POLICY.md`
 2. `.apos/INDEX.md`
 3. `.apos/STATUS.md`
 4. `.apos/HANDOFF.md`
-5. `exports/batch3_productivo_20260509/batch3_summary.md`
-6. `exports/batch3_productivo_20260509/batch3_summary.csv`
-7. `exports/batch2_productivo_20260505/batch2_summary.csv`
-8. `exports/pilot_productivo_20260501/pilot_summary.csv`
-9. `config/batch3_productivo.csv`
-10. `scripts/run_production.py`
+5. `docs/DATA_ORIGIN_POLICY.md`
+6. `exports/batch3_productivo_20260509/batch3_summary.md`
+7. `exports/batch3_productivo_20260509/batch3_summary.csv`
+8. `exports/batch2_productivo_20260505/batch2_summary.csv`
+9. `exports/pilot_productivo_20260501/pilot_summary.csv`
+10. `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
 
 ## Comandos sugeridos
 ```powershell
+cd C:\Seba\Tesis
+git status -sb
+
 Get-Content exports\batch3_productivo_20260509\batch3_summary.md
 
 Import-Csv exports\batch3_productivo_20260509\batch3_summary.csv |
   Select case_id,dam_height,friction_coefficient,slope_inv,criterion_class,disp_pct_deq,max_rotation_deg
-
-Get-Content exports\batch3_productivo_20260509\production_status.json
-
-Get-Process | Where-Object { $_.ProcessName -match "DualSPHysics|GenCase|python" } |
-  Select Id,ProcessName,StartTime,CPU
 ```
 
 ## Senales de exito
-- Batch3 queda versionado como export liviano y trazable para la IA/local.
-- La lectura cientifica separa produccion dirigida de convergencia.
-- No se mezcla rotacion diagnostica con falla por desplazamiento.
+- `git status -sb` no muestra otro worktree como fuente canonica.
+- Los datos de WS se citan por export/commit.
+- Los datos locales se citan por path y quedan versionados si son livianos.
+- No queda APOS duplicado como verdad viva.
 
 ## No hacer todavia
-- No correr mas convergencia.
-- No lanzar campana parametrica grande.
-- No lanzar otra tanda antes de revisar batch3.
-- No borrar `cases/batch3_*` ni `data/processed/batch3_*`.
-- No modificar skills globales ni `.system`.
-- No versionar outputs pesados.
-- No interpretar fallos numericos como fallos fisicos.
+- No recrear ni usar worktrees temporales como fuente diaria.
+- No aplicar `stash@{0}` completo sin revisar.
+- No borrar backups, `cases/`, `data/`, `imports/` ni `archive/`.
+- No lanzar otra tanda antes de revisar piloto + batch2 + batch3.
+- No versionar crudos pesados.
+- No mezclar rotacion diagnostica con falla por desplazamiento.
 
 ## Riesgos inmediatos
-- Estado APOS historico desfasado en `BOOTSTRAP.md`; priorizar `STATUS/HANDOFF` y archivos reales.
-- Posible drift entre documentacion vieja y codigo actual.
-- Riesgo de sobreinterpretar batch2/batch3 como mapa completo de fragilidad.
-- `data/results.sqlite` cambio localmente, pero el paquete seguro para Git es el export liviano.
+- Confundir origen WS/GitHub con origen laptop/local.
+- Recuperar cambios viejos del stash y reintroducir APOS antiguo.
+- Sobreinterpretar batch2/batch3 como mapa completo.

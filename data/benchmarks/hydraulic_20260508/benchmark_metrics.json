@@ -1,0 +1,15 @@
+{
+  "benchmark": "DualSPHysics examples/main/01_DamBreak CaseDambreakVal2D",
+  "reference": "Koshizuka and Oka 1996 dam-tip/front position file included in DualSPHysics",
+  "n_reference_points": 15,
+  "rmse_m": 0.2573208171437919,
+  "mae_m": 0.2401170199969838,
+  "mean_rel_error_pct": 10.18708810283702,
+  "max_rel_error_pct": 17.17535636398052,
+  "final_exp_x_m": 4.132,
+  "final_sim_x_m": 3.99064,
+  "final_rel_error_pct": 3.421103581800574,
+  "dp_m": 0.01,
+  "time_max_s": 2.0,
+  "particles_total": 21001
+}

@@ -1,0 +1,11 @@
+﻿
+Name                                     LastWriteTime             Files       KB
+----                                     -------------             -----       --
+batch2_productivo_20260505               10/05/2026 12:36:49 p. m.    24     67.8
+batch3_productivo_20260509               10/05/2026 12:36:49 p. m.    28     75.1
+pilot_productivo_20260501                10/05/2026 12:36:49 p. m.    18     53.6
+thesis_analysis_prelim_20260421_144616   10/05/2026 12:36:51 p. m.   307 223046.7
+ws_delta_conv_edge_f0685_20260422_081859 10/05/2026 12:36:51 p. m.    17    510.7
+ws_delta_conv_edge_f0685_20260422_090418 10/05/2026 12:36:51 p. m.     4     27.5
+
+

@@ -1,0 +1,35 @@
+{
+  "D_EQ": 0.100421,
+  "BLOCK_VOLUME_M3": 0.00053,
+  "BLOCK_HEIGHT_M": 0.0429,
+  "BLOCK_WIDTH_M": 0.21,
+  "BLOCK_LENGTH_M": 0.1706,
+  "RHO_W": 1000.0,
+  "G": 9.81,
+  "scenarios": [
+    {
+      "name": "lower",
+      "cd": 1.0,
+      "cl": 0.0,
+      "area_drag_factor": 0.75,
+      "area_lift_factor": 0.0,
+      "slope_assist": false
+    },
+    {
+      "name": "central",
+      "cd": 1.5,
+      "cl": 0.2,
+      "area_drag_factor": 1.0,
+      "area_lift_factor": 0.5,
+      "slope_assist": false
+    },
+    {
+      "name": "upper",
+      "cd": 2.0,
+      "cl": 0.6,
+      "area_drag_factor": 1.25,
+      "area_lift_factor": 1.0,
+      "slope_assist": true
+    }
+  ]
+}

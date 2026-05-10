@@ -39,3 +39,42 @@ Claims soportados:
 - Export excluye binarios y salidas completas.
 Confianza: alta
 Notas: Usar para revisar resultados en workspace local sin copiar outputs pesados.
+
+## SRC-20260510-001 - GitHub origin/master con exports WS
+
+Fecha de consulta: 2026-05-10
+Tipo: repo
+Fuente: `origin/master` en commit `3c443e9 Add batch3 production export`
+Usado para: reconciliar el repo local con los resultados livianos generados en la WS UCN.
+Claims soportados:
+- Piloto, batch2 y batch3 estan disponibles como exports livianos versionados.
+- `batch3_productivo_20260509` termino 10/10 OK y excluye crudos pesados.
+- La transferencia por Git no incluye `.bi4`, `.ibi4`, VTK, `Part*` ni carpetas `*_out/`.
+Confianza: alta
+Notas: GitHub/WS es fuente canonica para resultados livianos sincronizados; no reemplaza el storage de crudos.
+
+## SRC-20260510-002 - Backup de reconciliacion local
+
+Fecha de consulta: 2026-05-10
+Tipo: local
+Fuente: `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`
+Usado para: asegurar que la limpieza del repo no pierda cambios locales, APOS previo ni archivos no trackeados en conflicto.
+Claims soportados:
+- Los cambios trackeados locales previos fueron respaldados antes del fast-forward.
+- Los archivos no trackeados en conflicto fueron copiados antes de moverlos dentro del repo.
+- La carpeta temporal limpia fue respaldada como evidencia, no como repo canonico.
+Confianza: alta
+Notas: No usar como fuente diaria de trabajo; solo como respaldo de recuperacion.
+
+## SRC-20260510-003 - STL b02 y analisis geometrico local
+
+Fecha de consulta: 2026-05-10
+Tipo: local
+Fuente: `models/bloques/b02_variantes_20260510/` y `data/geometry/bloques_b02_20260510/`
+Usado para: registrar los bloques STL recibidos localmente y el espacio geometrico cubierto por esa familia.
+Claims soportados:
+- La familia `b02` contiene un original y nueve reducciones.
+- El analisis escalado reporta metricas de volumen, area, bounding box, esfericidad/compacidad y diferencias relativas.
+- `b02_Original.stl` coincide con el bloque activo de referencia segun el analisis local previo.
+Confianza: media-alta
+Notas: Las formas son utiles para variacion geometrica controlada, pero no cubren por si solas un dominio amplio de bloques costeros.

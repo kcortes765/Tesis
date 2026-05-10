@@ -208,3 +208,67 @@ El estado APOS historico estaba desfasado respecto al cierre real de convergenci
 
 ### Supersede / relacionadas
 - Relacionada con DEC-026 y DEC-028.
+
+## DEC-20260510-001 - C:\Seba\Tesis como repo canonico unico
+
+Fecha: 2026-05-10
+Estado: aceptada
+Tipo: proceso
+Alcance: proyecto
+
+### Decision
+Usar `C:\Seba\Tesis` como unico repo canonico local. No mantener `C:\Seba\Tesis_origin_master_clean_20260510_123639` como fuente de trabajo. APOS canonico vive solo en `C:\Seba\Tesis\.apos`.
+
+### Contexto
+La carpeta local estaba detras de `origin/master` y tenia cambios locales/no trackeados. Para evitar perdida de datos se creo un worktree limpio temporal, se audito el estado, se respaldo la data local y luego se actualizo `C:\Seba\Tesis` a `origin/master`.
+
+### Evidencia
+- `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`
+- `stash@{0}: pre-reconcile tracked changes 20260510_125339`
+- `.apos/cache/git-untracked-conflicts-20260510_125339/moved_manifest.csv`
+- `docs/DATA_ORIGIN_POLICY.md`
+
+### Alternativas consideradas
+- Seguir trabajando en el worktree limpio: descartado porque duplica APOS y aumenta confusion.
+- Resetear/limpiar `C:\Seba\Tesis`: descartado por riesgo de perdida de datos locales.
+- Aplicar el stash completo: descartado por riesgo de reintroducir estado APOS/codigo obsoleto.
+
+### Consecuencias
+- Los proximos chats deben partir de `C:\Seba\Tesis`.
+- Cualquier dato de WS debe citar export/commit.
+- Cualquier dato local debe citar path y pasar por versionado selectivo si sera fuente cientifica.
+- Los crudos pesados quedan fuera de Git normal.
+
+### Supersede / relacionadas
+- Relacionada con DEC-028 y DEC-20260501-001.
+
+## DEC-20260510-002 - APOS de tesis queda simplificado a tres skills repo-locales
+
+Fecha: 2026-05-10
+Estado: aceptada
+Tipo: proceso
+Alcance: proyecto
+
+### Decision
+El runtime APOS de este repo queda compuesto por `.apos/` y solo tres skills repo-locales: `/apos`, `/guardar` y `/apos-status`, ubicadas en `.agents/skills/`. El scaffold expandido `apos-system/` se conserva como herramienta/historial versionado parcial, pero no se trata como segunda memoria viva ni como fuente operacional paralela.
+
+### Contexto
+La implementacion APOS-X previa dejo material de sistema y migracion junto al repo de tesis. Eso puede inducir a pensar que existen dos APOS o dos fuentes de verdad. Para la tesis, la continuidad debe ser simple: APOS vivo en `.apos/`, comandos humanos reducidos y evidencia versionada.
+
+### Evidencia
+- `.agents/skills/apos/SKILL.md`
+- `.agents/skills/guardar/SKILL.md`
+- `.agents/skills/apos-status/SKILL.md`
+- `docs/DATA_ORIGIN_POLICY.md`
+
+### Alternativas consideradas
+- Mantener todas las skills APOS-X como runtime activo del proyecto.
+- Mover APOS a una carpeta externa sin dejar rastro en el repo.
+
+### Consecuencias
+- Menos confusion operacional.
+- `apos-system/` no debe crecer accidentalmente dentro de la tesis.
+- Cualquier mejora de APOS debe aterrizar primero en las tres skills o en la politica `.apos/`, no como sistema paralelo.
+
+### Supersede / relacionadas
+- Relacionada con DEC-20260510-001.

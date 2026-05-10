@@ -13,8 +13,11 @@
 - Usar `classification_mode=displacement_only` como criterio primario.
 - Mantener rotacion como diagnostico.
 - No correr mas convergencia.
-- No lanzar campana grande hasta revisar piloto + batch2.
+- No lanzar campana grande hasta revisar piloto + batch2 + batch3.
 - Mantener ejecuciones productivas con matriz explicita, `--max-cases` y dry-run.
+- Usar `C:\Seba\Tesis` como unico repo canonico local.
+- Distinguir explicitamente datos WS/GitHub de datos laptop/local.
+- APOS runtime de tesis = `.apos/` + `/apos`, `/guardar`, `/apos-status`; no usar `apos-system/` como segundo APOS vivo.
 
 ## Ultimas sesiones
 - 2026-04-30: cierre de convergencia, documento productivo, matriz piloto y guardas `run_production.py`.
@@ -23,6 +26,8 @@
 - 2026-05-03: matriz y lanzamiento batch2 productivo chico de 8 casos.
 - 2026-05-05: batch2 completo 8/8 OK.
 - 2026-05-06: export liviano batch2 creado y APOS actualizado.
+- 2026-05-07/2026-05-09: batch3 productivo dirigido completado 10/10 OK y exportado liviano.
+- 2026-05-10: reconciliacion Git/local; `C:\Seba\Tesis` vuelve a ser repo canonico unico.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -30,7 +35,7 @@
 ## Modulos activos
 - APOS local: enabled.
 - Skills repo-locales: `/apos`, `/apos-status`, `/guardar`.
-- safe-harness: semilla local en `apos-system/harness/apos-run.py`.
+- safe-harness: semilla historica en `apos-system/harness/apos-run.py`; usar como referencia, no como segundo runtime APOS.
 - chat-transfer: planned.
 - research-autonomo: planned.
 - quality-evals: planned.
@@ -43,3 +48,6 @@
 - `config/batch2_productivo_20260503.csv`
 - `exports/pilot_productivo_20260501/pilot_summary.csv`
 - `exports/batch2_productivo_20260505/batch2_summary.csv`
+- `exports/batch3_productivo_20260509/batch3_summary.csv`
+- `docs/DATA_ORIGIN_POLICY.md`
+- `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`

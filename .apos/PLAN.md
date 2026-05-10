@@ -1,10 +1,10 @@
 # PLAN
 
 ## Objetivo activo
-Ejecutar batch3 productivo dirigido y usar piloto + batch2 + batch3 para decidir el siguiente paso cientifico sin lanzar una campana grande.
+Mantener `C:\Seba\Tesis` como unico repo canonico, separar origen WS/GitHub vs laptop/local, y usar piloto + batch2 + batch3 para decidir el siguiente paso cientifico sin lanzar una campana grande.
 
 ## Fase actual
-Batch3 productivo dirigido completado y exportado liviano para sincronizacion por Git.
+Repo canonico actualizado a `origin/master`; data local nueva en proceso de versionado selectivo; APOS unificado en `C:\Seba\Tesis\.apos`.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como malla operativa.
@@ -25,13 +25,23 @@ Batch3 productivo dirigido completado y exportado liviano para sincronizacion po
 - [x] Lanzar batch3 real.
 - [x] Esperar fin de batch3 y auditar resultados.
 - [x] Crear export liviano batch3.
+- [x] Actualizar `C:\Seba\Tesis` a `origin/master` sin perder cambios locales.
+- [x] Respaldar cambios locales en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.
+- [x] Guardar cambios trackeados previos en `stash@{0}`.
+- [x] Documentar politica de origen de datos en `docs/DATA_ORIGIN_POLICY.md`.
+- [x] Simplificar APOS operativo a `.apos/` + tres skills repo-locales: `/apos`, `/guardar`, `/apos-status`.
+- [x] Committear APOS unificado, politica de origen, verificacion local y analisis de bloques.
+- [x] Retirar el worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639`.
 - [ ] Revisar cientificamente el export del piloto, batch2 y batch3 juntos.
 - [ ] Decidir mini-batch adicional o primer surrogate exploratorio.
+- [ ] Decidir si se abre modulo geometrico con 2-3 STL reales + formas sinteticas controladas.
 - [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
 - No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3.
 - No tocar global/system sin confirmacion explicita.
+- No aplicar `stash@{0}` completo sin revision.
+- No borrar backups ni crudos locales.
 
 ## Fuera de alcance por ahora
 - Campana parametrica grande.

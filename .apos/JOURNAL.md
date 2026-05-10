@@ -449,3 +449,130 @@ Registrar el cierre de batch3 productivo dirigido y preparar datos livianos para
 - Batch3 no es convergencia ni mapa completo de fragilidad.
 - No afirmar convergencia asintotica fuerte.
 - La rotacion se mantiene como diagnostico, no como criterio primario.
+
+## 2026-05-10 12:58 - Reconciliacion Git/local y unificacion APOS
+
+### Objetivo
+Volver a dejar `C:\Seba\Tesis` como unico repo canonico, actualizado con la data WS/GitHub, sin perder data local de laptop ni dejar APOS dividido.
+
+### Acciones
+- Se creo el goal de reconciliacion del repo.
+- Se verifico que la carpeta temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` era solo un worktree de rescate.
+- Se creo backup externo en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.
+- Se respaldaron cambios trackeados, listas de no trackeados, ignorados, conflictos y APOS.
+- Se detectaron 8 archivos no trackeados que chocaban con archivos nuevos de `origin/master`.
+- Esos 8 archivos se movieron a `.apos/cache/git-untracked-conflicts-20260510_125339/` y tambien quedaron respaldados externamente.
+- Se guardaron cambios trackeados previos en `stash@{0}`.
+- Se actualizo `C:\Seba\Tesis` por fast-forward a `origin/master`, commit `3c443e9`.
+- Se documento la politica de origen de datos en `docs/DATA_ORIGIN_POLICY.md`.
+- Se actualizo APOS vivo en `C:\Seba\Tesis`.
+
+### Archivos revisados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/JOURNAL.md`
+- `exports/batch3_productivo_20260509/batch3_summary.md`
+- `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
+
+### Archivos modificados
+- `.gitignore`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/JOURNAL.md`
+- `.apos/DECISIONS.md`
+- `docs/DATA_ORIGIN_POLICY.md`
+
+### Comandos importantes
+```text
+git stash push -m "pre-reconcile tracked changes 20260510_125339"
+git merge --ff-only origin/master
+```
+
+### Resultados
+- `C:\Seba\Tesis` queda como repo canonico unico.
+- APOS ya no debe tomarse desde el worktree temporal.
+- Los datos WS/GitHub quedan representados por exports livianos y commit.
+- Los datos laptop/local quedan separados por politica de origen y versionado selectivo.
+
+### Proximos pasos
+- Committear APOS, politica de origen, verificacion local y analisis de bloques.
+- Retirar el worktree temporal cuando el commit este listo.
+- Revisar cientificamente piloto + batch2 + batch3.
+
+### Advertencias metodologicas
+- No aplicar `stash@{0}` completo.
+- No borrar crudos locales ni backups.
+- No lanzar otro batch antes de la lectura cientifica conjunta.
+
+## 2026-05-10 13:25 - Cierre de reconciliacion local
+
+### Objetivo
+Dejar el repo local listo para continuar sin APOS duplicado y con separacion clara entre datos WS/GitHub y datos laptop/local.
+
+### Acciones
+- Se confirmo que `C:\Seba\Tesis` es una junction hacia `C:\Users\kevin\projects\Tesis`.
+- Se documento esa junction en `docs/DATA_ORIGIN_POLICY.md`, `STATUS.md` y `HANDOFF.md`.
+- Se decidio simplificar el runtime APOS de tesis a `.apos/` + `/apos`, `/guardar`, `/apos-status`.
+- Se dejo `apos-system/` como herramienta/historial parcial, no como segundo APOS vivo.
+- Se filtro el ruido local en `.gitignore` y `.git/info/exclude` sin borrar archivos.
+- Se preparo para commit el set liviano: APOS, politica de origen, verificacion preproduccion, web de convergencia, benchmark, comparacion analitica, STL b02 y analisis geometrico.
+
+### Archivos revisados
+- `.gitignore`
+- `.git/info/exclude`
+- `docs/DATA_ORIGIN_POLICY.md`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/SOURCES.md`
+- `.apos/DECISIONS.md`
+
+### Archivos modificados
+- `.apos/DECISIONS.md`
+- `.apos/HANDOFF.md`
+- `.apos/INDEX.md`
+- `.apos/JOURNAL.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+- `.apos/SOURCES.md`
+- `.apos/STATUS.md`
+- `.gitignore`
+- `.git/info/exclude`
+- `docs/DATA_ORIGIN_POLICY.md`
+- `.apos/evidence/repo-cleanup-20260510_123543/REPO_CLEANUP_REPORT.md`
+
+### Comandos importantes
+```text
+git status -sb --untracked-files=all
+git ls-files --others --exclude-standard
+git add -A
+git diff --cached --stat
+git diff --cached --name-only | Select-String -Pattern '\.(bi4|ibi4|vtk|vtp|zip)$|_out/|Part'
+```
+
+### Resultados
+- No se stagearon crudos pesados tipo `.bi4`, `.ibi4`, VTK, `Part*`, zip ni carpetas `*_out/`.
+- El set versionable nuevo pesa aproximadamente 5.5 MB.
+- El backup externo de seguridad sigue disponible en `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`.
+- Se creo el commit local `af09d09 Reconcile local APOS and verification assets`.
+- Se retiro el worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639` luego de respaldar su `.apos`.
+
+### Errores / bloqueos
+- `git diff --cached --check` reporta whitespace en SVG/artefactos generados; no afecta ejecucion ni trazabilidad.
+
+### Proximos pasos
+- Pushear el commit local si la red/GitHub lo acepta.
+- En la siguiente sesion, analizar piloto + batch2 + batch3 para decidir surrogate o mini-batch.
+
+### Advertencias metodologicas
+- No interpretar `apos-system/` como APOS vivo del proyecto.
+- No usar backups/worktrees temporales como fuente diaria.
+- No aplicar el stash completo salvo necesidad puntual.

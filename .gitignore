@@ -40,9 +40,16 @@ Thumbs.db
 # Agent internal state
 .agente/
 
+# APOS-X source scaffold is kept as historical/tooling material.
+# The thesis runtime uses only .apos/ plus the three repo skills under .agents/skills/.
+# Existing tracked files remain tracked; this prevents accidental expansion of a second APOS system.
+apos-system/**
+
 # DualSPHysics heavy outputs
 cases/**/Part*
 cases/**/*_out/
+cases/**/boulder_properties.txt
+cases/**/canal_verificacion.png
 cases/**/*.bi4
 cases/**/*.vtk
 cases/**/*.vtp
@@ -67,6 +74,36 @@ codex_context_sph.zip
 data/production_status.json
 data/production_*.log
 data/processed/
+data/logs/
+data/renders/
+data/figures/*.png
+data/figures/*.md
+
+# Local-only archives/imports/worktrees kept on the laptop, not canonical Git data
+archive/
+imports/
+review/
+diego/
+.claude/
+tmp_*/
+tmp_*.pdf
+*.zip
+
+# Local repo reconciliation evidence can be large; keep only curated reports if explicitly added
+.apos/evidence/repo-cleanup-*/00_*.txt
+.apos/evidence/repo-cleanup-*/01_*.txt
+.apos/evidence/repo-cleanup-*/02_*.txt
+.apos/evidence/repo-cleanup-*/03_*.txt
+.apos/evidence/repo-cleanup-*/04_*.txt
+.apos/evidence/repo-cleanup-*/05_*.txt
+.apos/evidence/repo-cleanup-*/06_*.txt
+.apos/evidence/repo-cleanup-*/07_*.txt
+.apos/evidence/repo-cleanup-*/08_*.patch
+.apos/evidence/repo-cleanup-*/10_*.txt
+.apos/evidence/repo-cleanup-*/11_*.txt
+.apos/evidence/repo-cleanup-*/12_*.txt
+.apos/evidence/repo-cleanup-*/13_*.csv
+.apos/evidence/repo-cleanup-*/15_*.txt
 
 # Lightweight audited exports are intended to be versionable
 !exports/

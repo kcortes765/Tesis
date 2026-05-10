@@ -47,9 +47,36 @@ Relacionado: `src/data_cleaner.py`, `exports/batch2_productivo_20260505/batch2_s
 
 ## RISK-20260507-001 - Batch3 productivo en ejecucion
 
+Estado: mitigado
+Severidad: alta
+Probabilidad: media
+Evidencia: batch3 termino 10/10 OK, 0 fallos numericos, export liviano en `exports/batch3_productivo_20260509/`.
+Mitigacion: no lanzar otra tanda hasta auditar piloto + batch2 + batch3; conservar outputs crudos fuera de Git y usar export liviano.
+Relacionado: `config/batch3_productivo.csv`, `scripts/run_production.py`, `exports/batch3_productivo_20260509/`
+
+## RISK-20260510-001 - Confundir origen WS/GitHub con origen laptop/local
+
 Estado: activo
 Severidad: alta
 Probabilidad: media
-Evidencia: `data/production_status.json` reporta `total_cases=10`, `progress=1/10`, `current_case=batch3_base_mu0678`, y hay procesos `python.exe` + `DualSPHysics5.4_win64.exe` activos.
-Mitigacion: no lanzar otra tanda, no borrar outputs, monitorear solo lectura; si falla un caso, diagnosticar antes de relanzar.
-Relacionado: `config/batch3_productivo.csv`, `scripts/run_production.py`, `data/production_20260507_1933.log`
+Evidencia: la WS produce exports via GitHub y la laptop contiene STL/documentos/figuras/scripts locales no necesariamente sincronizados.
+Mitigacion: usar `docs/DATA_ORIGIN_POLICY.md`; citar export/commit para WS y path local para laptop; versionar solo lo liviano y trazable.
+Relacionado: `docs/DATA_ORIGIN_POLICY.md`, `exports/`, `models/bloques/`
+
+## RISK-20260510-002 - Recuperar cambios antiguos del stash y reintroducir estado obsoleto
+
+Estado: activo
+Severidad: media
+Probabilidad: media
+Evidencia: los cambios trackeados previos quedaron en `stash@{0}` antes del fast-forward.
+Mitigacion: no aplicar el stash completo; inspeccionar y recuperar solo archivos puntuales si falta algo.
+Relacionado: `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`
+
+## RISK-20260510-003 - Perdida de crudos locales por limpieza
+
+Estado: activo
+Severidad: alta
+Probabilidad: media
+Evidencia: existen datos locales grandes en `cases/`, `data/`, `imports/` y `archive/`.
+Mitigacion: no borrar ni limpiar esos directorios; mover crudos a disco externo/storage solo con plan explicito.
+Relacionado: `.gitignore`, `docs/DATA_ORIGIN_POLICY.md`

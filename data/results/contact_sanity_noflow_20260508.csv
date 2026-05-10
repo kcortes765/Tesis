@@ -1,0 +1,4 @@
+dp;case_name;status;error;tiempo_min
+0.003;contact_sanity_noflow_20260508_dp0003;FALLO_SIM;"DualSPHysics fallo para caso 'contact_sanity_noflow_20260508_dp0003' (returncode=1): *** Exception (JSphGpuSingle::VisuConfig) at DualSPHysics/source/JSph.cpp:1707
+Text: Constant 'b' cannot be zero.
+'b' is zero when fluid height is zero (or fluid particles were not created)";0.1612357020378113
