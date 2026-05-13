@@ -32,13 +32,16 @@ Repo canonico actualizado a `origin/master`; data local nueva en proceso de vers
 - [x] Simplificar APOS operativo a `.apos/` + tres skills repo-locales: `/apos`, `/guardar`, `/apos-status`.
 - [x] Committear APOS unificado, politica de origen, verificacion local y analisis de bloques.
 - [x] Retirar el worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639`.
-- [ ] Revisar cientificamente el export del piloto, batch2 y batch3 juntos.
+- [x] Ejecutar batch4 mass probe en WS con `dp=0.003`.
+- [x] Crear export liviano batch4 en `exports/batch4_mass_probe_20260513/`.
+- [ ] Revisar cientificamente el export del piloto, batch2, batch3 y batch4 juntos.
+- [ ] Decidir si repetir/reprocesar el caso 12 parcial de batch4.
 - [ ] Decidir mini-batch adicional o primer surrogate exploratorio.
 - [ ] Decidir si se abre modulo geometrico con 2-3 STL reales + formas sinteticas controladas.
 - [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
-- No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3.
+- No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3 + batch4.
 - No tocar global/system sin confirmacion explicita.
 - No aplicar `stash@{0}` completo sin revision.
 - No borrar backups ni crudos locales.

@@ -1,0 +1,18 @@
+{
+  "phase": "production",
+  "dp": 0.003,
+  "mode": "prod",
+  "total_cases": 12,
+  "desde": 0,
+  "pending": 12,
+  "completed": 11,
+  "failed": 0,
+  "current_case": "batch4_mass_m125_H0225_mu0860",
+  "start_time": "2026-05-10T20:54:51.048559",
+  "dry_run": false,
+  "updated": "2026-05-12T19:53:31.920758",
+  "progress": "12/12",
+  "eta": "2026-05-12T19:53:31.920758",
+  "avg_case_seconds": 15654.0,
+  "eta_human": "0.0h (0.0d)"
+}

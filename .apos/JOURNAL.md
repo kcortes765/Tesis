@@ -450,6 +450,59 @@ Registrar el cierre de batch3 productivo dirigido y preparar datos livianos para
 - No afirmar convergencia asintotica fuerte.
 - La rotacion se mantiene como diagnostico, no como criterio primario.
 
+## 2026-05-13 - Export liviano batch4 mass probe
+
+### Objetivo
+Preparar resultados batch4 de la WS para sincronizacion por Git hacia la laptop principal, sin incluir binarios ni outputs pesados.
+
+### Acciones
+- Se verifico `data/production_status.json`: batch4 quedo con `completed=11`, `failed=0`, `progress=12/12`.
+- Se confirmo que no habia procesos `DualSPHysics`, `GenCase` ni `python` productivos activos.
+- Se audito `data/production_20260510_2054.log`.
+- Se extrajeron 11 casos oficiales desde `data/results.sqlite`.
+- Se detecto que `batch4_mass_m125_H0225_mu0860` no fue guardado en `data/processed` ni SQLite.
+- Se revisaron CSVs crudos del caso 12 en `cases/batch4_mass_m125_H0225_mu0860/..._out`.
+- Se genero recuperacion parcial del caso 12 desde CSVs crudos, marcandola como diagnostica/no oficial.
+- Se creo `exports/batch4_mass_probe_20260513/`.
+
+### Archivos revisados
+- `data/production_status.json`
+- `data/production_20260510_2054.log`
+- `data/results.sqlite`
+- `config/batch4_mass_probe_20260510.csv`
+- `config/batch4_precheck_mass_sanity_20260510.csv`
+- `cases/batch4_mass_m125_H0225_mu0860/batch4_mass_m125_H0225_mu0860_out/ChronoExchange_mkbound_51.csv`
+
+### Archivos creados
+- `exports/batch4_mass_probe_20260513/README.md`
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_summary.md`
+- `exports/batch4_mass_probe_20260513/batch4_precheck_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_case12_partial_recovery.csv`
+- `exports/batch4_mass_probe_20260513/results_sqlite_batch4_extract_plus_partial.csv`
+- `exports/batch4_mass_probe_20260513/production_status.json`
+- `exports/batch4_mass_probe_20260513/production_log_tail.txt`
+- `exports/batch4_mass_probe_20260513/processed_inventory.csv`
+- `exports/batch4_mass_probe_20260513/source_manifest.csv`
+- `exports/batch4_mass_probe_20260513/processed_run_metrics/*`
+
+### Resultados
+- Batch4 oficial: 11/12 casos postprocesados.
+- Conteo oficial: 5 FALLO y 6 ESTABLE por `displacement_only`.
+- Caso parcial recuperado: `batch4_mass_m125_H0225_mu0860`, `sim_time_reached` ~9.506 s, marcado `PARTIAL_RECOVERED_NOT_SQLITE`.
+- Precheck masa/contacto: 2/2 OK.
+- Export liviano: 39 archivos, ~85 KB.
+
+### Proximos pasos
+- Commit y push de export batch4 + configs + APOS actualizado.
+- En laptop principal, `git pull` y auditar batch4 antes de entrenar surrogate o lanzar nuevos lotes.
+- Decidir si repetir/reprocesar oficialmente el caso 12 parcial.
+
+### Advertencias metodologicas
+- No mezclar el caso 12 parcial con resultados oficiales sin conservar `quality_flags`.
+- Batch4 es lote dirigido de masa, no campana completa.
+- Mantener `dp=0.003` como resolucion operativa y rotacion como diagnostico.
+
 ## 2026-05-10 12:58 - Reconciliacion Git/local y unificacion APOS
 
 ### Objetivo

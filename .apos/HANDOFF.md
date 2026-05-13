@@ -2,8 +2,8 @@
 
 ## Proxima accion recomendada
 1. Continuar exclusivamente desde `C:\Seba\Tesis`.
-2. Revisar piloto + batch2 + batch3 juntos desde los exports livianos.
-3. Decidir si se entrena surrogate exploratorio o se disena un mini-batch adicional.
+2. Revisar piloto + batch2 + batch3 + batch4 juntos desde los exports livianos.
+3. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena un mini-batch adicional.
 4. Si se abre geometria, partir por los STL `b02` ya analizados y un sanity de contacto por geometria.
 
 ## Contexto minimo para continuar
@@ -23,6 +23,9 @@
 - Batch2: 8/8 OK, export en `exports/batch2_productivo_20260505/`.
 - Batch3: 10/10 OK, 0 fallos numericos, export en `exports/batch3_productivo_20260509/`.
 - Batch3 base `H=0.20`, `slope=1:20`: FALLO en `mu=0.678` y `0.680`; ESTABLE en `mu=0.682`.
+- Batch4 mass probe en WS: 11/12 casos oficiales en SQLite + 1 caso parcial recuperado desde CSV crudos.
+- Export batch4: `exports/batch4_mass_probe_20260513/`.
+- Caso parcial batch4: `batch4_mass_m125_H0225_mu0860`; usar solo como diagnostico hasta repetir o reprocesar oficialmente.
 - Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -37,6 +40,8 @@
 8. `exports/batch2_productivo_20260505/batch2_summary.csv`
 9. `exports/pilot_productivo_20260501/pilot_summary.csv`
 10. `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
+11. `exports/batch4_mass_probe_20260513/batch4_summary.md`
+12. `exports/batch4_mass_probe_20260513/batch4_summary.csv`
 
 ## Comandos sugeridos
 ```powershell
@@ -47,11 +52,15 @@ Get-Content exports\batch3_productivo_20260509\batch3_summary.md
 
 Import-Csv exports\batch3_productivo_20260509\batch3_summary.csv |
   Select case_id,dam_height,friction_coefficient,slope_inv,criterion_class,disp_pct_deq,max_rotation_deg
+
+Import-Csv exports\batch4_mass_probe_20260513\batch4_summary.csv |
+  Select case_id,status,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq,quality_flags
 ```
 
 ## Senales de exito
 - `git status -sb` no muestra otro worktree como fuente canonica.
 - Los datos de WS se citan por export/commit.
+- Batch4 queda versionado como export liviano; el caso 12 queda explicitamente marcado como parcial.
 - Los datos locales se citan por path y quedan versionados si son livianos.
 - No queda APOS duplicado como verdad viva.
 
@@ -59,7 +68,7 @@ Import-Csv exports\batch3_productivo_20260509\batch3_summary.csv |
 - No recrear ni usar worktrees temporales como fuente diaria.
 - No aplicar `stash@{0}` completo sin revisar.
 - No borrar backups, `cases/`, `data/`, `imports/` ni `archive/`.
-- No lanzar otra tanda antes de revisar piloto + batch2 + batch3.
+- No lanzar otra tanda antes de revisar piloto + batch2 + batch3 + batch4.
 - No versionar crudos pesados.
 - No mezclar rotacion diagnostica con falla por desplazamiento.
 

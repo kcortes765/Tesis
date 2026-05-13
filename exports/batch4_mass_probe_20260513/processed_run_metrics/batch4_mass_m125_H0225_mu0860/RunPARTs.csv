@@ -1,0 +1,2 @@
+Part;TimeStep [s];Steps;DTsMin;PartRuntime [s];NpSave;NpSim;NpNew;NpOut;NctSim;NpAlloc [X];NctAlloc [X];SimRuntime [s];NpbSim;NpfSim;NpNormal;NpOutPos;NpOutRho;NpOutMov;DtMin [s];DtMax [s];MemCPU [MiB];MemGPU [MiB];MemGPU_Cells [MiB];NpAlloc;NctAlloc
+0;0;0;0;0.000000;18,853,854;18,853,854;0;0;3,277,890;1.000007;2.999334;0.000000;6,381,113;12,472,741;18,853,854;0;0;0;0;0;1618.294537;2539.699379;150.016640;18,853,982;9,831,488

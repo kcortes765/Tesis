@@ -1,0 +1,10 @@
+path,bytes,last_write_time
+config\batch4_mass_probe_20260510.csv,701,2026-05-10T22:43:01.243927717
+config\batch4_precheck_mass_sanity_20260510.csv,179,2026-05-10T22:43:01.242927790
+data\production_status.json,446,2026-05-12T23:53:31.920758486
+data\production_20260510_2054.log,76339,2026-05-12T23:53:38.835054159
+data\results.sqlite,532480,2026-05-12T23:53:31.917749405
+scripts\run_production.py,23696,2026-05-11T01:58:23.473809719
+src\main_orchestrator.py,20043,2026-05-03T16:20:28.030110598
+src\geometry_builder.py,34227,2026-04-12T02:08:58.696334839
+src\data_cleaner.py,29513,2026-05-03T16:20:28.519104004

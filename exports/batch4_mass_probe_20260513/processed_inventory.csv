@@ -1,0 +1,14 @@
+case_id,file_count,total_bytes,last_write_time,has_chrono_exchange,has_chrono_forces,has_run_csv,has_runparts_csv
+batch4_mass_m085_H0175_mu0560,24,11904219,2026-05-11T04:24:31.948599577,True,True,True,True
+batch4_mass_m085_H0200_mu0682,24,11655602,2026-05-11T08:35:17.218419790,True,True,True,True
+batch4_mass_m085_H0210_mu0740,24,11836918,2026-05-11T12:59:44.634006500,True,True,True,True
+batch4_mass_m085_H0225_mu0800,24,11877225,2026-05-11T17:49:19.589939356,True,True,True,True
+batch4_mass_m100_H0200_mu0681,24,11915765,2026-05-11T21:59:25.151433468,True,True,True,True
+batch4_mass_m100_H0225_mu0860,24,12018384,2026-05-12T02:48:23.469744444,True,True,True,True
+batch4_mass_m115_H0175_mu0640,24,11897982,2026-05-12T06:17:21.933517933,True,True,True,True
+batch4_mass_m115_H0200_mu0680,24,11931386,2026-05-12T10:27:38.886054516,True,True,True,True
+batch4_mass_m115_H0210_mu0760,24,11961111,2026-05-12T14:53:25.353884459,True,True,True,True
+batch4_mass_m125_H0200_mu0675,24,11920933,2026-05-12T19:03:31.992811203,True,True,True,True
+batch4_mass_m125_H0225_mu0800,24,12025459,2026-05-12T23:53:31.647983551,True,True,True,True
+batch4_precheck_contact_m085,24,10372033,2026-05-10T23:07:32.487611771,True,True,True,True
+batch4_precheck_contact_m125,24,10366820,2026-05-10T23:31:41.278399229,True,True,True,True

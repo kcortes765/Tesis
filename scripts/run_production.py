@@ -18,6 +18,7 @@ Autor: Kevin Cortes (UCN 2026)
 import argparse
 import json
 import logging
+import os
 import sys
 import time
 from datetime import datetime, timedelta
@@ -48,7 +49,23 @@ STATUS_FILE = PROJECT_ROOT / "data" / "production_status.json"
 # Notificaciones push via ntfy.sh
 # ---------------------------------------------------------------------------
 
-NTFY_TOPIC = "sph-kevin-tesis-2026"
+def _load_ntfy_topic() -> str:
+    """Resuelve topic ntfy desde env/config, con fallback historico."""
+    env_topic = os.environ.get("SPH_NTFY_TOPIC")
+    if env_topic:
+        return env_topic
+    cfg_path = PROJECT_ROOT / "config" / "notifier_config.json"
+    try:
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+        return cfg.get("projects", {}).get("tesis", {}).get(
+            "topic",
+            cfg.get("default_topic", "sph-kevin-tesis-2026"),
+        )
+    except Exception:
+        return "sph-kevin-tesis-2026"
+
+
+NTFY_TOPIC = _load_ntfy_topic()
 NTFY_ENABLED = True
 
 
@@ -419,6 +436,17 @@ def run_production(args):
             status['avg_case_seconds'] = round(avg_duration, 1)
             status['eta_human'] = f"{remaining_s/3600:.1f}h ({remaining_s/86400:.1f}d)"
         update_status(status)
+
+        notify(
+            f"INICIO CASO {i}/{n_pending}: {case_id}",
+            f"h={float(row['dam_height']):.3f} m | "
+            f"M={float(row['boulder_mass']):.3f} kg | "
+            f"mu={float(row.get('friction_coefficient', 0.3)):.4f} | "
+            f"slope=1:{float(row.get('slope_inv', 20.0)):.0f}\n"
+            f"dp={dp} | mode={mode} | completed={status['completed']} | failed={status['failed']}",
+            priority="default",
+            tags="arrow_forward",
+        )
 
         # Banner informativo
         banner = _progress_banner(i, n_pending, n_total, desde, status,

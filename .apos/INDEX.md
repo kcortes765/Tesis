@@ -13,7 +13,7 @@
 - Usar `classification_mode=displacement_only` como criterio primario.
 - Mantener rotacion como diagnostico.
 - No correr mas convergencia.
-- No lanzar campana grande hasta revisar piloto + batch2 + batch3.
+- No lanzar campana grande hasta revisar piloto + batch2 + batch3 + batch4.
 - Mantener ejecuciones productivas con matriz explicita, `--max-cases` y dry-run.
 - Usar `C:\Seba\Tesis` como unico repo canonico local.
 - Distinguir explicitamente datos WS/GitHub de datos laptop/local.
@@ -28,6 +28,7 @@
 - 2026-05-06: export liviano batch2 creado y APOS actualizado.
 - 2026-05-07/2026-05-09: batch3 productivo dirigido completado 10/10 OK y exportado liviano.
 - 2026-05-10: reconciliacion Git/local; `C:\Seba\Tesis` vuelve a ser repo canonico unico.
+- 2026-05-13: batch4 mass probe exportado liviano; 11/12 casos oficiales y 1 caso parcial recuperado.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -49,5 +50,7 @@
 - `exports/pilot_productivo_20260501/pilot_summary.csv`
 - `exports/batch2_productivo_20260505/batch2_summary.csv`
 - `exports/batch3_productivo_20260509/batch3_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_summary.md`
 - `docs/DATA_ORIGIN_POLICY.md`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`

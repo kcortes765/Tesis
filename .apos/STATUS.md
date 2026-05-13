@@ -1,6 +1,6 @@
 # STATUS
 
-Ultima actualizacion: 2026-05-10
+Ultima actualizacion: 2026-05-13
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica local: C:\Seba\Tesis
 Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con piloto, batch2, batch3, verificacion preproduccion, web de convergencia y analisis STL b02; APOS unificado en esta carpeta; datos locales nuevos identificados y separados por origen.
@@ -27,6 +27,12 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - Batch3 `H=0.175`: ESTABLE en `mu=0.600`, `0.640` y `0.660`.
 - Batch3 `H=0.210`: FALLO en `mu=0.700` y `mu=0.740`.
 - Batch3 `H=0.225`: FALLO en `mu=0.760` y `mu=0.800`.
+- En WS `C:\Users\Admin\Desktop\SPH-Tesis`, batch4 mass probe fue ejecutado con matriz explicita `config/batch4_mass_probe_20260510.csv`, `dp=0.003`, `classification_mode=displacement_only` y `reference_time_s=0.5`.
+- Batch4 produjo 11/12 casos oficiales postprocesados en SQLite y `data/processed`; el caso 12 (`batch4_mass_m125_H0225_mu0860`) genero CSVs crudos parciales hasta ~9.506 s, pero no quedo postprocesado oficialmente por el runner.
+- Export liviano batch4 creado en `exports/batch4_mass_probe_20260513/`: 39 archivos, ~85 KB, sin binarios pesados.
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv` contiene 11 casos oficiales + caso 12 marcado como `PARTIAL_RECOVERED_NOT_SQLITE`.
+- Batch4 oficial: 5 FALLO y 6 ESTABLE por `displacement_only`; el caso 12 parcial aparece ESTABLE, pero solo como diagnostico no oficial.
+- Precheck de masa/contacto batch4: 2/2 OK en `exports/batch4_mass_probe_20260513/batch4_precheck_summary.csv`.
 - Los STL recibidos localmente estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de STL escalado esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -51,8 +57,9 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - La variacion geometrica requiere pipeline especifico: STL, escala, masa, centroide, inercia, insertion point y sanity de contacto.
 
 ## Pendientes criticos
-- Revisar cientificamente piloto + batch2 + batch3 juntos.
+- Revisar cientificamente piloto + batch2 + batch3 + batch4 juntos.
 - Decidir si el siguiente paso es surrogate exploratorio, mini-batch adicional o incorporacion controlada de geometria.
+- Decidir si repetir o reprocesar oficialmente `batch4_mass_m125_H0225_mu0860` antes de entrenar surrogate final.
 - Revisar `stash@{0}` solo para recuperar cambios locales explicitamente valiosos.
 - Revisar cientificamente los resultados ya versionados para decidir surrogate/mini-batch/geometria.
 
@@ -61,6 +68,7 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - Riesgo de perder datos si se limpia data local sin revisar backups y stash.
 - Riesgo interpretativo: leer batch2/batch3 como campana parametrica completa; son lotes dirigidos.
 - Riesgo interpretativo: mezclar rotacion diagnostica con criterio primario `displacement_only`.
+- Riesgo de trazabilidad: batch4 caso 12 tiene recuperacion parcial, no resultado oficial completo; no mezclarlo sin flag.
 
 ## Evidencia reciente
 - `docs/DATA_ORIGIN_POLICY.md`
@@ -73,3 +81,7 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - `models/bloques/b02_variantes_20260510/`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
 - `0e98b65 Reconcile local APOS and verification assets`
+- `exports/batch4_mass_probe_20260513/README.md`
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_case12_partial_recovery.csv`
+- `data/production_20260510_2054.log`

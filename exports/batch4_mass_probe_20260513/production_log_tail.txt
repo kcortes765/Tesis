@@ -1,0 +1,260 @@
+06:27:39 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m115_H0210_mu0760\batch4_mass_m115_H0210_mu0760_Def.xml
+06:27:39 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+06:27:39 INFO:   Canal: 10 verts, 12 faces, watertight=False
+06:27:39 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m115_H0210_mu0760\canal_1to20.stl
+06:27:39 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m115_H0210_mu0760
+06:27:39 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m115_H0210_mu0760\canal_verificacion.png
+06:27:39 INFO:   [1/3] Geometry: OK (batch4_mass_m115_H0210_mu0760_Def.xml)
+06:27:39 INFO:   Timeout: sin limite (dp=0.003)
+06:27:39 INFO: === Ejecutando caso: batch4_mass_m115_H0210_mu0760 ===
+06:27:39 INFO:   [batch4_mass_m115_H0210_mu0760] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch4_mass_m115_H0210_mu0760_Def batch4_mass_m115_H0210_mu0760_out/batch4_mass_m115_H0210_mu0760 -save:all
+06:27:45 INFO:   [batch4_mass_m115_H0210_mu0760] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch4_mass_m115_H0210_mu0760_out/batch4_mass_m115_H0210_mu0760 batch4_mass_m115_H0210_mu0760_out
+10:53:25 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+10:53:25 INFO:   [batch4_mass_m115_H0210_mu0760] Simulacion completada exitosamente
+10:53:25 INFO:   [batch4_mass_m115_H0210_mu0760] Limpieza desactivada (cleanup_binaries=false)
+10:53:25 INFO:   [batch4_mass_m115_H0210_mu0760] Duracion total: 15946.1s
+10:53:25 INFO:   [2/3] Simulacion: OK (15946.1s, 24 CSVs)
+10:53:25 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+10:53:25 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+10:53:25 INFO:   Densidad:    2168.9 kg/m^3
+10:53:25 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+10:53:25 INFO:   d_eq:        0.1004 m (10.0 cm)
+10:53:25 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+10:53:25 INFO:   dim_min/dp:  (requiere dp para calcular)
+10:53:25 INFO: Procesando caso: batch4_mass_m115_H0210_mu0760
+10:53:25 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+10:53:25 INFO:   Baseline temporal: t_ref=0.5000s
+10:53:25 INFO:   Desplazamiento max: 0.001238m (1.23% de d_eq=0.1004m)
+10:53:25 INFO:   Rotacion acumulada max: 4.39 grados
+10:53:25 INFO:   Velocidad max boulder: 0.1003 m/s
+10:53:25 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+10:53:25 INFO:   Fuerza SPH max: 9.3099N, Contacto max: 8964.2659N
+10:53:25 INFO:   Gauges: 12 velocity, 8 maxZ
+10:53:25 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8629 m/s
+10:53:25 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0696m
+10:53:25 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+10:53:25 INFO:   Flags criterio: moved=False, rotated=False
+10:53:25 INFO:   [3/3] Analisis: OK → ESTABLE (disp=0.0012m, rot=4.4deg)
+10:53:25 INFO: 
+  >>> batch4_mass_m115_H0210_mu0760: ESTABLE en 4h 25min
+10:53:25 INFO:       disp=0.0012m  rot=4.4deg  vel=0.100m/s  F_sph=9.3N
+10:53:25 INFO:       V_flujo=0.863m/s  H_agua=0.0696m
+10:53:25 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+10:53:25 INFO: 
+=================================================================
+  CASO 10/12 [batch4_mass_m125_H0200_mu0675]  [######################--------] 75%
+  h=0.200m | M=1.250kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 9   Fallidos: 0   Quedan: 2
+  Tiempo transcurrido: 1d 13h
+  Promedio: 253.2 min/caso (ultimos 9)
+  ETA: 8h 26min restantes  -->  fin ~12/05 19:19
+  Tasa exito: 100% (9/9)
+=================================================================
+10:53:25 INFO: 
+============================================================
+10:53:25 INFO: 
+============================================================
+10:53:25 INFO: CASO batch4_mass_m125_H0200_mu0675: dam_h=0.200m, mass=1.250kg, rot_z=0.0deg, mu_s=0.675, slope=1:20, dp=0.003
+10:53:25 INFO: ============================================================
+10:53:25 INFO: Calculando propiedades del boulder para caso 'batch4_mass_m125_H0200_mu0675'...
+10:53:25 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+10:53:25 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+10:53:25 INFO:   Densidad:    2357.5 kg/m^3
+10:53:25 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+10:53:25 INFO:   d_eq:        0.1004 m (10.0 cm)
+10:53:25 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+10:53:25 INFO:   dim_min/dp:  (requiere dp para calcular)
+10:53:25 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+10:53:25 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+10:53:25 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+10:53:25 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+10:53:25 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+10:53:25 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+10:53:25 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+10:53:25 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+10:53:25 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+10:53:25 INFO:     V05: -> upstream x=6.4139, z=0.0237
+10:53:25 INFO:     V06: -> centroide x=6.4794
+10:53:25 INFO:     V07: -> downstream x=6.5904, z=0.0325
+10:53:25 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+10:53:25 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+10:53:25 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+10:53:25 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+10:53:25 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0200_mu0675\batch4_mass_m125_H0200_mu0675_Def.xml
+10:53:25 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+10:53:25 INFO:   Canal: 10 verts, 12 faces, watertight=False
+10:53:25 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0200_mu0675\canal_1to20.stl
+10:53:25 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0200_mu0675
+10:53:25 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0200_mu0675\canal_verificacion.png
+10:53:25 INFO:   [1/3] Geometry: OK (batch4_mass_m125_H0200_mu0675_Def.xml)
+10:53:25 INFO:   Timeout: sin limite (dp=0.003)
+10:53:25 INFO: === Ejecutando caso: batch4_mass_m125_H0200_mu0675 ===
+10:53:25 INFO:   [batch4_mass_m125_H0200_mu0675] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch4_mass_m125_H0200_mu0675_Def batch4_mass_m125_H0200_mu0675_out/batch4_mass_m125_H0200_mu0675 -save:all
+10:53:33 INFO:   [batch4_mass_m125_H0200_mu0675] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch4_mass_m125_H0200_mu0675_out/batch4_mass_m125_H0200_mu0675 batch4_mass_m125_H0200_mu0675_out
+15:03:31 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+15:03:31 INFO:   [batch4_mass_m125_H0200_mu0675] Simulacion completada exitosamente
+15:03:31 INFO:   [batch4_mass_m125_H0200_mu0675] Limpieza desactivada (cleanup_binaries=false)
+15:03:31 INFO:   [batch4_mass_m125_H0200_mu0675] Duracion total: 15006.3s
+15:03:31 INFO:   [2/3] Simulacion: OK (15006.3s, 24 CSVs)
+15:03:32 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+15:03:32 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+15:03:32 INFO:   Densidad:    2357.5 kg/m^3
+15:03:32 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+15:03:32 INFO:   d_eq:        0.1004 m (10.0 cm)
+15:03:32 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+15:03:32 INFO:   dim_min/dp:  (requiere dp para calcular)
+15:03:32 INFO: Procesando caso: batch4_mass_m125_H0200_mu0675
+15:03:32 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+15:03:32 INFO:   Baseline temporal: t_ref=0.5000s
+15:03:32 INFO:   Desplazamiento max: 0.001237m (1.23% de d_eq=0.1004m)
+15:03:32 INFO:   Rotacion acumulada max: 4.63 grados
+15:03:32 INFO:   Velocidad max boulder: 0.1000 m/s
+15:03:32 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+15:03:32 INFO:   Fuerza SPH max: 8.5405N, Contacto max: 13459.0952N
+15:03:32 INFO:   Gauges: 12 velocity, 8 maxZ
+15:03:32 INFO:   Flujo max (gauge V05, dist=0.07m): 0.7286 m/s
+15:03:32 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0686m
+15:03:32 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+15:03:32 INFO:   Flags criterio: moved=False, rotated=False
+15:03:32 INFO:   [3/3] Analisis: OK → ESTABLE (disp=0.0012m, rot=4.6deg)
+15:03:32 INFO: 
+  >>> batch4_mass_m125_H0200_mu0675: ESTABLE en 4h 10min
+15:03:32 INFO:       disp=0.0012m  rot=4.6deg  vel=0.100m/s  F_sph=8.5N
+15:03:32 INFO:       V_flujo=0.729m/s  H_agua=0.0686m
+15:03:32 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+15:03:32 INFO: 
+=================================================================
+  CASO 11/12 [batch4_mass_m125_H0225_mu0800]  [#########################-----] 83%
+  h=0.225m | M=1.250kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 10   Fallidos: 0   Quedan: 1
+  Tiempo transcurrido: 1d 18h
+  Promedio: 252.9 min/caso (ultimos 10)
+  ETA: 4h 12min restantes  -->  fin ~12/05 19:16
+  Tasa exito: 100% (10/10)
+=================================================================
+15:03:32 INFO: 
+============================================================
+15:03:32 INFO: 
+============================================================
+15:03:32 INFO: CASO batch4_mass_m125_H0225_mu0800: dam_h=0.225m, mass=1.250kg, rot_z=0.0deg, mu_s=0.800, slope=1:20, dp=0.003
+15:03:32 INFO: ============================================================
+15:03:32 INFO: Calculando propiedades del boulder para caso 'batch4_mass_m125_H0225_mu0800'...
+15:03:32 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+15:03:32 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+15:03:32 INFO:   Densidad:    2357.5 kg/m^3
+15:03:32 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+15:03:32 INFO:   d_eq:        0.1004 m (10.0 cm)
+15:03:32 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+15:03:32 INFO:   dim_min/dp:  (requiere dp para calcular)
+15:03:32 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+15:03:32 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+15:03:32 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+15:03:32 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+15:03:32 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+15:03:32 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+15:03:32 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+15:03:32 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+15:03:32 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+15:03:32 INFO:     V05: -> upstream x=6.4139, z=0.0237
+15:03:32 INFO:     V06: -> centroide x=6.4794
+15:03:32 INFO:     V07: -> downstream x=6.5904, z=0.0325
+15:03:32 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+15:03:32 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+15:03:32 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+15:03:32 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+15:03:32 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0800\batch4_mass_m125_H0225_mu0800_Def.xml
+15:03:32 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+15:03:32 INFO:   Canal: 10 verts, 12 faces, watertight=False
+15:03:32 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0800\canal_1to20.stl
+15:03:32 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0800
+15:03:32 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0800\canal_verificacion.png
+15:03:32 INFO:   [1/3] Geometry: OK (batch4_mass_m125_H0225_mu0800_Def.xml)
+15:03:32 INFO:   Timeout: sin limite (dp=0.003)
+15:03:32 INFO: === Ejecutando caso: batch4_mass_m125_H0225_mu0800 ===
+15:03:32 INFO:   [batch4_mass_m125_H0225_mu0800] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch4_mass_m125_H0225_mu0800_Def batch4_mass_m125_H0225_mu0800_out/batch4_mass_m125_H0225_mu0800 -save:all
+15:03:39 INFO:   [batch4_mass_m125_H0225_mu0800] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch4_mass_m125_H0225_mu0800_out/batch4_mass_m125_H0225_mu0800 batch4_mass_m125_H0225_mu0800_out
+19:53:31 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+19:53:31 INFO:   [batch4_mass_m125_H0225_mu0800] Simulacion completada exitosamente
+19:53:31 INFO:   [batch4_mass_m125_H0225_mu0800] Limpieza desactivada (cleanup_binaries=false)
+19:53:31 INFO:   [batch4_mass_m125_H0225_mu0800] Duracion total: 17399.3s
+19:53:31 INFO:   [2/3] Simulacion: OK (17399.3s, 24 CSVs)
+19:53:31 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:53:31 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:53:31 INFO:   Densidad:    2357.5 kg/m^3
+19:53:31 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:53:31 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:53:31 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:53:31 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:53:31 INFO: Procesando caso: batch4_mass_m125_H0225_mu0800
+19:53:31 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+19:53:31 INFO:   Baseline temporal: t_ref=0.5000s
+19:53:31 INFO:   Desplazamiento max: 0.001239m (1.23% de d_eq=0.1004m)
+19:53:31 INFO:   Rotacion acumulada max: 4.83 grados
+19:53:31 INFO:   Velocidad max boulder: 0.1003 m/s
+19:53:31 INFO:   ChronoBody_forces: 9500 filas, bodies: {'blir', 'beach'}
+19:53:31 INFO:   Fuerza SPH max: 10.7463N, Contacto max: 87614.8953N
+19:53:31 INFO:   Gauges: 12 velocity, 8 maxZ
+19:53:31 INFO:   Flujo max (gauge V05, dist=0.07m): 0.9312 m/s
+19:53:31 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0704m
+19:53:31 INFO:   Criterio (displacement_only): ESTABLE (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+19:53:31 INFO:   Flags criterio: moved=False, rotated=False
+19:53:31 INFO:   [3/3] Analisis: OK → ESTABLE (disp=0.0012m, rot=4.8deg)
+19:53:31 INFO: 
+  >>> batch4_mass_m125_H0225_mu0800: ESTABLE en 4h 49min
+19:53:31 INFO:       disp=0.0012m  rot=4.8deg  vel=0.100m/s  F_sph=10.7N
+19:53:31 INFO:       V_flujo=0.931m/s  H_agua=0.0704m
+19:53:31 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+19:53:31 INFO: 
+=================================================================
+  CASO 12/12 [batch4_mass_m125_H0225_mu0860]  [###########################---] 92%
+  h=0.225m | M=1.250kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 11   Fallidos: 0   Quedan: 0
+  Tiempo transcurrido: 1d 22h
+  Promedio: 260.9 min/caso (ultimos 10)
+  ETA: 0s restantes  -->  fin ~12/05 19:53
+  Tasa exito: 100% (11/11)
+=================================================================
+19:53:31 INFO: 
+============================================================
+19:53:31 INFO: 
+============================================================
+19:53:31 INFO: CASO batch4_mass_m125_H0225_mu0860: dam_h=0.225m, mass=1.250kg, rot_z=0.0deg, mu_s=0.860, slope=1:20, dp=0.003
+19:53:31 INFO: ============================================================
+19:53:31 INFO: Calculando propiedades del boulder para caso 'batch4_mass_m125_H0225_mu0860'...
+19:53:31 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+19:53:31 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+19:53:31 INFO:   Densidad:    2357.5 kg/m^3
+19:53:31 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+19:53:31 INFO:   d_eq:        0.1004 m (10.0 cm)
+19:53:31 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+19:53:31 INFO:   dim_min/dp:  (requiere dp para calcular)
+19:53:31 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+19:53:31 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+19:53:31 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+19:53:31 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+19:53:31 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+19:53:31 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+19:53:31 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+19:53:31 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+19:53:31 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+19:53:31 INFO:     V05: -> upstream x=6.4139, z=0.0237
+19:53:31 INFO:     V06: -> centroide x=6.4794
+19:53:31 INFO:     V07: -> downstream x=6.5904, z=0.0325
+19:53:31 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+19:53:31 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+19:53:31 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+19:53:31 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+19:53:31 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0860\batch4_mass_m125_H0225_mu0860_Def.xml
+19:53:31 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+19:53:31 INFO:   Canal: 10 verts, 12 faces, watertight=False
+19:53:31 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0860\canal_1to20.stl
+19:53:31 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0860
+19:53:32 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\batch4_mass_m125_H0225_mu0860\canal_verificacion.png
+19:53:32 INFO:   [1/3] Geometry: OK (batch4_mass_m125_H0225_mu0860_Def.xml)
+19:53:32 INFO:   Timeout: sin limite (dp=0.003)
+19:53:32 INFO: === Ejecutando caso: batch4_mass_m125_H0225_mu0860 ===
+19:53:32 INFO:   [batch4_mass_m125_H0225_mu0860] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe batch4_mass_m125_H0225_mu0860_Def batch4_mass_m125_H0225_mu0860_out/batch4_mass_m125_H0225_mu0860 -save:all
+19:53:38 INFO:   [batch4_mass_m125_H0225_mu0860] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 batch4_mass_m125_H0225_mu0860_out/batch4_mass_m125_H0225_mu0860 batch4_mass_m125_H0225_mu0860_out
