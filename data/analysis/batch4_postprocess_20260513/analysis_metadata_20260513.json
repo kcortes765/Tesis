@@ -1,0 +1,164 @@
+{
+  "origin_commit": "95d94684758ef81b96ef1beca8f38b5a8f46be81",
+  "counts": [
+    {
+      "lot": "batch2",
+      "official_result": true,
+      "criterion_class": "ESTABLE",
+      "n": 5
+    },
+    {
+      "lot": "batch2",
+      "official_result": true,
+      "criterion_class": "FALLO",
+      "n": 3
+    },
+    {
+      "lot": "batch3",
+      "official_result": true,
+      "criterion_class": "ESTABLE",
+      "n": 4
+    },
+    {
+      "lot": "batch3",
+      "official_result": true,
+      "criterion_class": "FALLO",
+      "n": 6
+    },
+    {
+      "lot": "batch4",
+      "official_result": false,
+      "criterion_class": "ESTABLE",
+      "n": 1
+    },
+    {
+      "lot": "batch4",
+      "official_result": true,
+      "criterion_class": "ESTABLE",
+      "n": 6
+    },
+    {
+      "lot": "batch4",
+      "official_result": true,
+      "criterion_class": "FALLO",
+      "n": 5
+    },
+    {
+      "lot": "pilot",
+      "official_result": true,
+      "criterion_class": "ESTABLE",
+      "n": 2
+    },
+    {
+      "lot": "pilot",
+      "official_result": true,
+      "criterion_class": "FALLO",
+      "n": 3
+    }
+  ],
+  "gp_n": 30,
+  "gp_fail_n": 16,
+  "gp_stable_n": 14,
+  "partial_cases": [
+    "batch4_mass_m125_H0225_mu0860"
+  ],
+  "model_status": "fit_ok",
+  "gp_metrics": {
+    "kernel": "1.3**2 * Matern(length_scale=[0.197, 0.279, 0.615], nu=2.5) + WhiteKernel(noise_level=0.0141)",
+    "log_marginal_likelihood": -22.41253885814696,
+    "loo_mae_g_clip_pct": 3.7992777488503577,
+    "loo_rmse_g_clip_pct": 5.976653298620151
+  },
+  "selected_candidates": [
+    {
+      "dam_height": 0.174,
+      "friction_coefficient": 0.755,
+      "boulder_mass": 0.93,
+      "gp_mean_g_pct": -0.00023508960493145992,
+      "gp_std_g_pct": 9.250511595646202,
+      "u_function": 2.5413686851297208e-05,
+      "straddle": 18.130767637861624,
+      "min_scaled_distance_to_existing": 0.2771662770336909,
+      "anchor_score": NaN,
+      "case_id": "al1_H174_m093_mu0755",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 1
+    },
+    {
+      "dam_height": 0.17,
+      "friction_coefficient": 0.74,
+      "boulder_mass": 1.18,
+      "gp_mean_g_pct": -0.0002815434798151273,
+      "gp_std_g_pct": 10.54218599004897,
+      "u_function": 2.670636621799091e-05,
+      "straddle": 20.662402997016166,
+      "min_scaled_distance_to_existing": 0.3069236020668154,
+      "anchor_score": NaN,
+      "case_id": "al1_H170_m118_mu0740",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 2
+    },
+    {
+      "dam_height": 0.2,
+      "friction_coefficient": 0.885,
+      "boulder_mass": 1.17,
+      "gp_mean_g_pct": 0.00034807638202938307,
+      "gp_std_g_pct": 12.178632072458466,
+      "u_function": 2.8580909574234058e-05,
+      "straddle": 23.869770785636565,
+      "min_scaled_distance_to_existing": 0.3972767274658068,
+      "anchor_score": NaN,
+      "case_id": "al1_H200_m117_mu0885",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 3
+    },
+    {
+      "dam_height": 0.178,
+      "friction_coefficient": 0.62,
+      "boulder_mass": 0.86,
+      "gp_mean_g_pct": 0.0002171657446004005,
+      "gp_std_g_pct": 6.759596487867322,
+      "u_function": 3.2127027842277325e-05,
+      "straddle": 13.248591950475351,
+      "min_scaled_distance_to_existing": 0.18031293659091938,
+      "anchor_score": NaN,
+      "case_id": "al1_H178_m086_mu0620",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 4
+    },
+    {
+      "dam_height": 0.2,
+      "friction_coefficient": 0.81,
+      "boulder_mass": 0.96,
+      "gp_mean_g_pct": 0.0002634639319296639,
+      "gp_std_g_pct": 7.734844114642851,
+      "u_function": 3.406195755087524e-05,
+      "straddle": 15.160031000768058,
+      "min_scaled_distance_to_existing": 0.19846348556356883,
+      "anchor_score": NaN,
+      "case_id": "al1_H200_m096_mu0810",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 5
+    },
+    {
+      "dam_height": 0.226,
+      "friction_coefficient": 0.77,
+      "boulder_mass": 1.24,
+      "gp_mean_g_pct": 0.005592762707625987,
+      "gp_std_g_pct": 4.85385538793533,
+      "u_function": 0.0011522310121506796,
+      "straddle": 9.507963797645623,
+      "min_scaled_distance_to_existing": 0.09082795028672609,
+      "anchor_score": 0.0059960435618787245,
+      "case_id": "al1_H226_m124_mu0770",
+      "boulder_rot_z": 0,
+      "slope_inv": 20,
+      "acquisition_rank": 6
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+case_id,status,dam_height,friction_coefficient,boulder_mass,criterion_class,disp_pct_deq,g_pct,frontier_zone,official_result,quality_flags
+batch4_mass_m085_H0175_mu0560,OK_SQLITE,0.175,0.56,0.85,FALLO,5.460130267769664,-0.4601302677696637,gris_estrecha_abs_g_le_0p5,True,complete_postprocess_sqlite
+batch4_mass_m085_H0200_mu0682,OK_SQLITE,0.2,0.682,0.85,FALLO,50.13435690612936,-45.13435690612936,lejos,True,complete_postprocess_sqlite
+batch4_mass_m085_H0210_mu0740,OK_SQLITE,0.21,0.74,0.85,FALLO,66.83080026941303,-61.83080026941303,lejos,True,complete_postprocess_sqlite
+batch4_mass_m085_H0225_mu0800,OK_SQLITE,0.225,0.8,0.85,FALLO,106.55116387830704,-101.55116387830704,lejos,True,complete_postprocess_sqlite
+batch4_mass_m100_H0200_mu0681,OK_SQLITE,0.2,0.681,1.0,ESTABLE,4.278297633371513,0.7217023666284872,cercana_abs_g_le_2,True,complete_postprocess_sqlite
+batch4_mass_m100_H0225_mu0860,OK_SQLITE,0.225,0.86,1.0,FALLO,5.8479473868531135,-0.8479473868531135,cercana_abs_g_le_2,True,complete_postprocess_sqlite
+batch4_mass_m115_H0175_mu0640,OK_SQLITE,0.175,0.64,1.15,ESTABLE,1.2323118534027673,3.7676881465972327,lejos,True,complete_postprocess_sqlite
+batch4_mass_m115_H0200_mu0680,OK_SQLITE,0.2,0.68,1.15,ESTABLE,1.2314766942152948,3.768523305784705,lejos,True,complete_postprocess_sqlite
+batch4_mass_m115_H0210_mu0760,OK_SQLITE,0.21,0.76,1.15,ESTABLE,1.2326437474336316,3.767356252566368,lejos,True,complete_postprocess_sqlite
+batch4_mass_m125_H0200_mu0675,OK_SQLITE,0.2,0.675,1.25,ESTABLE,1.2314766942152948,3.768523305784705,lejos,True,complete_postprocess_sqlite
+batch4_mass_m125_H0225_mu0800,OK_SQLITE,0.225,0.8,1.25,ESTABLE,1.2337116386369946,3.7662883613630056,lejos,True,complete_postprocess_sqlite
+batch4_mass_m125_H0225_mu0860,PARTIAL_RECOVERED_NOT_SQLITE,0.225,0.86,1.25,ESTABLE,1.2338916737699144,3.7661083262300856,lejos,False,partial_recovery; sim_time_reached=9.506s; runner_stopped_before_postprocess; use_as_diagnostic_not_official
