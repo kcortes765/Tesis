@@ -1,6 +1,6 @@
 # STATUS
 
-Ultima actualizacion: 2026-05-13
+Ultima actualizacion: 2026-05-13 09:45
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica local: C:\Seba\Tesis
 Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con piloto, batch2, batch3, verificacion preproduccion, web de convergencia y analisis STL b02; APOS unificado en esta carpeta; datos locales nuevos identificados y separados por origen.
@@ -33,6 +33,11 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - `exports/batch4_mass_probe_20260513/batch4_summary.csv` contiene 11 casos oficiales + caso 12 marcado como `PARTIAL_RECOVERED_NOT_SQLITE`.
 - Batch4 oficial: 5 FALLO y 6 ESTABLE por `displacement_only`; el caso 12 parcial aparece ESTABLE, pero solo como diagnostico no oficial.
 - Precheck de masa/contacto batch4: 2/2 OK en `exports/batch4_mass_probe_20260513/batch4_precheck_summary.csv`.
+- Se recibio desde Git el plan `AL batch1 hibrido` (`0e97767 Prepare hybrid AL batch1 handoff`) con matriz `config/al_batch1_hybrid_20260513.csv`.
+- Dry-run AL batch1 fue correcto: 8 casos, `dp=0.003`, matriz explicita, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- AL batch1 real fue lanzado en WS el 2026-05-13 09:41 con `python scripts\run_production.py --prod --matrix config\al_batch1_hybrid_20260513.csv --max-cases 8`.
+- Estado AL batch1 al lanzamiento: `phase=production`, `current_case=al1_lowH_m085_mu0620`, `progress=1/8`.
+- ntfy nativo quedo activo para AL batch1: el log registra `PRODUCCION INICIADA` e `INICIO CASO 1/8`.
 - Los STL recibidos localmente estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de STL escalado esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -57,7 +62,9 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - La variacion geometrica requiere pipeline especifico: STL, escala, masa, centroide, inercia, insertion point y sanity de contacto.
 
 ## Pendientes criticos
-- Revisar cientificamente piloto + batch2 + batch3 + batch4 juntos.
+- Monitorear AL batch1 hasta completar o fallar.
+- Al terminar AL batch1, crear export liviano `exports/al_batch1_hybrid_YYYYMMDD/`.
+- Revisar cientificamente piloto + batch2 + batch3 + batch4 + AL batch1 juntos.
 - Decidir si el siguiente paso es surrogate exploratorio, mini-batch adicional o incorporacion controlada de geometria.
 - Decidir si repetir o reprocesar oficialmente `batch4_mass_m125_H0225_mu0860` antes de entrenar surrogate final.
 - Revisar `stash@{0}` solo para recuperar cambios locales explicitamente valiosos.
@@ -69,6 +76,7 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - Riesgo interpretativo: leer batch2/batch3 como campana parametrica completa; son lotes dirigidos.
 - Riesgo interpretativo: mezclar rotacion diagnostica con criterio primario `displacement_only`.
 - Riesgo de trazabilidad: batch4 caso 12 tiene recuperacion parcial, no resultado oficial completo; no mezclarlo sin flag.
+- Riesgo operativo: no lanzar otro lote mientras AL batch1 este activo.
 
 ## Evidencia reciente
 - `docs/DATA_ORIGIN_POLICY.md`
@@ -85,3 +93,7 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - `exports/batch4_mass_probe_20260513/batch4_summary.csv`
 - `exports/batch4_mass_probe_20260513/batch4_case12_partial_recovery.csv`
 - `data/production_20260510_2054.log`
+- `config/al_batch1_hybrid_20260513.csv`
+- `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
+- `data/production_20260513_0941.log`
+- `data/production_status.json`

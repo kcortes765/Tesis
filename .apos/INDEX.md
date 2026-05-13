@@ -29,6 +29,7 @@
 - 2026-05-07/2026-05-09: batch3 productivo dirigido completado 10/10 OK y exportado liviano.
 - 2026-05-10: reconciliacion Git/local; `C:\Seba\Tesis` vuelve a ser repo canonico unico.
 - 2026-05-13: batch4 mass probe exportado liviano; 11/12 casos oficiales y 1 caso parcial recuperado.
+- 2026-05-13: AL batch1 hibrido recibido por Git, dry-run validado y corrida real lanzada en WS.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -52,5 +53,7 @@
 - `exports/batch3_productivo_20260509/batch3_summary.csv`
 - `exports/batch4_mass_probe_20260513/batch4_summary.csv`
 - `exports/batch4_mass_probe_20260513/batch4_summary.md`
+- `config/al_batch1_hybrid_20260513.csv`
+- `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
 - `docs/DATA_ORIGIN_POLICY.md`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`

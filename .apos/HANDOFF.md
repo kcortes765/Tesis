@@ -5,6 +5,7 @@
 2. Revisar piloto + batch2 + batch3 + batch4 juntos desde los exports livianos.
 3. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena un mini-batch adicional.
 4. Si se abre geometria, partir por los STL `b02` ya analizados y un sanity de contacto por geometria.
+5. Monitorear AL batch1 hibrido que quedo corriendo en WS.
 
 ## Contexto minimo para continuar
 - `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
@@ -26,6 +27,10 @@
 - Batch4 mass probe en WS: 11/12 casos oficiales en SQLite + 1 caso parcial recuperado desde CSV crudos.
 - Export batch4: `exports/batch4_mass_probe_20260513/`.
 - Caso parcial batch4: `batch4_mass_m125_H0225_mu0860`; usar solo como diagnostico hasta repetir o reprocesar oficialmente.
+- AL batch1 hibrido fue lanzado el 2026-05-13 09:41 desde `config/al_batch1_hybrid_20260513.csv`.
+- Comando real: `python scripts\run_production.py --prod --matrix config\al_batch1_hybrid_20260513.csv --max-cases 8`.
+- AL batch1 no usa `--no-notify`; ntfy nativo esta activo.
+- Estado inicial: `current_case=al1_lowH_m085_mu0620`, `progress=1/8`.
 - Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -42,6 +47,9 @@
 10. `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
 11. `exports/batch4_mass_probe_20260513/batch4_summary.md`
 12. `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+13. `config/al_batch1_hybrid_20260513.csv`
+14. `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
+15. `data/production_20260513_0941.log`
 
 ## Comandos sugeridos
 ```powershell
@@ -55,12 +63,20 @@ Import-Csv exports\batch3_productivo_20260509\batch3_summary.csv |
 
 Import-Csv exports\batch4_mass_probe_20260513\batch4_summary.csv |
   Select case_id,status,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq,quality_flags
+
+Get-Content data\production_status.json
+
+Get-ChildItem data -Filter "production_*.log" |
+  Sort LastWriteTime -Descending |
+  Select -First 1 |
+  Get-Content -Tail 120
 ```
 
 ## Senales de exito
 - `git status -sb` no muestra otro worktree como fuente canonica.
 - Los datos de WS se citan por export/commit.
 - Batch4 queda versionado como export liviano; el caso 12 queda explicitamente marcado como parcial.
+- AL batch1 avanza caso a caso con ntfy y sin fallos numericos.
 - Los datos locales se citan por path y quedan versionados si son livianos.
 - No queda APOS duplicado como verdad viva.
 
@@ -68,7 +84,7 @@ Import-Csv exports\batch4_mass_probe_20260513\batch4_summary.csv |
 - No recrear ni usar worktrees temporales como fuente diaria.
 - No aplicar `stash@{0}` completo sin revisar.
 - No borrar backups, `cases/`, `data/`, `imports/` ni `archive/`.
-- No lanzar otra tanda antes de revisar piloto + batch2 + batch3 + batch4.
+- No lanzar otra tanda mientras AL batch1 este activo.
 - No versionar crudos pesados.
 - No mezclar rotacion diagnostica con falla por desplazamiento.
 

@@ -34,6 +34,11 @@ Repo canonico actualizado a `origin/master`; data local nueva en proceso de vers
 - [x] Retirar el worktree temporal `C:\Seba\Tesis_origin_master_clean_20260510_123639`.
 - [x] Ejecutar batch4 mass probe en WS con `dp=0.003`.
 - [x] Crear export liviano batch4 en `exports/batch4_mass_probe_20260513/`.
+- [x] Recibir desde Git la matriz `config/al_batch1_hybrid_20260513.csv`.
+- [x] Ejecutar dry-run AL batch1 hibrido.
+- [x] Lanzar AL batch1 hibrido real en WS.
+- [ ] Monitorear AL batch1 hasta completar o fallar.
+- [ ] Crear export liviano AL batch1.
 - [ ] Revisar cientificamente el export del piloto, batch2, batch3 y batch4 juntos.
 - [ ] Decidir si repetir/reprocesar el caso 12 parcial de batch4.
 - [ ] Decidir mini-batch adicional o primer surrogate exploratorio.
@@ -41,7 +46,7 @@ Repo canonico actualizado a `origin/master`; data local nueva en proceso de vers
 - [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
-- No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3 + batch4.
+- No iniciar otra tanda mientras AL batch1 este corriendo.
 - No tocar global/system sin confirmacion explicita.
 - No aplicar `stash@{0}` completo sin revision.
 - No borrar backups ni crudos locales.

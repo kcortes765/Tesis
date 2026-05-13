@@ -503,6 +503,51 @@ Preparar resultados batch4 de la WS para sincronizacion por Git hacia la laptop 
 - Batch4 es lote dirigido de masa, no campana completa.
 - Mantener `dp=0.003` como resolucion operativa y rotacion como diagnostico.
 
+## 2026-05-13 09:45 - Lanzamiento AL batch1 hibrido en WS
+
+### Objetivo
+Sincronizar la WS con Git y lanzar el siguiente lote productivo corto `AL batch1 hibrido`, no convergencia ni sensibilidad de forma.
+
+### Acciones
+- Se hizo `git fetch` y `git pull --ff-only origin master`.
+- Se incorporo el commit remoto `0e97767 Prepare hybrid AL batch1 handoff`.
+- Se leyo `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`.
+- Se verifico que no hubiera procesos `DualSPHysics`, `GenCase` ni `python` productivos activos.
+- Se verifico `exports/batch4_mass_probe_20260513/batch4_summary.csv`.
+- Se ejecuto dry-run con `--prod`, matriz explicita y `--max-cases 8`.
+- Se lanzo el lote real sin `--no-notify` para usar ntfy nativo.
+
+### Archivos revisados
+- `config/al_batch1_hybrid_20260513.csv`
+- `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
+- `data/analysis/batch4_postprocess_20260513/AL_BATCH1_HYBRID_RATIONALE_20260513.md`
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+- `scripts/run_production.py`
+
+### Comandos importantes
+```text
+git pull --ff-only origin master
+python scripts\run_production.py --prod --matrix config\al_batch1_hybrid_20260513.csv --max-cases 8 --dry-run --no-notify
+python scripts\run_production.py --prod --matrix config\al_batch1_hybrid_20260513.csv --max-cases 8
+```
+
+### Resultados
+- Dry-run correcto: 8 casos, `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- Lote real lanzado el 2026-05-13 09:41.
+- Estado inicial: `phase=production`, `current_case=al1_lowH_m085_mu0620`, `progress=1/8`.
+- Procesos activos al lanzamiento: `python.exe` runner y `DualSPHysics5.4_win64.exe`.
+- El log `data/production_20260513_0941.log` registra ntfy nativo: `PRODUCCION INICIADA` e `INICIO CASO 1/8`.
+
+### Proximos pasos
+- Monitorear hasta completar o fallar.
+- Al terminar, crear export liviano `exports/al_batch1_hybrid_YYYYMMDD/`.
+- No lanzar otro lote encima.
+
+### Advertencias metodologicas
+- AL batch1 es lote dirigido por GP seed + brackets fisicos; no es validacion de `dp`.
+- No relanzar aun el caso parcial batch4 salvo decision explicita.
+- Mantener `dp=0.003`, geometria base y `displacement_only`.
+
 ## 2026-05-10 12:58 - Reconciliacion Git/local y unificacion APOS
 
 ### Objetivo
