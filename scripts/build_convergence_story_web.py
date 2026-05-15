@@ -5,9 +5,11 @@ import shutil
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Ellipse, FancyArrowPatch, Polygon, Rectangle
+from matplotlib.patches import FancyArrowPatch, Polygon, Rectangle
 import numpy as np
 import pandas as pd
+from scipy.spatial import ConvexHull
+import trimesh
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,6 +59,73 @@ CONVERGENCE_CASE_SPEC = [
     ("Gauges", "12 velocity + 8 maxZ, reubicados según posición del bloque"),
     ("Resoluciones barridas", "dp = 0.010, 0.008, 0.006, 0.005, 0.004, 0.003, 0.002 m"),
 ]
+
+
+def hull_outline(points: np.ndarray) -> np.ndarray:
+    pts = np.asarray(points, dtype=float)
+    if len(pts) < 3:
+        return pts
+    hull = ConvexHull(pts)
+    outline = pts[hull.vertices]
+    return np.vstack([outline, outline[0]])
+
+
+def load_convergence_boulder_outlines() -> tuple[np.ndarray, np.ndarray, dict]:
+    """Project the actual BLIR3 STL used in conv3_f05_full to plan and elevation."""
+    stl = ROOT / "models" / "BLIR3.stl"
+    mesh = trimesh.load(stl, force="mesh")
+    mesh.apply_scale(0.04)
+
+    slope_inv = 20.0
+    slope = 1.0 / slope_inv
+    x0, y0, z0 = 6.5, 0.5, 0.025
+    vertices = np.asarray(mesh.vertices, dtype=float)
+
+    # The conv3_f05_full log records rotation=(0,0,0).  Its lower face is already
+    # nearly parallel to the 1:20 beach; the vertical shift below prevents visual
+    # penetration in the explanatory sketch while preserving the STL shape.
+    support_height = vertices[:, 2] - slope * vertices[:, 0]
+    support_shift = -float(np.min(support_height))
+    domain = vertices + np.array([x0, y0, z0 + support_shift])
+
+    plan_outline = hull_outline(domain[:, [0, 1]])
+    elev_outline = hull_outline(domain[:, [0, 2]])
+
+    bottom_mask = support_height <= np.quantile(support_height, 0.01)
+    bottom = vertices[bottom_mask]
+    if len(bottom) >= 3:
+        fit = np.polyfit(bottom[:, 0], bottom[:, 2], 1)
+        bottom_angle = float(np.degrees(np.arctan(fit[0])))
+    else:
+        bottom_angle = float("nan")
+
+    meta = {
+        "source_stl": str(stl.relative_to(ROOT)),
+        "scale": 0.04,
+        "rotation_deg": "(0.0, 0.0, 0.0)",
+        "support_shift_m": support_shift,
+        "bottom_angle_deg": bottom_angle,
+        "beach_angle_deg": float(np.degrees(np.arctan(slope))),
+    }
+    return plan_outline, elev_outline, meta
+
+
+def compress_outline_normal_to_beach(outline: np.ndarray, factor: float = 0.16) -> np.ndarray:
+    """Compress STL elevation silhouette normal to the beach for the z-exaggerated overview."""
+    slope = 1.0 / 20.0
+    tangent = np.array([1.0, slope], dtype=float)
+    tangent /= np.linalg.norm(tangent)
+    normal = np.array([-slope, 1.0], dtype=float)
+    normal /= np.linalg.norm(normal)
+    pts = np.asarray(outline, dtype=float)
+    beach_z = (pts[:, 0] - 6.0) / 20.0
+    clearance = pts[:, 1] - beach_z
+    contact = pts[int(np.argmin(clearance))]
+    rel = pts - contact
+    along = rel @ tangent
+    above = rel @ normal
+    compressed = contact + np.outer(along, tangent) + np.outer(above * factor, normal)
+    return compressed
 
 
 def init() -> None:
@@ -343,6 +412,10 @@ def abs_delta_label(row: pd.Series) -> str:
 def plot_00_setup_layout() -> None:
     fig, axes = plt.subplots(2, 1, figsize=(11.5, 6.6), constrained_layout=True)
     plan, elev = axes
+    plan_outline, elev_outline, boulder_meta = load_convergence_boulder_outlines()
+    pd.DataFrame(plan_outline, columns=["x_m", "y_m"]).to_csv(DATA / "stl_boulder_outline_plan.csv", index=False)
+    pd.DataFrame(elev_outline, columns=["x_m", "z_m"]).to_csv(DATA / "stl_boulder_outline_elevation.csv", index=False)
+    pd.DataFrame([boulder_meta]).to_csv(DATA / "stl_boulder_outline_metadata.csv", index=False)
 
     # Plan view: 30 m channel, 1 m width, boulder centered near the beach toe.
     plan.set_aspect("equal")
@@ -351,7 +424,7 @@ def plot_00_setup_layout() -> None:
     plan.add_patch(Rectangle((1.5, 0), 4.5, 1.0, facecolor="#dbeafe", edgecolor="none", alpha=0.55))
     plan.add_patch(Rectangle((6.0, 0), 9.0, 1.0, facecolor="#efe5d1", edgecolor="none", alpha=0.78))
     plan.add_patch(Rectangle((15.0, 0), 15.0, 1.0, facecolor="#f4f1ea", edgecolor="none", alpha=0.82))
-    plan.add_patch(Ellipse((6.50, 0.50), 0.22, 0.17, angle=0, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
+    plan.add_patch(Polygon(plan_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
     plan.add_patch(FancyArrowPatch((0.55, 0.50), (6.05, 0.50), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     plan.text(0.75, 0.63, "flujo", color=BLUE, fontsize=9, weight="bold")
     plan.text(0.75, 0.12, "reservorio", color="#245d7a", fontsize=8)
@@ -365,40 +438,6 @@ def plot_00_setup_layout() -> None:
     plan.set_ylabel("ancho y (m)")
     plan.set_yticks([0, 0.5, 1.0])
 
-    def add_slope_aligned_block(ax: plt.Axes, x_contact: float, length: float, thickness: float, *, z_offset: float = 0.0) -> None:
-        slope = 1 / 20
-        z_contact = (x_contact - 6.0) * slope + z_offset
-        tangent = np.array([1.0, slope], dtype=float)
-        tangent /= np.linalg.norm(tangent)
-        normal = np.array([-slope, 1.0], dtype=float)
-        normal /= np.linalg.norm(normal)
-        contact = np.array([x_contact, z_contact])
-        # Bottom edge sits exactly on the beach tangent; all other points are above it.
-        points = np.vstack(
-            [
-                contact - tangent * (length * 0.50),
-                contact - tangent * (length * 0.22) + normal * (thickness * 0.18),
-                contact + tangent * (length * 0.08) + normal * (thickness * 0.36),
-                contact + tangent * (length * 0.36) + normal * (thickness * 0.30),
-                contact + tangent * (length * 0.50),
-                contact + tangent * (length * 0.43) + normal * (thickness * 0.70),
-                contact + tangent * (length * 0.16) + normal * (thickness * 1.08),
-                contact - tangent * (length * 0.15) + normal * (thickness * 0.94),
-                contact - tangent * (length * 0.42) + normal * (thickness * 0.58),
-            ]
-        )
-        ax.add_patch(
-            Polygon(
-                points,
-                closed=True,
-                facecolor="#6b5b4b",
-                edgecolor="#241f1b",
-                linewidth=1.0,
-                joinstyle="round",
-                zorder=5,
-            )
-        )
-
     # Elevation view: same x scale, exaggerated z for readability.
     elev.set_aspect("auto")
     bed = np.array([[0, 0], [6, 0], [15, 0.45], [30, 0.45], [30, -0.08], [0, -0.08]])
@@ -408,23 +447,24 @@ def plot_00_setup_layout() -> None:
     xb = 6.5
     zb = (xb - 6.0) / 20.0
     slope_angle = np.degrees(np.arctan(1 / 20))
-    add_slope_aligned_block(elev, xb, length=0.70, thickness=0.007)
+    elev_overview_outline = compress_outline_normal_to_beach(elev_outline, factor=0.16)
+    elev.add_patch(Polygon(elev_overview_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
     elev.add_patch(FancyArrowPatch((0.65, 0.18), (6.42, 0.035), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     elev.plot([6, 15], [0, 0.45], color="#8d7442", lw=1.2)
     elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=slope_angle, ha="center")
-    elev.text(xb + 1.15, zb + 0.105, "bloque apoyado;\neje largo paralelo a la playa", color="#241f1b", fontsize=8, ha="center")
+    elev.text(xb + 1.25, zb + 0.105, "ubicacion del BLIR3.stl;\nbase paralela a playa", color="#241f1b", fontsize=8, ha="center")
     elev.text(0.6, 0.215, "H", color="#245d7a", fontsize=9, weight="bold")
     inset = elev.inset_axes([0.405, 0.565, 0.235, 0.285])
     inset.set_facecolor("#fffdf8")
-    inset.fill_between([6.30, 6.75], [0.015, 0.0375], [-0.010, -0.010], color="#e8dcc6", alpha=1.0)
-    inset.plot([6.30, 6.75], [0.015, 0.0375], color="#8d7442", lw=1.15)
-    add_slope_aligned_block(inset, xb, length=0.23, thickness=0.033)
-    inset.set_xlim(6.36, 6.66)
-    inset.set_ylim(0.006, 0.068)
+    inset.fill_between([6.34, 6.66], [(6.34 - 6.0) / 20.0, (6.66 - 6.0) / 20.0], [0.000, 0.000], color="#e8dcc6", alpha=1.0)
+    inset.plot([6.34, 6.66], [(6.34 - 6.0) / 20.0, (6.66 - 6.0) / 20.0], color="#8d7442", lw=1.15)
+    inset.add_patch(Polygon(elev_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
+    inset.set_xlim(6.38, 6.63)
+    inset.set_ylim(0.008, 0.072)
     inset.set_aspect("equal", adjustable="box")
     inset.set_xticks([])
     inset.set_yticks([])
-    inset.set_title("detalle ampliado: sin penetracion", fontsize=7, pad=1.5)
+    inset.set_title("STL real, apoyo sin penetracion", fontsize=7, pad=1.5)
     for spine in inset.spines.values():
         spine.set_edgecolor("#cfd8e3")
         spine.set_linewidth(0.8)
@@ -436,7 +476,7 @@ def plot_00_setup_layout() -> None:
     elev.text(
         0.99,
         0.04,
-        "Esquema a escala en planta; elevacion con z realzado solo para lectura.",
+        "Planta y detalle usan contorno del STL real; elevacion global con z realzado solo para lectura.",
         transform=elev.transAxes,
         ha="right",
         va="bottom",
@@ -948,7 +988,7 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
       </dl>
       <figure>
         <img src="figures/00_setup_planta_elevacion.png" alt="Planta y elevacion del setup SPH">
-        <figcaption>Setup fisico usado en la lectura: canal, playa 1:20 y bloque irregular apoyado sobre la playa. La planta mantiene escala horizontal; la elevacion realza z para legibilidad.</figcaption>
+        <figcaption>Setup fisico usado en la lectura: canal, playa 1:20 y bloque irregular. La silueta del bloque proviene de <code>models/BLIR3.stl</code> con escala 0.04 y rotacion registrada del caso; los contornos auditables quedan en <code>data/stl_boulder_outline_*.csv</code>. La elevacion global realza z para legibilidad; el detalle muestra el apoyo local sin penetracion.</figcaption>
       </figure>
     <h3>Ficha del caso físico usado para la convergencia</h3>
     <p>Todos los valores de la tabla por resolución corresponden a este mismo caso físico; lo único que cambia entre filas es <code>dp</code>.</p>
