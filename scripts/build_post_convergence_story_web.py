@@ -148,15 +148,157 @@ def family_rows(df: pd.DataFrame) -> str:
 def figure_html() -> str:
     blocks = []
     for stem, title, caption in FIGURES:
+        zoom_src = f"figures/{stem}.svg" if (FIG / f"{stem}.svg").exists() else f"figures/{stem}.png"
         blocks.append(
             f"""
-      <figure>
-        <img src="figures/{stem}.png" alt="{html.escape(title)}">
+      <figure class="zoomable-figure">
+        <button class="figure-open" type="button" data-zoom-src="{zoom_src}" data-zoom-title="{html.escape(title)}" aria-label="Ampliar grafico: {html.escape(title)}">
+          <img src="figures/{stem}.png" alt="{html.escape(title)}">
+          <span class="zoom-chip">Ampliar grafico</span>
+        </button>
         <figcaption><strong>{html.escape(title)}.</strong> {html.escape(caption)}</figcaption>
       </figure>
             """.strip()
         )
     return "\n".join(blocks)
+
+
+def zoom_modal_html() -> str:
+    return """
+<div class="zoom-modal" id="figureZoom" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Grafico ampliado">
+  <div class="zoom-modal__panel">
+    <div class="zoom-modal__bar">
+      <p id="figureZoomTitle">Grafico ampliado</p>
+      <div class="zoom-controls" aria-label="Controles de zoom">
+        <button type="button" data-zoom-action="out" aria-label="Alejar">-</button>
+        <button type="button" data-zoom-action="reset" aria-label="Restablecer zoom">100%</button>
+        <button type="button" data-zoom-action="in" aria-label="Acercar">+</button>
+        <button type="button" data-zoom-action="close" aria-label="Cerrar visor">Cerrar</button>
+      </div>
+    </div>
+    <div class="zoom-modal__stage">
+      <img id="figureZoomImage" alt="">
+    </div>
+    <p class="zoom-help">Rueda/trackpad para zoom, arrastrar para mover, doble clic para acercar, Esc para cerrar.</p>
+  </div>
+</div>
+"""
+
+
+def zoom_script_html() -> str:
+    return """
+<script>
+(() => {
+  const modal = document.getElementById("figureZoom");
+  const img = document.getElementById("figureZoomImage");
+  const title = document.getElementById("figureZoomTitle");
+  if (!modal || !img || !title) return;
+
+  let scale = 1;
+  let panX = 0;
+  let panY = 0;
+  let dragging = false;
+  let startX = 0;
+  let startY = 0;
+  let originX = 0;
+  let originY = 0;
+
+  const clampScale = (value) => Math.min(6, Math.max(0.75, value));
+  const applyTransform = () => {
+    img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    modal.dataset.zoomed = scale > 1.01 ? "true" : "false";
+  };
+  const resetZoom = () => {
+    scale = 1;
+    panX = 0;
+    panY = 0;
+    applyTransform();
+  };
+  const zoomBy = (factor) => {
+    scale = clampScale(scale * factor);
+    if (scale <= 1.01) {
+      panX = 0;
+      panY = 0;
+    }
+    applyTransform();
+  };
+  const openZoom = (button) => {
+    const src = button.dataset.zoomSrc || button.querySelector("img")?.src;
+    const label = button.dataset.zoomTitle || button.querySelector("img")?.alt || "Grafico ampliado";
+    if (!src) return;
+    img.src = src;
+    img.alt = label;
+    title.textContent = label;
+    resetZoom();
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+    modal.querySelector('[data-zoom-action="close"]')?.focus();
+  };
+  const closeZoom = () => {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    img.removeAttribute("src");
+  };
+
+  document.querySelectorAll(".figure-open").forEach((button) => {
+    button.addEventListener("click", () => openZoom(button));
+  });
+
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeZoom();
+  });
+
+  modal.querySelectorAll("[data-zoom-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const action = button.dataset.zoomAction;
+      if (action === "in") zoomBy(1.25);
+      if (action === "out") zoomBy(0.8);
+      if (action === "reset") resetZoom();
+      if (action === "close") closeZoom();
+    });
+  });
+
+  modal.addEventListener("wheel", (event) => {
+    if (!modal.classList.contains("is-open")) return;
+    event.preventDefault();
+    zoomBy(event.deltaY < 0 ? 1.12 : 0.9);
+  }, { passive: false });
+
+  img.addEventListener("dblclick", () => {
+    if (scale < 1.5) zoomBy(2);
+    else resetZoom();
+  });
+
+  img.addEventListener("pointerdown", (event) => {
+    if (scale <= 1.01) return;
+    dragging = true;
+    startX = event.clientX;
+    startY = event.clientY;
+    originX = panX;
+    originY = panY;
+    img.setPointerCapture(event.pointerId);
+  });
+  img.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    panX = originX + event.clientX - startX;
+    panY = originY + event.clientY - startY;
+    applyTransform();
+  });
+  img.addEventListener("pointerup", () => { dragging = false; });
+  img.addEventListener("pointercancel", () => { dragging = false; });
+
+  window.addEventListener("keydown", (event) => {
+    if (!modal.classList.contains("is-open")) return;
+    if (event.key === "Escape") closeZoom();
+    if (event.key === "+" || event.key === "=") zoomBy(1.25);
+    if (event.key === "-" || event.key === "_") zoomBy(0.8);
+    if (event.key === "0") resetZoom();
+  });
+})();
+</script>
+"""
 
 
 def write_page(df: pd.DataFrame) -> None:
@@ -212,6 +354,8 @@ def write_page(df: pd.DataFrame) -> None:
     <p>Convencion visual: verde = <span class="inline-stable">ESTABLE</span>, rojo = <span class="inline-fail">FALLO</span>, gris = parcial/no oficial.</p>
   </section>
 </main>
+{zoom_modal_html()}
+{zoom_script_html()}
 </body>
 </html>
 """
@@ -326,10 +470,36 @@ figure {
   padding: 10px;
   border-radius: 4px;
 }
-figure img {
+.figure-open {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+.figure-open img {
   display: block;
   width: 100%;
   height: auto;
+}
+.figure-open:focus-visible {
+  outline: 3px solid #255f91;
+  outline-offset: 4px;
+}
+.zoom-chip {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: 1px solid rgba(23, 32, 42, .16);
+  background: rgba(255, 255, 255, .92);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(23, 32, 42, .08);
 }
 figcaption {
   color: var(--muted);
@@ -361,6 +531,97 @@ code {
   padding: 1px 4px;
   border-radius: 3px;
 }
+body.modal-open { overflow: hidden; }
+.zoom-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(13, 20, 29, .78);
+}
+.zoom-modal.is-open { display: flex; }
+.zoom-modal__panel {
+  width: min(1440px, 100%);
+  max-height: min(900px, calc(100vh - 40px));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 6px;
+  background: #fbfcfe;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+  overflow: hidden;
+}
+.zoom-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: #ffffff;
+}
+.zoom-modal__bar p {
+  margin: 0;
+  font-weight: 700;
+}
+.zoom-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.zoom-controls button {
+  border: 1px solid #c8d1dc;
+  background: #f5f7fa;
+  color: var(--ink);
+  border-radius: 4px;
+  padding: 6px 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.zoom-controls button:hover,
+.zoom-controls button:focus-visible {
+  background: #e8eef5;
+}
+.zoom-modal__stage {
+  min-height: 260px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(90deg, rgba(216,222,232,.45) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(216,222,232,.45) 1px, transparent 1px),
+    #f6f8fb;
+  background-size: 32px 32px;
+}
+.zoom-modal__stage img {
+  display: block;
+  width: min(1360px, 92vw);
+  max-height: 78vh;
+  height: auto;
+  transform-origin: center center;
+  transition: transform .08s ease-out;
+  user-select: none;
+  touch-action: none;
+  cursor: zoom-in;
+}
+.zoom-modal[data-zoomed="true"] .zoom-modal__stage img {
+  cursor: grab;
+}
+.zoom-modal[data-zoomed="true"] .zoom-modal__stage img:active {
+  cursor: grabbing;
+}
+.zoom-help {
+  margin: 0;
+  padding: 8px 12px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  background: #ffffff;
+}
 @media (max-width: 860px) {
   .cards { grid-template-columns: 1fr; }
   .cards div { border-right: 0; border-bottom: 1px solid var(--line); }
@@ -368,6 +629,9 @@ code {
   .scope-panel { grid-template-columns: 1fr; }
   .scope-panel dl div { grid-template-columns: 1fr; gap: 2px; }
   section { padding: 16px; }
+  .zoom-modal { padding: 10px; }
+  .zoom-modal__bar { align-items: flex-start; flex-direction: column; }
+  .zoom-controls button { padding: 7px 9px; }
 }
 """
     (OUT / "styles.css").write_text(css, encoding="utf-8")
