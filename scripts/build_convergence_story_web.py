@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.collections import PolyCollection
 from matplotlib.patches import FancyArrowPatch, Polygon, Rectangle
 import numpy as np
 import pandas as pd
@@ -70,7 +71,7 @@ def hull_outline(points: np.ndarray) -> np.ndarray:
     return np.vstack([outline, outline[0]])
 
 
-def load_convergence_boulder_outlines() -> tuple[np.ndarray, np.ndarray, dict]:
+def load_convergence_boulder_geometry() -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, dict]:
     """Project the actual BLIR3 STL used in conv3_f05_full to plan and elevation."""
     stl = ROOT / "models" / "BLIR3.stl"
     mesh = trimesh.load(stl, force="mesh")
@@ -90,6 +91,8 @@ def load_convergence_boulder_outlines() -> tuple[np.ndarray, np.ndarray, dict]:
 
     plan_outline = hull_outline(domain[:, [0, 1]])
     elev_outline = hull_outline(domain[:, [0, 2]])
+    plan_faces = domain[mesh.faces][:, :, [0, 1]]
+    elev_faces = domain[mesh.faces][:, :, [0, 2]]
 
     bottom_mask = support_height <= np.quantile(support_height, 0.01)
     bottom = vertices[bottom_mask]
@@ -107,7 +110,7 @@ def load_convergence_boulder_outlines() -> tuple[np.ndarray, np.ndarray, dict]:
         "bottom_angle_deg": bottom_angle,
         "beach_angle_deg": float(np.degrees(np.arctan(slope))),
     }
-    return plan_outline, elev_outline, meta
+    return plan_outline, elev_outline, plan_faces, elev_faces, meta
 
 
 def compress_outline_normal_to_beach(outline: np.ndarray, factor: float = 0.16) -> np.ndarray:
@@ -126,6 +129,31 @@ def compress_outline_normal_to_beach(outline: np.ndarray, factor: float = 0.16) 
     above = rel @ normal
     compressed = contact + np.outer(along, tangent) + np.outer(above * factor, normal)
     return compressed
+
+
+def add_mesh_projection(ax: plt.Axes, face_polys: np.ndarray, outline: np.ndarray, *,
+                        facecolor: str = "#6b5b4b", edge_alpha: float = 0.018,
+                        linewidth: float = 0.035, zorder: int = 5) -> None:
+    coll = PolyCollection(
+        face_polys,
+        facecolors=facecolor,
+        edgecolors=(0.08, 0.07, 0.06, edge_alpha),
+        linewidths=linewidth,
+        alpha=1.0,
+        zorder=zorder,
+    )
+    ax.add_collection(coll)
+    ax.add_patch(
+        Polygon(
+            outline,
+            closed=True,
+            facecolor="none",
+            edgecolor="#241f1b",
+            linewidth=1.35,
+            joinstyle="round",
+            zorder=zorder + 1,
+        )
+    )
 
 
 def init() -> None:
@@ -410,80 +438,121 @@ def abs_delta_label(row: pd.Series) -> str:
 
 
 def plot_00_setup_layout() -> None:
-    fig, axes = plt.subplots(2, 1, figsize=(11.5, 6.6), constrained_layout=True)
-    plan, elev = axes
-    plan_outline, elev_outline, boulder_meta = load_convergence_boulder_outlines()
+    fig = plt.figure(figsize=(12.2, 7.4), constrained_layout=True)
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.75, 1.0], height_ratios=[0.82, 1.18])
+    plan = fig.add_subplot(gs[0, 0])
+    elev = fig.add_subplot(gs[1, 0])
+    plan_zoom = fig.add_subplot(gs[0, 1])
+    elev_zoom = fig.add_subplot(gs[1, 1])
+
+    plan_outline, elev_outline, plan_faces, elev_faces, boulder_meta = load_convergence_boulder_geometry()
     pd.DataFrame(plan_outline, columns=["x_m", "y_m"]).to_csv(DATA / "stl_boulder_outline_plan.csv", index=False)
     pd.DataFrame(elev_outline, columns=["x_m", "z_m"]).to_csv(DATA / "stl_boulder_outline_elevation.csv", index=False)
     pd.DataFrame([boulder_meta]).to_csv(DATA / "stl_boulder_outline_metadata.csv", index=False)
 
-    # Plan view: 30 m channel, 1 m width, boulder centered near the beach toe.
+    channel_end = 15.0
+    ramp_end = 15.0
+    slope = 1 / 20
+    slope_angle = np.degrees(np.arctan(slope))
+
+    # Plan view: convergence case uses a 15 m channel, 1 m width.
     plan.set_aspect("equal")
-    plan.add_patch(Rectangle((0, 0), 30, 1.0, facecolor="#f7fbff", edgecolor="#32465a", linewidth=1.2))
+    plan.add_patch(Rectangle((0, 0), channel_end, 1.0, facecolor="#f7fbff", edgecolor="#32465a", linewidth=1.2))
     plan.add_patch(Rectangle((0, 0), 1.5, 1.0, facecolor="#9ecae1", edgecolor="none", alpha=0.72))
     plan.add_patch(Rectangle((1.5, 0), 4.5, 1.0, facecolor="#dbeafe", edgecolor="none", alpha=0.55))
     plan.add_patch(Rectangle((6.0, 0), 9.0, 1.0, facecolor="#efe5d1", edgecolor="none", alpha=0.78))
-    plan.add_patch(Rectangle((15.0, 0), 15.0, 1.0, facecolor="#f4f1ea", edgecolor="none", alpha=0.82))
     plan.add_patch(Polygon(plan_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
     plan.add_patch(FancyArrowPatch((0.55, 0.50), (6.05, 0.50), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     plan.text(0.75, 0.63, "flujo", color=BLUE, fontsize=9, weight="bold")
     plan.text(0.75, 0.12, "reservorio", color="#245d7a", fontsize=8)
-    plan.text(6.55, 0.68, "bloque", color="#241f1b", fontsize=8, ha="center")
+    plan.text(6.55, 0.76, "bloque", color="#241f1b", fontsize=8, ha="center")
     plan.text(10.5, 0.08, "playa 1:20", color="#66512d", fontsize=8, ha="center")
-    plan.text(22.5, 0.08, "zona final", color="#66512d", fontsize=8, ha="center")
-    plan.set_xlim(-0.25, 30.25)
+    plan.set_xlim(-0.15, channel_end + 0.15)
     plan.set_ylim(-0.15, 1.15)
     plan.set_title("Planta del canal numerico")
     plan.set_xlabel("x (m)")
     plan.set_ylabel("ancho y (m)")
     plan.set_yticks([0, 0.5, 1.0])
+    plan.set_xticks([0, 3, 6, 9, 12, 15])
 
-    # Elevation view: same x scale, exaggerated z for readability.
+    # Elevation view: full case overview.
     elev.set_aspect("auto")
-    bed = np.array([[0, 0], [6, 0], [15, 0.45], [30, 0.45], [30, -0.08], [0, -0.08]])
+    bed = np.array([[0, 0], [6, 0], [ramp_end, 0.45], [ramp_end, -0.08], [0, -0.08]])
     elev.add_patch(Polygon(bed, closed=True, facecolor="#e8dcc6", edgecolor="#6b5b3e", linewidth=1.2))
     water = np.array([[0, 0], [1.5, 0], [1.5, 0.20], [0, 0.20]])
     elev.add_patch(Polygon(water, closed=True, facecolor="#9ecae1", edgecolor="#4f8bad", alpha=0.70))
     xb = 6.5
     zb = (xb - 6.0) / 20.0
-    slope_angle = np.degrees(np.arctan(1 / 20))
     elev_overview_outline = compress_outline_normal_to_beach(elev_outline, factor=0.16)
     elev.add_patch(Polygon(elev_overview_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
-    elev.add_patch(FancyArrowPatch((0.65, 0.18), (6.42, 0.035), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
+    elev.add_patch(FancyArrowPatch((0.65, 0.18), (6.42, 0.032), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     elev.plot([6, 15], [0, 0.45], color="#8d7442", lw=1.2)
-    elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=slope_angle, ha="center")
-    elev.text(xb + 1.25, zb + 0.105, "ubicacion del BLIR3.stl;\nbase paralela a playa", color="#241f1b", fontsize=8, ha="center")
+    elev.text(10.6, 0.31, "pendiente 1:20", color="#66512d", fontsize=8, rotation=slope_angle, ha="center")
+    elev.text(xb + 0.55, zb + 0.112, "BLIR3.stl\napoyado en playa", color="#241f1b", fontsize=8, ha="center")
     elev.text(0.6, 0.215, "H", color="#245d7a", fontsize=9, weight="bold")
-    inset = elev.inset_axes([0.405, 0.565, 0.235, 0.285])
-    inset.set_facecolor("#fffdf8")
-    inset.fill_between([6.34, 6.66], [(6.34 - 6.0) / 20.0, (6.66 - 6.0) / 20.0], [0.000, 0.000], color="#e8dcc6", alpha=1.0)
-    inset.plot([6.34, 6.66], [(6.34 - 6.0) / 20.0, (6.66 - 6.0) / 20.0], color="#8d7442", lw=1.15)
-    inset.add_patch(Polygon(elev_outline, closed=True, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0, zorder=5))
-    inset.set_xlim(6.38, 6.63)
-    inset.set_ylim(0.008, 0.072)
-    inset.set_aspect("equal", adjustable="box")
-    inset.set_xticks([])
-    inset.set_yticks([])
-    inset.set_title("STL real, apoyo sin penetracion", fontsize=7, pad=1.5)
-    for spine in inset.spines.values():
-        spine.set_edgecolor("#cfd8e3")
-        spine.set_linewidth(0.8)
-    elev.set_xlim(-0.25, 30.25)
+    elev.set_xlim(-0.15, channel_end + 0.15)
     elev.set_ylim(-0.05, 0.58)
     elev.set_title("Elevacion longitudinal")
     elev.set_xlabel("x (m)")
     elev.set_ylabel("z (m)")
-    elev.text(
-        0.99,
+    elev.set_xticks([0, 3, 6, 9, 12, 15])
+
+    # Local plan zoom with projected mesh faces.
+    plan_zoom.set_facecolor("#fffdf8")
+    add_mesh_projection(plan_zoom, plan_faces, plan_outline, edge_alpha=0.018, linewidth=0.035)
+    px0, py0 = plan_outline[:, 0].min(), plan_outline[:, 1].min()
+    px1, py1 = plan_outline[:, 0].max(), plan_outline[:, 1].max()
+    plan_zoom.set_xlim(px0 - 0.055, px1 + 0.055)
+    plan_zoom.set_ylim(py0 - 0.055, py1 + 0.055)
+    plan_zoom.set_aspect("equal", adjustable="box")
+    plan_zoom.set_title("Planta local (STL real)", fontsize=10, pad=8)
+    plan_zoom.set_xlabel("x (m)")
+    plan_zoom.set_ylabel("y (m)")
+    plan_zoom.set_xticks(np.round(np.linspace(px0, px1, 3), 2))
+    plan_zoom.set_yticks(np.round(np.linspace(py0, py1, 3), 2))
+    plan_zoom.text(
+        0.03,
         0.04,
-        "Planta y detalle usan contorno del STL real; elevacion global con z realzado solo para lectura.",
-        transform=elev.transAxes,
-        ha="right",
-        va="bottom",
-        fontsize=8,
+        "huella aprox. 0.17 x 0.21 m",
+        transform=plan_zoom.transAxes,
+        fontsize=7.5,
         color=GRAY,
+        ha="left",
+        va="bottom",
     )
-    fig.suptitle("Setup fisico: canal, playa y bloque irregular", fontsize=13, fontweight="bold")
+
+    # Local elevation zoom: mesh projection on the 1:20 beach.
+    elev_zoom.set_facecolor("#fffdf8")
+    ex0, ez0 = elev_outline[:, 0].min(), elev_outline[:, 1].min()
+    ex1, ez1 = elev_outline[:, 0].max(), elev_outline[:, 1].max()
+    bx_line = np.array([ex0 - 0.055, ex1 + 0.055])
+    bz_line = (bx_line - 6.0) / 20.0
+    elev_zoom.fill_between(bx_line, bz_line, bz_line.min() - 0.035, color="#e8dcc6", alpha=1.0)
+    elev_zoom.plot(bx_line, bz_line, color="#8d7442", lw=1.3)
+    add_mesh_projection(elev_zoom, elev_faces, elev_outline, edge_alpha=0.018, linewidth=0.035)
+    elev_zoom.set_xlim(ex0 - 0.045, ex1 + 0.045)
+    elev_zoom.set_ylim(min(bz_line.min() - 0.010, ez0 - 0.012), ez1 + 0.030)
+    elev_zoom.set_aspect("equal", adjustable="box")
+    elev_zoom.set_title("Elevacion local: apoyo sin penetracion", fontsize=10, pad=8)
+    elev_zoom.set_xlabel("x (m)")
+    elev_zoom.set_ylabel("z (m)")
+    elev_zoom.set_xticks(np.round(np.linspace(ex0, ex1, 3), 2))
+    elev_zoom.set_yticks(np.round(np.linspace(ez0, ez1, 3), 2))
+    elev_zoom.text(
+        0.03,
+        0.95,
+        f"base STL {boulder_meta['bottom_angle_deg']:.2f} deg; playa {boulder_meta['beach_angle_deg']:.2f} deg",
+        transform=elev_zoom.transAxes,
+        fontsize=7.5,
+        color=GRAY,
+        ha="left",
+        va="top",
+    )
+
+    for ax in [plan, elev, plan_zoom, elev_zoom]:
+        ax.grid(True, color="#7d8794", alpha=0.13, linewidth=0.8)
+
+    fig.suptitle("Setup fisico: canal, playa y bloque irregular", fontsize=12.5, fontweight="bold")
     save("00_setup_planta_elevacion")
 
 
