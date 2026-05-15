@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import html
 import shutil
 from pathlib import Path
 
@@ -37,6 +38,25 @@ TEMPORAL_CASES = {
     0.003: "conv3_f05_full_dp0003",
     0.002: "conv3_f05_full_dp0002",
 }
+
+CONVERGENCE_CASE_SPEC = [
+    ("Fuente auditada", "data/logs/conv3_f05_full.log"),
+    ("Serie", "conv3_f05_full"),
+    ("Altura de presa / columna inicial", "0.20 m"),
+    ("Masa del bloque", "1.00 kg"),
+    ("Coeficiente de fricción bloque-playa", "mu = 0.50"),
+    ("Pendiente de playa", "1:20"),
+    ("Rotación adicional del bloque", "rot_z = 0.0 deg"),
+    ("Rotación STL registrada", "(0.0, 0.0, 0.0) deg"),
+    ("Posición inicial nominal", "(x, y, z) = (6.5, 0.5, 0.025) m"),
+    ("Bloque", "BLIR3.stl, escala = 0.04"),
+    ("Volumen / densidad", "0.00053023 m3 / 1886.0 kg/m3"),
+    ("Diámetro equivalente", "d_eq = 0.100421 m"),
+    ("Bbox bloque", "0.1710 x 0.2100 x 0.0399 m"),
+    ("Canal", "L_flat=6.0 m, L_ramp=9.0 m, L_end=15.0 m, W=1.0 m, H=1.5 m"),
+    ("Gauges", "12 velocity + 8 maxZ, reubicados según posición del bloque"),
+    ("Resoluciones barridas", "dp = 0.010, 0.008, 0.006, 0.005, 0.004, 0.003, 0.002 m"),
+]
 
 
 def init() -> None:
@@ -802,6 +822,13 @@ def productive_rows(prod: pd.DataFrame) -> str:
     return "\n".join(rows)
 
 
+def convergence_case_spec_rows() -> str:
+    return "\n".join(
+        f"<tr><th>{html.escape(name)}</th><td>{html.escape(value)}</td></tr>"
+        for name, value in CONVERGENCE_CASE_SPEC
+    )
+
+
 def convergence_rows(summary: pd.DataFrame) -> str:
     rows = []
     cols = [
@@ -905,6 +932,15 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
         </ul>
       </div>
     </figure>
+    <h3>Ficha del caso físico usado para la convergencia</h3>
+    <p>Todos los valores de la tabla por resolución corresponden a este mismo caso físico; lo único que cambia entre filas es <code>dp</code>.</p>
+    <div class="table-wrap compact-table">
+      <table>
+        <tbody>{convergence_case_spec_rows()}</tbody>
+      </table>
+    </div>
+    <p class="note">Ficha reconstruida desde <code>data/logs/conv3_f05_full.log</code>. Esta es la condición específica usada para la convergencia continua; no representa todos los casos productivos posteriores.</p>
+    <h3>Resultados por resolución</h3>
     <div class="table-wrap">
       <table>
         <thead>
@@ -1177,6 +1213,7 @@ figcaption {
 }
 .read-guide li { margin: 4px 0; }
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.compact-table { max-width: 920px; }
 table {
   width: 100%;
   border-collapse: collapse;
@@ -1188,6 +1225,8 @@ th, td {
   text-align: left;
 }
 th { background: #eef2f6; }
+.compact-table th { width: 270px; white-space: nowrap; }
+.compact-table td { color: var(--muted); }
 .pill {
   display: inline-block;
   border-radius: 3px;
@@ -1305,6 +1344,9 @@ def write_data(
     temporal_errors: pd.DataFrame,
 ) -> None:
     summary.to_csv(DATA / "continuous_convergence_summary.csv", index=False)
+    pd.DataFrame(CONVERGENCE_CASE_SPEC, columns=["parametro", "valor"]).to_csv(
+        DATA / "convergence_case_physical_setup.csv", index=False
+    )
     table = summary.copy()
     table["disp_mm"] = table["max_displacement_m"] * 1000.0
     table["disp_pct_deq"] = table["max_displacement_m"] / D_EQ * 100.0
