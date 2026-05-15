@@ -292,6 +292,20 @@ def add_disp_mm_xaxis(ax: plt.Axes, label: str = "Desplazamiento máximo (mm)") 
     return sec
 
 
+def add_relative_yaxis(ax: plt.Axes, reference_value: float, label: str = "Relativo a dp=0.002 (%)") -> plt.Axes:
+    ref = float(reference_value)
+
+    def to_pct(value: float | np.ndarray) -> float | np.ndarray:
+        return np.asarray(value) / ref * 100.0 if ref else np.asarray(value) * np.nan
+
+    def to_abs(value: float | np.ndarray) -> float | np.ndarray:
+        return np.asarray(value) * ref / 100.0
+
+    sec = ax.secondary_yaxis("right", functions=(to_pct, to_abs))
+    sec.set_ylabel(label)
+    return sec
+
+
 def abs_delta_label(row: pd.Series) -> str:
     delta = float(row["value"] - row["reference_value"])
     variable = str(row["variable"])
@@ -476,44 +490,49 @@ def plot_01_defensible_variables(diff: pd.DataFrame, errors: pd.DataFrame) -> No
 
 
 def plot_02_principal_trends(diff: pd.DataFrame) -> None:
-    labels = ["Desplazamiento máximo", "Velocidad bloque máx.", "Altura/cota agua máx."]
-    fig, ax = plt.subplots(figsize=(9.2, 4.8))
-    for label in labels:
-        part = diff[(diff["label"] == label) & (diff["dp"] <= 0.006)].sort_values("dp")
-        ax.plot(part["dp"], 100 + part["delta_vs_fine_pct"], marker="o", lw=1.6, label=label)
-        dp003 = part[np.isclose(part["dp"], 0.003)]
-        if not dp003.empty:
-            row = dp003.iloc[0]
-            ax.text(
-                0.00303,
-                100 + row["delta_vs_fine_pct"],
-                abs_delta_label(row),
+    specs = [
+        ("Desplazamiento máximo", "Desplazamiento máximo", 1000.0, "Dmax (mm)", BLUE, "mm"),
+        ("Velocidad bloque máx.", "Velocidad del bloque", 1.0, "Vmax (m/s)", GREEN, "m/s"),
+        ("Altura/cota agua máx.", "Altura/cota de agua", 1000.0, "hmax03 (mm)", AMBER, "mm"),
+    ]
+    fig, axes = plt.subplots(1, 3, figsize=(13.8, 4.6), constrained_layout=True)
+    for ax, (label, title, scale, ylabel, color, unit) in zip(axes, specs):
+        part = diff[(diff["label"] == label) & (diff["dp"] <= 0.006)].sort_values("dp").copy()
+        part["abs_value"] = part["value"] * scale
+        reference = float(part.loc[np.isclose(part["dp"], 0.002), "abs_value"].iloc[0])
+        ax.plot(part["dp"], part["abs_value"], marker="o", lw=1.7, color=color)
+        ax.axhspan(reference * 0.95, reference * 1.05, color=GREEN, alpha=0.12)
+        ax.axhline(reference, color=INK, lw=0.8)
+        ax.axvline(0.003, color=BLUE, ls=":", lw=1.1)
+        row003 = part[np.isclose(part["dp"], 0.003)]
+        if not row003.empty:
+            row = row003.iloc[0]
+            ax.scatter([row["dp"]], [row["abs_value"]], s=45, color=RED, zorder=4, edgecolor="white", linewidth=0.7)
+            offset_y = 18 if label == "Desplazamiento máximo" else 12
+            ax.annotate(
+                f"{row['abs_value']:.2f} {unit}\n{100 + row['delta_vs_fine_pct']:.1f}%",
+                xy=(row["dp"], row["abs_value"]),
+                xytext=(10, offset_y),
+                textcoords="offset points",
                 fontsize=7.4,
                 color=GRAY,
                 va="center",
                 ha="left",
-                bbox=dict(fc="white", ec="none", alpha=0.72, pad=1.1),
+                bbox=dict(fc="white", ec="none", alpha=0.82, pad=1.2),
             )
-    ax.axhspan(95, 105, color=GREEN, alpha=0.12, label="±5% del caso fino")
-    ax.axhspan(93, 107, color=AMBER, alpha=0.08, label="zona cercana")
-    ax.axhline(100, color=INK, lw=0.8)
-    ax.axvline(0.003, color=BLUE, ls=":", lw=1.2)
-    ax.invert_xaxis()
-    ax.set_xlabel("dp (m), menor hacia la derecha")
-    ax.set_ylabel("Máximo relativo a dp=0.002 (%)")
-    ax.set_ylim(84, 146)
-    ax.set_title("Tendencia de variables principales hacia el caso fino")
-    ax.text(0.003, 85.0, "dp=0.003\nadoptado", ha="center", va="bottom", fontsize=8, color=BLUE)
-    ax.text(
-        0.00215,
-        101.4,
-        "100% = caso fino dp=0.002",
-        ha="right",
-        va="bottom",
-        fontsize=8,
-        color=GRAY,
+        add_relative_yaxis(ax, reference)
+        ax.invert_xaxis()
+        ax.set_xticks([0.006, 0.005, 0.004, 0.003, 0.002])
+        ax.set_xticklabels(["0.006", "0.005", "0.004", "0.003", "0.002"], rotation=0)
+        ax.set_xlabel("dp (m)")
+        ax.set_ylabel(ylabel)
+        ax.set_title(title)
+    fig.suptitle(
+        "Tendencia de variables principales en unidades físicas\n"
+        "franja verde = +/-5% respecto de dp=0.002; eje derecho = valor relativo",
+        fontsize=12.5,
+        fontweight="bold",
     )
-    ax.legend(frameon=False, ncol=2, loc="upper right")
     save("02_tendencia_variables_principales")
 
 
@@ -525,21 +544,33 @@ def plot_03_temporal_curves_fine_set() -> None:
         chrono = load_chrono(case_dir)
         hmax = load_gauge(case_dir, "GaugesMaxZ_hmax03.csv")
         label = f"dp={dp:.3f}"
-        axes[0].plot(chrono["t_rel"], chrono["disp_pct"], lw=1.35, label=label)
+        axes[0].plot(chrono["t_rel"], disp_pct_to_mm(chrono["disp_pct"]), lw=1.35, label=label)
         axes[1].plot(chrono["t_rel"], chrono["block_speed"], lw=1.25, label=label)
-        axes[2].plot(hmax["time [s]"], hmax["zmax [m]"], lw=1.25, label=label)
-    axes[0].axhline(5, color=RED, ls="--", lw=1.0)
+        axes[2].plot(hmax["time [s]"], hmax["zmax [m]"] * 1000.0, lw=1.25, label=label)
+    axes[0].axhline(0.05 * D_EQ * 1000.0, color=RED, ls="--", lw=1.0)
     axes[0].set_title("Desplazamiento")
-    axes[0].set_ylabel("Dmax (% d_eq)")
-    add_disp_mm_yaxis(axes[0], "Dmax (mm)")
+    axes[0].set_ylabel("D(t) (mm)")
+    sec = axes[0].secondary_yaxis("right", functions=(disp_mm_to_pct, disp_pct_to_mm))
+    sec.set_ylabel("D(t) (% d_eq)")
+    axes[0].text(
+        0.04,
+        0.94,
+        "linea roja: 5% d_eq = 5.02 mm",
+        transform=axes[0].transAxes,
+        ha="left",
+        va="top",
+        fontsize=7.2,
+        color=RED,
+        bbox=dict(fc="white", ec="none", alpha=0.78, pad=1.2),
+    )
     axes[1].set_title("Velocidad del bloque")
-    axes[1].set_ylabel("m/s")
+    axes[1].set_ylabel("V(t) (m/s)")
     axes[2].set_title("Altura/cota de agua")
-    axes[2].set_ylabel("m")
+    axes[2].set_ylabel("zmax hmax03 (mm)")
     for ax in axes:
         ax.set_xlabel("Tiempo (s)")
     axes[1].legend(frameon=False, fontsize=7)
-    fig.suptitle("Curvas temporales del rango fino usadas para defender la resolución operativa", fontsize=12, fontweight="bold")
+    fig.suptitle("Curvas temporales del rango fino en unidades físicas", fontsize=12, fontweight="bold")
     save("03_curvas_temporales_finas")
 
 
@@ -856,11 +887,11 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
     <p>El caso <code>dp=0.002 m</code> se usa como referencia fina. La lectura no es que la convergencia sea perfecta: en <code>dp=0.003 m</code>, la altura/cota de agua y la velocidad máxima del bloque quedan dentro o muy cerca de una banda de 5%, mientras que el desplazamiento máximo queda levemente fuera, con una diferencia cercana a 6%. Esta evidencia sostiene una <strong>estabilización práctica</strong> de las variables principales, suficiente para adoptar una resolución operativa con cautela.</p>
       <figure>
         <img src="figures/01_variables_defendibles_dp003.png" alt="Variables principales que sostienen dp 0.003">
-      <figcaption>Variables principales en <code>dp=0.003 m</code> comparadas con <code>dp=0.002 m</code>. La evidencia más fuerte está en altura/cota de agua y velocidad del bloque; el desplazamiento queda cercano, aunque no exactamente dentro de ±5%.</figcaption>
+      <figcaption>Variables principales en <code>dp=0.003 m</code> comparadas con <code>dp=0.002 m</code>. Cada diferencia porcentual incluye su diferencia absoluta: mm para desplazamiento/altura y m/s para velocidad.</figcaption>
       <div class="read-guide">
         <strong>Cómo leer esta figura:</strong>
         <ul>
-          <li><strong>Panel A:</strong> compara solo el valor máximo. Cero significa igual al caso fino <code>dp=0.002 m</code>.</li>
+          <li><strong>Panel A:</strong> compara solo el valor máximo. Cero significa igual al caso fino <code>dp=0.002 m</code>; las etiquetas agregan la diferencia absoluta.</li>
           <li><strong>Panel B:</strong> compara la forma completa de la curva temporal. Menor porcentaje significa curva más parecida al caso fino.</li>
           <li><strong>Conclusión:</strong> el agua y la velocidad del bloque son las evidencias más limpias; el desplazamiento queda cercano y se acepta con cautela.</li>
         </ul>
@@ -889,11 +920,11 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
     <div class="figure-stack">
       <figure>
         <img src="figures/02_tendencia_variables_principales.png" alt="Tendencia de variables principales hacia el caso fino">
-        <figcaption>En el rango fino, las variables principales se aproximan al caso <code>dp=0.002 m</code>, pero no de forma perfecta ni totalmente monótona. En <code>dp=0.003 m</code>, velocidad y altura/cota quedan dentro de ±5%, mientras que el desplazamiento queda cerca, alrededor de 6% respecto del caso fino.</figcaption>
+        <figcaption>En el rango fino, las variables principales se muestran en unidades físicas: Dmax en mm, velocidad en m/s y altura/cota en mm. El eje derecho conserva la lectura relativa respecto de <code>dp=0.002 m</code>.</figcaption>
       </figure>
       <figure>
         <img src="figures/03_curvas_temporales_finas.png" alt="Curvas temporales de desplazamiento, velocidad del bloque y altura de agua">
-        <figcaption>Curvas temporales del rango fino. La comparación revisa la forma de la respuesta, no solo el máximo, y se centra en desplazamiento, velocidad del bloque y altura/cota de agua.</figcaption>
+        <figcaption>Curvas temporales del rango fino en unidades absolutas: desplazamiento en mm, velocidad del bloque en m/s y altura/cota de agua en mm. El porcentaje del desplazamiento queda solo como eje auxiliar.</figcaption>
       </figure>
     </div>
   </section>
