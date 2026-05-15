@@ -806,11 +806,15 @@ def convergence_rows(summary: pd.DataFrame) -> str:
     rows = []
     cols = [
         "dp",
+        "case_name",
+        "status",
         "max_displacement_m",
         "max_velocity_ms",
         "max_water_height_m",
         "max_flow_velocity_ms",
         "max_rotation_deg",
+        "sim_time_s",
+        "n_timesteps",
         "n_particles",
         "mem_gpu_mb",
         "tiempo_min",
@@ -822,12 +826,16 @@ def convergence_rows(summary: pd.DataFrame) -> str:
         rows.append(
             "<tr>"
             f"<td>{row['dp']:.3f}</td>"
+            f"<td><code>{row['case_name']}</code></td>"
+            f"<td>{row['status']}</td>"
             f"<td>{row['disp_mm']:.2f}</td>"
             f"<td>{row['disp_pct']:.1f}%</td>"
             f"<td>{row['max_velocity_ms']:.3f}</td>"
             f"<td>{row['max_water_height_m']:.3f}</td>"
             f"<td>{row['max_flow_velocity_ms']:.3f}</td>"
             f"<td>{row['max_rotation_deg']:.2f}</td>"
+            f"<td>{row['sim_time_s']:.3f}</td>"
+            f"<td>{row['n_timesteps']:.0f}</td>"
             f"<td>{row['n_particles'] / 1e6:.2f} M</td>"
             f"<td>{row['mem_gpu_mb'] / 1024:.1f} GB</td>"
             f"<td>{row['tiempo_min']:.1f}</td>"
@@ -902,12 +910,16 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
         <thead>
           <tr>
             <th>dp (m)</th>
+            <th>Caso corrido</th>
+            <th>Estado</th>
             <th>Dmax (mm)</th>
             <th>Dmax (% d_eq)</th>
             <th>V bloque max (m/s)</th>
             <th>h agua max (m)</th>
             <th>U flujo max (m/s)</th>
             <th>Rot. acum. max (deg)</th>
+            <th>t sim (s)</th>
+            <th>pasos</th>
             <th>Particulas</th>
             <th>Mem GPU</th>
             <th>Tiempo (min)</th>
@@ -916,7 +928,7 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
         <tbody>{convergence_rows(summary)}</tbody>
       </table>
     </div>
-    <p class="note">Tabla derivada de <code>data/results/conv3_f05_full.csv</code>. El desplazamiento se muestra en mm y normalizado por <code>d_eq=0.100421 m</code>.</p>
+    <p class="note">Tabla derivada de <code>data/results/conv3_f05_full.csv</code>. Cada fila corresponde al caso realmente corrido para una resolucion <code>dp</code>; el desplazamiento se muestra en mm y normalizado por <code>d_eq=0.100421 m</code>.</p>
     <div class="figure-stack">
       <figure>
         <img src="figures/02_tendencia_variables_principales.png" alt="Tendencia de variables principales hacia el caso fino">
