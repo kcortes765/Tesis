@@ -78,3 +78,49 @@ Claims soportados:
 - `b02_Original.stl` coincide con el bloque activo de referencia segun el analisis local previo.
 Confianza: media-alta
 Notas: Las formas son utiles para variacion geometrica controlada, pero no cubren por si solas un dominio amplio de bloques costeros.
+
+## SRC-20260514-001 - Visualizacion cientifica y storytelling
+
+Fecha de consulta: 2026-05-14
+Tipo: documentacion oficial | paper
+Fuente: Rougier NP, Droettboom M, Bourne PE (2014), "Ten Simple Rules for Better Figures", PLOS Computational Biology. https://doi.org/10.1371/journal.pcbi.1003833
+Usado para: reglas de legibilidad, mensaje unico por figura, adaptacion a audiencia y reduccion de ruido visual.
+Claims soportados:
+- Una figura cientifica debe actuar como interfaz clara entre datos y lector.
+- El diseno de figura afecta interpretacion y no debe ser automatico ni decorativo.
+Confianza: alta
+Notas: Aplicado en `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`.
+
+## SRC-20260514-002 - Color cientifico
+
+Fecha de consulta: 2026-05-14
+Tipo: paper
+Fuente: Crameri F, Shephard GE, Heron PJ (2020), "The misuse of colour in science communication", Nature Communications. https://doi.org/10.1038/s41467-020-19160-7
+Usado para: evitar rainbow/no uniformes, usar paletas perceptualmente razonables y no depender de rojo/verde.
+Claims soportados:
+- Paletas no uniformes pueden introducir distorsion visual y afectar conclusiones.
+- La eleccion de color debe ajustarse al tipo de dato y ser legible de forma inclusiva.
+Confianza: alta
+Notas: Figuras productivas usan azul/vermillion + forma para clase, y `cividis`/`viridis` para continuas.
+
+## SRC-20260514-003 - Narrative visualization
+
+Fecha de consulta: 2026-05-14
+Tipo: paper
+Fuente: Segel E, Heer J (2010), "Narrative Visualization: Telling Stories with Data", IEEE TVCG. https://doi.org/10.1109/TVCG.2010.179
+Usado para: ordenar la historia visual por capas: convergencia, frontera operacional, hidraulica local, diagnosticos y costo.
+Claims soportados:
+- La narrativa visual combina estructura, enfasis y lectura guiada para comunicar evidencia.
+Confianza: alta
+Notas: Aplicado en la separacion entre `derived_convergence_graphics` y `production_story_graphics`.
+
+## SRC-20260514-004 - Ciencia de comunicacion visual de datos
+
+Fecha de consulta: 2026-05-14
+Tipo: review
+Fuente: Franconeri SL, Padilla LM, Shah P, Zacks JM, Hullman J (2021), "The Science of Visual Data Communication: What Works", Psychological Science in the Public Interest. https://doi.org/10.1177/15291006211051956
+Usado para: priorizar percepcion, comparacion visual limpia y diseno centrado en interpretacion.
+Claims soportados:
+- La comunicacion visual eficaz depende de como las personas perciben comparaciones, patrones y enfasis.
+Confianza: alta
+Notas: Se uso como respaldo conceptual para reducir etiquetas, evitar solapamientos y marcar outliers explicitamente.

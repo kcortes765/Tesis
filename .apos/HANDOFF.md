@@ -5,7 +5,8 @@
 2. No lanzar otra tanda encima.
 3. Cuando termine, crear export liviano `exports/al_batch2_bracket_closing_YYYYMMDD/` y subirlo por Git.
 4. Despues revisar piloto + batch2 + batch3 + batch4 + AL batch1 + AL batch2 juntos.
-5. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena otro mini-batch.
+5. Revisar las figuras `data/figures/production_story_graphics/` y elegir set final para tesis/PPT.
+6. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena otro mini-batch.
 
 ## Contexto minimo para continuar
 - `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
@@ -40,6 +41,9 @@
 - Estado inicial AL batch2: `current_case=al2_lowH_m085_mu0585`, `progress=1/10`.
 - Log AL batch2: `data/production_20260514_2030.log`.
 - ntfy nativo esta activo para AL batch2.
+- Figuras de convergencia retocadas: `data/figures/derived_convergence_graphics/`; todo porcentaje de desplazamiento tiene equivalente absoluto en mm.
+- Figuras nuevas de produccion/AL: `data/figures/production_story_graphics/`; consolidan piloto, batch2, batch3, batch4 y AL1, pero no AL2 activo.
+- Guia visual Q1: `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`.
 - Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -64,6 +68,9 @@
 18. `config/al_batch2_bracket_closing_20260514.csv`
 19. `data/production_status.json`
 20. `data/production_20260514_2030.log`
+21. `data/figures/production_story_graphics/FIGURE_INDEX.md`
+22. `data/figures/production_story_graphics/master_production_story.csv`
+23. `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`
 
 ## Comandos sugeridos
 ```powershell
@@ -94,6 +101,8 @@ Get-Content data\production_20260514_2030.log -Tail 120
 
 Get-Process | Where-Object { $_.ProcessName -match "DualSPHysics|GenCase|python" } |
   Select Id,ProcessName,StartTime,CPU
+
+Get-Content data\figures\production_story_graphics\FIGURE_INDEX.md
 ```
 
 ## Senales de exito
@@ -102,6 +111,7 @@ Get-Process | Where-Object { $_.ProcessName -match "DualSPHysics|GenCase|python"
 - Batch4 queda versionado como export liviano; el caso 12 queda explicitamente marcado como parcial.
 - AL batch1 queda versionado como export liviano y trazable.
 - AL batch2 queda monitoreado hasta `completed=10` o falla diagnosticada.
+- Las figuras productivas usan todos los datos oficiales hasta AL1 y declaran los outliers fuera de escala.
 - Los datos locales se citan por path y quedan versionados si son livianos.
 - No queda APOS duplicado como verdad viva.
 

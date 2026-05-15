@@ -42,8 +42,12 @@ AL batch2 real lanzado en WS con 10 casos dirigidos, `dp=0.003`, `classification
 - [x] Crear matriz AL batch2 bracket-closing.
 - [x] Ejecutar dry-run AL batch2.
 - [x] Lanzar AL batch2 real.
+- [x] Retocar figuras de convergencia para mostrar porcentajes y medidas absolutas.
+- [x] Crear figuras productivas/AL con todos los datos oficiales hasta AL1.
+- [x] Documentar guia visual Q1 para figuras cientificas y storytelling.
 - [ ] Monitorear AL batch2 hasta completar o fallar.
 - [ ] Crear export liviano AL batch2.
+- [ ] Regenerar figuras productivas/AL incorporando AL2 cuando exista export oficial.
 - [ ] Revisar cientificamente el export del piloto, batch2, batch3, batch4, AL batch1 y AL batch2 juntos.
 - [ ] Decidir si repetir/reprocesar el caso 12 parcial de batch4.
 - [ ] Decidir mini-batch adicional o primer surrogate exploratorio.

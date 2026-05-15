@@ -48,6 +48,11 @@ Estado actual: AL batch2 bracket-closing fue lanzado en la WS con matriz explici
 - Estado inicial AL batch2: `phase=production`, `current_case=al2_lowH_m085_mu0585`, `progress=1/10`.
 - Procesos activos al lanzamiento: `python` PID 8356 y `DualSPHysics5.4_win64` PID 20088.
 - ntfy nativo quedo activo para AL batch2: el log registra `PRODUCCION INICIADA` e `INICIO CASO 1/10`.
+- Se generaron figuras finales de convergencia con doble lectura porcentual/absoluta en `data/figures/derived_convergence_graphics/`.
+- Se genero una nueva carpeta de figuras productivas/active learning en `data/figures/production_story_graphics/`.
+- `data/figures/production_story_graphics/master_production_story.csv` consolida piloto, batch2, batch3, batch4 y AL1: 43 filas totales, con el caso parcial de batch4 marcado como no oficial.
+- AL2 no fue incorporado a las figuras porque sigue activo y aun no tiene export oficial.
+- La guia visual SOTA para figuras cientificas quedo en `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`.
 - Los STL recibidos localmente estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de STL escalado esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -73,9 +78,11 @@ Estado actual: AL batch2 bracket-closing fue lanzado en la WS con matriz explici
 
 ## Pendientes criticos
 - Revisar cientificamente piloto + batch2 + batch3 + batch4 + AL batch1 juntos.
+- Revisar las nuevas figuras de `data/figures/production_story_graphics/` y elegir cuales pasan a tesis/PPT.
 - Hacer `git pull` en laptop principal para traer `exports/al_batch1_hybrid_20260514/`.
 - Monitorear AL batch2 hasta terminar o fallar.
 - Crear export liviano AL batch2 cuando termine.
+- Regenerar `production_story_graphics` cuando AL2 tenga export oficial.
 - Decidir si el siguiente paso es surrogate exploratorio, mini-batch adicional o incorporacion controlada de geometria.
 - Decidir si repetir o reprocesar oficialmente `batch4_mass_m125_H0225_mu0860` antes de entrenar surrogate final.
 - Revisar `stash@{0}` solo para recuperar cambios locales explicitamente valiosos.
@@ -116,3 +123,7 @@ Estado actual: AL batch2 bracket-closing fue lanzado en la WS con matriz explici
 - `config/al_batch2_bracket_closing_20260514.csv`
 - `data/production_20260514_2030.log`
 - `data/production_status.json`
+- `data/figures/derived_convergence_graphics/FIGURE_INDEX.md`
+- `data/figures/production_story_graphics/FIGURE_INDEX.md`
+- `data/figures/production_story_graphics/master_production_story.csv`
+- `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`

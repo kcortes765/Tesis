@@ -795,3 +795,63 @@ Get-Content data\production_20260514_2030.log -Tail 120
 - AL batch2 es lote dirigido para cerrar brackets, no campana completa.
 - No lanzar otro lote mientras AL batch2 este activo.
 - Si un caso falla numericamente, no relanzar automaticamente sin diagnostico.
+
+## 2026-05-14 23:35 - Pulido visual cientifico y storytelling
+
+### Objetivo
+Elevar las figuras de convergencia y produccion/active learning a un estandar de tesis/paper: doble lectura porcentual-absoluta, legibilidad, color accesible, narrativa por capas y uso de todos los datos oficiales utiles hasta la fecha.
+
+### Acciones
+- Se reviso el estado de AL2: sigue activo y sin export oficial, por lo que no se incorporo a figuras finales.
+- Se investigaron referencias de visualizacion cientifica, uso de color y storytelling visual.
+- Se creo `scripts/generate_production_story_graphics.py`.
+- Se genero `data/figures/production_story_graphics/` con master CSV, indice y 8 figuras PNG/SVG.
+- Se dejo documentada la guia visual en `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`.
+- Se verifico que los scripts principales compilen con `python -m py_compile`.
+- Se actualizaron `STATUS.md`, `HANDOFF.md` y `PLAN.md`.
+
+### Archivos revisados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `exports/pilot_productivo_20260501/pilot_summary.csv`
+- `exports/batch2_productivo_20260505/batch2_summary.csv`
+- `exports/batch3_productivo_20260509/batch3_summary.csv`
+- `exports/batch4_mass_probe_20260513/batch4_summary.csv`
+- `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv`
+
+### Archivos modificados
+- `scripts/generate_production_story_graphics.py`
+- `data/figures/production_story_graphics/`
+- `docs/VISUAL_STORYTELLING_Q1_TESIS_20260514.md`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+- `.apos/SOURCES.md`
+
+### Comandos importantes
+```text
+python scripts\generate_production_story_graphics.py
+python -m py_compile scripts\generate_production_story_graphics.py scripts\generate_convergence_graphics.py scripts\summarize_preproduction_verification_20260508.py
+```
+
+### Resultados
+- `master_production_story.csv` contiene 43 filas: piloto, batch2, batch3, batch4 y AL1.
+- El caso parcial de batch4 queda incluido en el maestro como no oficial, no como evidencia principal.
+- Se generaron 8 figuras productivas en PNG/SVG.
+- Toda figura con desplazamiento normalizado incluye equivalente absoluto en mm o marca de escala.
+- Los outliers extremos se marcan como fuera de escala para preservar legibilidad sin ocultar su existencia.
+
+### Errores / bloqueos
+- No se incorporo AL2 porque aun esta corriendo y no tiene export oficial.
+
+### Proximos pasos
+- Revisar visualmente set de figuras productivas y seleccionar las esenciales para tesis/PPT.
+- Regenerar `production_story_graphics` cuando AL2 termine y exista export liviano.
+- Despues de AL2, entrenar surrogate exploratorio o disenar siguiente lote con base en margen continuo.
+
+### Advertencias metodologicas
+- Las figuras productivas representan frontera operacional a `dp=0.003`, no convergencia universal.
+- Las lineas entre puntos son guias visuales, no interpolacion formal.
+- La rotacion sigue siendo diagnostico, no criterio primario.
