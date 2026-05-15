@@ -480,6 +480,19 @@ def plot_02_principal_trends(diff: pd.DataFrame) -> None:
     for label in labels:
         part = diff[(diff["label"] == label) & (diff["dp"] <= 0.006)].sort_values("dp")
         ax.plot(part["dp"], 100 + part["delta_vs_fine_pct"], marker="o", lw=1.6, label=label)
+        dp003 = part[np.isclose(part["dp"], 0.003)]
+        if not dp003.empty:
+            row = dp003.iloc[0]
+            ax.text(
+                0.00303,
+                100 + row["delta_vs_fine_pct"],
+                abs_delta_label(row),
+                fontsize=7.4,
+                color=GRAY,
+                va="center",
+                ha="left",
+                bbox=dict(fc="white", ec="none", alpha=0.72, pad=1.1),
+            )
     ax.axhspan(95, 105, color=GREEN, alpha=0.12, label="±5% del caso fino")
     ax.axhspan(93, 107, color=AMBER, alpha=0.08, label="zona cercana")
     ax.axhline(100, color=INK, lw=0.8)
@@ -516,7 +529,8 @@ def plot_03_temporal_curves_fine_set() -> None:
         axes[2].plot(hmax["time [s]"], hmax["zmax [m]"], lw=1.25, label=label)
     axes[0].axhline(5, color=RED, ls="--", lw=1.0)
     axes[0].set_title("Desplazamiento")
-    axes[0].set_ylabel("% d_eq")
+    axes[0].set_ylabel("Dmax (% d_eq)")
+    add_disp_mm_yaxis(axes[0], "Dmax (mm)")
     axes[1].set_title("Velocidad del bloque")
     axes[1].set_ylabel("m/s")
     axes[2].set_title("Altura/cota de agua")
@@ -539,6 +553,19 @@ def plot_04_sensitive_outputs(diff: pd.DataFrame, errors: pd.DataFrame) -> None:
         ax.axhline(0, color=INK, lw=0.8)
         ax.plot(part["dp"], part["delta_vs_fine_pct"], marker="o", color=color, lw=1.6)
         ax.scatter([0.003], part.loc[np.isclose(part["dp"], 0.003), "delta_vs_fine_pct"], color=RED, zorder=4)
+        row003 = part[np.isclose(part["dp"], 0.003)]
+        if not row003.empty:
+            row = row003.iloc[0]
+            ax.text(
+                0.00305,
+                row["delta_vs_fine_pct"],
+                abs_delta_label(row),
+                fontsize=8,
+                color=GRAY,
+                va="center",
+                ha="left",
+                bbox=dict(fc="white", ec="none", alpha=0.76, pad=1.4),
+            )
         ax.invert_xaxis()
         ax.set_xlabel("dp (m)")
         ax.set_ylabel("Cambio vs dp=0.002 (%)")
@@ -588,6 +615,7 @@ def plot_06_frontier_after_resolution(frontier: pd.DataFrame) -> None:
     )
     ax.set_xlabel("Coeficiente de fricción bloque-suelo, μ")
     ax.set_ylabel("Desplazamiento máximo (% d_eq)")
+    add_disp_mm_yaxis(ax)
     ax.set_title("Uso posterior del dp adoptado: frontera de estabilidad")
     ax.set_xlim(0.674, 0.686)
     ax.set_ylim(0, 10.6)
@@ -613,6 +641,7 @@ def plot_07_resolution_sensitivity(frontier: pd.DataFrame) -> None:
         ax.set_xlim(0.674, 0.686)
         ax.set_ylim(0, 10.6)
     axes[0].set_ylabel("Desplazamiento máximo (% d_eq)")
+    add_disp_mm_yaxis(axes[-1])
     axes[0].axvspan(0.68050, 0.68075, color=AMBER, alpha=0.18)
     axes[1].text(0.6744, 8.6, "en dp=0.002 los casos\ncercanos quedan bajo 5%", fontsize=8, color=BLUE)
     fig.suptitle("Sensibilidad de la clasificación al cambiar resolución", fontsize=12, fontweight="bold")
