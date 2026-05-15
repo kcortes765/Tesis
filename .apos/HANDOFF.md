@@ -1,11 +1,11 @@
 # HANDOFF
 
 ## Proxima accion recomendada
-1. Continuar exclusivamente desde `C:\Seba\Tesis`.
-2. Revisar piloto + batch2 + batch3 + batch4 + AL batch1 juntos desde los exports livianos.
-3. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena un mini-batch adicional.
-4. Si se abre geometria, partir por los STL `b02` ya analizados y un sanity de contacto por geometria.
-5. En laptop principal, hacer `git pull` para traer el export AL batch1.
+1. Monitorear AL batch2 en la WS hasta que termine o falle.
+2. No lanzar otra tanda encima.
+3. Cuando termine, crear export liviano `exports/al_batch2_bracket_closing_YYYYMMDD/` y subirlo por Git.
+4. Despues revisar piloto + batch2 + batch3 + batch4 + AL batch1 + AL batch2 juntos.
+5. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena otro mini-batch.
 
 ## Contexto minimo para continuar
 - `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
@@ -34,6 +34,12 @@
 - AL batch1 termino 8/8 OK, 0 fallos numericos, 34.37 h.
 - Export AL batch1: `exports/al_batch1_hybrid_20260514/`.
 - Resultado AL batch1: 1 FALLO (`al1_base_m085_mu0780`) y 7 ESTABLE por `displacement_only`.
+- AL batch2 bracket-closing fue creado en `config/al_batch2_bracket_closing_20260514.csv`.
+- Dry-run AL batch2 fue correcto: 10 casos, `dp=0.003`, matriz explicita, `displacement_only`, `reference_time_s=0.5`.
+- AL batch2 fue lanzado el 2026-05-14 20:30 con `python scripts\run_production.py --prod --matrix config\al_batch2_bracket_closing_20260514.csv --max-cases 10`.
+- Estado inicial AL batch2: `current_case=al2_lowH_m085_mu0585`, `progress=1/10`.
+- Log AL batch2: `data/production_20260514_2030.log`.
+- ntfy nativo esta activo para AL batch2.
 - Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -55,6 +61,9 @@
 15. `data/production_20260513_0941.log`
 16. `exports/al_batch1_hybrid_20260514/al_batch1_summary.md`
 17. `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv`
+18. `config/al_batch2_bracket_closing_20260514.csv`
+19. `data/production_status.json`
+20. `data/production_20260514_2030.log`
 
 ## Comandos sugeridos
 ```powershell
@@ -78,6 +87,13 @@ Get-ChildItem data -Filter "production_*.log" |
 
 Import-Csv exports\al_batch1_hybrid_20260514\al_batch1_summary.csv |
   Select case_id,status,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq
+
+Get-Content data\production_status.json
+
+Get-Content data\production_20260514_2030.log -Tail 120
+
+Get-Process | Where-Object { $_.ProcessName -match "DualSPHysics|GenCase|python" } |
+  Select Id,ProcessName,StartTime,CPU
 ```
 
 ## Senales de exito
@@ -85,6 +101,7 @@ Import-Csv exports\al_batch1_hybrid_20260514\al_batch1_summary.csv |
 - Los datos de WS se citan por export/commit.
 - Batch4 queda versionado como export liviano; el caso 12 queda explicitamente marcado como parcial.
 - AL batch1 queda versionado como export liviano y trazable.
+- AL batch2 queda monitoreado hasta `completed=10` o falla diagnosticada.
 - Los datos locales se citan por path y quedan versionados si son livianos.
 - No queda APOS duplicado como verdad viva.
 
@@ -93,6 +110,7 @@ Import-Csv exports\al_batch1_hybrid_20260514\al_batch1_summary.csv |
 - No aplicar `stash@{0}` completo sin revisar.
 - No borrar backups, `cases/`, `data/`, `imports/` ni `archive/`.
 - No lanzar otra tanda antes de revisar AL batch1 junto con los lotes anteriores.
+- No lanzar otra tanda mientras AL batch2 este activo.
 - No versionar crudos pesados.
 - No mezclar rotacion diagnostica con falla por desplazamiento.
 

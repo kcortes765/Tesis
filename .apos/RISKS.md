@@ -80,3 +80,12 @@ Probabilidad: media
 Evidencia: existen datos locales grandes en `cases/`, `data/`, `imports/` y `archive/`.
 Mitigacion: no borrar ni limpiar esos directorios; mover crudos a disco externo/storage solo con plan explicito.
 Relacionado: `.gitignore`, `docs/DATA_ORIGIN_POLICY.md`
+
+## RISK-20260514-001 - AL batch2 productivo en ejecucion
+
+Estado: activo
+Severidad: alta
+Probabilidad: media
+Evidencia: `data/production_status.json` reporta `phase=production`, `total_cases=10`, `current_case=al2_lowH_m085_mu0585`, `progress=1/10`; procesos `python` y `DualSPHysics5.4_win64` activos.
+Mitigacion: no lanzar otra tanda; monitorear `data/production_status.json` y `data/production_20260514_2030.log`; si falla un caso, diagnosticar antes de relanzar.
+Relacionado: `config/al_batch2_bracket_closing_20260514.csv`, `scripts/run_production.py`, `data/production_20260514_2030.log`

@@ -31,6 +31,7 @@
 - 2026-05-13: batch4 mass probe exportado liviano; 11/12 casos oficiales y 1 caso parcial recuperado.
 - 2026-05-13: AL batch1 hibrido recibido por Git, dry-run validado y corrida real lanzada en WS.
 - 2026-05-14: AL batch1 hibrido completo 8/8 OK y exportado liviano.
+- 2026-05-14: AL batch2 bracket-closing creado, dry-run validado y corrida real lanzada en WS.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -58,5 +59,7 @@
 - `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
 - `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv`
 - `exports/al_batch1_hybrid_20260514/al_batch1_summary.md`
+- `config/al_batch2_bracket_closing_20260514.csv`
+- `data/production_20260514_2030.log`
 - `docs/DATA_ORIGIN_POLICY.md`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`

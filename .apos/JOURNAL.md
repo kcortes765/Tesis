@@ -733,3 +733,65 @@ git status -sb
 - AL batch1 es un lote dirigido, no una grilla completa del dominio.
 - No lanzar nuevas simulaciones hasta revisar el efecto conjunto de H, mu y masa.
 - La frontera sigue condicionada a `dp=0.003` como resolucion operativa.
+
+## 2026-05-14 20:35 - Lanzamiento AL batch2 bracket-closing
+
+### Objetivo
+Lanzar un lote dirigido de 10 casos para cerrar brackets posteriores a AL batch1, manteniendo la metodologia productiva fija: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`, rotacion diagnostica.
+
+### Acciones
+- Se verifico que no hubiera procesos `DualSPHysics`, `GenCase` o `python` productivos activos antes de lanzar.
+- Se reviso `git status -sb` de forma informativa; el repo estaba alineado con `origin/master`.
+- Se confirmo que `scripts/run_production.py` existe y acepta `--prod`, `--matrix`, `--max-cases` y `--dry-run`.
+- Se creo `config/al_batch2_bracket_closing_20260514.csv` con exactamente 10 casos.
+- Se ejecuto dry-run con `--prod` y matriz explicita.
+- El dry-run confirmo 10 casos, `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5` y rutas previstas.
+- Se lanzo AL batch2 real en segundo plano para no bloquear la sesion.
+- Se confirmo que `GenCase` paso y que `DualSPHysics5.4_win64` inicio el caso 1/10.
+- Se actualizaron `STATUS.md`, `HANDOFF.md`, `PLAN.md` y `RISKS.md`.
+
+### Archivos revisados
+- `scripts/run_production.py`
+- `data/production_status.json`
+- `data/production_20260514_2030.log`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+
+### Archivos modificados
+- `config/al_batch2_bracket_closing_20260514.csv`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+- `.apos/JOURNAL.md`
+
+### Comandos importantes
+```text
+python scripts\run_production.py --prod --matrix config\al_batch2_bracket_closing_20260514.csv --max-cases 10 --dry-run
+python scripts\run_production.py --prod --matrix config\al_batch2_bracket_closing_20260514.csv --max-cases 10
+Get-Content data\production_status.json
+Get-Content data\production_20260514_2030.log -Tail 120
+```
+
+### Resultados
+- Dry-run correcto.
+- AL batch2 lanzado el 2026-05-14 20:30.
+- Estado inicial: `phase=production`, `total_cases=10`, `current_case=al2_lowH_m085_mu0585`, `progress=1/10`.
+- Procesos activos al chequeo inicial: `python` PID 8356 y `DualSPHysics5.4_win64` PID 20088.
+- ntfy nativo activo: log registra `PRODUCCION INICIADA` e `INICIO CASO 1/10`.
+
+### Errores / bloqueos
+- Sin errores de preflight ni dry-run.
+- Una consulta de PowerShell con `Get-ChildItem -Filter` usando lista de filtros fallo, pero no afecto la corrida ni archivos.
+
+### Proximos pasos
+- Monitorear `data/production_status.json`.
+- Al terminar, crear export liviano `exports/al_batch2_bracket_closing_YYYYMMDD/`.
+- Subir por Git matriz, export y APOS actualizado.
+
+### Advertencias metodologicas
+- AL batch2 es lote dirigido para cerrar brackets, no campana completa.
+- No lanzar otro lote mientras AL batch2 este activo.
+- Si un caso falla numericamente, no relanzar automaticamente sin diagnostico.

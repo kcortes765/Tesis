@@ -1,10 +1,10 @@
 # PLAN
 
 ## Objetivo activo
-Mantener `C:\Seba\Tesis` como unico repo canonico, separar origen WS/GitHub vs laptop/local, y usar piloto + batch2 + batch3 para decidir el siguiente paso cientifico sin lanzar una campana grande.
+Monitorear AL batch2 bracket-closing en la WS, conservar trazabilidad por matriz explicita y preparar export liviano cuando termine.
 
 ## Fase actual
-Repo canonico actualizado a `origin/master`; data local nueva en proceso de versionado selectivo; APOS unificado en `C:\Seba\Tesis\.apos`.
+AL batch2 real lanzado en WS con 10 casos dirigidos, `dp=0.003`, `classification_mode=displacement_only` y `reference_time_s=0.5`.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como malla operativa.
@@ -39,14 +39,20 @@ Repo canonico actualizado a `origin/master`; data local nueva en proceso de vers
 - [x] Lanzar AL batch1 hibrido real en WS.
 - [x] Monitorear AL batch1 hasta completar o fallar.
 - [x] Crear export liviano AL batch1.
-- [ ] Revisar cientificamente el export del piloto, batch2, batch3, batch4 y AL batch1 juntos.
+- [x] Crear matriz AL batch2 bracket-closing.
+- [x] Ejecutar dry-run AL batch2.
+- [x] Lanzar AL batch2 real.
+- [ ] Monitorear AL batch2 hasta completar o fallar.
+- [ ] Crear export liviano AL batch2.
+- [ ] Revisar cientificamente el export del piloto, batch2, batch3, batch4, AL batch1 y AL batch2 juntos.
 - [ ] Decidir si repetir/reprocesar el caso 12 parcial de batch4.
 - [ ] Decidir mini-batch adicional o primer surrogate exploratorio.
 - [ ] Decidir si se abre modulo geometrico con 2-3 STL reales + formas sinteticas controladas.
 - [ ] Completar evals APOS-X sobre las tres skills repo-locales y endurecer `apos-run`.
 
 ## Bloqueos
-- No iniciar otra tanda antes de revisar cientificamente piloto + batch2 + batch3 + batch4 + AL batch1.
+- No iniciar otra tanda mientras AL batch2 este activo.
+- No interpretar AL batch2 como campana global; es cierre dirigido de brackets.
 - No tocar global/system sin confirmacion explicita.
 - No aplicar `stash@{0}` completo sin revision.
 - No borrar backups ni crudos locales.

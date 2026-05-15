@@ -1,9 +1,9 @@
 # STATUS
 
-Ultima actualizacion: 2026-05-14 20:15
+Ultima actualizacion: 2026-05-14 20:35
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica local: C:\Seba\Tesis
-Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con piloto, batch2, batch3, verificacion preproduccion, web de convergencia y analisis STL b02; APOS unificado en esta carpeta; datos locales nuevos identificados y separados por origen.
+Estado actual: AL batch2 bracket-closing fue lanzado en la WS con matriz explicita de 10 casos; produccion activa en `dp=0.003`, `displacement_only`, `reference_time_s=0.5`.
 
 ## Hechos verificados
 - `C:\Seba\Tesis` esta actualizado a `origin/master` en commit `3c443e9 Add batch3 production export`.
@@ -42,6 +42,12 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - Export liviano AL batch1 creado en `exports/al_batch1_hybrid_20260514/`: 25 archivos, ~58 KB, sin binarios pesados.
 - `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv` contiene los 8 casos oficiales postprocesados en SQLite.
 - AL batch1 produjo 1 FALLO y 7 ESTABLE por `displacement_only`; el unico FALLO fue `al1_base_m085_mu0780`.
+- AL batch2 bracket-closing fue preparado en `config/al_batch2_bracket_closing_20260514.csv` con 10 casos dirigidos.
+- Dry-run AL batch2 fue correcto: 10 casos, matriz explicita, `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- AL batch2 real fue lanzado en WS el 2026-05-14 20:30 con `python scripts\run_production.py --prod --matrix config\al_batch2_bracket_closing_20260514.csv --max-cases 10`.
+- Estado inicial AL batch2: `phase=production`, `current_case=al2_lowH_m085_mu0585`, `progress=1/10`.
+- Procesos activos al lanzamiento: `python` PID 8356 y `DualSPHysics5.4_win64` PID 20088.
+- ntfy nativo quedo activo para AL batch2: el log registra `PRODUCCION INICIADA` e `INICIO CASO 1/10`.
 - Los STL recibidos localmente estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de STL escalado esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -68,6 +74,8 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 ## Pendientes criticos
 - Revisar cientificamente piloto + batch2 + batch3 + batch4 + AL batch1 juntos.
 - Hacer `git pull` en laptop principal para traer `exports/al_batch1_hybrid_20260514/`.
+- Monitorear AL batch2 hasta terminar o fallar.
+- Crear export liviano AL batch2 cuando termine.
 - Decidir si el siguiente paso es surrogate exploratorio, mini-batch adicional o incorporacion controlada de geometria.
 - Decidir si repetir o reprocesar oficialmente `batch4_mass_m125_H0225_mu0860` antes de entrenar surrogate final.
 - Revisar `stash@{0}` solo para recuperar cambios locales explicitamente valiosos.
@@ -80,6 +88,8 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - Riesgo interpretativo: mezclar rotacion diagnostica con criterio primario `displacement_only`.
 - Riesgo de trazabilidad: batch4 caso 12 tiene recuperacion parcial, no resultado oficial completo; no mezclarlo sin flag.
 - Riesgo interpretativo: no tratar AL batch1 como mapa completo; es lote dirigido hibrido post batch4.
+- Riesgo operativo: AL batch2 esta en ejecucion; no lanzar otra tanda encima.
+- Riesgo interpretativo: AL batch2 cierra brackets dirigidos, no reemplaza validacion global.
 
 ## Evidencia reciente
 - `docs/DATA_ORIGIN_POLICY.md`
@@ -103,3 +113,6 @@ Estado actual: repo canonico unico actualizado y pusheado a `origin/master` con 
 - `exports/al_batch1_hybrid_20260514/README.md`
 - `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv`
 - `exports/al_batch1_hybrid_20260514/al_batch1_summary.md`
+- `config/al_batch2_bracket_closing_20260514.csv`
+- `data/production_20260514_2030.log`
+- `data/production_status.json`
