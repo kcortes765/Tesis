@@ -49,3 +49,68 @@ Responder con:
 - evidencia/comandos relevantes
 - proxima accion recomendada
 - que no tocar todavia
+
+## Sincronizacion laptop por Git
+Cada vez que el usuario invoque `/guardar`, ademas del guardado APOS normal, preparar contexto para la laptop.
+
+### Objetivo
+Que la laptop pueda hacer `git pull` y recuperar un resumen inteligente del estado de la WS sin depender del chat.
+
+### Paso obligatorio
+Ejecutar:
+
+```powershell
+python scripts\apos_prepare_laptop_sync.py
+```
+
+Esto genera o actualiza:
+
+```text
+.apos/LAPTOP_SYNC.md
+```
+
+El archivo debe resumir:
+- estado APOS;
+- handoff;
+- plan;
+- riesgos;
+- preguntas abiertas;
+- estado de simulaciones si existe `data/production_status.json`;
+- exports livianos recientes;
+- estado Git;
+- advertencias sobre archivos runtime no sincronizados.
+
+### Commit/push seguro
+Despues de generar `.apos/LAPTOP_SYNC.md`, si el usuario no pidio lo contrario, sincronizar por Git solo archivos livianos:
+
+```powershell
+git add .apos scripts\apos_prepare_laptop_sync.py .agents\skills\guardar\SKILL.md
+git status
+git commit -m "Update APOS laptop sync context"
+git push
+```
+
+Si durante la sesion se crearon exports livianos, docs, configs o scripts relevantes, agregarlos explicitamente:
+
+```powershell
+git add exports docs config scripts .agents .apos
+```
+
+### No subir automaticamente
+No agregar a ciegas:
+- `cases/`;
+- `data/processed/`;
+- `*_out/`;
+- `Part*`;
+- `.bi4`, `.ibi4`, `.vtk`;
+- logs runtime grandes;
+- `data/results.sqlite` si hay una simulacion activa o el lote no esta cerrado.
+
+Si `data/results.sqlite` aparece modificado mientras corre una simulacion, reportarlo como runtime vivo y dejarlo fuera del commit.
+
+### Mensaje final adicional
+Al cerrar `/guardar`, incluir:
+- si `.apos/LAPTOP_SYNC.md` fue actualizado;
+- commit y push realizados, si aplica;
+- que debe hacer la laptop: `git pull` y leer `.apos/LAPTOP_SYNC.md`;
+- cualquier archivo que quedo local por seguridad.
