@@ -716,15 +716,43 @@ def plot_02_principal_trends(diff: pd.DataFrame) -> None:
 def plot_03_temporal_curves_fine_set() -> None:
     dps = [0.004, 0.003, 0.002]
     fig, axes = plt.subplots(1, 3, figsize=(12.0, 4.0), constrained_layout=True)
+    disp_series: dict[float, tuple[np.ndarray, np.ndarray]] = {}
     for dp in dps:
         case_dir = TEMPORAL_CASES[dp]
         chrono = load_chrono(case_dir)
         hmax = load_gauge(case_dir, "GaugesMaxZ_hmax03.csv")
         label = f"dp={dp:.3f}"
-        axes[0].plot(chrono["t_rel"], disp_pct_to_mm(chrono["disp_pct"]), lw=1.35, label=label)
+        disp_mm = disp_pct_to_mm(chrono["disp_pct"])
+        disp_series[dp] = (chrono["t_rel"].to_numpy(float), np.asarray(disp_mm, dtype=float))
+        axes[0].plot(chrono["t_rel"], disp_mm, lw=1.35, label=label)
         axes[1].plot(chrono["t_rel"], chrono["block_speed"], lw=1.25, label=label)
         axes[2].plot(hmax["time [s]"], hmax["zmax [m]"] * 1000.0, lw=1.25, label=label)
     axes[0].axhline(0.05 * D_EQ * 1000.0, color=RED, ls="--", lw=1.0)
+    if 0.003 in disp_series and 0.002 in disp_series:
+        t3, y3 = disp_series[0.003]
+        t2, y2 = disp_series[0.002]
+        t_min = max(np.nanmin(t3), np.nanmin(t2))
+        t_max = min(np.nanmax(t3), np.nanmax(t2))
+        common_t = np.linspace(t_min, t_max, 2200)
+        y3i = interp_valid(t3, y3, common_t)
+        y2i = interp_valid(t2, y2, common_t)
+        mask = np.isfinite(y3i) & np.isfinite(y2i)
+        if mask.any():
+            valid_idx = np.where(mask)[0]
+            imax = valid_idx[int(np.nanargmax(np.abs(y3i[mask] - y2i[mask])))]
+            delta_mm = float(y3i[imax] - y2i[imax])
+            y_low, y_high = sorted([float(y3i[imax]), float(y2i[imax])])
+            axes[0].plot([common_t[imax], common_t[imax]], [y_low, y_high], color=INK, lw=1.1)
+            axes[0].scatter([common_t[imax], common_t[imax]], [y_low, y_high], color=INK, s=14, zorder=5)
+            axes[0].annotate(
+                f"Delta max 0.003 vs 0.002\n{abs(delta_mm):.1f} mm",
+                xy=(common_t[imax], y_high),
+                xytext=(common_t[imax] + 0.55, y_high + 14),
+                arrowprops=dict(arrowstyle="->", color=INK, lw=0.9),
+                fontsize=7.5,
+                color=INK,
+                bbox=dict(fc="white", ec="#d7dee8", alpha=0.92, pad=2.2),
+            )
     axes[0].set_title("Desplazamiento")
     axes[0].set_ylabel("D(t) (mm)")
     sec = axes[0].secondary_yaxis("right", functions=(disp_mm_to_pct, disp_pct_to_mm))
@@ -732,7 +760,7 @@ def plot_03_temporal_curves_fine_set() -> None:
     axes[0].text(
         0.04,
         0.94,
-        "linea roja: 5% d_eq = 5.02 mm",
+        "umbral: 5% d_eq = 5.02 mm",
         transform=axes[0].transAxes,
         ha="left",
         va="top",
@@ -990,7 +1018,6 @@ def convergence_rows(summary: pd.DataFrame) -> str:
     rows = []
     cols = [
         "dp",
-        "case_name",
         "status",
         "max_displacement_m",
         "max_velocity_ms",
@@ -1006,23 +1033,53 @@ def convergence_rows(summary: pd.DataFrame) -> str:
     df = summary[cols].copy().sort_values("dp", ascending=False)
     df["disp_mm"] = df["max_displacement_m"] * 1000.0
     df["disp_pct"] = df["max_displacement_m"] / D_EQ * 100.0
+    fine = df.loc[np.isclose(df["dp"], 0.002)].iloc[0]
+    fine_disp = float(fine["disp_mm"])
+    fine_time = float(fine["tiempo_min"])
+    df["delta_mm"] = df["disp_mm"] - fine_disp
+    df["delta_pct"] = df["delta_mm"] / fine_disp * 100.0
+
+    def reading(row: pd.Series) -> str:
+        dp = float(row["dp"])
+        if np.isclose(dp, 0.002):
+            return "Referencia fina"
+        if np.isclose(dp, 0.003):
+            speedup = fine_time / float(row["tiempo_min"])
+            return f"Adoptada: cercana al fino y {speedup:.1f}x más rápida"
+        if dp <= 0.004:
+            return "Rango fino: respuesta estabilizada"
+        if dp <= 0.006:
+            return "Transición: aún cambia bastante"
+        return "Gruesa: sobreestima el movimiento"
+
+    def dp_label(dp: float) -> str:
+        if np.isclose(dp, 0.003):
+            return f"<span class='dp-chip adopted'>{dp:.3f}</span>"
+        if np.isclose(dp, 0.002):
+            return f"<span class='dp-chip reference'>{dp:.3f}</span>"
+        if dp <= 0.004:
+            return f"<span class='dp-chip fine'>{dp:.3f}</span>"
+        return f"<span class='dp-chip coarse'>{dp:.3f}</span>"
+
     for _, row in df.iterrows():
+        status_cls = "stable" if str(row["status"]).upper() == "OK" else "fail"
+        delta = float(row["delta_mm"])
+        delta_pct = float(row["delta_pct"])
+        delta_text = "referencia" if np.isclose(row["dp"], 0.002) else f"{delta:+.2f} mm<br><span class='muted'>({delta_pct:+.1f}%)</span>"
+        cost_text = f"{row['n_particles'] / 1e6:.2f} M<br><span class='muted'>{row['mem_gpu_mb'] / 1024:.1f} GB · {row['tiempo_min']:.1f} min</span>"
         rows.append(
             "<tr>"
-            f"<td>{row['dp']:.3f}</td>"
-            f"<td><code>{row['case_name']}</code></td>"
-            f"<td>{row['status']}</td>"
+            f"<td>{dp_label(float(row['dp']))}</td>"
+            f"<td><span class='pill {status_cls}'>{row['status']}</span></td>"
             f"<td>{row['disp_mm']:.2f}</td>"
             f"<td>{row['disp_pct']:.1f}%</td>"
+            f"<td>{delta_text}</td>"
             f"<td>{row['max_velocity_ms']:.3f}</td>"
-            f"<td>{row['max_water_height_m']:.3f}</td>"
-            f"<td>{row['max_flow_velocity_ms']:.3f}</td>"
+            f"<td>{row['max_water_height_m']*1000:.1f} mm</td>"
+            f"<td>{row['max_flow_velocity_ms']:.2f}</td>"
             f"<td>{row['max_rotation_deg']:.2f}</td>"
-            f"<td>{row['sim_time_s']:.3f}</td>"
-            f"<td>{row['n_timesteps']:.0f}</td>"
-            f"<td>{row['n_particles'] / 1e6:.2f} M</td>"
-            f"<td>{row['mem_gpu_mb'] / 1024:.1f} GB</td>"
-            f"<td>{row['tiempo_min']:.1f}</td>"
+            f"<td>{cost_text}</td>"
+            f"<td>{html.escape(reading(row))}</td>"
             "</tr>"
         )
     return "\n".join(rows)
@@ -1098,30 +1155,28 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
       </div>
     </figure>
     <h3>Resultados por resolución</h3>
-    <div class="table-wrap">
+    <p>Esta tabla responde la pregunta práctica: cuánto cambia cada resolución respecto del caso fino <code>dp=0.002 m</code>, y cuánto cuesta obtenerla.</p>
+    <div class="table-wrap convergence-table">
       <table>
         <thead>
           <tr>
             <th>dp (m)</th>
-            <th>Caso corrido</th>
-            <th>Estado</th>
+            <th>Sim</th>
             <th>Dmax (mm)</th>
             <th>Dmax (% d_eq)</th>
+            <th>Delta Dmax vs 0.002</th>
             <th>V bloque max (m/s)</th>
-            <th>h agua max (m)</th>
+            <th>h agua max</th>
             <th>U flujo max (m/s)</th>
             <th>Rot. acum. max (deg)</th>
-            <th>t sim (s)</th>
-            <th>pasos</th>
-            <th>Particulas</th>
-            <th>Mem GPU</th>
-            <th>Tiempo (min)</th>
+            <th>Costo</th>
+            <th>Lectura</th>
           </tr>
         </thead>
         <tbody>{convergence_rows(summary)}</tbody>
       </table>
     </div>
-    <p class="note">Tabla derivada de <code>data/results/conv3_f05_full.csv</code>. Cada fila corresponde al caso realmente corrido para una resolucion <code>dp</code>; el desplazamiento se muestra en mm y normalizado por <code>d_eq=0.100421 m</code>.</p>
+    <p class="note">Tabla derivada de <code>data/results/conv3_f05_full.csv</code>. <code>Delta Dmax</code> se calcula contra el caso fino <code>dp=0.002 m</code>; valores negativos significan menor desplazamiento máximo que la referencia fina.</p>
     <div class="figure-stack">
       <figure>
         <img src="figures/02_tendencia_variables_principales.png" alt="Tendencia de variables principales hacia el caso fino">
@@ -1384,6 +1439,21 @@ th, td {
 th { background: #eef2f6; }
 .compact-table th { width: 270px; white-space: nowrap; }
 .compact-table td { color: var(--muted); }
+.convergence-table table { font-size: 12.5px; }
+.convergence-table td:nth-child(3),
+.convergence-table td:nth-child(4),
+.convergence-table td:nth-child(5),
+.convergence-table td:nth-child(6),
+.convergence-table td:nth-child(7),
+.convergence-table td:nth-child(8),
+.convergence-table td:nth-child(9) {
+  font-variant-numeric: tabular-nums;
+}
+.convergence-table td:last-child {
+  min-width: 170px;
+  color: var(--muted);
+}
+.muted { color: var(--muted); }
 .pill {
   display: inline-block;
   border-radius: 3px;
@@ -1393,6 +1463,19 @@ th { background: #eef2f6; }
 }
 .pill.fail { color: #7c1f1f; background: #f8e6e6; }
 .pill.stable { color: #1f5a39; background: #e5f2ea; }
+.dp-chip {
+  display: inline-block;
+  min-width: 58px;
+  border-radius: 999px;
+  padding: 3px 7px;
+  text-align: center;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.dp-chip.adopted { color: #7a4d00; background: #fff1cc; border: 1px solid #e0b85c; }
+.dp-chip.reference { color: #1f5a39; background: #e5f2ea; border: 1px solid #9cccaf; }
+.dp-chip.fine { color: #245d7a; background: #e5f0f8; border: 1px solid #aac8da; }
+.dp-chip.coarse { color: #7c1f1f; background: #f8e6e6; border: 1px solid #e3b2b2; }
 .source-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1507,6 +1590,9 @@ def write_data(
     table = summary.copy()
     table["disp_mm"] = table["max_displacement_m"] * 1000.0
     table["disp_pct_deq"] = table["max_displacement_m"] / D_EQ * 100.0
+    fine_disp_mm = float(table.loc[np.isclose(table["dp"], 0.002), "disp_mm"].iloc[0])
+    table["delta_disp_mm_vs_dp0002"] = table["disp_mm"] - fine_disp_mm
+    table["delta_disp_pct_vs_dp0002"] = table["delta_disp_mm_vs_dp0002"] / fine_disp_mm * 100.0
     table.to_csv(DATA / "convergence_case_table.csv", index=False)
     max_diff.to_csv(DATA / "convergence_max_differences_vs_dp0002.csv", index=False)
     temporal_errors.to_csv(DATA / "convergence_temporal_errors_vs_dp0002.csv", index=False)
