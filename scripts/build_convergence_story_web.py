@@ -339,11 +339,12 @@ def plot_00_setup_layout() -> None:
     elev.add_patch(Polygon(water, closed=True, facecolor="#9ecae1", edgecolor="#4f8bad", alpha=0.70))
     xb = 6.5
     zb = (xb - 6.0) / 20.0
-    elev.add_patch(Ellipse((xb, zb + 0.030), 0.28, 0.070, angle=2.86, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
+    slope_angle = np.degrees(np.arctan(1 / 20))
+    elev.add_patch(Ellipse((xb, zb + 0.030), 0.28, 0.070, angle=slope_angle, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
     elev.add_patch(FancyArrowPatch((0.65, 0.18), (5.95, 0.025), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     elev.plot([6, 15], [0, 0.45], color="#8d7442", lw=1.2)
-    elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=np.degrees(np.arctan(1 / 20)), ha="center")
-    elev.text(xb, zb + 0.085, "apoyo exacto\nChrono", color="#241f1b", fontsize=8, ha="center")
+    elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=slope_angle, ha="center")
+    elev.text(xb, zb + 0.090, "bloque paralelo\na la playa", color="#241f1b", fontsize=8, ha="center")
     elev.text(0.6, 0.215, "H", color="#245d7a", fontsize=9, weight="bold")
     elev.set_xlim(-0.25, 30.25)
     elev.set_ylim(-0.05, 0.58)
@@ -770,7 +771,41 @@ def productive_rows(prod: pd.DataFrame) -> str:
     return "\n".join(rows)
 
 
-def write_page(prod: pd.DataFrame) -> None:
+def convergence_rows(summary: pd.DataFrame) -> str:
+    rows = []
+    cols = [
+        "dp",
+        "max_displacement_m",
+        "max_velocity_ms",
+        "max_water_height_m",
+        "max_flow_velocity_ms",
+        "max_rotation_deg",
+        "n_particles",
+        "mem_gpu_mb",
+        "tiempo_min",
+    ]
+    df = summary[cols].copy().sort_values("dp", ascending=False)
+    df["disp_mm"] = df["max_displacement_m"] * 1000.0
+    df["disp_pct"] = df["max_displacement_m"] / D_EQ * 100.0
+    for _, row in df.iterrows():
+        rows.append(
+            "<tr>"
+            f"<td>{row['dp']:.3f}</td>"
+            f"<td>{row['disp_mm']:.2f}</td>"
+            f"<td>{row['disp_pct']:.1f}%</td>"
+            f"<td>{row['max_velocity_ms']:.3f}</td>"
+            f"<td>{row['max_water_height_m']:.3f}</td>"
+            f"<td>{row['max_flow_velocity_ms']:.3f}</td>"
+            f"<td>{row['max_rotation_deg']:.2f}</td>"
+            f"<td>{row['n_particles'] / 1e6:.2f} M</td>"
+            f"<td>{row['mem_gpu_mb'] / 1024:.1f} GB</td>"
+            f"<td>{row['tiempo_min']:.1f}</td>"
+            "</tr>"
+        )
+    return "\n".join(rows)
+
+
+def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
     html = f"""<!doctype html>
 <html lang="es">
 <head>
@@ -819,8 +854,8 @@ def write_page(prod: pd.DataFrame) -> None:
     <h2>2. Variables que sostienen la resolución adoptada</h2>
     <p>La lectura de convergencia se concentró en variables continuas, antes de clasificar estabilidad. Para defender <code>dp=0.003 m</code> no se usan todas las salidas con el mismo peso: se priorizan las que describen el movimiento principal del bloque y el forzante hidráulico.</p>
     <p>El caso <code>dp=0.002 m</code> se usa como referencia fina. La lectura no es que la convergencia sea perfecta: en <code>dp=0.003 m</code>, la altura/cota de agua y la velocidad máxima del bloque quedan dentro o muy cerca de una banda de 5%, mientras que el desplazamiento máximo queda levemente fuera, con una diferencia cercana a 6%. Esta evidencia sostiene una <strong>estabilización práctica</strong> de las variables principales, suficiente para adoptar una resolución operativa con cautela.</p>
-    <figure>
-      <img src="figures/01_variables_defendibles_dp003.png" alt="Variables principales que sostienen dp 0.003">
+      <figure>
+        <img src="figures/01_variables_defendibles_dp003.png" alt="Variables principales que sostienen dp 0.003">
       <figcaption>Variables principales en <code>dp=0.003 m</code> comparadas con <code>dp=0.002 m</code>. La evidencia más fuerte está en altura/cota de agua y velocidad del bloque; el desplazamiento queda cercano, aunque no exactamente dentro de ±5%.</figcaption>
       <div class="read-guide">
         <strong>Cómo leer esta figura:</strong>
@@ -831,6 +866,26 @@ def write_page(prod: pd.DataFrame) -> None:
         </ul>
       </div>
     </figure>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>dp (m)</th>
+            <th>Dmax (mm)</th>
+            <th>Dmax (% d_eq)</th>
+            <th>V bloque max (m/s)</th>
+            <th>h agua max (m)</th>
+            <th>U flujo max (m/s)</th>
+            <th>Rot. acum. max (deg)</th>
+            <th>Particulas</th>
+            <th>Mem GPU</th>
+            <th>Tiempo (min)</th>
+          </tr>
+        </thead>
+        <tbody>{convergence_rows(summary)}</tbody>
+      </table>
+    </div>
+    <p class="note">Tabla derivada de <code>data/results/conv3_f05_full.csv</code>. El desplazamiento se muestra en mm y normalizado por <code>d_eq=0.100421 m</code>.</p>
     <div class="figure-stack">
       <figure>
         <img src="figures/02_tendencia_variables_principales.png" alt="Tendencia de variables principales hacia el caso fino">
@@ -1207,6 +1262,10 @@ def write_data(
     temporal_errors: pd.DataFrame,
 ) -> None:
     summary.to_csv(DATA / "continuous_convergence_summary.csv", index=False)
+    table = summary.copy()
+    table["disp_mm"] = table["max_displacement_m"] * 1000.0
+    table["disp_pct_deq"] = table["max_displacement_m"] / D_EQ * 100.0
+    table.to_csv(DATA / "convergence_case_table.csv", index=False)
     max_diff.to_csv(DATA / "convergence_max_differences_vs_dp0002.csv", index=False)
     temporal_errors.to_csv(DATA / "convergence_temporal_errors_vs_dp0002.csv", index=False)
     frontier.to_csv(DATA / "master_convergence_frontier.csv", index=False)
@@ -1241,7 +1300,7 @@ def main() -> None:
     copy_verification_assets()
     write_data(summary, frontier, prod, max_diff, temporal_errors)
     write_css()
-    write_page(prod)
+    write_page(prod, summary)
     print(f"Web generated: {OUT / 'index.html'}")
 
 
