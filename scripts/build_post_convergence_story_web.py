@@ -36,9 +36,6 @@ def init() -> None:
 
 
 def copy_assets() -> None:
-    setup = CONVERGENCE_WEB / "figures" / "00_setup_planta_elevacion.png"
-    if setup.exists():
-        shutil.copy2(setup, FIG / "00_setup_planta_elevacion.png")
     for stem, _title, _caption in FIGURES:
         for ext in ("png", "svg"):
             src = PRODUCTION / f"{stem}.{ext}"
@@ -79,6 +76,54 @@ def summary_cards(df: pd.DataFrame) -> str:
     """
 
 
+def _fmt_levels(values: pd.Series, decimals: int = 3) -> str:
+    vals = pd.to_numeric(values, errors="coerce").dropna().sort_values().unique()
+    if len(vals) == 0:
+        return "sin dato"
+    if len(vals) <= 6:
+        return ", ".join(f"{v:.{decimals}f}" for v in vals)
+    return f"{vals.min():.{decimals}f} a {vals.max():.{decimals}f} ({len(vals)} niveles)"
+
+
+def parameter_scope(df: pd.DataFrame) -> str:
+    if df.empty:
+        return ""
+    official = df[df["is_official"]] if "is_official" in df else df
+    if official.empty:
+        official = df
+
+    h = _fmt_levels(official.get("dam_height", pd.Series(dtype=float)), 3)
+    mu = _fmt_levels(official.get("friction_coefficient", pd.Series(dtype=float)), 3)
+    mass = _fmt_levels(official.get("boulder_mass", pd.Series(dtype=float)), 2)
+    slope = _fmt_levels(official.get("slope_inv", pd.Series(dtype=float)), 0)
+    dp = _fmt_levels(official.get("dp", pd.Series(dtype=float)), 3)
+    mode = ", ".join(sorted(official.get("classification_mode", pd.Series(["displacement_only"])).dropna().astype(str).unique()))
+    ref = _fmt_levels(official.get("reference_time_s", pd.Series(dtype=float)), 3)
+
+    return f"""
+    <div class="scope-panel">
+      <article>
+        <h3>Variables barridas</h3>
+        <dl>
+          <div><dt>Altura hidraulica H (m)</dt><dd>{h}</dd></div>
+          <div><dt>Friccion bloque-playa, mu</dt><dd>{mu}</dd></div>
+          <div><dt>Masa relativa m*</dt><dd>{mass}</dd></div>
+          <div><dt>Pendiente evaluada</dt><dd>1:{slope}</dd></div>
+        </dl>
+      </article>
+      <article>
+        <h3>Condiciones metodologicas comunes</h3>
+        <dl>
+          <div><dt>Resolucion</dt><dd>dp = {dp} m</dd></div>
+          <div><dt>Criterio primario</dt><dd>{html.escape(mode)}</dd></div>
+          <div><dt>Referencia temporal</dt><dd>t_ref = {ref} s</dd></div>
+          <div><dt>Clase de movimiento</dt><dd>Dmax &gt; 5% d_eq</dd></div>
+        </dl>
+      </article>
+    </div>
+    """
+
+
 def family_rows(df: pd.DataFrame) -> str:
     if df.empty or "family_label" not in df:
         return ""
@@ -116,6 +161,7 @@ def figure_html() -> str:
 
 def write_page(df: pd.DataFrame) -> None:
     cards = summary_cards(df)
+    scope = parameter_scope(df)
     rows = family_rows(df)
     html_text = f"""<!doctype html>
 <html lang="es">
@@ -138,10 +184,8 @@ def write_page(df: pd.DataFrame) -> None:
     <h2>1. Marco de lectura</h2>
     <dl class="cards">{cards}</dl>
     <p>La clase se decide por <code>displacement_only</code>: fallo si <code>Dmax &gt; 5% d_eq</code>. La rotacion, las fuerzas y las gauges son diagnosticas. En todos los graficos relevantes el desplazamiento aparece en porcentaje y en milimetros.</p>
-    <figure>
-      <img src="figures/00_setup_planta_elevacion.png" alt="Setup fisico en planta y elevacion">
-      <figcaption>Setup fisico: canal, playa 1:20 y bloque irregular. Este esquema es referencia visual, no un resultado de simulacion.</figcaption>
-    </figure>
+    <p>La geometria base del canal y el bloque se mantiene como marco comun, pero esta pagina no representa una simulacion unica. Resume una familia de casos con condiciones hidraulicas, friccion y masa barridas.</p>
+    {scope}
   </section>
 
   <section>
@@ -239,6 +283,33 @@ section {
   border-right: 1px solid var(--line);
 }
 .cards div:last-child { border-right: 0; }
+.scope-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+.scope-panel article {
+  border: 1px solid var(--line);
+  background: #fbfcfe;
+  border-radius: 4px;
+  padding: 14px;
+}
+.scope-panel h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+.scope-panel dl {
+  margin: 0;
+}
+.scope-panel dl div {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid #e4e9f0;
+}
+.scope-panel dl div:first-child { border-top: 0; }
 dt { font-weight: 700; }
 dd { margin: 2px 0 0; color: var(--muted); }
 .figure-stack {
@@ -294,6 +365,8 @@ code {
   .cards { grid-template-columns: 1fr; }
   .cards div { border-right: 0; border-bottom: 1px solid var(--line); }
   .cards div:last-child { border-bottom: 0; }
+  .scope-panel { grid-template-columns: 1fr; }
+  .scope-panel dl div { grid-template-columns: 1fr; gap: 2px; }
   section { padding: 16px; }
 }
 """
