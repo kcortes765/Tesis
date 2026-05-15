@@ -17,6 +17,7 @@ RESULTS = ROOT / "data" / "results"
 HYDRAULIC_BENCH = ROOT / "data" / "benchmarks" / "hydraulic_20260508"
 VERIFICATION = ROOT / "data" / "verification_preproduction_20260508"
 ANALYTIC_PREPROD = ROOT / "data" / "analytic_comparison" / "20260508_preproduction"
+PRODUCTION_STORY = ROOT / "data" / "figures" / "production_story_graphics"
 
 D_EQ = 0.100421
 REF_TIME = 0.5
@@ -78,6 +79,27 @@ def copy_verification_assets() -> None:
             shutil.copy2(src, dst)
 
 
+def copy_production_story_assets() -> None:
+    assets = {
+        "01_response_map_h_mu_by_mass": "12_mapa_productivo_h_mu_masa",
+        "02_margin_vs_mu_by_mass_and_h": "13_margen_productivo_por_masa",
+        "03_batch_story_margin_strip": "14_historia_lotes_al",
+        "04_local_hydraulics_vs_displacement": "15_hidraulica_local_vs_desplazamiento",
+        "05_forces_vs_displacement": "16_fuerzas_vs_desplazamiento",
+        "06_rotation_diagnostic_vs_displacement": "17_rotacion_diagnostica_vs_desplazamiento",
+        "08_mass_effect_displacement_summary": "18_efecto_masa_resumen",
+    }
+    for src_stem, dst_stem in assets.items():
+        for ext in ("png", "svg"):
+            src = PRODUCTION_STORY / f"{src_stem}.{ext}"
+            if src.exists():
+                shutil.copy2(src, FIG / f"{dst_stem}.{ext}")
+    for name in ("master_production_story.csv", "figure_index.csv", "FIGURE_INDEX.md"):
+        src = PRODUCTION_STORY / name
+        if src.exists():
+            shutil.copy2(src, DATA / name)
+
+
 def read_csv(path: Path, **kwargs) -> pd.DataFrame:
     return pd.read_csv(path, **kwargs)
 
@@ -130,6 +152,16 @@ def load_frontier() -> pd.DataFrame:
 
 
 def load_productive() -> pd.DataFrame:
+    master = PRODUCTION_STORY / "master_production_story.csv"
+    if master.exists():
+        df = read_csv(master)
+        if "is_official" in df.columns:
+            official = df["is_official"].astype(str).str.lower().isin({"true", "1", "yes"})
+            partial = df.get("is_partial", pd.Series(False, index=df.index)).astype(str).str.lower().isin({"true", "1", "yes"})
+            df = df[official | partial].copy()
+        if "lote" not in df.columns:
+            df["lote"] = df.get("family_label", df.get("family", "produccion"))
+        return df
     frames = []
     pilot = DATA / "pilot_summary.csv"
     batch2 = DATA / "batch2_summary.csv"
@@ -581,6 +613,30 @@ LIGHTBOX = """
 """
 
 
+def productive_rows(prod: pd.DataFrame) -> str:
+    if prod.empty:
+        return ""
+    rows = []
+    data = prod.copy()
+    for col in ("lote", "dam_height", "boulder_mass", "friction_coefficient", "slope_inv"):
+        if col not in data.columns:
+            data[col] = np.nan if col != "lote" else "produccion"
+    data = data.sort_values(["lote", "dam_height", "boulder_mass", "friction_coefficient", "slope_inv"], na_position="last")
+    for _, row in data.iterrows():
+        cls = "fail" if str(row["criterion_class"]).upper() == "FALLO" else "stable"
+        disp_mm = row.get("disp_mm", np.nan)
+        if pd.isna(disp_mm):
+            disp_mm = float(row["disp_pct_deq"]) / 100 * D_EQ * 1000
+        mass = row.get("boulder_mass", np.nan)
+        rows.append(
+            f"<tr><td>{row['lote']}</td><td><code>{row['case_id']}</code></td>"
+            f"<td>{row['dam_height']:.3f}</td><td>{mass:.2f}</td><td>{row['friction_coefficient']:.4f}</td>"
+            f"<td>1:{row['slope_inv']:.0f}</td><td><span class='pill {cls}'>{row['criterion_class']}</span></td>"
+            f"<td>{row['disp_pct_deq']:.2f}%</td><td>{disp_mm:.2f} mm</td><td>{row['max_rotation_deg']:.2f} deg</td></tr>"
+        )
+    return "\n".join(rows)
+
+
 def write_page(prod: pd.DataFrame) -> None:
     html = f"""<!doctype html>
 <html lang="es">
@@ -692,7 +748,43 @@ def write_page(prod: pd.DataFrame) -> None:
   </section>
 
   <section>
-    <h2>6. Verificaciones complementarias antes de produccion</h2>
+    <h2>6. Produccion dirigida y active learning</h2>
+    <p>La pagina ahora incorpora los datos oficiales cerrados hasta AL1. AL2 esta corriendo en la WS y no se incluye hasta tener export liviano y postproceso oficial.</p>
+    <p>En esta etapa cada grafico con desplazamiento porcentual tambien muestra desplazamiento absoluto en mm. La rotacion queda como diagnostico, y las fuerzas se usan para explicar fisica local, no como criterio primario.</p>
+    <div class="figure-stack">
+      <figure>
+        <img src="figures/12_mapa_productivo_h_mu_masa.png" alt="Mapa productivo H mu por masa">
+        <figcaption>Mapa <code>H-mu</code> separado por masa relativa. Cada etiqueta muestra <code>Dmax</code> en porcentaje y mm; la clase se lee con el umbral operacional de 5% de <code>d_eq</code>.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/13_margen_productivo_por_masa.png" alt="Margen productivo por masa e hidraulica">
+        <figcaption>Margen al umbral, con distancia fisica en mm. Valores bajo cero superan el umbral; valores sobre cero quedan estables por desplazamiento.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/14_historia_lotes_al.png" alt="Historia de lotes productivos y active learning">
+        <figcaption>Historia de lotes: piloto, batch2, batch3, batch4 y AL1. El objetivo visual es mostrar como la exploracion pasa de pruebas operativas a cierre de brackets, sin ocultar casos parciales.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/15_hidraulica_local_vs_desplazamiento.png" alt="Hidraulica local contra desplazamiento">
+        <figcaption>Relacion entre hidraulica local y desplazamiento. Ayuda a explicar por que <code>H</code> por si sola no basta para leer la demanda sobre el bloque.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/16_fuerzas_vs_desplazamiento.png" alt="Fuerzas contra desplazamiento">
+        <figcaption>Fuerzas SPH y de contacto frente a desplazamiento. La fuerza de contacto se reporta como diagnostico, no como criterio de clasificacion.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/17_rotacion_diagnostica_vs_desplazamiento.png" alt="Rotacion diagnostica contra desplazamiento">
+        <figcaption>La rotacion puede ser alta aun en casos estables por desplazamiento. Por eso se conserva como diagnostico y no como criterio primario.</figcaption>
+      </figure>
+      <figure>
+        <img src="figures/18_efecto_masa_resumen.png" alt="Resumen del efecto de la masa">
+        <figcaption>Resumen visual del efecto de <code>m*</code>: la masa baja abre una zona critica, mientras masas mayores estabilizan parte importante del dominio explorado.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>7. Verificaciones complementarias antes de produccion</h2>
     <p>Estas pruebas no son parte del analisis de convergencia. Se agregan para cubrir tres preguntas distintas antes de seguir con la campana productiva: si el solver reproduce un caso hidraulico conocido, si el bloque no se mueve por una condicion inicial defectuosa y si las respuestas SPH son coherentes con un balance analitico de primer orden.</p>
     <div class="grid">
       <figure>
@@ -712,17 +804,17 @@ def write_page(prod: pd.DataFrame) -> None:
   </section>
 
   <section>
-    <h2>7. Tabla resumida de lotes posteriores</h2>
+    <h2>8. Tabla resumida de lotes posteriores</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Lote</th><th>Caso</th><th>H (m)</th><th>μ</th><th>Pendiente</th><th>Clase</th><th>Despl.</th><th>Rot.</th></tr></thead>
+        <thead><tr><th>Lote</th><th>Caso</th><th>H (m)</th><th>m*</th><th>mu</th><th>Pendiente</th><th>Clase</th><th>Despl. (%)</th><th>Despl. (mm)</th><th>Rot.</th></tr></thead>
         <tbody>{productive_rows(prod)}</tbody>
       </table>
     </div>
   </section>
 
   <section>
-    <h2>8. Analisis final y literatura usada</h2>
+    <h2>9. Analisis final y literatura usada</h2>
     <p>Sin un experimento fisico propio del bloque, la tesis no debe afirmar validacion experimental directa del caso completo. La defensa se arma por capas: sensibilidad de resolucion, benchmark hidraulico externo, sanity de contacto bloque-suelo y comparacion analitica de orden de magnitud. Cada capa responde una pregunta distinta.</p>
     <div class="table-wrap">
       <table>
@@ -757,7 +849,7 @@ def write_page(prod: pd.DataFrame) -> None:
   </section>
 
   <section>
-    <h2>9. Términos usados</h2>
+    <h2>10. Términos usados</h2>
     <dl class="terms">
       <div><dt>dp</dt><dd>Espaciamiento inicial entre partículas SPH. Menor <code>dp</code> implica mayor resolución y mayor costo computacional.</dd></div>
       <div><dt>Resolución SPH</dt><dd>Nivel de detalle espacial dado por el tamaño/separación de partículas, no por una malla fija.</dd></div>
@@ -1062,6 +1154,7 @@ def main() -> None:
     plot_07_resolution_sensitivity(frontier)
     plot_08_productive(prod)
     copy_verification_assets()
+    copy_production_story_assets()
     write_data(summary, frontier, prod, max_diff, temporal_errors)
     write_css()
     write_page(prod)
