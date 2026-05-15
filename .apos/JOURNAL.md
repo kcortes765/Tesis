@@ -674,3 +674,62 @@ git diff --cached --name-only | Select-String -Pattern '\.(bi4|ibi4|vtk|vtp|zip)
 - No interpretar `apos-system/` como APOS vivo del proyecto.
 - No usar backups/worktrees temporales como fuente diaria.
 - No aplicar el stash completo salvo necesidad puntual.
+
+## 2026-05-14 20:20 - Export liviano AL batch1 hybrid
+
+### Objetivo
+Preparar y subir por Git el resultado liviano del lote `al_batch1_hybrid` para sincronizarlo con la laptop sin copiar binarios ni salidas crudas pesadas.
+
+### Acciones
+- Se verifico que no quedaran procesos `DualSPHysics`, `GenCase` o `python` productivos activos.
+- Se leyo `data/production_status.json` y se confirmo `completed=8`, `failed=0`, `progress=8/8`.
+- Se contrastaron los resultados oficiales en `data/results.sqlite` para los casos `al1_*`.
+- Se creo el export liviano `exports/al_batch1_hybrid_20260514/`.
+- Se copiaron solo archivos trazables y livianos: resumen CSV/MD, status JSON, tail del log, matriz, extract SQLite e inventario.
+- Se actualizaron `STATUS.md`, `HANDOFF.md`, `PLAN.md` e `INDEX.md` para reflejar que AL batch1 termino.
+
+### Archivos revisados
+- `data/production_status.json`
+- `data/production_20260513_0941.log`
+- `data/results.sqlite`
+- `config/al_batch1_hybrid_20260513.csv`
+- `data/processed/al1_*`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/JOURNAL.md`
+- `data/results.sqlite`
+- `exports/al_batch1_hybrid_20260514/`
+
+### Comandos importantes
+```text
+Get-Process | Where-Object { $_.ProcessName -match "DualSPHysics|GenCase|python" }
+Get-Content data\production_status.json
+python - <<sqlite/extract>>
+git status -sb
+```
+
+### Resultados
+- AL batch1 termino oficialmente 8/8 OK.
+- No hubo fallos numericos.
+- Tiempo total reportado: 34.37 h.
+- Resultado fisico por criterio `displacement_only`: 7 ESTABLE y 1 FALLO.
+- Caso fallido: `al1_base_m085_mu0780`.
+- El export liviano contiene 25 archivos y pesa aproximadamente 58 KB.
+- No se incluyeron `cases/`, `data/processed/` completos, `*_out/`, `Part*`, `.bi4`, `.ibi4`, VTK ni binarios pesados.
+
+### Errores / bloqueos
+- Sin bloqueos para sincronizacion por Git.
+
+### Proximos pasos
+- Hacer `git pull` en la laptop.
+- Revisar `exports/al_batch1_hybrid_20260514/al_batch1_summary.md`.
+- Analizar piloto + batch2 + batch3 + batch4 + AL1 antes de lanzar otro lote.
+
+### Advertencias metodologicas
+- AL batch1 es un lote dirigido, no una grilla completa del dominio.
+- No lanzar nuevas simulaciones hasta revisar el efecto conjunto de H, mu y masa.
+- La frontera sigue condicionada a `dp=0.003` como resolucion operativa.

@@ -1,0 +1,20 @@
+{
+  "phase": "completed",
+  "dp": 0.003,
+  "mode": "prod",
+  "total_cases": 8,
+  "desde": 0,
+  "pending": 8,
+  "completed": 8,
+  "failed": 0,
+  "current_case": "al1_highH_m125_mu0740",
+  "start_time": "2026-05-13T09:41:56.657661",
+  "dry_run": false,
+  "updated": "2026-05-14T20:03:51.514954",
+  "progress": "8/8",
+  "eta": "2026-05-14T15:14:49.991156",
+  "avg_case_seconds": 15194.6,
+  "eta_human": "0.0h (0.0d)",
+  "end_time": "2026-05-14T20:03:51.514954",
+  "total_elapsed_hours": 34.37
+}

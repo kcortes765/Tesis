@@ -2,10 +2,10 @@
 
 ## Proxima accion recomendada
 1. Continuar exclusivamente desde `C:\Seba\Tesis`.
-2. Revisar piloto + batch2 + batch3 + batch4 juntos desde los exports livianos.
+2. Revisar piloto + batch2 + batch3 + batch4 + AL batch1 juntos desde los exports livianos.
 3. Decidir si se entrena surrogate exploratorio, se repite el caso 12 parcial de batch4 o se disena un mini-batch adicional.
 4. Si se abre geometria, partir por los STL `b02` ya analizados y un sanity de contacto por geometria.
-5. Monitorear AL batch1 hibrido que quedo corriendo en WS.
+5. En laptop principal, hacer `git pull` para traer el export AL batch1.
 
 ## Contexto minimo para continuar
 - `C:\Seba\Tesis` vuelve a ser el unico repo canonico local.
@@ -31,6 +31,9 @@
 - Comando real: `python scripts\run_production.py --prod --matrix config\al_batch1_hybrid_20260513.csv --max-cases 8`.
 - AL batch1 no usa `--no-notify`; ntfy nativo esta activo.
 - Estado inicial: `current_case=al1_lowH_m085_mu0620`, `progress=1/8`.
+- AL batch1 termino 8/8 OK, 0 fallos numericos, 34.37 h.
+- Export AL batch1: `exports/al_batch1_hybrid_20260514/`.
+- Resultado AL batch1: 1 FALLO (`al1_base_m085_mu0780`) y 7 ESTABLE por `displacement_only`.
 - Los STL nuevos estan en `models/bloques/b02_variantes_20260510/`.
 - El analisis de formas esta en `data/geometry/bloques_b02_20260510/`.
 
@@ -50,6 +53,8 @@
 13. `config/al_batch1_hybrid_20260513.csv`
 14. `docs/PROMPT_WS_AL_BATCH1_HYBRID_20260513.md`
 15. `data/production_20260513_0941.log`
+16. `exports/al_batch1_hybrid_20260514/al_batch1_summary.md`
+17. `exports/al_batch1_hybrid_20260514/al_batch1_summary.csv`
 
 ## Comandos sugeridos
 ```powershell
@@ -70,13 +75,16 @@ Get-ChildItem data -Filter "production_*.log" |
   Sort LastWriteTime -Descending |
   Select -First 1 |
   Get-Content -Tail 120
+
+Import-Csv exports\al_batch1_hybrid_20260514\al_batch1_summary.csv |
+  Select case_id,status,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq
 ```
 
 ## Senales de exito
 - `git status -sb` no muestra otro worktree como fuente canonica.
 - Los datos de WS se citan por export/commit.
 - Batch4 queda versionado como export liviano; el caso 12 queda explicitamente marcado como parcial.
-- AL batch1 avanza caso a caso con ntfy y sin fallos numericos.
+- AL batch1 queda versionado como export liviano y trazable.
 - Los datos locales se citan por path y quedan versionados si son livianos.
 - No queda APOS duplicado como verdad viva.
 
@@ -84,7 +92,7 @@ Get-ChildItem data -Filter "production_*.log" |
 - No recrear ni usar worktrees temporales como fuente diaria.
 - No aplicar `stash@{0}` completo sin revisar.
 - No borrar backups, `cases/`, `data/`, `imports/` ni `archive/`.
-- No lanzar otra tanda mientras AL batch1 este activo.
+- No lanzar otra tanda antes de revisar AL batch1 junto con los lotes anteriores.
 - No versionar crudos pesados.
 - No mezclar rotacion diagnostica con falla por desplazamiento.
 

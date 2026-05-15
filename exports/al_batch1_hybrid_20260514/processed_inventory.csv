@@ -1,0 +1,9 @@
+case_id,file_count,total_bytes,last_write_time,has_chrono_exchange,has_chrono_forces,has_run_csv,has_runparts_csv
+al1_base_m085_mu0780,24,11934890,2026-05-13T21:20:46.781119823,True,True,True,True
+al1_base_m115_mu0620,24,11934492,2026-05-14T01:30:36.675471306,True,True,True,True
+al1_base_m125_mu0600,24,11936002,2026-05-14T05:39:53.955163956,True,True,True,True
+al1_highH_m115_mu0800,24,12019934,2026-05-14T19:14:48.203723907,True,True,True,True
+al1_highH_m125_mu0740,24,12027443,2026-05-15T00:03:50.356769085,True,True,True,True
+al1_lowH_m085_mu0620,24,11911108,2026-05-13T17:11:32.351816177,True,True,True,True
+al1_midH_m100_mu0800,24,11960576,2026-05-14T10:03:20.668445349,True,True,True,True
+al1_midH_m115_mu0730,24,11960391,2026-05-14T14:26:08.377214432,True,True,True,True
