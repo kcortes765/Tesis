@@ -36,8 +36,8 @@ D_EQ_MM = D_EQ_M * 1000.0
 DISP_THRESHOLD_PCT = 5.0
 DISP_THRESHOLD_MM = D_EQ_MM * DISP_THRESHOLD_PCT / 100.0
 MARGIN_YLIM = (-20.0, 7.0)
-DISP_PCT_XLIM = (-1.0, 120.0)
-DISP_PCT_YLIM = (-1.0, 120.0)
+DISP_PCT_XLIM = (-0.5, 20.0)
+DISP_PCT_YLIM = (-0.5, 20.0)
 
 EXPORT_SPECS = [
     ("pilot", "Piloto", PROJECT / "exports" / "pilot_productivo_20260501" / "pilot_summary.csv"),
@@ -48,8 +48,8 @@ EXPORT_SPECS = [
 ]
 
 CLASS_COLORS = {
-    "ESTABLE": "#0072B2",  # Okabe-Ito blue
-    "FALLO": "#D55E00",  # Okabe-Ito vermillion
+    "ESTABLE": "#2F7D4F",
+    "FALLO": "#B73B3B",
     "PARCIAL": "#777777",
     "UNKNOWN": "#999999",
 }
@@ -62,10 +62,10 @@ FAMILY_COLORS = {
     "al1": "#D55E00",
 }
 MASS_COLORS = {
-    0.85: "#D55E00",
-    1.00: "#0072B2",
-    1.15: "#009E73",
-    1.25: "#CC79A7",
+    0.85: "#8C5E3C",
+    1.00: "#2B6F9F",
+    1.15: "#B98524",
+    1.25: "#6A4C93",
 }
 
 
@@ -809,7 +809,7 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame) -> None:
         "## Regla visual aplicada",
         f"- El desplazamiento normalizado usa `Dmax (% d_eq)` y siempre muestra equivalente absoluto en mm cuando aparece como eje o escala principal.",
         f"- Umbral primario: `5% d_eq = {DISP_THRESHOLD_MM:.2f} mm`.",
-        "- Colores de clase: azul = ESTABLE, vermillion = FALLO; se evita depender solo de rojo/verde.",
+        "- Colores de clase: verde = ESTABLE, rojo = FALLO, gris = parcial/no oficial.",
         "- La rotacion se muestra como diagnostico acumulado; no define la clase.",
         "- Las gauges hidraulicas explican contexto fisico, pero ChronoExchange sigue siendo la fuente primaria del movimiento del bloque.",
         "",

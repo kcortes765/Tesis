@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Ellipse, FancyArrowPatch, Polygon, Rectangle
 import numpy as np
 import pandas as pd
 
@@ -271,6 +272,98 @@ def label_class(value: str) -> str:
     return "F" if str(value).upper() == "FALLO" else "E"
 
 
+def disp_pct_to_mm(value: float | np.ndarray) -> float | np.ndarray:
+    return np.asarray(value) * D_EQ * 1000.0 / 100.0
+
+
+def disp_mm_to_pct(value: float | np.ndarray) -> float | np.ndarray:
+    return np.asarray(value) * 100.0 / (D_EQ * 1000.0)
+
+
+def add_disp_mm_yaxis(ax: plt.Axes, label: str = "Desplazamiento máximo (mm)") -> plt.Axes:
+    sec = ax.secondary_yaxis("right", functions=(disp_pct_to_mm, disp_mm_to_pct))
+    sec.set_ylabel(label)
+    return sec
+
+
+def add_disp_mm_xaxis(ax: plt.Axes, label: str = "Desplazamiento máximo (mm)") -> plt.Axes:
+    sec = ax.secondary_xaxis("top", functions=(disp_pct_to_mm, disp_mm_to_pct))
+    sec.set_xlabel(label)
+    return sec
+
+
+def abs_delta_label(row: pd.Series) -> str:
+    delta = float(row["value"] - row["reference_value"])
+    variable = str(row["variable"])
+    if variable == "max_displacement_m":
+        return f"{delta * 1000:+.2f} mm"
+    if variable in {"max_velocity_ms", "max_flow_velocity_ms"}:
+        return f"{delta:+.3f} m/s"
+    if variable == "max_water_height_m":
+        return f"{delta * 1000:+.1f} mm"
+    if variable == "max_rotation_deg":
+        return f"{delta:+.2f} deg"
+    return f"{delta:+.3g}"
+
+
+def plot_00_setup_layout() -> None:
+    fig, axes = plt.subplots(2, 1, figsize=(11.5, 6.6), constrained_layout=True)
+    plan, elev = axes
+
+    # Plan view: 30 m channel, 1 m width, boulder centered near the beach toe.
+    plan.set_aspect("equal")
+    plan.add_patch(Rectangle((0, 0), 30, 1.0, facecolor="#f7fbff", edgecolor="#32465a", linewidth=1.2))
+    plan.add_patch(Rectangle((0, 0), 1.5, 1.0, facecolor="#9ecae1", edgecolor="none", alpha=0.72))
+    plan.add_patch(Rectangle((1.5, 0), 4.5, 1.0, facecolor="#dbeafe", edgecolor="none", alpha=0.55))
+    plan.add_patch(Rectangle((6.0, 0), 9.0, 1.0, facecolor="#efe5d1", edgecolor="none", alpha=0.78))
+    plan.add_patch(Rectangle((15.0, 0), 15.0, 1.0, facecolor="#f4f1ea", edgecolor="none", alpha=0.82))
+    plan.add_patch(Ellipse((6.50, 0.50), 0.22, 0.17, angle=0, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
+    plan.add_patch(FancyArrowPatch((0.55, 0.50), (6.05, 0.50), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
+    plan.text(0.75, 0.63, "flujo", color=BLUE, fontsize=9, weight="bold")
+    plan.text(0.75, 0.12, "reservorio", color="#245d7a", fontsize=8)
+    plan.text(6.55, 0.68, "bloque", color="#241f1b", fontsize=8, ha="center")
+    plan.text(10.5, 0.08, "playa 1:20", color="#66512d", fontsize=8, ha="center")
+    plan.text(22.5, 0.08, "zona final", color="#66512d", fontsize=8, ha="center")
+    plan.set_xlim(-0.25, 30.25)
+    plan.set_ylim(-0.15, 1.15)
+    plan.set_title("Planta del canal numerico")
+    plan.set_xlabel("x (m)")
+    plan.set_ylabel("ancho y (m)")
+    plan.set_yticks([0, 0.5, 1.0])
+
+    # Elevation view: same x scale, exaggerated z for readability.
+    elev.set_aspect("auto")
+    bed = np.array([[0, 0], [6, 0], [15, 0.45], [30, 0.45], [30, -0.08], [0, -0.08]])
+    elev.add_patch(Polygon(bed, closed=True, facecolor="#e8dcc6", edgecolor="#6b5b3e", linewidth=1.2))
+    water = np.array([[0, 0], [1.5, 0], [1.5, 0.20], [0, 0.20]])
+    elev.add_patch(Polygon(water, closed=True, facecolor="#9ecae1", edgecolor="#4f8bad", alpha=0.70))
+    xb = 6.5
+    zb = (xb - 6.0) / 20.0
+    elev.add_patch(Ellipse((xb, zb + 0.030), 0.28, 0.070, angle=2.86, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
+    elev.add_patch(FancyArrowPatch((0.65, 0.18), (5.95, 0.025), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
+    elev.plot([6, 15], [0, 0.45], color="#8d7442", lw=1.2)
+    elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=np.degrees(np.arctan(1 / 20)), ha="center")
+    elev.text(xb, zb + 0.085, "apoyo exacto\nChrono", color="#241f1b", fontsize=8, ha="center")
+    elev.text(0.6, 0.215, "H", color="#245d7a", fontsize=9, weight="bold")
+    elev.set_xlim(-0.25, 30.25)
+    elev.set_ylim(-0.05, 0.58)
+    elev.set_title("Elevacion longitudinal")
+    elev.set_xlabel("x (m)")
+    elev.set_ylabel("z (m)")
+    elev.text(
+        0.99,
+        0.04,
+        "Esquema a escala en planta; elevacion con z realzado solo para lectura.",
+        transform=elev.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color=GRAY,
+    )
+    fig.suptitle("Setup fisico: canal, playa y bloque irregular", fontsize=13, fontweight="bold")
+    save("00_setup_planta_elevacion")
+
+
 def plot_00_method_flow() -> None:
     fig, ax = plt.subplots(figsize=(10.6, 2.8))
     ax.axis("off")
@@ -314,6 +407,10 @@ def plot_01_defensible_variables(diff: pd.DataFrame, errors: pd.DataFrame) -> No
         float(diff[(diff["label"] == label) & np.isclose(diff["dp"], 0.003)]["delta_vs_fine_pct"].iloc[0])
         for label in labels
     ]
+    max_rows = [
+        diff[(diff["label"] == label) & np.isclose(diff["dp"], 0.003)].iloc[0]
+        for label in labels
+    ]
     err_label_map = {
         "Altura/cota agua máx.": "Altura/cota agua",
         "Velocidad bloque máx.": "Velocidad bloque",
@@ -329,10 +426,17 @@ def plot_01_defensible_variables(diff: pd.DataFrame, errors: pd.DataFrame) -> No
     axes[0].axvspan(-7, 7, color=AMBER, alpha=0.10, label="zona cercana ±7%")
     axes[0].axvline(0, color=INK, lw=0.8)
     axes[0].barh(y, max_vals, color=[GREEN, GREEN, AMBER], alpha=0.9)
-    for yi, val in zip(y, max_vals):
-        axes[0].text(val + (0.35 if val >= 0 else -0.35), yi, f"{val:+.1f}%", va="center", ha="left" if val >= 0 else "right", fontsize=9)
+    for yi, val, row in zip(y, max_vals, max_rows):
+        axes[0].text(
+            val + (0.35 if val >= 0 else -0.35),
+            yi,
+            f"{val:+.1f}%\n{abs_delta_label(row)}",
+            va="center",
+            ha="left" if val >= 0 else "right",
+            fontsize=8.4,
+        )
     axes[0].set_yticks(y, labels)
-    axes[0].set_xlabel("Diferencia del valor máximo respecto a dp=0.002 (%)\n0% = igual al caso fino; negativo = menor que el caso fino")
+    axes[0].set_xlabel("Diferencia relativa vs dp=0.002 (%) + diferencia absoluta")
     axes[0].set_title("A. Máximos: cuánto cambia cada variable")
     axes[0].text(
         0.98,
@@ -651,8 +755,8 @@ def write_page(prod: pd.DataFrame) -> None:
   <header class="top">
     <div>
       <p class="meta">Tesis UCN · modelo SPH-Chrono</p>
-      <h1>Convergencia de resolución SPH y uso posterior en estabilidad</h1>
-      <p>Esta página separa dos niveles de análisis: primero se revisa cómo cambian variables continuas al disminuir <code>dp</code>; después se usa la resolución adoptada para estudiar estabilidad del bloque.</p>
+      <h1>Convergencia de resolución SPH</h1>
+      <p>Esta pagina resume por que se adopta <code>dp=0.003 m</code> como resolucion operativa. La produccion dirigida y active learning quedan en una pagina separada.</p>
     </div>
   </header>
 
@@ -662,8 +766,12 @@ def write_page(prod: pd.DataFrame) -> None:
         <div><dt>Resolución adoptada</dt><dd>dp = 0.003 m</dd></div>
         <div><dt>Convergencia</dt><dd>variables temporales y máximos</dd></div>
         <div><dt>Estabilidad</dt><dd>análisis posterior al dp elegido</dd></div>
-        <div><dt>Uso posterior</dt><dd>movimiento si D_max &gt; 5% d_eq</dd></div>
+        <div><dt>Post-convergencia</dt><dd><a href="https://kcortes765.github.io/convergencia-dp/post-convergencia/">pagina dedicada</a></dd></div>
       </dl>
+      <figure>
+        <img src="figures/00_setup_planta_elevacion.png" alt="Planta y elevacion del setup SPH">
+        <figcaption>Setup fisico usado en la lectura: canal, playa 1:20 y bloque irregular apoyado sobre la playa. La planta mantiene escala horizontal; la elevacion realza z para legibilidad.</figcaption>
+      </figure>
       <p>SPH no usa una malla fija; usa partículas. Por eso aquí <code>dp</code> significa <strong>espaciamiento inicial entre partículas</strong> y se interpreta como resolución espacial del modelo.</p>
       <p>El análisis se ordena así: primero se comparan variables continuas para distintos <code>dp</code>, como desplazamiento del bloque, velocidad del bloque, velocidad del flujo y altura de agua en gauges. Esa es la parte de convergencia o sensibilidad de resolución.</p>
       <p>Luego, con una resolución seleccionada por equilibrio entre respuesta y costo, se analiza si el bloque inicia movimiento bajo un criterio operacional. Esa segunda parte es el estudio de estabilidad, no el reemplazo del análisis de convergencia.</p>
@@ -739,82 +847,13 @@ def write_page(prod: pd.DataFrame) -> None:
   </section>
 
   <section>
-    <h2>5. Qué se lanzó después</h2>
-    <p>Después de adoptar <code>dp=0.003 m</code>, se ejecutaron lotes controlados. Su objetivo no fue seguir demostrando convergencia, sino verificar el flujo productivo y comenzar a leer tendencias de estabilidad bajo la resolución seleccionada.</p>
-    <figure>
-      <img src="figures/08_lotes_posteriores.png" alt="Resultados de lotes posteriores">
-      <figcaption>El piloto y batch2 muestran casos estables y de falla bajo la resolución adoptada. La línea roja punteada marca el umbral operacional de movimiento: <code>D_max = 5% d_eq</code>. Estos resultados pertenecen a la etapa de aplicación, no a la prueba de convergencia.</figcaption>
-    </figure>
+    <h2>5. Post-convergencia separado</h2>
+    <p>Los lotes productivos, el efecto de masa, la hidraulica local, las fuerzas, la rotacion diagnostica y active learning se movieron a una pagina dedicada para no mezclar la seleccion de <code>dp</code> con el analisis posterior.</p>
+    <p><a class="button-link" href="https://kcortes765.github.io/convergencia-dp/post-convergencia/">Abrir pagina post-convergencia</a></p>
   </section>
 
   <section>
-    <h2>6. Produccion dirigida y active learning</h2>
-    <p>La pagina ahora incorpora los datos oficiales cerrados hasta AL1. AL2 esta corriendo en la WS y no se incluye hasta tener export liviano y postproceso oficial.</p>
-    <p>En esta etapa cada grafico con desplazamiento porcentual tambien muestra desplazamiento absoluto en mm. La rotacion queda como diagnostico, y las fuerzas se usan para explicar fisica local, no como criterio primario.</p>
-    <div class="figure-stack">
-      <figure>
-        <img src="figures/12_mapa_productivo_h_mu_masa.png" alt="Mapa productivo H mu por masa">
-        <figcaption>Mapa <code>H-mu</code> separado por masa relativa. Cada etiqueta muestra <code>Dmax</code> en porcentaje y mm; la clase se lee con el umbral operacional de 5% de <code>d_eq</code>.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/13_margen_productivo_por_masa.png" alt="Margen productivo por masa e hidraulica">
-        <figcaption>Margen al umbral, con distancia fisica en mm. Valores bajo cero superan el umbral; valores sobre cero quedan estables por desplazamiento.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/14_historia_lotes_al.png" alt="Historia de lotes productivos y active learning">
-        <figcaption>Historia de lotes: piloto, batch2, batch3, batch4 y AL1. El objetivo visual es mostrar como la exploracion pasa de pruebas operativas a cierre de brackets, sin ocultar casos parciales.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/15_hidraulica_local_vs_desplazamiento.png" alt="Hidraulica local contra desplazamiento">
-        <figcaption>Relacion entre hidraulica local y desplazamiento. Ayuda a explicar por que <code>H</code> por si sola no basta para leer la demanda sobre el bloque.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/16_fuerzas_vs_desplazamiento.png" alt="Fuerzas contra desplazamiento">
-        <figcaption>Fuerzas SPH y de contacto frente a desplazamiento. La fuerza de contacto se reporta como diagnostico, no como criterio de clasificacion.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/17_rotacion_diagnostica_vs_desplazamiento.png" alt="Rotacion diagnostica contra desplazamiento">
-        <figcaption>La rotacion puede ser alta aun en casos estables por desplazamiento. Por eso se conserva como diagnostico y no como criterio primario.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/18_efecto_masa_resumen.png" alt="Resumen del efecto de la masa">
-        <figcaption>Resumen visual del efecto de <code>m*</code>: la masa baja abre una zona critica, mientras masas mayores estabilizan parte importante del dominio explorado.</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section>
-    <h2>7. Verificaciones complementarias antes de produccion</h2>
-    <p>Estas pruebas no son parte del analisis de convergencia. Se agregan para cubrir tres preguntas distintas antes de seguir con la campana productiva: si el solver reproduce un caso hidraulico conocido, si el bloque no se mueve por una condicion inicial defectuosa y si las respuestas SPH son coherentes con un balance analitico de primer orden.</p>
-    <div class="grid">
-      <figure>
-        <img src="figures/09_benchmark_hidraulico.png" alt="Benchmark hidraulico DualSPHysics contra referencia experimental">
-        <figcaption><strong>Benchmark hidraulico:</strong> caso oficial <code>CaseDambreakVal2D</code>. RMSE del frente: 0.257 m; error relativo final: 3.42%. Valida instalacion, GenCase, DualSPHysics, GPU y postproceso de gauges; no valida el bloque.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/10_contact_sanity.png" alt="Sanity de contacto bloque suelo sin impacto hidraulico">
-        <figcaption><strong>Sanity de contacto:</strong> la zona sombreada es el acomodo inicial de Chrono/contacto. Después de ese transiente, la velocidad cae prácticamente a cero y el desplazamiento sostenido queda en 0.78% de <code>d_eq</code>, bajo el umbral de 5%, sin fuerza SPH local.</figcaption>
-      </figure>
-      <figure>
-        <img src="figures/11_comparacion_analitica.png" alt="Comparacion analitica preliminar entre movilidad y desplazamiento">
-        <figcaption><strong>Comparacion analitica:</strong> indice <code>Psi = F_motriz / F_resistente</code> aplicado a piloto y batch2. La escala log evita que los casos de desplazamiento extremo oculten los cercanos al umbral. No hay contradicciones fuertes entre banda analitica y clase SPH en los casos con datos hidraulicos utiles.</figcaption>
-      </figure>
-    </div>
-    <p class="note"><strong>Lectura:</strong> estas verificaciones aumentan la defensibilidad del pipeline sin afirmar validacion experimental del bloque. Son controles independientes: hidraulica base, contacto inicial y coherencia fisica de orden de magnitud.</p>
-  </section>
-
-  <section>
-    <h2>8. Tabla resumida de lotes posteriores</h2>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Lote</th><th>Caso</th><th>H (m)</th><th>m*</th><th>mu</th><th>Pendiente</th><th>Clase</th><th>Despl. (%)</th><th>Despl. (mm)</th><th>Rot.</th></tr></thead>
-        <tbody>{productive_rows(prod)}</tbody>
-      </table>
-    </div>
-  </section>
-
-  <section>
-    <h2>9. Analisis final y literatura usada</h2>
+    <h2>6. Analisis final y literatura usada</h2>
     <p>Sin un experimento fisico propio del bloque, la tesis no debe afirmar validacion experimental directa del caso completo. La defensa se arma por capas: sensibilidad de resolucion, benchmark hidraulico externo, sanity de contacto bloque-suelo y comparacion analitica de orden de magnitud. Cada capa responde una pregunta distinta.</p>
     <div class="table-wrap">
       <table>
@@ -849,7 +888,7 @@ def write_page(prod: pd.DataFrame) -> None:
   </section>
 
   <section>
-    <h2>10. Términos usados</h2>
+    <h2>7. Términos usados</h2>
     <dl class="terms">
       <div><dt>dp</dt><dd>Espaciamiento inicial entre partículas SPH. Menor <code>dp</code> implica mayor resolución y mayor costo computacional.</dd></div>
       <div><dt>Resolución SPH</dt><dd>Nivel de detalle espacial dado por el tamaño/separación de partículas, no por una malla fija.</dd></div>
@@ -1055,6 +1094,15 @@ a {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
+.button-link {
+  display: inline-block;
+  background: #255f91;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-weight: 700;
+}
 .terms {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1135,15 +1183,24 @@ def write_data(
     frontier.to_csv(DATA / "master_convergence_frontier.csv", index=False)
     if not prod.empty:
         prod.to_csv(DATA / "productive_lots_combined.csv", index=False)
+    else:
+        for stale in [
+            DATA / "productive_lots_combined.csv",
+            DATA / "master_production_story.csv",
+            DATA / "figure_index.csv",
+            DATA / "FIGURE_INDEX.md",
+        ]:
+            stale.unlink(missing_ok=True)
 
 
 def main() -> None:
     init()
     summary = read_csv(RESULTS / "conv3_f05_full.csv", sep=";")
     frontier = load_frontier()
-    prod = load_productive()
+    prod = pd.DataFrame()
     max_diff = max_difference_table(summary)
     temporal_errors = temporal_error_table()
+    plot_00_setup_layout()
     plot_00_method_flow()
     plot_01_defensible_variables(max_diff, temporal_errors)
     plot_02_principal_trends(max_diff)
@@ -1152,9 +1209,7 @@ def main() -> None:
     plot_05_cost_vs_dp(summary)
     plot_06_frontier_after_resolution(frontier)
     plot_07_resolution_sensitivity(frontier)
-    plot_08_productive(prod)
     copy_verification_assets()
-    copy_production_story_assets()
     write_data(summary, frontier, prod, max_diff, temporal_errors)
     write_css()
     write_page(prod)
