@@ -12,6 +12,8 @@ No se usaron binarios pesados ni se corrieron simulaciones nuevas.
 - Modos de criterio: displacement_only
 - GCI JSON disponibles: 4 prefixes conv_edge
 - Umbral desplazamiento: 5.0% d_eq = 5.021 mm
+- Regla visual: toda figura que usa desplazamiento en `% d_eq` incluye una escala absoluta equivalente en mm.
+- Regla visual: las figuras de cambio relativo [%] anotan el cambio absoluto en unidades fisicas.
 
 ## Figuras esenciales
 

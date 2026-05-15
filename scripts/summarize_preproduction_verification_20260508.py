@@ -4,12 +4,14 @@ import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
 D_EQ = 0.100421
+D_EQ_MM = D_EQ * 1000.0
 
 BENCH = ROOT / "data" / "benchmarks" / "hydraulic_20260508"
 ANALYTIC = ROOT / "data" / "analytic_comparison" / "20260508_preproduction"
@@ -54,6 +56,7 @@ def contact_figures() -> dict:
     post_mask = exchange["time [s]"] >= transient_end
     post_force_mask = forces["Time"] >= transient_end
     post_disp_max = float(displacement_pct[post_mask].max())
+    post_disp_max_mm = post_disp_max * D_EQ_MM / 100.0
     post_speed_max = float(speed[post_mask].max())
     post_force_max = float(contact_force[post_force_mask].max())
 
@@ -63,13 +66,22 @@ def contact_figures() -> dict:
         axis.grid(alpha=0.22)
 
     axes[0].plot(exchange["time [s]"], displacement_pct, color="#2d74b8", lw=1.5)
-    axes[0].axhline(5, color="#b73b3b", ls="--", lw=1.0, label="umbral 5% d_eq")
+    axes[0].axhline(5, color="#b73b3b", ls="--", lw=1.0, label=f"umbral 5% d_eq = {0.05 * D_EQ_MM:.2f} mm")
     axes[0].set_ylabel("Desplazamiento (% d_eq)")
+    sec = axes[0].secondary_yaxis(
+        "right",
+        functions=(
+            lambda pct: np.asarray(pct) * D_EQ_MM / 100.0,
+            lambda mm: np.asarray(mm) / D_EQ_MM * 100.0,
+        ),
+    )
+    sec.set_ylabel("Desplazamiento absoluto (mm)")
+    sec.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:.1f}"))
     axes[0].legend(frameon=False, loc="upper right")
     axes[0].text(
         0.985,
         0.18,
-        f"max. post-transiente: {post_disp_max:.2f}% d_eq",
+        f"max. post-transiente: {post_disp_max:.2f}% d_eq ({post_disp_max_mm:.2f} mm)",
         transform=axes[0].transAxes,
         ha="right",
         va="bottom",

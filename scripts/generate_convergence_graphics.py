@@ -26,6 +26,8 @@ import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+from matplotlib.ticker import FuncFormatter
 import numpy as np
 import pandas as pd
 
@@ -36,8 +38,9 @@ SQLITE_PATH = PROJECT / "data" / "results.sqlite"
 OUTDIR = PROJECT / "data" / "figures" / "derived_convergence_graphics"
 
 D_EQ_M = 0.100421
+D_EQ_MM = D_EQ_M * 1000.0
 DISP_THRESHOLD_PCT = 5.0
-DISP_THRESHOLD_MM = D_EQ_M * 1000.0 * DISP_THRESHOLD_PCT / 100.0
+DISP_THRESHOLD_MM = D_EQ_MM * DISP_THRESHOLD_PCT / 100.0
 ROT_THRESHOLD_DEG = 5.0
 
 DP_COLORS = {
@@ -53,23 +56,42 @@ ROLE_MARKERS = {
     "repeatability_check": "X",
     "fine_probe": "^",
 }
+ROLE_LABELS = {
+    "edge_grid": "grilla base",
+    "frontier_refinement": "refinamiento frontera",
+    "repeatability_check": "repeticion",
+    "fine_probe": "probe fino",
+}
 
 plt.rcParams.update(
     {
-        "figure.dpi": 140,
-        "savefig.dpi": 220,
-        "font.size": 10,
-        "axes.titlesize": 12,
-        "axes.labelsize": 10,
-        "legend.fontsize": 8,
-        "xtick.labelsize": 9,
-        "ytick.labelsize": 9,
+        "figure.dpi": 160,
+        "savefig.dpi": 320,
+        "font.size": 10.5,
+        "axes.titlesize": 12.5,
+        "axes.labelsize": 10.5,
+        "legend.fontsize": 8.2,
+        "xtick.labelsize": 9.2,
+        "ytick.labelsize": 9.2,
         "axes.grid": True,
-        "grid.alpha": 0.25,
+        "grid.alpha": 0.18,
+        "grid.linewidth": 0.7,
         "axes.spines.top": False,
         "axes.spines.right": False,
         "figure.facecolor": "white",
         "axes.facecolor": "white",
+        "axes.titleweight": "bold",
+        "axes.edgecolor": "#444444",
+        "axes.labelcolor": "#222222",
+        "xtick.color": "#333333",
+        "ytick.color": "#333333",
+        "legend.framealpha": 0.96,
+        "legend.facecolor": "white",
+        "legend.edgecolor": "#D5D5D5",
+        "lines.solid_capstyle": "round",
+        "patch.linewidth": 0.6,
+        "figure.constrained_layout.use": True,
+        "svg.fonttype": "none",
     }
 )
 
@@ -223,8 +245,8 @@ def save_fig(fig: plt.Figure, name: str, records: list[FigureRecord],
              priority: str, shows: str, why: str, caution: str = "") -> None:
     png = OUTDIR / f"{name}.png"
     svg = OUTDIR / f"{name}.svg"
-    fig.savefig(png, bbox_inches="tight")
-    fig.savefig(svg, bbox_inches="tight")
+    fig.savefig(png, bbox_inches="tight", facecolor="white")
+    fig.savefig(svg, bbox_inches="tight", facecolor="white")
     plt.close(fig)
     records.append(
         FigureRecord(
@@ -243,7 +265,100 @@ def style_axis(ax: plt.Axes, xlabel: str, ylabel: str, title: str) -> None:
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title, fontweight="bold")
-    ax.grid(True, alpha=0.25)
+    ax.grid(True, alpha=0.18)
+    ax.margins(x=0.04, y=0.10)
+
+
+def pct_to_mm(pct: float | np.ndarray) -> float | np.ndarray:
+    return np.asarray(pct) * D_EQ_MM / 100.0
+
+
+def mm_to_pct(mm: float | np.ndarray) -> float | np.ndarray:
+    return np.asarray(mm) / D_EQ_MM * 100.0
+
+
+def add_disp_mm_secondary_axis(ax: plt.Axes) -> None:
+    """Add an absolute displacement axis paired with a % d_eq primary y-axis."""
+    sec = ax.secondary_yaxis("right", functions=(pct_to_mm, mm_to_pct))
+    sec.set_ylabel("Desplazamiento absoluto [mm]", color="#444444")
+    sec.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.1f}"))
+    sec.tick_params(colors="#444444", labelsize=8.8, pad=3)
+
+
+def add_disp_mm_secondary_xaxis(ax: plt.Axes) -> None:
+    """Add an absolute displacement axis paired with a % d_eq primary x-axis."""
+    sec = ax.secondary_xaxis("top", functions=(pct_to_mm, mm_to_pct))
+    sec.set_xlabel("Desplazamiento absoluto [mm]", color="#444444")
+    sec.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.1f}"))
+    sec.tick_params(colors="#444444", labelsize=8.8, pad=3)
+
+
+def add_panel_note(ax: plt.Axes, text: str) -> None:
+    ax.text(
+        0.01,
+        0.02,
+        text,
+        transform=ax.transAxes,
+        fontsize=7.8,
+        color="#555555",
+        ha="left",
+        va="bottom",
+        bbox=dict(boxstyle="round,pad=0.25", facecolor="white", edgecolor="#DDDDDD", alpha=0.88),
+    )
+
+
+def add_dp_role_legend(ax: plt.Axes, plot_df: pd.DataFrame, threshold: str | None = None) -> None:
+    dp_handles = []
+    for dp in sorted(plot_df["dp"].dropna().unique()):
+        dp_handles.append(
+            Line2D(
+                [0],
+                [0],
+                marker="o",
+                linestyle="",
+                markersize=7.5,
+                markerfacecolor=DP_COLORS.get(round(float(dp), 3), "#666666"),
+                markeredgecolor="white",
+                label=f"dp={float(dp):.3f}",
+            )
+        )
+    role_handles = []
+    for role in sorted(plot_df["group"].dropna().unique()):
+        role_handles.append(
+            Line2D(
+                [0],
+                [0],
+                marker=ROLE_MARKERS.get(str(role), "o"),
+                linestyle="",
+                markersize=7.5,
+                markerfacecolor="#F2F2F2",
+                markeredgecolor="#333333",
+                color="#333333",
+                label=ROLE_LABELS.get(str(role), str(role)),
+            )
+        )
+    threshold_handles = []
+    if threshold == "pct":
+        threshold_handles.append(
+            Line2D([0], [0], color="black", linestyle="--", linewidth=1.4, label=f"umbral 5% = {DISP_THRESHOLD_MM:.2f} mm")
+        )
+    elif threshold == "mm":
+        threshold_handles.append(
+            Line2D([0], [0], color="black", linestyle="--", linewidth=1.4, label=f"umbral {DISP_THRESHOLD_MM:.2f} mm")
+        )
+    handles = dp_handles + role_handles + threshold_handles
+    if not handles:
+        return
+    ax.legend(
+        handles=handles,
+        ncol=min(4, max(1, len(handles))),
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.20),
+        frameon=True,
+        columnspacing=1.0,
+        handletextpad=0.45,
+        borderaxespad=0.3,
+    )
 
 
 def add_threshold_pct(ax: plt.Axes) -> None:
@@ -252,7 +367,7 @@ def add_threshold_pct(ax: plt.Axes) -> None:
         color="black",
         linestyle="--",
         linewidth=1.1,
-        label="umbral 5% d_eq",
+        label=f"umbral 5% d_eq = {DISP_THRESHOLD_MM:.2f} mm",
     )
 
 
@@ -283,14 +398,14 @@ def scatter_by_dp(ax: plt.Axes, df: pd.DataFrame, y: str, ylabel: str,
                 edgecolor="white",
                 linewidth=0.7,
                 alpha=0.92,
-                label=f"dp={dp:.3f}, {role}",
             )
     if threshold == "pct":
         add_threshold_pct(ax)
+        add_disp_mm_secondary_axis(ax)
     if threshold == "mm":
         add_threshold_mm(ax)
     style_axis(ax, "mu [-]", ylabel, title)
-    ax.legend(ncol=2, fontsize=7, frameon=True)
+    add_dp_role_legend(ax, plot_df, threshold=threshold)
 
 
 def plot_frontier_mu_disp_pct(df: pd.DataFrame, records: list[FigureRecord]) -> None:
@@ -484,6 +599,7 @@ def plot_bracket_dp003(df: pd.DataFrame, records: list[FigureRecord]) -> None:
         for _, r in role_df.iterrows():
             ax.text(r["mu"], r["disp_pct_deq"] + 0.12, r["criterion_class"], ha="center", fontsize=8)
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     ax.axvspan(0.68050, 0.68075, color="#777777", alpha=0.12, label="bracket principal")
     style_axis(ax, "mu [-]", "Desplazamiento maximo [% d_eq]", "Bracket fino en dp=0.003")
     ax.legend(frameon=True, fontsize=8)
@@ -508,6 +624,7 @@ def plot_resolution_metric(df: pd.DataFrame, records: list[FigureRecord],
     ax.invert_xaxis()
     if threshold == "pct":
         add_threshold_pct(ax)
+        add_disp_mm_secondary_axis(ax)
     elif threshold == "mm":
         add_threshold_mm(ax)
     elif threshold == "rot":
@@ -538,30 +655,87 @@ def relative_change_df(df: pd.DataFrame, metric: str) -> pd.DataFrame:
                 pct = np.nan
             else:
                 pct = (float(fine[metric]) - float(coarse[metric])) / denom * 100.0
+            delta_abs = float(fine[metric]) - float(coarse[metric])
+            if metric == "disp_pct_deq":
+                delta_abs = float(pct_to_mm(delta_abs))
             rows.append(
                 {
                     "mu": mu,
                     "pair": f"{coarse['dp']:.3f}->{fine['dp']:.3f}",
                     "change_pct": pct,
+                    "delta_abs": delta_abs,
                 }
             )
     return pd.DataFrame(rows)
 
 
+def metric_delta_unit(metric: str) -> str:
+    return {
+        "disp_pct_deq": "mm",
+        "max_rotation_deg": "deg",
+        "max_velocity_ms": "m/s",
+        "max_sph_force_N": "N",
+    }.get(metric, "")
+
+
+def format_delta(value: float, unit: str) -> str:
+    if not np.isfinite(value):
+        return ""
+    abs_v = abs(value)
+    if unit == "mm":
+        return f"{value:+.2f} mm"
+    if unit == "deg":
+        return f"{value:+.2f} deg"
+    if unit == "m/s":
+        return f"{value:+.3f} m/s"
+    if unit == "N":
+        return f"{value:+.2f} N"
+    if abs_v >= 100:
+        return f"{value:+.0f} {unit}".strip()
+    if abs_v >= 10:
+        return f"{value:+.1f} {unit}".strip()
+    return f"{value:+.2f} {unit}".strip()
+
+
 def plot_relative_change(df: pd.DataFrame, records: list[FigureRecord],
                          metric: str, name: str, title: str) -> None:
     r = relative_change_df(df, metric)
-    fig, ax = plt.subplots(figsize=(8.8, 4.8))
+    unit = metric_delta_unit(metric)
+    fig, ax = plt.subplots(figsize=(9.6, 5.0))
     pairs = list(r["pair"].drop_duplicates())
     x = np.arange(len(pairs))
     width = 0.18
     for k, (mu, g) in enumerate(r.groupby("mu")):
         vals = [g[g["pair"] == p]["change_pct"].iloc[0] if p in set(g["pair"]) else np.nan for p in pairs]
-        ax.bar(x + (k - 1.5) * width, vals, width=width, label=f"mu={mu:.3f}")
+        deltas = [g[g["pair"] == p]["delta_abs"].iloc[0] if p in set(g["pair"]) else np.nan for p in pairs]
+        bars = ax.bar(x + (k - 1.5) * width, vals, width=width, label=f"mu={mu:.3f}")
+        for bar, delta in zip(bars, deltas):
+            if not np.isfinite(delta) or not np.isfinite(bar.get_height()):
+                continue
+            height = bar.get_height()
+            y = height + (2.5 if height >= 0 else -2.5)
+            va = "bottom" if height >= 0 else "top"
+            ax.text(
+                bar.get_x() + bar.get_width() / 2,
+                y,
+                format_delta(float(delta), unit),
+                ha="center",
+                va=va,
+                rotation=90,
+                fontsize=6.6,
+                color="#333333",
+            )
     ax.axhline(0, color="black", linewidth=1.0)
     ax.set_xticks(x)
     ax.set_xticklabels(pairs)
+    finite_vals = r["change_pct"].replace([np.inf, -np.inf], np.nan).dropna()
+    if not finite_vals.empty:
+        lo = float(finite_vals.min())
+        hi = float(finite_vals.max())
+        pad = max(8.0, 0.28 * max(abs(lo), abs(hi), 1.0))
+        ax.set_ylim(lo - pad, hi + pad)
     style_axis(ax, "par de refinamiento", "Cambio relativo [%]", title)
+    add_panel_note(ax, f"Etiqueta de cada barra: cambio absoluto ({unit}).")
     ax.legend(ncol=2, frameon=True)
     save_fig(
         fig,
@@ -606,6 +780,7 @@ def plot_edge_vs_repeat(df: pd.DataFrame, records: list[FigureRecord]) -> None:
             colors.append(CLASS_COLORS.get(str(s["criterion_class"].iloc[0]), "#999") if not s.empty else "#ddd")
         ax.bar(x + offset, vals, width=width, label=group, color=colors, alpha=0.9)
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     ax.set_xticks(x)
     ax.set_xticklabels(labels)
     style_axis(ax, "caso repetido", "Desplazamiento maximo [% d_eq]", "Repeticiones marginales")
@@ -638,6 +813,7 @@ def plot_marginal_repeats(df: pd.DataFrame, records: list[FigureRecord]) -> None
             edgecolor="white",
         )
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     style_axis(ax, "caso", "Desplazamiento maximo [% d_eq]", "Patron de repeticiones marginales")
     ax.tick_params(axis="x", rotation=20)
     ax.legend(frameon=True)
@@ -679,6 +855,7 @@ def plot_repeat_dumbbell(df: pd.DataFrame, records: list[FigureRecord]) -> None:
                 label=role if y == 0 else None,
             )
     ax.axvline(DISP_THRESHOLD_PCT, color="black", linestyle="--", linewidth=1.1)
+    add_disp_mm_secondary_xaxis(ax)
     ax.set_yticks(y_positions)
     ax.set_yticklabels([p[2] for p in pairs])
     style_axis(ax, "Desplazamiento maximo [% d_eq]", "caso", "Dumbbell de repetibilidad")
@@ -734,6 +911,7 @@ def plot_cost_precision_panel(df: pd.DataFrame, records: list[FigureRecord]) -> 
             label=f"dp={dp:.3f}",
         )
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     style_axis(ax, "Tiempo [min]", "Desplazamiento [% d_eq]", "Costo vs criterio")
 
     ax = axes[1]
@@ -800,6 +978,7 @@ def plot_summary_frontier(df: pd.DataFrame, records: list[FigureRecord]) -> None
             label=f"dp={dp:.3f}",
         )
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     ax.axvspan(0.68050, 0.68075, color="#777", alpha=0.12, label="bracket dp=0.003")
     style_axis(ax, "mu [-]", "Desplazamiento [% d_eq]", "Frontera practica")
     ax.legend(frameon=True)
@@ -824,6 +1003,7 @@ def plot_summary_frontier(df: pd.DataFrame, records: list[FigureRecord]) -> None
         label="rotated=True, clase ESTABLE",
     )
     ax.axhline(DISP_THRESHOLD_PCT, color="black", linestyle="--", linewidth=1.0)
+    add_disp_mm_secondary_axis(ax)
     ax.axvline(ROT_THRESHOLD_DEG, color="#666", linestyle=":", linewidth=1.0)
     style_axis(ax, "Rotacion acumulada [deg]", "Desplazamiento [% d_eq]", "Rotacion diagnostica")
     ax.legend(frameon=True)
@@ -853,6 +1033,7 @@ def plot_summary_resolution(df: pd.DataFrame, records: list[FigureRecord]) -> No
         ax.invert_xaxis()
         if col == "disp_pct_deq":
             add_threshold_pct(ax)
+            add_disp_mm_secondary_axis(ax)
         if col == "max_rotation_deg":
             ax.axhline(ROT_THRESHOLD_DEG, color="black", linestyle="--", linewidth=1.0)
         style_axis(ax, "dp [m]", ylabel, title)
@@ -902,6 +1083,7 @@ def plot_rotation_diagnostic(df: pd.DataFrame, records: list[FigureRecord]) -> N
             alpha=0.9,
         )
     ax.axhline(DISP_THRESHOLD_PCT, color="black", linestyle="--", linewidth=1.1, label="umbral desplazamiento")
+    add_disp_mm_secondary_axis(ax)
     ax.axvline(ROT_THRESHOLD_DEG, color="#666", linestyle=":", linewidth=1.1, label="umbral rot diagnostico")
     style_axis(ax, "Rotacion acumulada [deg]", "Desplazamiento [% d_eq]", "Rotacion diagnostica vs criterio primario")
     ax.legend(frameon=True)
@@ -942,6 +1124,7 @@ def plot_dp002_probe_context(df: pd.DataFrame, records: list[FigureRecord]) -> N
                 color="#333333",
             )
     add_threshold_pct(ax)
+    add_disp_mm_secondary_axis(ax)
     style_axis(
         ax,
         "mu [-]",
@@ -1002,6 +1185,8 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame, gci: pd.DataF
         f"- Modos de criterio: {', '.join(sorted(master['criterion_mode'].unique()))}",
         f"- GCI JSON disponibles: {0 if gci.empty else gci['prefix'].nunique()} prefixes conv_edge",
         f"- Umbral desplazamiento: {DISP_THRESHOLD_PCT:.1f}% d_eq = {DISP_THRESHOLD_MM:.3f} mm",
+        "- Regla visual: toda figura que usa desplazamiento en `% d_eq` incluye una escala absoluta equivalente en mm.",
+        "- Regla visual: las figuras de cambio relativo [%] anotan el cambio absoluto en unidades fisicas.",
         "",
         "## Figuras esenciales",
         "",
