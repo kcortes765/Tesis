@@ -365,6 +365,40 @@ def plot_00_setup_layout() -> None:
     plan.set_ylabel("ancho y (m)")
     plan.set_yticks([0, 0.5, 1.0])
 
+    def add_slope_aligned_block(ax: plt.Axes, x_contact: float, length: float, thickness: float, *, z_offset: float = 0.0) -> None:
+        slope = 1 / 20
+        z_contact = (x_contact - 6.0) * slope + z_offset
+        tangent = np.array([1.0, slope], dtype=float)
+        tangent /= np.linalg.norm(tangent)
+        normal = np.array([-slope, 1.0], dtype=float)
+        normal /= np.linalg.norm(normal)
+        contact = np.array([x_contact, z_contact])
+        # Bottom edge sits exactly on the beach tangent; all other points are above it.
+        points = np.vstack(
+            [
+                contact - tangent * (length * 0.50),
+                contact - tangent * (length * 0.22) + normal * (thickness * 0.18),
+                contact + tangent * (length * 0.08) + normal * (thickness * 0.36),
+                contact + tangent * (length * 0.36) + normal * (thickness * 0.30),
+                contact + tangent * (length * 0.50),
+                contact + tangent * (length * 0.43) + normal * (thickness * 0.70),
+                contact + tangent * (length * 0.16) + normal * (thickness * 1.08),
+                contact - tangent * (length * 0.15) + normal * (thickness * 0.94),
+                contact - tangent * (length * 0.42) + normal * (thickness * 0.58),
+            ]
+        )
+        ax.add_patch(
+            Polygon(
+                points,
+                closed=True,
+                facecolor="#6b5b4b",
+                edgecolor="#241f1b",
+                linewidth=1.0,
+                joinstyle="round",
+                zorder=5,
+            )
+        )
+
     # Elevation view: same x scale, exaggerated z for readability.
     elev.set_aspect("auto")
     bed = np.array([[0, 0], [6, 0], [15, 0.45], [30, 0.45], [30, -0.08], [0, -0.08]])
@@ -374,12 +408,26 @@ def plot_00_setup_layout() -> None:
     xb = 6.5
     zb = (xb - 6.0) / 20.0
     slope_angle = np.degrees(np.arctan(1 / 20))
-    elev.add_patch(Ellipse((xb, zb + 0.030), 0.28, 0.070, angle=slope_angle, facecolor="#6b5b4b", edgecolor="#241f1b", linewidth=1.0))
-    elev.add_patch(FancyArrowPatch((0.65, 0.18), (5.95, 0.025), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
+    add_slope_aligned_block(elev, xb, length=0.70, thickness=0.007)
+    elev.add_patch(FancyArrowPatch((0.65, 0.18), (6.42, 0.035), arrowstyle="->", mutation_scale=14, color=BLUE, linewidth=1.8))
     elev.plot([6, 15], [0, 0.45], color="#8d7442", lw=1.2)
     elev.text(10.5, 0.30, "pendiente 1:20", color="#66512d", fontsize=8, rotation=slope_angle, ha="center")
-    elev.text(xb, zb + 0.090, "bloque paralelo\na la playa", color="#241f1b", fontsize=8, ha="center")
+    elev.text(xb + 1.15, zb + 0.105, "bloque apoyado;\neje largo paralelo a la playa", color="#241f1b", fontsize=8, ha="center")
     elev.text(0.6, 0.215, "H", color="#245d7a", fontsize=9, weight="bold")
+    inset = elev.inset_axes([0.405, 0.565, 0.235, 0.285])
+    inset.set_facecolor("#fffdf8")
+    inset.fill_between([6.30, 6.75], [0.015, 0.0375], [-0.010, -0.010], color="#e8dcc6", alpha=1.0)
+    inset.plot([6.30, 6.75], [0.015, 0.0375], color="#8d7442", lw=1.15)
+    add_slope_aligned_block(inset, xb, length=0.23, thickness=0.033)
+    inset.set_xlim(6.36, 6.66)
+    inset.set_ylim(0.006, 0.068)
+    inset.set_aspect("equal", adjustable="box")
+    inset.set_xticks([])
+    inset.set_yticks([])
+    inset.set_title("detalle ampliado: sin penetracion", fontsize=7, pad=1.5)
+    for spine in inset.spines.values():
+        spine.set_edgecolor("#cfd8e3")
+        spine.set_linewidth(0.8)
     elev.set_xlim(-0.25, 30.25)
     elev.set_ylim(-0.05, 0.58)
     elev.set_title("Elevacion longitudinal")
