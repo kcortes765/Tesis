@@ -902,6 +902,14 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
         <img src="figures/00_setup_planta_elevacion.png" alt="Planta y elevacion del setup SPH">
         <figcaption>Setup fisico usado en la lectura: canal, playa 1:20 y bloque irregular apoyado sobre la playa. La planta mantiene escala horizontal; la elevacion realza z para legibilidad.</figcaption>
       </figure>
+    <h3>Ficha del caso físico usado para la convergencia</h3>
+    <p>Todos los valores de la tabla por resolución corresponden a este mismo caso físico; lo único que cambia entre filas es <code>dp</code>.</p>
+    <div class="table-wrap compact-table">
+      <table>
+        <tbody>{convergence_case_spec_rows()}</tbody>
+      </table>
+    </div>
+    <p class="note">Ficha reconstruida desde <code>data/logs/conv3_f05_full.log</code>. Esta es la condición específica usada para la convergencia continua; no representa todos los casos productivos posteriores.</p>
       <p>SPH no usa una malla fija; usa partículas. Por eso aquí <code>dp</code> significa <strong>espaciamiento inicial entre partículas</strong> y se interpreta como resolución espacial del modelo.</p>
       <p>El análisis se ordena así: primero se comparan variables continuas para distintos <code>dp</code>, como desplazamiento del bloque, velocidad del bloque, velocidad del flujo y altura de agua en gauges. Esa es la parte de convergencia o sensibilidad de resolución.</p>
       <p>Luego, con una resolución seleccionada por equilibrio entre respuesta y costo, se analiza si el bloque inicia movimiento bajo un criterio operacional. Esa segunda parte es el estudio de estabilidad, no el reemplazo del análisis de convergencia.</p>
@@ -932,14 +940,6 @@ def write_page(prod: pd.DataFrame, summary: pd.DataFrame) -> None:
         </ul>
       </div>
     </figure>
-    <h3>Ficha del caso físico usado para la convergencia</h3>
-    <p>Todos los valores de la tabla por resolución corresponden a este mismo caso físico; lo único que cambia entre filas es <code>dp</code>.</p>
-    <div class="table-wrap compact-table">
-      <table>
-        <tbody>{convergence_case_spec_rows()}</tbody>
-      </table>
-    </div>
-    <p class="note">Ficha reconstruida desde <code>data/logs/conv3_f05_full.log</code>. Esta es la condición específica usada para la convergencia continua; no representa todos los casos productivos posteriores.</p>
     <h3>Resultados por resolución</h3>
     <div class="table-wrap">
       <table>
