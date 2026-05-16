@@ -1,0 +1,260 @@
+﻿02:46:34 INFO: 
+============================================================
+02:46:34 INFO: CASO al2_highH_m115_mu0700: dam_h=0.225m, mass=1.150kg, rot_z=0.0deg, mu_s=0.700, slope=1:20, dp=0.003
+02:46:34 INFO: ============================================================
+02:46:34 INFO: Calculando propiedades del boulder para caso 'al2_highH_m115_mu0700'...
+02:46:34 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+02:46:34 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+02:46:34 INFO:   Densidad:    2168.9 kg/m^3
+02:46:34 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+02:46:34 INFO:   d_eq:        0.1004 m (10.0 cm)
+02:46:34 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+02:46:34 INFO:   dim_min/dp:  (requiere dp para calcular)
+02:46:34 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+02:46:34 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+02:46:34 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+02:46:34 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+02:46:34 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+02:46:34 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+02:46:34 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+02:46:34 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+02:46:34 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+02:46:34 INFO:     V05: -> upstream x=6.4139, z=0.0237
+02:46:34 INFO:     V06: -> centroide x=6.4794
+02:46:34 INFO:     V07: -> downstream x=6.5904, z=0.0325
+02:46:34 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+02:46:34 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+02:46:34 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+02:46:34 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+02:46:34 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0700\al2_highH_m115_mu0700_Def.xml
+02:46:34 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+02:46:34 INFO:   Canal: 10 verts, 12 faces, watertight=False
+02:46:34 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0700\canal_1to20.stl
+02:46:34 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0700
+02:46:34 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0700\canal_verificacion.png
+02:46:34 INFO:   [1/3] Geometry: OK (al2_highH_m115_mu0700_Def.xml)
+02:46:34 INFO:   Timeout: sin limite (dp=0.003)
+02:46:34 INFO: === Ejecutando caso: al2_highH_m115_mu0700 ===
+02:46:34 INFO:   [al2_highH_m115_mu0700] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe al2_highH_m115_mu0700_Def al2_highH_m115_mu0700_out/al2_highH_m115_mu0700 -save:all
+02:46:41 INFO:   [al2_highH_m115_mu0700] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 al2_highH_m115_mu0700_out/al2_highH_m115_mu0700 al2_highH_m115_mu0700_out
+07:33:42 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+07:33:42 INFO:   [al2_highH_m115_mu0700] Simulacion completada exitosamente
+07:33:42 INFO:   [al2_highH_m115_mu0700] Limpieza desactivada (cleanup_binaries=false)
+07:33:42 INFO:   [al2_highH_m115_mu0700] Duracion total: 17228.0s
+07:33:42 INFO:   [2/3] Simulacion: OK (17228.0s, 24 CSVs)
+07:33:42 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+07:33:42 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+07:33:42 INFO:   Densidad:    2168.9 kg/m^3
+07:33:42 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+07:33:42 INFO:   d_eq:        0.1004 m (10.0 cm)
+07:33:42 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+07:33:42 INFO:   dim_min/dp:  (requiere dp para calcular)
+07:33:42 INFO: Procesando caso: al2_highH_m115_mu0700
+07:33:42 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+07:33:42 INFO:   Baseline temporal: t_ref=0.5000s
+07:33:42 INFO:   Desplazamiento max: 0.022412m (22.32% de d_eq=0.1004m)
+07:33:42 INFO:   Rotacion acumulada max: 7.90 grados
+07:33:42 INFO:   Velocidad max boulder: 0.1000 m/s
+07:33:42 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+07:33:42 INFO:   Fuerza SPH max: 10.3841N, Contacto max: 81021.8071N
+07:33:42 INFO:   Gauges: 12 velocity, 8 maxZ
+07:33:42 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8499 m/s
+07:33:42 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0721m
+07:33:42 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+07:33:42 INFO:   Flags criterio: moved=True, rotated=True
+07:33:42 INFO:   [3/3] Analisis: OK â†’ FALLO (disp=0.0224m, rot=7.9deg)
+07:33:42 INFO: 
+  >>> al2_highH_m115_mu0700: MOVIMIENTO en 4h 47min
+07:33:42 INFO:       disp=0.0224m  rot=7.9deg  vel=0.100m/s  F_sph=10.4N
+07:33:42 INFO:       V_flujo=0.850m/s  H_agua=0.0721m
+07:33:43 INFO:   [ntfy] 8/10 [al2_highH_m115_mu0700] MOVIMIENTO
+07:33:43 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+07:33:43 INFO:   [ntfy] INICIO CASO 9/10: al2_highH_m115_mu0740
+07:33:43 INFO: 
+=================================================================
+  CASO 9/10 [al2_highH_m115_mu0740]  [########################------] 80%
+  h=0.225m | M=1.150kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 8   Fallidos: 0   Quedan: 1
+  Tiempo transcurrido: 1d 11h
+  Promedio: 262.9 min/caso (ultimos 8)
+  ETA: 4h 22min restantes  -->  fin ~16/05 11:56
+  Tasa exito: 100% (8/8)
+=================================================================
+07:33:43 INFO: 
+============================================================
+07:33:43 INFO: 
+============================================================
+07:33:43 INFO: CASO al2_highH_m115_mu0740: dam_h=0.225m, mass=1.150kg, rot_z=0.0deg, mu_s=0.740, slope=1:20, dp=0.003
+07:33:43 INFO: ============================================================
+07:33:43 INFO: Calculando propiedades del boulder para caso 'al2_highH_m115_mu0740'...
+07:33:43 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+07:33:43 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+07:33:43 INFO:   Densidad:    2168.9 kg/m^3
+07:33:43 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+07:33:43 INFO:   d_eq:        0.1004 m (10.0 cm)
+07:33:43 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+07:33:43 INFO:   dim_min/dp:  (requiere dp para calcular)
+07:33:43 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+07:33:43 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+07:33:43 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+07:33:43 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+07:33:43 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+07:33:43 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+07:33:43 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+07:33:43 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+07:33:43 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+07:33:43 INFO:     V05: -> upstream x=6.4139, z=0.0237
+07:33:43 INFO:     V06: -> centroide x=6.4794
+07:33:43 INFO:     V07: -> downstream x=6.5904, z=0.0325
+07:33:43 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+07:33:43 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+07:33:43 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+07:33:43 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+07:33:43 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0740\al2_highH_m115_mu0740_Def.xml
+07:33:43 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+07:33:43 INFO:   Canal: 10 verts, 12 faces, watertight=False
+07:33:43 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0740\canal_1to20.stl
+07:33:43 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0740
+07:33:43 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m115_mu0740\canal_verificacion.png
+07:33:43 INFO:   [1/3] Geometry: OK (al2_highH_m115_mu0740_Def.xml)
+07:33:43 INFO:   Timeout: sin limite (dp=0.003)
+07:33:43 INFO: === Ejecutando caso: al2_highH_m115_mu0740 ===
+07:33:43 INFO:   [al2_highH_m115_mu0740] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe al2_highH_m115_mu0740_Def al2_highH_m115_mu0740_out/al2_highH_m115_mu0740 -save:all
+07:33:50 INFO:   [al2_highH_m115_mu0740] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 al2_highH_m115_mu0740_out/al2_highH_m115_mu0740 al2_highH_m115_mu0740_out
+12:21:32 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+12:21:32 INFO:   [al2_highH_m115_mu0740] Simulacion completada exitosamente
+12:21:32 INFO:   [al2_highH_m115_mu0740] Limpieza desactivada (cleanup_binaries=false)
+12:21:32 INFO:   [al2_highH_m115_mu0740] Duracion total: 17268.1s
+12:21:32 INFO:   [2/3] Simulacion: OK (17268.1s, 24 CSVs)
+12:21:32 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+12:21:32 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+12:21:32 INFO:   Densidad:    2168.9 kg/m^3
+12:21:32 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+12:21:32 INFO:   d_eq:        0.1004 m (10.0 cm)
+12:21:32 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+12:21:32 INFO:   dim_min/dp:  (requiere dp para calcular)
+12:21:32 INFO: Procesando caso: al2_highH_m115_mu0740
+12:21:32 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+12:21:32 INFO:   Baseline temporal: t_ref=0.5000s
+12:21:32 INFO:   Desplazamiento max: 0.006748m (6.72% de d_eq=0.1004m)
+12:21:32 INFO:   Rotacion acumulada max: 5.93 grados
+12:21:32 INFO:   Velocidad max boulder: 0.1002 m/s
+12:21:32 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+12:21:32 INFO:   Fuerza SPH max: 10.2896N, Contacto max: 80739.5251N
+12:21:32 INFO:   Gauges: 12 velocity, 8 maxZ
+12:21:32 INFO:   Flujo max (gauge V05, dist=0.07m): 0.9815 m/s
+12:21:32 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0717m
+12:21:32 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+12:21:32 INFO:   Flags criterio: moved=True, rotated=True
+12:21:32 INFO:   [3/3] Analisis: OK â†’ FALLO (disp=0.0067m, rot=5.9deg)
+12:21:32 INFO: 
+  >>> al2_highH_m115_mu0740: MOVIMIENTO en 4h 47min
+12:21:32 INFO:       disp=0.0067m  rot=5.9deg  vel=0.100m/s  F_sph=10.3N
+12:21:32 INFO:       V_flujo=0.981m/s  H_agua=0.0717m
+12:21:33 INFO:   [ntfy] 9/10 [al2_highH_m115_mu0740] MOVIMIENTO
+12:21:33 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+12:21:34 INFO:   [ntfy] INICIO CASO 10/10: al2_highH_m125_mu0660
+12:21:34 INFO: 
+=================================================================
+  CASO 10/10 [al2_highH_m125_mu0660]  [###########################---] 90%
+  h=0.225m | M=1.250kg | theta=0.0deg | dp=0.003
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  Completados: 9   Fallidos: 0   Quedan: 0
+  Tiempo transcurrido: 1d 15h
+  Promedio: 265.7 min/caso (ultimos 9)
+  ETA: 0s restantes  -->  fin ~16/05 12:21
+  Tasa exito: 100% (9/9)
+=================================================================
+12:21:34 INFO: 
+============================================================
+12:21:34 INFO: 
+============================================================
+12:21:34 INFO: CASO al2_highH_m125_mu0660: dam_h=0.225m, mass=1.250kg, rot_z=0.0deg, mu_s=0.660, slope=1:20, dp=0.003
+12:21:34 INFO: ============================================================
+12:21:34 INFO: Calculando propiedades del boulder para caso 'al2_highH_m125_mu0660'...
+12:21:34 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+12:21:34 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+12:21:34 INFO:   Densidad:    2357.5 kg/m^3
+12:21:34 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+12:21:34 INFO:   d_eq:        0.1004 m (10.0 cm)
+12:21:34 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+12:21:34 INFO:   dim_min/dp:  (requiere dp para calcular)
+12:21:34 INFO:   Ajuste apoyo boulder: elevando 0.508 mm para dejar contacto exacto con la playa
+12:21:34 INFO:   dp=0.003m -> dim_min/dp = 14.3 (0.0429m / 0.003m)
+12:21:34 INFO:   Fillbox seed: (6.4794, 0.5119, 0.0430)
+12:21:34 INFO:   Reubicando gauges: boulder x=[6.417, 6.587], y=0.512, z_mid=0.043
+12:21:34 INFO:     V01: z 0.100 -> 0.0030 (fondo local)
+12:21:34 INFO:     V02: z 0.100 -> 0.0030 (fondo local)
+12:21:34 INFO:     V03: z 0.100 -> 0.0030 (fondo local)
+12:21:34 INFO:     V04: z 0.100 -> 0.0030 (fondo local)
+12:21:34 INFO:     V11: z 0.200 -> 0.1780 (fondo local)
+12:21:34 INFO:     V05: -> upstream x=6.4139, z=0.0237
+12:21:34 INFO:     V06: -> centroide x=6.4794
+12:21:34 INFO:     V07: -> downstream x=6.5904, z=0.0325
+12:21:34 INFO:     hmax03: y->0.512, z->0.0500, distlimit->0.04
+12:21:34 INFO:     hmax04: y->0.512, z->0.1250, distlimit->0.04
+12:21:34 INFO:     hmax05: y->0.512, z->0.1625, distlimit->0.04
+12:21:34 INFO:   Gauges reubicados: 12 velocity, 8 maxz
+12:21:34 INFO:   XML generado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m125_mu0660\al2_highH_m125_mu0660_Def.xml
+12:21:34 INFO: Generando canal: L_flat=6.0m, L_ramp=9.0m, slope=1:20, H_ramp=0.4500m, L_end=15.0m, W=1.0m, H=1.5m
+12:21:34 INFO:   Canal: 10 verts, 12 faces, watertight=False
+12:21:34 INFO:   STL guardado: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m125_mu0660\canal_1to20.stl
+12:21:34 INFO:   Archivos copiados a C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m125_mu0660
+12:21:34 INFO:   PNG verificacion: C:\Users\Admin\Desktop\SPH-Tesis\cases\al2_highH_m125_mu0660\canal_verificacion.png
+12:21:34 INFO:   [1/3] Geometry: OK (al2_highH_m125_mu0660_Def.xml)
+12:21:34 INFO:   Timeout: sin limite (dp=0.003)
+12:21:34 INFO: === Ejecutando caso: al2_highH_m125_mu0660 ===
+12:21:34 INFO:   [al2_highH_m125_mu0660] GenCase: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\GenCase_win64.exe al2_highH_m125_mu0660_Def al2_highH_m125_mu0660_out/al2_highH_m125_mu0660 -save:all
+12:21:40 INFO:   [al2_highH_m125_mu0660] DualSPHysics: C:\DualSPHysics_v5.4.3\DualSPHysics_v5.4\bin\windows\DualSPHysics5.4_win64.exe -gpu:0 al2_highH_m125_mu0660_out/al2_highH_m125_mu0660 al2_highH_m125_mu0660_out
+17:09:32 INFO:   CSVs recolectados (24): ChronoBody_forces.csv, ChronoExchange_mkbound_51.csv, GaugesMaxZ_hmax01.csv, GaugesMaxZ_hmax02.csv, GaugesMaxZ_hmax03.csv...
+17:09:32 INFO:   [al2_highH_m125_mu0660] Simulacion completada exitosamente
+17:09:32 INFO:   [al2_highH_m125_mu0660] Limpieza desactivada (cleanup_binaries=false)
+17:09:32 INFO:   [al2_highH_m125_mu0660] Duracion total: 17277.6s
+17:09:32 INFO:   [2/3] Simulacion: OK (17277.6s, 24 CSVs)
+17:09:32 INFO: Boulder 'BLIR3.stl' (escala=0.04, rot=(0.0, -2.862405226111748, 0.0)):
+17:09:32 INFO:   Volumen:     0.00053023 m^3 (0.530 L)
+17:09:32 INFO:   Densidad:    2357.5 kg/m^3
+17:09:32 INFO:   Centro masa: [-0.020598, 0.011875, 0.017449] m (local)
+17:09:32 INFO:   d_eq:        0.1004 m (10.0 cm)
+17:09:32 INFO:   Bbox size:   0.1706 x 0.2100 x 0.0429 m
+17:09:32 INFO:   dim_min/dp:  (requiere dp para calcular)
+17:09:32 INFO: Procesando caso: al2_highH_m125_mu0660
+17:09:32 INFO:   ChronoExchange: 9500 filas, t=[0.5000, 9.9990]s
+17:09:32 INFO:   Baseline temporal: t_ref=0.5000s
+17:09:32 INFO:   Desplazamiento max: 0.016407m (16.34% de d_eq=0.1004m)
+17:09:32 INFO:   Rotacion acumulada max: 7.12 grados
+17:09:32 INFO:   Velocidad max boulder: 0.1000 m/s
+17:09:32 INFO:   ChronoBody_forces: 9500 filas, bodies: {'beach', 'blir'}
+17:09:32 INFO:   Fuerza SPH max: 9.9296N, Contacto max: 88583.8540N
+17:09:32 INFO:   Gauges: 12 velocity, 8 maxZ
+17:09:32 INFO:   Flujo max (gauge V05, dist=0.07m): 0.8866 m/s
+17:09:32 INFO:   Agua max (gauge hmax03, dist=1.23m): 0.0714m
+17:09:32 INFO:   Criterio (displacement_only): FALLO (umbral disp=5.0% d_eq=0.0050m, rot=5.0 deg)
+17:09:32 INFO:   Flags criterio: moved=True, rotated=True
+17:09:32 INFO:   [3/3] Analisis: OK â†’ FALLO (disp=0.0164m, rot=7.1deg)
+17:09:32 INFO: 
+  >>> al2_highH_m125_mu0660: MOVIMIENTO en 4h 47min
+17:09:32 INFO:       disp=0.0164m  rot=7.1deg  vel=0.100m/s  F_sph=9.9N
+17:09:32 INFO:       V_flujo=0.887m/s  H_agua=0.0714m
+17:09:33 INFO:   [ntfy] 10/10 [al2_highH_m125_mu0660] MOVIMIENTO
+17:09:33 INFO: SQLite: 1 resultados guardados en C:\Users\Admin\Desktop\SPH-Tesis\data\results.sqlite:results
+17:09:33 INFO: 
+############################################################
+17:09:33 INFO: # PRODUCCION COMPLETADA
+17:09:33 INFO: # Exitosos: 10/10
+17:09:33 INFO: # Fallidos: 0/10
+17:09:33 INFO: # Tiempo total: 44.7h (1.9d)
+17:09:33 INFO: ############################################################
+17:09:34 INFO:   [ntfy] COMPLETADO: 10/10 exitosos
+17:09:34 INFO: 
+Re-entrenando GP surrogate con datos frescos...
+17:09:34 INFO: Datos reales: 76 casos de results.sqlite
+17:09:34 INFO: GP entrenado. Kernel: 2.21**2 * Matern(length_scale=[2.9, 10, 10], nu=2.5) + WhiteKernel(noise_level=0.0319)
+17:09:34 INFO:   Log-marginal likelihood: -5.969
+17:09:34 INFO: LOO: RÂ²=0.9266, RMSE=0.6748 m
+17:09:35 INFO:   Figura: gp_2d_slices
+17:09:35 INFO:   Figura: gp_loo_validation
+17:09:36 INFO:   Figura: gp_1d_slices
+17:09:36 INFO: Modelo exportado: C:\Users\Admin\Desktop\SPH-Tesis\data\gp_surrogate.pkl
+17:09:37 INFO:   [ntfy] GP re-entrenado

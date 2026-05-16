@@ -1,0 +1,11 @@
+case_id,dam_height,boulder_mass,boulder_rot_z,friction_coefficient,slope_inv
+al2_lowH_m085_mu0585,0.175,0.85,0,0.585,20
+al2_base_m085_mu0820,0.200,0.85,0,0.820,20
+al2_base_m085_mu0860,0.200,0.85,0,0.860,20
+al2_midH_m085_mu0880,0.210,0.85,0,0.880,20
+al2_highH_m085_mu0880,0.225,0.85,0,0.880,20
+al2_midH_m100_mu0770,0.210,1.00,0,0.770,20
+al2_highH_m100_mu0880,0.225,1.00,0,0.880,20
+al2_highH_m115_mu0700,0.225,1.15,0,0.700,20
+al2_highH_m115_mu0740,0.225,1.15,0,0.740,20
+al2_highH_m125_mu0660,0.225,1.25,0,0.660,20

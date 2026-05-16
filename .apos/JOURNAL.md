@@ -855,3 +855,32 @@ python -m py_compile scripts\generate_production_story_graphics.py scripts\gener
 - Las figuras productivas representan frontera operacional a `dp=0.003`, no convergencia universal.
 - Las lineas entre puntos son guias visuales, no interpolacion formal.
 - La rotacion sigue siendo diagnostico, no criterio primario.
+
+## 2026-05-16 17:30 - AL2 completado y exportado
+
+### Objetivo
+Sincronizar a laptop los resultados livianos de AL batch2 y bloquear el reentrenamiento GP automatico.
+
+### Acciones
+- Verificado data/production_status.json: AL2 completed=10, ailed=0, phase=completed.
+- Creado export liviano exports/al_batch2_bracket_closing_20260516/.
+- Extraida tabla oficial desde data/results.sqlite a l_batch2_summary.csv.
+- Actualizado APOS: STATUS, HANDOFF y PLAN.
+- Bloqueado reentrenamiento automatico en scripts/run_production.py; ahora requiere --retrain-gp.
+- Modelo GP automatico retirado de data/gp_surrogate.pkl y dejado en cuarentena local ignorada.
+
+### Archivos modificados
+- .apos/STATUS.md
+- .apos/HANDOFF.md
+- .apos/PLAN.md
+- .apos/JOURNAL.md
+- exports/al_batch2_bracket_closing_20260516/
+- data/results.sqlite
+
+### Resultados
+- AL2: 10/10 OK, 5 ESTABLE, 5 FALLO, 0 fallos numericos.
+- Export liviano listo para Git/laptop.
+
+### Advertencias metodologicas
+- AL2 es cierre dirigido de brackets, no mapa global completo.
+- Cualquier GP nuevo debe entrenarse deliberadamente con target y features revisados.
