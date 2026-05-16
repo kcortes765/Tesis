@@ -78,6 +78,7 @@ data/logs/
 data/renders/
 data/figures/*.png
 data/figures/*.md
+data/quarantine_auto_gp_retrain_*/
 
 # Local-only archives/imports/worktrees kept on the laptop, not canonical Git data
 archive/

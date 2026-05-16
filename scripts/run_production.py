@@ -39,7 +39,6 @@ from main_orchestrator import (
 )
 from batch_runner import load_config
 from data_cleaner import save_to_sqlite
-from ml_surrogate import run_surrogate
 
 logger = logging.getLogger(__name__)
 STATUS_FILE = PROJECT_ROOT / "data" / "production_status.json"
@@ -569,16 +568,21 @@ def run_production(args):
         tags="trophy",
     )
 
-    # Re-entrenar surrogate si hay suficientes datos
-    if ok >= 10:
+    # El reentrenamiento del surrogate es deliberado, no automatico.
+    # Las campanas productivas deben terminar dejando resultados trazables; el GP
+    # se entrena en un paso separado o con --retrain-gp explicito.
+    if args.retrain_gp and ok >= 10:
         logger.info("\nRe-entrenando GP surrogate con datos frescos...")
         try:
+            from ml_surrogate import run_surrogate
             run_surrogate()
             notify("GP re-entrenado", f"Surrogate actualizado con {ok} datos reales",
                    tags="brain")
         except Exception as e:
             logger.error(f"Error re-entrenando surrogate: {e}")
             notify("Error GP surrogate", str(e), priority="high", tags="warning")
+    elif ok >= 10:
+        logger.info("\nGP surrogate NO re-entrenado automaticamente. Usar --retrain-gp si se desea ejecutar ese paso.")
 
 
 if __name__ == '__main__':
@@ -617,6 +621,8 @@ if __name__ == '__main__':
                         help='Simular campana sin ejecutar GPU')
     parser.add_argument('--no-notify', action='store_true',
                         help='Desactivar notificaciones push')
+    parser.add_argument('--retrain-gp', action='store_true',
+                        help='Re-entrenar GP surrogate al final. Por defecto esta desactivado.')
     args = parser.parse_args()
 
     if args.no_notify:
