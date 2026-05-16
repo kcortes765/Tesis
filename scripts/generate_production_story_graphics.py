@@ -7,6 +7,7 @@ Inputs are restricted to lightweight exported summaries:
 - exports/batch3_productivo_20260509/batch3_summary.csv
 - exports/batch4_mass_probe_20260513/batch4_summary.csv
 - exports/al_batch1_hybrid_20260514/al_batch1_summary.csv
+- exports/al_batch2_bracket_closing_20260516/al_batch2_summary.csv
 
 The script intentionally excludes live/running batches until they have an
 official lightweight export. Heavy DualSPHysics outputs are not read.
@@ -45,6 +46,7 @@ EXPORT_SPECS = [
     ("batch3", "Batch3", PROJECT / "exports" / "batch3_productivo_20260509" / "batch3_summary.csv"),
     ("batch4", "Batch4 masa", PROJECT / "exports" / "batch4_mass_probe_20260513" / "batch4_summary.csv"),
     ("al1", "AL1", PROJECT / "exports" / "al_batch1_hybrid_20260514" / "al_batch1_summary.csv"),
+    ("al2", "AL2", PROJECT / "exports" / "al_batch2_bracket_closing_20260516" / "al_batch2_summary.csv"),
 ]
 
 CLASS_COLORS = {
@@ -60,6 +62,7 @@ FAMILY_COLORS = {
     "batch3": "#E69F00",
     "batch4": "#56B4E9",
     "al1": "#D55E00",
+    "al2": "#CC79A7",
 }
 MASS_COLORS = {
     0.85: "#8C5E3C",
@@ -149,6 +152,8 @@ def load_export_csv(family: str, label: str, path: Path) -> pd.DataFrame:
     df = pd.read_csv(path)
     if df.empty:
         return pd.DataFrame()
+    if "status" not in df.columns:
+        df["status"] = "OK_EXPORT"
     df["family"] = family
     df["family_label"] = label
     df["source_csv"] = str(path.relative_to(PROJECT))
@@ -161,6 +166,24 @@ def load_master() -> pd.DataFrame:
     if not frames:
         return pd.DataFrame()
     master = pd.concat(frames, ignore_index=True, sort=False)
+
+    aliases = {
+        "case_id": ["case_name"],
+        "max_rotation_deg": ["max_rotation"],
+        "max_velocity_ms": ["max_velocity"],
+        "max_sph_force_N": ["max_sph_force"],
+        "max_contact_force_N": ["max_contact_force"],
+        "max_flow_velocity_ms": ["max_flow_velocity"],
+        "max_water_height_m": ["max_water_height"],
+        "margin_pct": ["margin_pct_deq", "disp_margin_pct"],
+        "sim_time_reached": ["sim_time_reached_s"],
+    }
+    for target, sources in aliases.items():
+        if target not in master.columns:
+            master[target] = np.nan
+        for source in sources:
+            if source in master.columns:
+                master[target] = master[target].combine_first(master[source])
 
     if "max_displacement_pct_deq" in master.columns:
         master["disp_pct_deq"] = master["disp_pct_deq"].fillna(
@@ -302,6 +325,18 @@ def clipped_margin(values: pd.Series) -> pd.Series:
     return values.clip(lower=MARGIN_YLIM[0] + 0.8, upper=MARGIN_YLIM[1] - 0.4)
 
 
+def principal_domain(df: pd.DataFrame) -> pd.DataFrame:
+    """Domain used by the after-AL2 surrogate: slope 1:20, dp=0.003, H/mu/m* campaign range."""
+    out = df.copy()
+    if "slope_inv" in out.columns:
+        out = out[np.isclose(out["slope_inv"], 20.0, equal_nan=False)]
+    out = out[
+        out["dam_height"].between(0.175 - 1e-9, 0.225 + 1e-9)
+        & out["friction_coefficient"].between(0.55 - 1e-9, 0.90 + 1e-9)
+    ]
+    return out
+
+
 def note_out_of_scale(ax: plt.Axes, count: int, where: str = "lower left") -> None:
     if count <= 0:
         return
@@ -351,11 +386,19 @@ def family_legend() -> list[Line2D]:
 
 
 def plot_response_map(df: pd.DataFrame) -> FigureRecord:
-    official = df[df["is_official"]].copy()
+    official = principal_domain(df[df["is_official"]]).copy()
     masses = sorted(official["boulder_mass"].dropna().unique())
     n = max(1, len(masses))
-    fig, axes = plt.subplots(1, n, figsize=(4.1 * n, 4.3), sharey=True)
-    axes = np.atleast_1d(axes)
+    ncols = 2 if n > 2 else n
+    nrows = int(np.ceil(n / ncols))
+    fig, axes = plt.subplots(
+        nrows,
+        ncols,
+        figsize=(5.8 * ncols, 4.35 * nrows),
+        sharex=True,
+        sharey=True,
+    )
+    axes = np.atleast_1d(axes).ravel()
 
     for ax, mass in zip(axes, masses):
         sub = official[np.isclose(official["boulder_mass"], mass)]
@@ -374,11 +417,8 @@ def plot_response_map(df: pd.DataFrame) -> FigureRecord:
         ax.set_xlabel("coeficiente de friccion mu")
         ax.xaxis.set_major_locator(MaxNLocator(5))
         ax.yaxis.set_major_locator(MaxNLocator(5))
-        ax.set_xlim(
-            official["friction_coefficient"].min() - 0.025,
-            official["friction_coefficient"].max() + 0.025,
-        )
-        ax.set_ylim(official["dam_height"].min() - 0.006, official["dam_height"].max() + 0.006)
+        ax.set_xlim(0.54, 0.91)
+        ax.set_ylim(0.171, 0.229)
         if ax is axes[0]:
             ax.set_ylabel("altura hidraulica H (m)")
         ax.text(
@@ -391,6 +431,8 @@ def plot_response_map(df: pd.DataFrame) -> FigureRecord:
             ha="left",
             va="bottom",
         )
+    for ax in axes[len(masses):]:
+        ax.axis("off")
 
     fig.suptitle("Mapa operativo de estabilidad por masa relativa")
     handles = class_legend()
@@ -403,7 +445,7 @@ def plot_response_map(df: pd.DataFrame) -> FigureRecord:
         handles + size_handles,
         [h.get_label() for h in handles + size_handles],
         loc="outside lower center",
-        ncol=6,
+        ncol=5,
         frameon=True,
     )
     png, svg = save_figure(fig, "01_response_map_h_mu_by_mass")
@@ -413,13 +455,13 @@ def plot_response_map(df: pd.DataFrame) -> FigureRecord:
         svg,
         "esencial",
         "Mapa H-mu separado por masa relativa; color/forma indica clase y tamano indica Dmax.",
-        "Resume la frontera operacional aprendida por lotes dirigidos usando todos los casos oficiales hasta AL1.",
+        "Resume la frontera operacional aprendida por lotes dirigidos usando todos los casos oficiales hasta AL2.",
         "No interpolar visualmente: los puntos son simulaciones discretas, no una superficie continua validada.",
     )
 
 
 def plot_margin_by_mu(df: pd.DataFrame) -> FigureRecord:
-    official = df[df["is_official"]].copy()
+    official = principal_domain(df[df["is_official"]]).copy()
     masses = sorted(official["boulder_mass"].dropna().unique())
     n = max(1, len(masses))
     fig, axes = plt.subplots(1, n, figsize=(4.2 * n, 4.2), sharey=True)
@@ -522,7 +564,7 @@ def plot_batch_story_strip(df: pd.DataFrame) -> FigureRecord:
     ax.set_ylabel("margen al umbral (%)")
     add_margin_secondary_y(ax)
     ax.set_xlabel("casos ordenados por lote")
-    ax.set_title("Historia de lotes: del piloto a AL1")
+    ax.set_title("Historia de lotes: del piloto a AL2")
     ax.yaxis.set_major_formatter(FuncFormatter(fmt_pct))
     ax.set_xticks([])
     ax.set_ylim(*MARGIN_YLIM)
@@ -563,7 +605,7 @@ def plot_batch_story_strip(df: pd.DataFrame) -> FigureRecord:
         svg,
         "esencial",
         "Secuencia de lotes con margen continuo al umbral, en % y mm.",
-        "Cuenta visualmente como el experimento dirigido paso de extremos a puntos de frontera.",
+        "Cuenta visualmente como el experimento dirigido paso de extremos a puntos de frontera hasta AL2.",
         "No representa orden temporal exacto de cada simulacion, sino orden logico por lote.",
     )
 
@@ -760,7 +802,7 @@ def plot_cost_landscape(df: pd.DataFrame) -> FigureRecord:
 
 
 def plot_mass_effect_summary(df: pd.DataFrame) -> FigureRecord:
-    official = df[df["is_official"]].copy()
+    official = principal_domain(df[df["is_official"]]).copy()
     fig, ax = plt.subplots(figsize=(8.6, 5.2))
     sub = official.dropna(subset=["boulder_mass", "disp_pct_deq", "friction_coefficient"])
     scatter = ax.scatter(
@@ -791,7 +833,7 @@ def plot_mass_effect_summary(df: pd.DataFrame) -> FigureRecord:
         svg,
         "apoyo",
         "Dmax contra m*, coloreado por mu y con borde por clase.",
-        "Resume el aprendizaje central de batch4/AL1: m* baja aumenta criticidad.",
+        "Resume el aprendizaje central de batch4/AL1/AL2: m* baja aumenta criticidad.",
         "No controla por H en un solo panel; usar junto al mapa H-mu por masa.",
     )
 
@@ -804,7 +846,7 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame) -> None:
     lines = [
         "# Production Story Graphics",
         "",
-        "Figuras derivadas de exports livianos oficiales: piloto, batch2, batch3, batch4 y AL1.",
+        "Figuras derivadas de exports livianos oficiales: piloto, batch2, batch3, batch4, AL1 y AL2.",
         "",
         "## Regla visual aplicada",
         f"- El desplazamiento normalizado usa `Dmax (% d_eq)` y siempre muestra equivalente absoluto en mm cuando aparece como eje o escala principal.",
@@ -849,7 +891,7 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame) -> None:
             "## Advertencias metodologicas",
             "- Estas figuras describen la frontera operacional a `dp=0.003`, no una frontera universal independiente de resolucion.",
             "- Los puntos unidos por lineas son guias visuales; la superficie formal debe venir de surrogate/GP y validacion posterior.",
-            "- AL2 esta en ejecucion y no se incluye hasta tener export oficial.",
+            "- AL3 todavia no se incluye; se correra desde los candidatos derivados del GP after-AL2.",
         ]
     )
     (OUTDIR / "FIGURE_INDEX.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

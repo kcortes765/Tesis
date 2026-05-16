@@ -1,1 +1,45 @@
-﻿
+# HANDOFF
+
+## Proxima accion recomendada
+1. Subir a Git los cambios locales.
+2. Enviar a la WS el prompt `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`.
+3. En WS: hacer `git pull origin master`, dry-run AL3 y correr los 8 casos solo si el dry-run coincide.
+
+## Contexto minimo para continuar
+- AL2 ya fue traido a laptop.
+- El GP after-AL2 fue entrenado localmente, no en WS.
+- AL3 tiene 8 casos propuestos por frontera/incertidumbre del GP.
+- `m*` es masa relativa respecto del caso base: 0.85, 1.00, 1.15, 1.25.
+- La WS no debe usar `--retrain-gp`; solo simula y exporta resultados livianos.
+
+## Archivos a leer primero
+- `.apos/STATUS.md`
+- `data/analysis/gp_h_mu_mstar_20260516/README.md`
+- `data/analysis/gp_h_mu_mstar_20260516/validation_metrics.json`
+- `config/al_batch3_gp_after_al2_20260516.csv`
+- `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`
+- `docs/post_convergence_story_web/index.html`
+
+## Comandos sugeridos
+```powershell
+git status --short
+git pull origin master
+python scripts\run_production.py --prod --matrix config\al_batch3_gp_after_al2_20260516.csv --max-cases 8 --dry-run --no-notify
+python scripts\run_production.py --prod --matrix config\al_batch3_gp_after_al2_20260516.csv --max-cases 8 --no-notify
+```
+
+## Senales de exito
+- Dry-run AL3 lista exactamente 8 casos.
+- `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+- No aparece `--retrain-gp`.
+- AL3 queda corriendo o termina con export liviano `exports/al_batch3_gp_after_al2_YYYYMMDD/`.
+
+## No hacer todavia
+- No lanzar AL4.
+- No reentrenar GP en la WS.
+- No mezclar AL3 con nueva geometria.
+- No usar el caso parcial de batch4 como oficial.
+
+## Riesgos inmediatos
+- La WS podria tener cambios locales; no limpiar ni resetear sin revisar.
+- `mu=0.900` extiende levemente el rango previo, pero es intencional para cerrar bracket en `H=0.210, m*=0.85`.

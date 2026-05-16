@@ -1,0 +1,38 @@
+{
+  "analysis_id": "gp_h_mu_mstar_20260516",
+  "n_used": 48,
+  "n_master": 53,
+  "n_fail": 22,
+  "n_stable": 26,
+  "loo_mae_train_pct_deq": 3.1396522132490925,
+  "loo_rmse_train_pct_deq": 4.736158685673037,
+  "loo_class_accuracy": 0.875,
+  "loo_false_stable": 1,
+  "loo_false_fail": 5,
+  "kernel": "1.15**2 * Matern(length_scale=[0.217, 0.276, 0.359], nu=2.5) + WhiteKernel(noise_level=0.0159)",
+  "domain_bounds": {
+    "dam_height": [
+      0.175,
+      0.225
+    ],
+    "friction_coefficient": [
+      0.56,
+      0.9
+    ],
+    "boulder_mass": [
+      0.85,
+      1.25
+    ]
+  },
+  "train_clip": [
+    -20.0,
+    4.0
+  ],
+  "features": [
+    "dam_height",
+    "friction_coefficient",
+    "boulder_mass"
+  ],
+  "target_raw": "margin_pct_deq",
+  "target_train": "margin_train_pct_deq"
+}

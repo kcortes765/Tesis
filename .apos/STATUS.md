@@ -1,57 +1,54 @@
-﻿# STATUS
+# STATUS
 
-Ultima actualizacion: 2026-05-16 17:30
+Ultima actualizacion: 2026-05-16 17:56
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica WS: C:\Users\Admin\Desktop\SPH-Tesis
-Estado actual: AL batch2 bracket-closing termino 10/10 OK y quedo exportado de forma liviana para sincronizar con laptop.
+Estado actual: AL2 fue incorporado en laptop; se entreno deliberadamente un GP after-AL2 y quedo preparado AL3 para la WS.
 
 ## Hechos verificados
 - Convergencia cerrada para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
 - Piloto, batch2, batch3, batch4, AL1 y AL2 tienen exports livianos versionables.
-- AL batch2 corrio con `config/al_batch2_bracket_closing_20260514.csv`.
-- AL batch2 termino el 2026-05-16 17:09:33: 10/10 OK, 0 fallos numericos, tiempo total 44.66 h.
-- AL batch2 produjo 5 ESTABLE y 5 FALLO por `displacement_only`.
-- Export liviano AL batch2 creado en `exports/al_batch2_bracket_closing_20260516/`.
-- `exports/al_batch2_bracket_closing_20260516/al_batch2_summary.csv` contiene los 10 casos oficiales extraidos desde SQLite.
-- Casos AL2 mas cercanos al umbral: `al2_midH_m085_mu0880` FALLO con Dmax=5.19% d_eq y `al2_midH_m100_mu0770` ESTABLE con Dmax=4.31% d_eq.
-- El reentrenamiento GP automatico al final de `run_production.py` fue desactivado en commit `414621d`; ahora solo ocurre con `--retrain-gp` explicito.
-- El modelo GP generado automaticamente el 2026-05-16 fue removido del path canonico `data/gp_surrogate.pkl` y queda solo en cuarentena local ignorada por Git: `data/quarantine_auto_gp_retrain_20260516_1709/`.
-- Paquete Stitch visual creado y versionado en `exports/stitch_visual_package_20260515/`.
+- AL2 termino 10/10 OK, con 5 ESTABLE y 5 FALLO.
+- Se entreno localmente un GP after-AL2 con 48 casos oficiales del dominio principal `[H, mu, m*]`.
+- Modelo deliberate GP: `models/surrogates/gp_h_mu_mstar_after_al2_20260516.pkl`.
+- Analisis GP: `data/analysis/gp_h_mu_mstar_20260516/`.
+- Validacion LOO del GP after-AL2: accuracy 0.875, MAE 3.140% d_eq, RMSE 4.736% d_eq.
+- Matriz AL3 preparada: `config/al_batch3_gp_after_al2_20260516.csv`, 8 casos.
+- Prompt WS AL3 preparado: `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`.
+- Web post-convergencia actualizada con AL2 y GP after-AL2: `docs/post_convergence_story_web/index.html`.
+- `run_production.py` no debe reentrenar GP salvo con `--retrain-gp` explicito.
 
 ## Decisiones activas
 - Adoptar `dp=0.003` como resolucion operativa de produccion, sin vender convergencia asintotica fuerte.
 - Usar `classification_mode=displacement_only` como criterio primario.
 - Usar `reference_time_s=0.5`.
 - Tratar rotacion, fuerza SPH/contacto y gauges como diagnosticos, no como criterio primario.
-- No entrenar surrogate automaticamente al terminar produccion; cualquier GP nuevo debe ser deliberado y trazable.
-- Mantener tandas futuras con matriz explicita, `--max-cases`, dry-run previo y export liviano.
+- La WS solo ejecuta simulaciones; el reentrenamiento GP se hace deliberadamente en laptop.
+- AL3 se corre con matriz explicita, `--max-cases 8`, `--prod`, dry-run previo y sin `--retrain-gp`.
 
 ## Inferencias vigentes
-- Piloto + batch2 + batch3 + batch4 + AL1 + AL2 ya dan base suficiente para un analisis consolidado y un surrogate exploratorio deliberado.
-- AL2 cerro brackets utiles pero no reemplaza una validacion global.
-- La frontera debe analizarse con margen continuo al umbral, no solo clase binaria.
+- La base piloto + batch2 + batch3 + batch4 + AL1 + AL2 ya permite proponer AL3 con criterio de frontera/incertidumbre, no por grilla ciega.
+- `m*=0.85` sigue siendo la zona mas critica; `m*=1.15` y `m*=1.25` necesitan cierre de brackets en H alto.
+- AL3 debe priorizar cerrar transiciones, no expandir campana.
 
 ## Pendientes criticos
-- Hacer `git pull` en laptop principal para traer `exports/al_batch2_bracket_closing_20260516/`, `data/results.sqlite` y el bloqueo del reentreno automatico.
-- Auditar cientificamente piloto + batch2 + batch3 + batch4 + AL1 + AL2 juntos.
-- Regenerar figuras productivas/AL incorporando AL2.
-- Decidir si repetir/reprocesar oficialmente `batch4_mass_m125_H0225_mu0860`.
-- Entrenar surrogate nuevo de forma deliberada, con variables y target correctos, no usando el reentreno legacy automatico.
-- Decidir siguiente mini-batch solo despues del analisis consolidado.
+- Subir a Git el GP after-AL2, la web actualizada y el prompt AL3.
+- En WS: `git pull origin master`, dry-run AL3 y ejecutar solo si lista 8 casos correctos.
+- Al volver AL3, reentrenar GP nuevamente en laptop y decidir si hace falta AL4 o holdout.
+- Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 
 ## Riesgos activos
-- Riesgo interpretativo: AL2 es lote dirigido de cierre de brackets, no mapa global completo.
-- Riesgo de usar accidentalmente un GP legacy; `data/gp_surrogate.pkl` fue retirado para evitarlo.
-- Riesgo de mezclar rotacion diagnostica con falla por desplazamiento.
+- Riesgo de usar accidentalmente un GP legacy; usar solo el modelo versionado after-AL2.
+- Riesgo de que `mu=0.900` en AL3 extienda levemente el rango previo; se justifica como cierre de bracket para `H=0.210, m*=0.85`.
+- Riesgo de confundir interpolacion GP con resultado SPH directo.
 - Riesgo de tratar el caso parcial de batch4 como oficial.
 
 ## Evidencia reciente
-- `exports/al_batch2_bracket_closing_20260516/README.md`
-- `exports/al_batch2_bracket_closing_20260516/al_batch2_summary.md`
 - `exports/al_batch2_bracket_closing_20260516/al_batch2_summary.csv`
-- `exports/al_batch2_bracket_closing_20260516/production_status.json`
-- `exports/al_batch2_bracket_closing_20260516/production_log_tail.txt`
-- `config/al_batch2_bracket_closing_20260514.csv`
-- `data/production_20260514_2030.log`
-- `scripts/run_production.py`
-- `414621d Disable automatic GP retraining after production`
+- `scripts/train_gp_h_mu_mstar_20260516.py`
+- `data/analysis/gp_h_mu_mstar_20260516/validation_metrics.json`
+- `data/analysis/gp_h_mu_mstar_20260516/al3_matrix_recommended.csv`
+- `models/surrogates/gp_h_mu_mstar_after_al2_20260516.pkl`
+- `config/al_batch3_gp_after_al2_20260516.csv`
+- `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`
+- `docs/post_convergence_story_web/index.html`

@@ -884,3 +884,64 @@ Sincronizar a laptop los resultados livianos de AL batch2 y bloquear el reentren
 ### Advertencias metodologicas
 - AL2 es cierre dirigido de brackets, no mapa global completo.
 - Cualquier GP nuevo debe entrenarse deliberadamente con target y features revisados.
+
+## 2026-05-16 17:56 - GP after-AL2, web post-convergencia y AL3 preparado
+
+### Objetivo
+Incorporar AL2 en la laptop, entrenar un GP deliberado para `[H, mu, m*]`, actualizar la web post-convergencia y dejar lista la matriz AL3 para la WS.
+
+### Acciones
+- Se entreno `scripts/train_gp_h_mu_mstar_20260516.py` con exports oficiales hasta AL2.
+- Se genero `data/analysis/gp_h_mu_mstar_20260516/` con dataset, validacion LOO, candidatos y matriz AL3.
+- Se guardo el modelo deliberado en `models/surrogates/gp_h_mu_mstar_after_al2_20260516.pkl`.
+- Se actualizo `scripts/generate_production_story_graphics.py` para incluir AL2 y normalizar aliases de columnas.
+- Se actualizo `docs/post_convergence_story_web/index.html` con AL2, GP after-AL2, incertidumbre y explicacion de `m*`.
+- Se creo `config/al_batch3_gp_after_al2_20260516.csv`.
+- Se creo `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`.
+- Se actualizaron `STATUS.md`, `HANDOFF.md` y `PLAN.md`.
+
+### Archivos revisados
+- `exports/al_batch2_bracket_closing_20260516/al_batch2_summary.csv`
+- `scripts/generate_production_story_graphics.py`
+- `scripts/build_post_convergence_story_web.py`
+- `data/analysis/gp_h_mu_mstar_20260516/`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+- `scripts/generate_production_story_graphics.py`
+- `scripts/build_post_convergence_story_web.py`
+- `scripts/train_gp_h_mu_mstar_20260516.py`
+- `data/analysis/gp_h_mu_mstar_20260516/`
+- `models/surrogates/gp_h_mu_mstar_after_al2_20260516.pkl`
+- `config/al_batch3_gp_after_al2_20260516.csv`
+- `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`
+- `docs/post_convergence_story_web/`
+
+### Comandos importantes
+```text
+python scripts\train_gp_h_mu_mstar_20260516.py
+python scripts\generate_production_story_graphics.py
+python scripts\build_post_convergence_story_web.py
+```
+
+### Resultados
+- GP after-AL2: 48 casos usados, LOO accuracy 0.875, MAE 3.140% d_eq, RMSE 4.736% d_eq.
+- AL3 recomendado: 8 casos en `config/al_batch3_gp_after_al2_20260516.csv`.
+- Web post-convergencia regenerada con figuras observadas, GP, incertidumbre y validacion interna.
+
+### Errores / bloqueos
+- No se detectaron errores de ejecucion en los scripts.
+- La validacion GP sigue siendo exploratoria; no reemplaza simulaciones SPH-Chrono.
+
+### Proximos pasos
+- Subir cambios a Git.
+- Pedir a WS dry-run y ejecucion AL3.
+- Cuando AL3 vuelva por Git, reentrenar GP en laptop y decidir AL4/holdout/checks finos.
+
+### Advertencias metodologicas
+- AL3 se basa en frontera/incertidumbre del GP after-AL2, no en una grilla factorial.
+- La WS no debe usar `--retrain-gp`.
+- `mu=0.900` en AL3 extiende levemente el rango previo para cerrar un bracket especifico.

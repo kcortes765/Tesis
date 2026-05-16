@@ -1,30 +1,32 @@
-﻿# PLAN
+# PLAN
 
 ## Objetivo activo
-Analizar resultados consolidados hasta AL batch2 y preparar el siguiente paso cientifico sin lanzar otra tanda todavia.
+Ejecutar AL3 en la WS usando la matriz propuesta por el GP after-AL2 y mantener el reentrenamiento del modelo en la laptop.
 
 ## Fase actual
-Post-AL2: todos los lotes dirigidos principales estan exportados y listos para analisis conjunto.
+Post-AL2 con surrogate deliberado after-AL2 y web post-convergencia actualizada.
 
 ## Proximos hitos
-- [x] Cerrar convergencia y adoptar dp=0.003 como malla operativa.
-- [x] Ejecutar piloto, batch2, batch3, batch4 y AL1.
-- [x] Ejecutar AL batch2 bracket-closing.
-- [x] Crear export liviano AL batch2.
+- [x] Cerrar convergencia y adoptar dp=0.003 como resolucion operativa.
+- [x] Ejecutar piloto, batch2, batch3, batch4, AL1 y AL2.
 - [x] Bloquear reentrenamiento GP automatico al terminar produccion.
-- [ ] Traer AL2 a laptop con git pull.
-- [ ] Analizar piloto + batch2 + batch3 + batch4 + AL1 + AL2 juntos.
-- [ ] Regenerar figuras productivas/AL incorporando AL2.
-- [ ] Definir surrogate deliberado: variables, target continuo, validacion y exclusiones.
-- [ ] Decidir si repetir/reprocesar el caso parcial batch4.
-- [ ] Diseñar proximo mini-batch solo si el analisis consolidado lo justifica.
+- [x] Traer AL2 a laptop.
+- [x] Entrenar GP after-AL2 de forma deliberada.
+- [x] Generar matriz AL3.
+- [x] Actualizar web post-convergencia con AL2 y GP after-AL2.
+- [ ] Subir cambios a Git.
+- [ ] En WS: dry-run AL3.
+- [ ] En WS: ejecutar AL3 si el dry-run coincide.
+- [ ] Exportar AL3 liviano y traerlo a laptop.
+- [ ] Reentrenar GP after-AL3 en laptop.
+- [ ] Decidir si sigue AL4, holdout o checks finos `dp=0.002`.
 
 ## Bloqueos
-- No lanzar nuevas simulaciones antes del analisis consolidado.
-- No usar GP legacy automatico como resultado cientifico.
+- No lanzar nuevos casos si la WS no esta sincronizada por Git.
+- No usar GP legacy ni reentreno automatico.
 - No versionar crudos pesados.
 
 ## Fuera de alcance por ahora
-- Campana grande.
-- Geometria multiple.
-- GP final/paper sin auditoria de datos.
+- Campana masiva.
+- Dominio amplio de geometria.
+- GP final/paper sin validar despues de AL3.

@@ -12,17 +12,20 @@ OUT = ROOT / "docs" / "post_convergence_story_web"
 FIG = OUT / "figures"
 DATA = OUT / "data"
 PRODUCTION = ROOT / "data" / "figures" / "production_story_graphics"
+GP_ANALYSIS = ROOT / "data" / "analysis" / "gp_h_mu_mstar_20260516"
+GP_FIGURES = GP_ANALYSIS / "figures"
 CONVERGENCE_WEB = ROOT / "docs" / "convergence_story_web"
 
 
 FIGURES = [
-    ("01_response_map_h_mu_by_mass", "Mapa H-mu-masa", "Mapa operacional por masa relativa. Verde = estable; rojo = fallo; gris = parcial."),
-    ("02_margin_vs_mu_by_mass_and_h", "Margen al umbral", "Margen continuo respecto de 5% de d_eq, con lectura absoluta en mm."),
-    ("03_batch_story_margin_strip", "Historia de lotes", "Secuencia compacta desde piloto hasta AL1, separando exploracion y cierre de brackets."),
-    ("04_local_hydraulics_vs_displacement", "Hidraulica local", "Relacion entre hmax/Umax locales y desplazamiento del bloque."),
-    ("05_forces_vs_displacement", "Fuerzas diagnosticas", "Fuerzas SPH y contacto contra desplazamiento primario."),
-    ("06_rotation_diagnostic_vs_displacement", "Rotacion diagnostica", "Rotacion acumulada frente al criterio displacement_only."),
-    ("08_mass_effect_displacement_summary", "Efecto de masa", "Resumen del desplazamiento por masa relativa."),
+    ("production", "01_response_map_h_mu_by_mass", "Mapa H-mu-masa observado", "Mapa operacional por masa relativa. Verde = estable; rojo = fallo; tamano = desplazamiento maximo."),
+    ("production", "02_margin_vs_mu_by_mass_and_h", "Margen al umbral observado", "Margen continuo respecto de 5% de d_eq; positivo es estable y negativo es fallo."),
+    ("gp", "02_gp_frontier_by_mass", "Surrogate GP after-AL2", "Prediccion continua del margen g por masa relativa. Las estrellas son los candidatos AL3 propuestos."),
+    ("gp", "03_gp_uncertainty_by_mass", "Incertidumbre GP y AL3", "Zonas donde el modelo sigue inseguro; se usan para elegir nuevos casos cerca de frontera."),
+    ("gp", "01_loo_validation", "Validacion interna del GP", "Comparacion leave-one-out entre margen observado y margen predicho."),
+    ("production", "03_batch_story_margin_strip", "Historia de lotes", "Secuencia compacta desde piloto hasta AL2, mostrando como se fueron cerrando zonas de frontera."),
+    ("production", "08_mass_effect_displacement_summary", "Efecto de masa", "Resumen del desplazamiento por masa relativa m*."),
+    ("production", "04_local_hydraulics_vs_displacement", "Hidraulica local", "Relacion entre hmax/Umax locales y desplazamiento del bloque."),
 ]
 
 
@@ -36,13 +39,24 @@ def init() -> None:
 
 
 def copy_assets() -> None:
-    for stem, _title, _caption in FIGURES:
+    source_dirs = {"production": PRODUCTION, "gp": GP_FIGURES}
+    for source, stem, _title, _caption in FIGURES:
         for ext in ("png", "svg"):
-            src = PRODUCTION / f"{stem}.{ext}"
+            src = source_dirs[source] / f"{stem}.{ext}"
             if src.exists():
                 shutil.copy2(src, FIG / f"{stem}.{ext}")
     for name in ("master_production_story.csv", "figure_index.csv", "FIGURE_INDEX.md"):
         src = PRODUCTION / name
+        if src.exists():
+            shutil.copy2(src, DATA / name)
+    for name in (
+        "dataset_used.csv",
+        "validation_metrics.json",
+        "brackets_by_h_mstar.csv",
+        "al3_matrix_recommended.csv",
+        "al3_candidates.csv",
+    ):
+        src = GP_ANALYSIS / name
         if src.exists():
             shutil.copy2(src, DATA / name)
 
@@ -77,7 +91,7 @@ def summary_cards(df: pd.DataFrame) -> str:
 
 
 def _fmt_levels(values: pd.Series, decimals: int = 3) -> str:
-    vals = pd.to_numeric(values, errors="coerce").dropna().sort_values().unique()
+    vals = pd.to_numeric(values, errors="coerce").dropna().round(decimals).sort_values().unique()
     if len(vals) == 0:
         return "sin dato"
     if len(vals) <= 6:
@@ -96,6 +110,7 @@ def parameter_scope(df: pd.DataFrame) -> str:
     mu = _fmt_levels(official.get("friction_coefficient", pd.Series(dtype=float)), 3)
     mass = _fmt_levels(official.get("boulder_mass", pd.Series(dtype=float)), 2)
     slope = _fmt_levels(official.get("slope_inv", pd.Series(dtype=float)), 0)
+    slope_text = ", ".join(f"1:{part.strip()}" for part in slope.split(",")) if slope != "sin dato" else slope
     dp = _fmt_levels(official.get("dp", pd.Series(dtype=float)), 3)
     mode = ", ".join(sorted(official.get("classification_mode", pd.Series(["displacement_only"])).dropna().astype(str).unique()))
     ref = _fmt_levels(official.get("reference_time_s", pd.Series(dtype=float)), 3)
@@ -108,7 +123,7 @@ def parameter_scope(df: pd.DataFrame) -> str:
           <div><dt>Altura hidraulica H (m)</dt><dd>{h}</dd></div>
           <div><dt>Friccion bloque-playa, mu</dt><dd>{mu}</dd></div>
           <div><dt>Masa relativa m*</dt><dd>{mass}</dd></div>
-          <div><dt>Pendiente evaluada</dt><dd>1:{slope}</dd></div>
+          <div><dt>Pendiente evaluada</dt><dd>{slope_text}</dd></div>
         </dl>
       </article>
       <article>
@@ -147,7 +162,7 @@ def family_rows(df: pd.DataFrame) -> str:
 
 def figure_html() -> str:
     blocks = []
-    for stem, title, caption in FIGURES:
+    for _source, stem, title, caption in FIGURES:
         zoom_src = f"figures/{stem}.svg" if (FIG / f"{stem}.svg").exists() else f"figures/{stem}.png"
         blocks.append(
             f"""
@@ -316,9 +331,9 @@ def write_page(df: pd.DataFrame) -> None:
 <body>
 <main class="page">
   <header class="top">
-    <p class="meta">Tesis UCN · SPH-Chrono</p>
+    <p class="meta">Tesis UCN - SPH-Chrono</p>
     <h1>Post-convergencia: frontera operacional y lotes dirigidos</h1>
-    <p>Esta pagina concentra lo que viene despues de fijar <code>dp=0.003 m</code>: piloto, batch2, batch3, batch4 y AL1. AL2 no se incluye hasta que termine y exista export oficial.</p>
+    <p>Esta pagina concentra lo que viene despues de fijar <code>dp=0.003 m</code>: piloto, batch2, batch3, batch4, AL1, AL2 y el surrogate GP entrenado localmente despues de AL2.</p>
     <p><a href="https://kcortes765.github.io/convergencia-dp/">Volver a convergencia de dp</a></p>
   </header>
 
@@ -326,12 +341,14 @@ def write_page(df: pd.DataFrame) -> None:
     <h2>1. Marco de lectura</h2>
     <dl class="cards">{cards}</dl>
     <p>La clase se decide por <code>displacement_only</code>: fallo si <code>Dmax &gt; 5% d_eq</code>. La rotacion, las fuerzas y las gauges son diagnosticas. En todos los graficos relevantes el desplazamiento aparece en porcentaje y en milimetros.</p>
+    <p><code>m*</code> significa masa relativa del bloque respecto del caso base: <code>m*=1.00</code> es la masa original de 1.0 kg, <code>m*=0.85</code> es 15% mas liviano y <code>m*=1.25</code> es 25% mas pesado. La geometria no cambia; cambia masa, densidad efectiva e inercia.</p>
     <p>La geometria base del canal y el bloque se mantiene como marco comun, pero esta pagina no representa una simulacion unica. Resume una familia de casos con condiciones hidraulicas, friccion y masa barridas.</p>
     {scope}
   </section>
 
   <section>
     <h2>2. Figuras principales</h2>
+    <p>Las primeras figuras muestran datos observados. Las figuras del GP son una interpolacion probabilistica entrenada con esos datos para decidir AL3; no reemplazan los casos SPH-Chrono.</p>
     <div class="figure-stack">
       {figure_html()}
     </div>
@@ -351,6 +368,7 @@ def write_page(df: pd.DataFrame) -> None:
   <section>
     <h2>4. Lectura metodologica corta</h2>
     <p>Esta pagina no prueba convergencia adicional de <code>dp</code>. Usa la resolucion operativa ya elegida para construir una frontera practica en <code>H</code>, <code>mu</code> y <code>m*</code>. La evidencia fuerte es el margen continuo al umbral; la clase estable/fallo es una discretizacion de ese margen.</p>
+    <p>AL3 se propone donde el GP after-AL2 muestra frontera o incertidumbre relevante. La WS debe ejecutar solo simulaciones; el reentrenamiento del GP queda reservado para esta laptop.</p>
     <p>Convencion visual: verde = <span class="inline-stable">ESTABLE</span>, rojo = <span class="inline-fail">FALLO</span>, gris = parcial/no oficial.</p>
   </section>
 </main>
