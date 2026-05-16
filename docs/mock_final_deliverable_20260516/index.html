@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock entregable final - Tesis SPH-Chrono</title>
+  <style>
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #17202a; background: #f4f6f9; line-height: 1.5; }
+    main { width: min(1120px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 48px; }
+    header, section { background: white; border: 1px solid #d8dee8; border-radius: 4px; padding: 20px; margin: 16px 0; }
+    .meta { color: #526070; text-transform: uppercase; letter-spacing: .04em; font-size: 13px; margin: 0 0 6px; }
+    h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.1; }
+    h2 { margin: 0 0 12px; font-size: 22px; }
+    .notice { border-left: 5px solid #b98524; background: #fff8e7; padding: 10px 12px; }
+    .cards { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid #d8dee8; margin: 14px 0; }
+    .cards div { padding: 12px; border-right: 1px solid #d8dee8; }
+    .cards div:last-child { border-right: 0; }
+    dt { font-weight: 700; }
+    dd { margin: 2px 0 0; color: #526070; }
+    code { background: #eef2f6; border-radius: 3px; padding: 1px 4px; }
+    figure { margin: 18px 0; border: 1px solid #d8dee8; padding: 10px; background: white; }
+    figure img { width: 100%; height: auto; display: block; }
+    figcaption { color: #526070; font-size: 13px; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { border-bottom: 1px solid #d8dee8; padding: 8px; text-align: left; }
+    th { background: #eef2f6; }
+    @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } .cards div { border-right: 0; border-bottom: 1px solid #d8dee8; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="meta">Mock sintetico - no usar como resultado</p>
+    <h1>Frontera probabilistica de movimiento incipiente de un bloque costero</h1>
+    <p>Este mock muestra la forma esperada del entregable final: no seria solo una ecuacion ni solo un grafico, sino un paquete corto con estado limite, frontera, fragilidad, validacion y limites de interpretacion.</p>
+    <p class="notice"><strong>Importante:</strong> las figuras usan datos sinteticos para ensayar presentacion. El formato busca mostrar que recibiria el profesor cuando la campana real este cerrada.</p>
+  </header>
+
+  <section>
+    <h2>1. Resultado central</h2>
+    <p>El resultado final se reportaria como una superficie de estado limite condicionada a la geometria base, contacto, pendiente y resolucion productiva:</p>
+    <p><code>g(H, mu, m*) = 0.05 - Dmax(H, mu, m*) / d_eq</code></p>
+    <p>Si <code>g &gt; 0</code>, el bloque queda bajo el umbral operacional de movimiento. Si <code>g &lt; 0</code>, supera el umbral. El GP no reemplaza las simulaciones: interpola el margen y entrega incertidumbre para decidir nuevos casos.</p>
+    <dl class="cards">
+      <div><dt>Variable hidraulica</dt><dd>H, altura inicial dam-break</dd></div>
+      <div><dt>Resistencia</dt><dd>mu, friccion bloque-suelo</dd></div>
+      <div><dt>Masa relativa</dt><dd>m* = m / m_base</dd></div>
+      <div><dt>Salida primaria</dt><dd>Dmax / d_eq</dd></div>
+    </dl>
+  </section>
+
+  <section>
+    <h2>2. Frontera final</h2>
+    <figure>
+      <img src="figures/fig01_frontera_estado_limite.png" alt="Frontera sintetica de movimiento incipiente">
+      <figcaption><strong>Figura final tipo 1.</strong> Cortes H-mu para distintas masas relativas. La curva negra es la frontera g=0. Verde indica margen estable; rojo indica movimiento. Los puntos son simulaciones SPH-Chrono.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>3. Fragilidad condicional</h2>
+    <figure>
+      <img src="figures/fig02_fragilidad_condicional.png" alt="Curvas sinteticas de fragilidad condicional">
+      <figcaption><strong>Figura final tipo 2.</strong> Probabilidad condicional de movimiento contra H, integrando incertidumbre en mu y en el surrogate. Esto traduce la frontera a una lectura probabilistica.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>4. Validacion por capas</h2>
+    <figure>
+      <img src="figures/fig03_cierre_metodologico.png" alt="Cierre metodologico sintetico">
+      <figcaption><strong>Figura final tipo 3.</strong> Resumen de defensibilidad: benchmark hidraulico, sanity de contacto, contraste analitico, holdout GP, checks finos de dp y repeticiones cercanas a frontera.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>5. Tabla que podria recibir el profesor</h2>
+    <table>
+      <thead><tr><th>Salida</th><th>Que entrega</th><th>Como se interpreta</th></tr></thead>
+      <tbody>
+        <tr><td>Superficie g=0</td><td>Frontera H-mu-m*</td><td>Indica combinaciones donde inicia movimiento segun Dmax &gt; 5% d_eq.</td></tr>
+        <tr><td>Curvas Pf(H)</td><td>Fragilidad condicional</td><td>Probabilidad de movimiento bajo distribuciones asumidas de mu y m*.</td></tr>
+        <tr><td>Holdout GP</td><td>Validacion interna</td><td>Mide si el surrogate predice casos no usados para entrenar.</td></tr>
+        <tr><td>dp=0.002 selectivo</td><td>Sensibilidad de resolucion</td><td>Cuantifica cuanto se mueve la frontera cerca del umbral.</td></tr>
+        <tr><td>Comparacion analitica</td><td>Coherencia fisica</td><td>Verifica orden de magnitud, no reemplaza SPH-Chrono.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>6. Frase final esperada</h2>
+    <p>La contribucion no seria decir "el bloque falla en un mu exacto", sino entregar una frontera condicionada y cuantificada: para una geometria, resolucion y criterio definidos, el movimiento incipiente se describe por una superficie <code>g(H, mu, m*)=0</code>, con incertidumbre del surrogate, sensibilidad de resolucion y verificaciones independientes del pipeline numerico.</p>
+  </section>
+</main>
+</body>
+</html>

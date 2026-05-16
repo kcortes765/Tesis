@@ -945,3 +945,60 @@ python scripts\build_post_convergence_story_web.py
 - AL3 se basa en frontera/incertidumbre del GP after-AL2, no en una grilla factorial.
 - La WS no debe usar `--retrain-gp`.
 - `mu=0.900` en AL3 extiende levemente el rango previo para cerrar un bracket especifico.
+
+## 2026-05-16 18:23 - Guardado de decision estrategica y mock de entregable final
+
+### Objetivo
+Guardar el cambio de enfoque discutido: usar la capacidad computacional disponible para un plan jerarquico mas ambicioso, y documentar como podria verse el entregable final de la tesis.
+
+### Acciones
+- Se genero `docs/mock_final_deliverable_20260516/` con datos sinteticos para visualizar el entregable final.
+- Se creo `scripts/generate_mock_final_deliverable_20260516.py`.
+- Se aclaro que el resultado final no seria solo una ecuacion o grafico, sino un paquete con estado limite, frontera, fragilidad condicional, validacion por capas y limites.
+- Se discutio que pendiente, orientacion y forma si importan, pero no deben entrar como factorial completo simultaneo.
+- Se acepto una estrategia jerarquica mas ambiciosa: base `[H, mu, m*]`, luego pendiente, orientacion y forma como extensiones controladas.
+- Se actualizaron `STATUS.md`, `HANDOFF.md`, `PLAN.md`, `INDEX.md`, `RISKS.md`, `OPEN_QUESTIONS.md` y `DECISIONS.md`.
+
+### Archivos revisados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+- `.apos/OPEN_QUESTIONS.md`
+- `docs/mock_final_deliverable_20260516/index.html`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/OPEN_QUESTIONS.md`
+- `.apos/DECISIONS.md`
+- `.apos/JOURNAL.md`
+- `docs/mock_final_deliverable_20260516/`
+- `scripts/generate_mock_final_deliverable_20260516.py`
+
+### Comandos importantes
+```text
+python scripts\generate_mock_final_deliverable_20260516.py
+python -m py_compile scripts\generate_mock_final_deliverable_20260516.py
+```
+
+### Resultados
+- Mock sintetico disponible en `docs/mock_final_deliverable_20260516/index.html`.
+- Decision `DEC-20260516-001` agregada.
+- Queda definido que el plan de seis meses debe contemplar mas que el minimo: potencialmente 130-220 simulaciones adicionales si se incorporan pendiente, orientacion, forma y validacion.
+
+### Errores / bloqueos
+- Ninguno tecnico.
+
+### Proximos pasos
+- Ejecutar AL3 en WS.
+- Al volver AL3, reentrenar GP after-AL3 y decidir AL4/holdout.
+- Preparar plan cuantitativo de expansion jerarquica de variables.
+- Analizar STL/formas antes de seleccionar geometria secundaria.
+
+### Advertencias metodologicas
+- El mock usa datos sinteticos y no debe citarse como resultado.
+- La expansion de variables debe ser jerarquica para no perder interpretabilidad.

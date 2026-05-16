@@ -18,6 +18,8 @@
 - Usar `C:\Seba\Tesis` como unico repo canonico local.
 - Distinguir explicitamente datos WS/GitHub de datos laptop/local.
 - APOS runtime de tesis = `.apos/` + `/apos`, `/guardar`, `/apos-status`; no usar `apos-system/` como segundo APOS vivo.
+- AL3 queda definido por GP after-AL2 y debe correr en WS sin `--retrain-gp`.
+- Plan cientifico actualizado: no cerrar con minimo; usar 6 meses/WS para estrategia jerarquica con pendiente, orientacion y forma como extensiones controladas.
 
 ## Ultimas sesiones
 - 2026-04-30: cierre de convergencia, documento productivo, matriz piloto y guardas `run_production.py`.
@@ -32,6 +34,8 @@
 - 2026-05-13: AL batch1 hibrido recibido por Git, dry-run validado y corrida real lanzada en WS.
 - 2026-05-14: AL batch1 hibrido completo 8/8 OK y exportado liviano.
 - 2026-05-14: AL batch2 bracket-closing creado, dry-run validado y corrida real lanzada en WS.
+- 2026-05-16: AL2 recibido, GP after-AL2 entrenado, web post-convergencia actualizada y AL3 preparado/subido en commit `6f9eb41`.
+- 2026-05-16: mock sintetico de entregable final creado para visualizar estado limite, frontera, fragilidad y validacion por capas.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -63,3 +67,9 @@
 - `data/production_20260514_2030.log`
 - `docs/DATA_ORIGIN_POLICY.md`
 - `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
+- `data/analysis/gp_h_mu_mstar_20260516/README.md`
+- `data/analysis/gp_h_mu_mstar_20260516/validation_metrics.json`
+- `config/al_batch3_gp_after_al2_20260516.csv`
+- `docs/PROMPT_WS_AL3_AFTER_AL2_20260516.md`
+- `docs/post_convergence_story_web/index.html`
+- `docs/mock_final_deliverable_20260516/index.html`

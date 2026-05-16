@@ -272,3 +272,35 @@ La implementacion APOS-X previa dejo material de sistema y migracion junto al re
 
 ### Supersede / relacionadas
 - Relacionada con DEC-20260510-001.
+
+## DEC-20260516-001 - Plan cientifico jerarquico y mas ambicioso
+
+Fecha: 2026-05-16
+Estado: aceptada
+Tipo: proceso
+Alcance: proyecto
+
+### Decision
+No cerrar la tesis con un plan minimo de ~30 simulaciones adicionales si hay seis meses disponibles y una WS potente. Mantener la frontera base `[H, mu, m*]` como nucleo, pero planificar expansion jerarquica a pendiente, orientacion y forma como etapas controladas. Evitar un factorial completo 6D sin estructura.
+
+### Contexto
+El usuario cuestiono correctamente que, con RTX 5090/i9 y seis meses, una estrategia demasiado conservadora puede limitar la contribucion cientifica. Al mismo tiempo, abrir todas las variables simultaneamente podria destruir interpretabilidad. La solucion es jerarquica: primero cerrar base, luego medir desplazamientos de frontera por pendiente/orientacion/forma.
+
+### Evidencia
+- GP after-AL2: `data/analysis/gp_h_mu_mstar_20260516/`.
+- AL3 preparado: `config/al_batch3_gp_after_al2_20260516.csv`.
+- Mock de entregable final: `docs/mock_final_deliverable_20260516/index.html`.
+- Discusion de sesion 2026-05-16 sobre alcance Q1 y uso de capacidad computacional.
+
+### Alternativas consideradas
+- Cerrar con ~30 simulaciones adicionales: descartado como demasiado conservador para la meta Q1.
+- Abrir `H, mu, m*, pendiente, orientacion, forma` en un factorial completo: descartado por costo e interpretabilidad.
+- Mantener forma/orientacion/pendiente fuera de tesis: descartado como innecesariamente pobre si hay tiempo y computo.
+
+### Consecuencias
+- El siguiente plan debe estimar 130-220 simulaciones adicionales como rango posible, no como compromiso cerrado.
+- Pendiente, orientacion y forma deben entrar por etapas con active learning, holdout y validacion.
+- El entregable final debe hablar de frontera condicionada, fragilidad condicional y sensibilidad, no de umbral universal.
+
+### Supersede / relacionadas
+- Relacionada con DEC-20260510-001 y DEC-20260510-002.

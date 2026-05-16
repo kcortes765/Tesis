@@ -83,9 +83,36 @@ Relacionado: `.gitignore`, `docs/DATA_ORIGIN_POLICY.md`
 
 ## RISK-20260514-001 - AL batch2 productivo en ejecucion
 
+Estado: mitigado
+Severidad: alta
+Probabilidad: media
+Evidencia: AL2 termino 10/10 OK y export liviano en `exports/al_batch2_bracket_closing_20260516/`.
+Mitigacion: AL3 se diseno despues de incorporar AL2 y reentrenar GP localmente.
+Relacionado: `config/al_batch2_bracket_closing_20260514.csv`, `scripts/run_production.py`, `data/production_20260514_2030.log`
+
+## RISK-20260516-001 - Plan demasiado conservador frente a capacidad computacional real
+
+Estado: activo
+Severidad: media
+Probabilidad: media
+Evidencia: con 6 meses disponibles y WS RTX 5090/i9, cerrar con solo ~30 simulaciones adicionales podria dejar fuera pendiente, orientacion y forma.
+Mitigacion: adoptar plan jerarquico: frontera base `[H, mu, m*]`, luego pendiente, orientacion y forma como extensiones controladas, con holdout y checks finos.
+Relacionado: `docs/mock_final_deliverable_20260516/index.html`, `data/analysis/gp_h_mu_mstar_20260516/`
+
+## RISK-20260516-002 - Expansion de variables sin jerarquia
+
 Estado: activo
 Severidad: alta
 Probabilidad: media
-Evidencia: `data/production_status.json` reporta `phase=production`, `total_cases=10`, `current_case=al2_lowH_m085_mu0585`, `progress=1/10`; procesos `python` y `DualSPHysics5.4_win64` activos.
-Mitigacion: no lanzar otra tanda; monitorear `data/production_status.json` y `data/production_20260514_2030.log`; si falla un caso, diagnosticar antes de relanzar.
-Relacionado: `config/al_batch2_bracket_closing_20260514.csv`, `scripts/run_production.py`, `data/production_20260514_2030.log`
+Evidencia: abrir simultaneamente `H, mu, m*, pendiente, orientacion, forma` puede volver la frontera dificil de interpretar y requerir muchas mas simulaciones.
+Mitigacion: disenar etapas separadas y usar active learning/holdout; no hacer factorial completo 6D sin justificacion.
+Relacionado: `.apos/PLAN.md`, `config/al_batch3_gp_after_al2_20260516.csv`
+
+## RISK-20260516-003 - Confundir mock sintetico con resultado real
+
+Estado: activo
+Severidad: media
+Probabilidad: baja
+Evidencia: se creo `docs/mock_final_deliverable_20260516/` con datos sinteticos para visualizar el entregable final.
+Mitigacion: mantener rotulos explicitos de datos sinteticos y no citarlo como evidencia cientifica.
+Relacionado: `scripts/generate_mock_final_deliverable_20260516.py`
