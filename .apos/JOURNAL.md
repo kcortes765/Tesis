@@ -1002,3 +1002,73 @@ python -m py_compile scripts\generate_mock_final_deliverable_20260516.py
 ### Advertencias metodologicas
 - El mock usa datos sinteticos y no debe citarse como resultado.
 - La expansion de variables debe ser jerarquica para no perder interpretabilidad.
+
+## 2026-05-18 15:15 - AL3 incorporado, GP after-AL3 y AL4 preparado
+
+### Objetivo
+Incorporar el export AL3 enviado desde la WS, analizar sus resultados, reentrenar localmente el GP y dejar preparado el siguiente lote AL4.
+
+### Acciones
+- Se hizo `git pull origin master` y se incorporo el commit remoto `0d40eec Add AL3 after-AL2 lightweight export`.
+- Se reviso `exports/al_batch3_gp_after_al2_20260518/al_batch3_summary.md`.
+- Se verifico que AL3 termino 8/8 OK, 0 fallos numericos, todos ESTABLE.
+- Se creo `scripts/train_gp_h_mu_mstar_after_al3_20260518.py`.
+- Se entreno el GP after-AL3 con exports oficiales hasta AL3.
+- Se genero `data/analysis/gp_h_mu_mstar_after_al3_20260518/`.
+- Se guardo el modelo deliberado en `models/surrogates/gp_h_mu_mstar_after_al3_20260518.pkl`.
+- Se actualizo `scripts/generate_production_story_graphics.py` para incluir AL3.
+- Se actualizo `scripts/build_post_convergence_story_web.py` para usar GP after-AL3.
+- Se regenero `docs/post_convergence_story_web/` con AL3 y candidatos AL4.
+- Se creo `config/al_batch4_after_al3_20260518.csv`.
+- Se creo `docs/PROMPT_WS_AL4_AFTER_AL3_20260518.md`.
+- Se actualizaron `STATUS.md`, `HANDOFF.md` y `PLAN.md`.
+
+### Archivos revisados
+- `exports/al_batch3_gp_after_al2_20260518/al_batch3_summary.md`
+- `exports/al_batch3_gp_after_al2_20260518/al_batch3_summary.csv`
+- `data/analysis/gp_h_mu_mstar_after_al3_20260518/README.md`
+- `data/analysis/gp_h_mu_mstar_after_al3_20260518/brackets_by_h_mstar.csv`
+- `data/analysis/gp_h_mu_mstar_after_al3_20260518/al4_candidates.csv`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+- `scripts/train_gp_h_mu_mstar_after_al3_20260518.py`
+- `scripts/generate_production_story_graphics.py`
+- `scripts/build_post_convergence_story_web.py`
+- `data/analysis/gp_h_mu_mstar_after_al3_20260518/`
+- `models/surrogates/gp_h_mu_mstar_after_al3_20260518.pkl`
+- `config/al_batch4_after_al3_20260518.csv`
+- `docs/PROMPT_WS_AL4_AFTER_AL3_20260518.md`
+- `docs/post_convergence_story_web/`
+
+### Comandos importantes
+```text
+git pull origin master
+python scripts\train_gp_h_mu_mstar_after_al3_20260518.py
+python scripts\generate_production_story_graphics.py
+python scripts\build_post_convergence_story_web.py
+```
+
+### Resultados
+- AL3: 8/8 ESTABLE; el punto mas cercano fue `al3_base_m085_mu0800` con `Dmax=4.85% d_eq`.
+- GP after-AL3: 56 casos oficiales, 22 fallos, 34 estables.
+- Validacion LOO: accuracy 0.857, MAE 2.866% d_eq, RMSE 4.485% d_eq.
+- AL4 recomendado: 8 casos para cerrar brackets observados, sin expandir dominio.
+- Web post-convergencia actualizada con 60 casos oficiales y 1 parcial documentado.
+
+### Errores / bloqueos
+- No hubo errores de ejecucion.
+- La lectura de AL3 obliga a no expandir todavia a pendiente/orientacion/forma; primero conviene cerrar brackets AL4.
+
+### Proximos pasos
+- Commit y push de los cambios.
+- Enviar prompt AL4 a WS.
+- Cuando AL4 vuelva por Git, reentrenar GP after-AL4 y decidir holdout/AL5/checks finos.
+
+### Advertencias metodologicas
+- AL3 no fue un fracaso por ser todo estable; cerro el lado estable de los brackets.
+- AL4 baja `mu` dentro de brackets conocidos para buscar mezcla ESTABLE/FALLO.
+- El GP guia el diseno; la evidencia principal siguen siendo las simulaciones SPH-Chrono.

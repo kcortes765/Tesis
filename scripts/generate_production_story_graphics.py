@@ -8,6 +8,7 @@ Inputs are restricted to lightweight exported summaries:
 - exports/batch4_mass_probe_20260513/batch4_summary.csv
 - exports/al_batch1_hybrid_20260514/al_batch1_summary.csv
 - exports/al_batch2_bracket_closing_20260516/al_batch2_summary.csv
+- exports/al_batch3_gp_after_al2_20260518/al_batch3_summary.csv
 
 The script intentionally excludes live/running batches until they have an
 official lightweight export. Heavy DualSPHysics outputs are not read.
@@ -47,6 +48,7 @@ EXPORT_SPECS = [
     ("batch4", "Batch4 masa", PROJECT / "exports" / "batch4_mass_probe_20260513" / "batch4_summary.csv"),
     ("al1", "AL1", PROJECT / "exports" / "al_batch1_hybrid_20260514" / "al_batch1_summary.csv"),
     ("al2", "AL2", PROJECT / "exports" / "al_batch2_bracket_closing_20260516" / "al_batch2_summary.csv"),
+    ("al3", "AL3", PROJECT / "exports" / "al_batch3_gp_after_al2_20260518" / "al_batch3_summary.csv"),
 ]
 
 CLASS_COLORS = {
@@ -63,6 +65,7 @@ FAMILY_COLORS = {
     "batch4": "#56B4E9",
     "al1": "#D55E00",
     "al2": "#CC79A7",
+    "al3": "#4C78A8",
 }
 MASS_COLORS = {
     0.85: "#8C5E3C",
@@ -326,7 +329,7 @@ def clipped_margin(values: pd.Series) -> pd.Series:
 
 
 def principal_domain(df: pd.DataFrame) -> pd.DataFrame:
-    """Domain used by the after-AL2 surrogate: slope 1:20, dp=0.003, H/mu/m* campaign range."""
+    """Domain used by the current surrogate: slope 1:20, dp=0.003, H/mu/m* campaign range."""
     out = df.copy()
     if "slope_inv" in out.columns:
         out = out[np.isclose(out["slope_inv"], 20.0, equal_nan=False)]
@@ -455,7 +458,7 @@ def plot_response_map(df: pd.DataFrame) -> FigureRecord:
         svg,
         "esencial",
         "Mapa H-mu separado por masa relativa; color/forma indica clase y tamano indica Dmax.",
-        "Resume la frontera operacional aprendida por lotes dirigidos usando todos los casos oficiales hasta AL2.",
+        "Resume la frontera operacional aprendida por lotes dirigidos usando todos los casos oficiales hasta AL3.",
         "No interpolar visualmente: los puntos son simulaciones discretas, no una superficie continua validada.",
     )
 
@@ -564,7 +567,7 @@ def plot_batch_story_strip(df: pd.DataFrame) -> FigureRecord:
     ax.set_ylabel("margen al umbral (%)")
     add_margin_secondary_y(ax)
     ax.set_xlabel("casos ordenados por lote")
-    ax.set_title("Historia de lotes: del piloto a AL2")
+    ax.set_title("Historia de lotes: del piloto a AL3")
     ax.yaxis.set_major_formatter(FuncFormatter(fmt_pct))
     ax.set_xticks([])
     ax.set_ylim(*MARGIN_YLIM)
@@ -605,7 +608,7 @@ def plot_batch_story_strip(df: pd.DataFrame) -> FigureRecord:
         svg,
         "esencial",
         "Secuencia de lotes con margen continuo al umbral, en % y mm.",
-        "Cuenta visualmente como el experimento dirigido paso de extremos a puntos de frontera hasta AL2.",
+        "Cuenta visualmente como el experimento dirigido paso de extremos a puntos de frontera hasta AL3.",
         "No representa orden temporal exacto de cada simulacion, sino orden logico por lote.",
     )
 
@@ -833,7 +836,7 @@ def plot_mass_effect_summary(df: pd.DataFrame) -> FigureRecord:
         svg,
         "apoyo",
         "Dmax contra m*, coloreado por mu y con borde por clase.",
-        "Resume el aprendizaje central de batch4/AL1/AL2: m* baja aumenta criticidad.",
+        "Resume el aprendizaje central de batch4/AL1/AL2/AL3: m* baja aumenta criticidad.",
         "No controla por H en un solo panel; usar junto al mapa H-mu por masa.",
     )
 
@@ -846,7 +849,7 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame) -> None:
     lines = [
         "# Production Story Graphics",
         "",
-        "Figuras derivadas de exports livianos oficiales: piloto, batch2, batch3, batch4, AL1 y AL2.",
+        "Figuras derivadas de exports livianos oficiales: piloto, batch2, batch3, batch4, AL1, AL2 y AL3.",
         "",
         "## Regla visual aplicada",
         f"- El desplazamiento normalizado usa `Dmax (% d_eq)` y siempre muestra equivalente absoluto en mm cuando aparece como eje o escala principal.",
@@ -891,7 +894,7 @@ def write_index(records: list[FigureRecord], master: pd.DataFrame) -> None:
             "## Advertencias metodologicas",
             "- Estas figuras describen la frontera operacional a `dp=0.003`, no una frontera universal independiente de resolucion.",
             "- Los puntos unidos por lineas son guias visuales; la superficie formal debe venir de surrogate/GP y validacion posterior.",
-            "- AL3 todavia no se incluye; se correra desde los candidatos derivados del GP after-AL2.",
+            "- AL3 ya se incluye; el siguiente paso es cerrar brackets con AL4 desde el GP after-AL3.",
         ]
     )
     (OUTDIR / "FIGURE_INDEX.md").write_text("\n".join(lines) + "\n", encoding="utf-8")

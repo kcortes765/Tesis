@@ -12,7 +12,7 @@ OUT = ROOT / "docs" / "post_convergence_story_web"
 FIG = OUT / "figures"
 DATA = OUT / "data"
 PRODUCTION = ROOT / "data" / "figures" / "production_story_graphics"
-GP_ANALYSIS = ROOT / "data" / "analysis" / "gp_h_mu_mstar_20260516"
+GP_ANALYSIS = ROOT / "data" / "analysis" / "gp_h_mu_mstar_after_al3_20260518"
 GP_FIGURES = GP_ANALYSIS / "figures"
 CONVERGENCE_WEB = ROOT / "docs" / "convergence_story_web"
 
@@ -20,10 +20,10 @@ CONVERGENCE_WEB = ROOT / "docs" / "convergence_story_web"
 FIGURES = [
     ("production", "01_response_map_h_mu_by_mass", "Mapa H-mu-masa observado", "Mapa operacional por masa relativa. Verde = estable; rojo = fallo; tamano = desplazamiento maximo."),
     ("production", "02_margin_vs_mu_by_mass_and_h", "Margen al umbral observado", "Margen continuo respecto de 5% de d_eq; positivo es estable y negativo es fallo."),
-    ("gp", "02_gp_frontier_by_mass", "Surrogate GP after-AL2", "Prediccion continua del margen g por masa relativa. Las estrellas son los candidatos AL3 propuestos."),
-    ("gp", "03_gp_uncertainty_by_mass", "Incertidumbre GP y AL3", "Zonas donde el modelo sigue inseguro; se usan para elegir nuevos casos cerca de frontera."),
+    ("gp", "02_gp_frontier_by_mass", "Surrogate GP after-AL3", "Prediccion continua del margen g por masa relativa. Las estrellas son los candidatos AL4 propuestos."),
+    ("gp", "03_gp_uncertainty_by_mass", "Incertidumbre GP y AL4", "Zonas donde el modelo sigue inseguro; se usan para elegir nuevos casos cerca de frontera."),
     ("gp", "01_loo_validation", "Validacion interna del GP", "Comparacion leave-one-out entre margen observado y margen predicho."),
-    ("production", "03_batch_story_margin_strip", "Historia de lotes", "Secuencia compacta desde piloto hasta AL2, mostrando como se fueron cerrando zonas de frontera."),
+    ("production", "03_batch_story_margin_strip", "Historia de lotes", "Secuencia compacta desde piloto hasta AL3, mostrando como se fueron cerrando zonas de frontera."),
     ("production", "08_mass_effect_displacement_summary", "Efecto de masa", "Resumen del desplazamiento por masa relativa m*."),
     ("production", "04_local_hydraulics_vs_displacement", "Hidraulica local", "Relacion entre hmax/Umax locales y desplazamiento del bloque."),
 ]
@@ -53,8 +53,8 @@ def copy_assets() -> None:
         "dataset_used.csv",
         "validation_metrics.json",
         "brackets_by_h_mstar.csv",
-        "al3_matrix_recommended.csv",
-        "al3_candidates.csv",
+        "al4_matrix_recommended.csv",
+        "al4_candidates.csv",
     ):
         src = GP_ANALYSIS / name
         if src.exists():
@@ -333,7 +333,7 @@ def write_page(df: pd.DataFrame) -> None:
   <header class="top">
     <p class="meta">Tesis UCN - SPH-Chrono</p>
     <h1>Post-convergencia: frontera operacional y lotes dirigidos</h1>
-    <p>Esta pagina concentra lo que viene despues de fijar <code>dp=0.003 m</code>: piloto, batch2, batch3, batch4, AL1, AL2 y el surrogate GP entrenado localmente despues de AL2.</p>
+    <p>Esta pagina concentra lo que viene despues de fijar <code>dp=0.003 m</code>: piloto, batch2, batch3, batch4, AL1, AL2, AL3 y el surrogate GP entrenado localmente despues de AL3.</p>
     <p><a href="https://kcortes765.github.io/convergencia-dp/">Volver a convergencia de dp</a></p>
   </header>
 
@@ -348,7 +348,7 @@ def write_page(df: pd.DataFrame) -> None:
 
   <section>
     <h2>2. Figuras principales</h2>
-    <p>Las primeras figuras muestran datos observados. Las figuras del GP son una interpolacion probabilistica entrenada con esos datos para decidir AL3; no reemplazan los casos SPH-Chrono.</p>
+    <p>Las primeras figuras muestran datos observados. Las figuras del GP son una interpolacion probabilistica entrenada con esos datos para decidir AL4; no reemplazan los casos SPH-Chrono.</p>
     <div class="figure-stack">
       {figure_html()}
     </div>
@@ -368,7 +368,7 @@ def write_page(df: pd.DataFrame) -> None:
   <section>
     <h2>4. Lectura metodologica corta</h2>
     <p>Esta pagina no prueba convergencia adicional de <code>dp</code>. Usa la resolucion operativa ya elegida para construir una frontera practica en <code>H</code>, <code>mu</code> y <code>m*</code>. La evidencia fuerte es el margen continuo al umbral; la clase estable/fallo es una discretizacion de ese margen.</p>
-    <p>AL3 se propone donde el GP after-AL2 muestra frontera o incertidumbre relevante. La WS debe ejecutar solo simulaciones; el reentrenamiento del GP queda reservado para esta laptop.</p>
+    <p>AL4 se propone donde el GP after-AL3 y los brackets observados muestran frontera o incertidumbre relevante. La WS debe ejecutar solo simulaciones; el reentrenamiento del GP queda reservado para esta laptop.</p>
     <p>Convencion visual: verde = <span class="inline-stable">ESTABLE</span>, rojo = <span class="inline-fail">FALLO</span>, gris = parcial/no oficial.</p>
   </section>
 </main>
