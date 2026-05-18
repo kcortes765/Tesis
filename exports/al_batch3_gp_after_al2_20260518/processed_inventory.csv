@@ -1,0 +1,9 @@
+case_id,processed_exists,file_count,bytes
+al3_lowH_m085_mu0572,True,24,11901998
+al3_base_m085_mu0800,True,24,11944224
+al3_midH_m085_mu0900,True,24,11960381
+al3_midH_m100_mu0755,True,24,11950584
+al3_highH_m100_mu0870,True,24,12029717
+al3_highH_m115_mu0760,True,24,12008812
+al3_highH_m115_mu0780,True,24,12012874
+al3_highH_m125_mu0700,True,24,12022976
