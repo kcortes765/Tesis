@@ -20,6 +20,7 @@
 - APOS runtime de tesis = `.apos/` + `/apos`, `/guardar`, `/apos-status`; no usar `apos-system/` como segundo APOS vivo.
 - AL3 completo 8/8 ESTABLE; GP after-AL3 entrenado localmente.
 - AL4 queda definido por brackets observados after-AL3 y debe correr en WS sin `--retrain-gp`.
+- AL4 completo 8/8 OK, 5 ESTABLE y 3 FALLO; export liviano en `exports/al_batch4_after_al3_20260520/`.
 - Plan cientifico actualizado: no cerrar con minimo; usar 6 meses/WS para estrategia jerarquica con pendiente, orientacion y forma como extensiones controladas.
 
 ## Ultimas sesiones
@@ -38,6 +39,7 @@
 - 2026-05-16: AL2 recibido, GP after-AL2 entrenado, web post-convergencia actualizada y AL3 preparado/subido en commit `6f9eb41`.
 - 2026-05-16: mock sintetico de entregable final creado para visualizar estado limite, frontera, fragilidad y validacion por capas.
 - 2026-05-18: AL3 recibido, GP after-AL3 entrenado, web post-convergencia actualizada y AL4 preparado para WS.
+- 2026-05-20: AL4 after-AL3 completo 8/8 OK; export liviano creado para laptop.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.
@@ -78,5 +80,7 @@
 - `data/analysis/gp_h_mu_mstar_after_al3_20260518/validation_metrics.json`
 - `config/al_batch4_after_al3_20260518.csv`
 - `docs/PROMPT_WS_AL4_AFTER_AL3_20260518.md`
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.md`
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
 - `docs/post_convergence_story_web/index.html`
 - `docs/mock_final_deliverable_20260516/index.html`

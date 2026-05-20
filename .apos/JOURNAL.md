@@ -1072,3 +1072,58 @@ python scripts\build_post_convergence_story_web.py
 - AL3 no fue un fracaso por ser todo estable; cerro el lado estable de los brackets.
 - AL4 baja `mu` dentro de brackets conocidos para buscar mezcla ESTABLE/FALLO.
 - El GP guia el diseno; la evidencia principal siguen siendo las simulaciones SPH-Chrono.
+
+## 2026-05-20 03:30 - AL4 after-AL3 completado y exportado liviano
+
+### Objetivo
+Registrar el cierre de AL4 en la WS, crear un paquete liviano para la laptop y dejar claro que el siguiente reentrenamiento GP debe hacerse fuera de la WS.
+
+### Acciones
+- Se verifico `data/production_status.json`.
+- Se reviso el log `data/production_20260518_1542.log`.
+- Se confirmo que no quedaban procesos `DualSPHysics`, `GenCase` ni `python` productivos activos.
+- Se consulto `data/results.sqlite` para extraer las filas oficiales `al4_*`.
+- Se creo `exports/al_batch4_after_al3_20260520/`.
+- Se actualizaron `STATUS.md`, `HANDOFF.md`, `PLAN.md` e `INDEX.md`.
+
+### Archivos revisados
+- `data/production_status.json`
+- `data/production_20260518_1542.log`
+- `data/results.sqlite`
+- `config/al_batch4_after_al3_20260518.csv`
+- `data/processed/al4_*`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/JOURNAL.md`
+- `exports/al_batch4_after_al3_20260520/`
+
+### Comandos importantes
+```text
+Get-Content data\production_status.json
+Get-Process | Where-Object { $_.ProcessName -match 'DualSPHysics|GenCase|python' }
+python <inline export builder>
+```
+
+### Resultados
+- AL4 termino `8/8` OK, `0` fallos numericos.
+- Tiempo total AL4: `35.5 h`.
+- Clases por `displacement_only`: 5 ESTABLE, 3 FALLO.
+- Fallos fisicos: `al4_base_m085_mu0790`, `al4_highH_m115_mu0750`, `al4_highH_m125_mu0680`.
+- Export liviano creado en `exports/al_batch4_after_al3_20260520/`.
+
+### Errores / bloqueos
+- No hubo errores numericos ni fallos de postproceso.
+
+### Proximos pasos
+- Subir export AL4 y `data/results.sqlite` por Git.
+- En laptop: hacer `git pull` y reentrenar GP after-AL4.
+- Decidir AL5, holdout o checks finos `dp=0.002` con base en el GP after-AL4.
+
+### Advertencias metodologicas
+- AL4 no debe interpretarse como convergencia de dp; es produccion dirigida a brackets.
+- Rotacion sigue siendo diagnostica, no criterio primario.
+- El GP after-AL4 debe entrenarse de forma deliberada en laptop, no automaticamente en WS.

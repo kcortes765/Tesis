@@ -1,49 +1,56 @@
 # HANDOFF
 
 ## Proxima accion recomendada
-1. Subir a Git los cambios locales de AL3/GP/web/AL4.
-2. Enviar a la WS el prompt `docs/PROMPT_WS_AL4_AFTER_AL3_20260518.md`.
-3. En WS: hacer `git pull origin master`, dry-run AL4 y correr los 8 casos solo si el dry-run coincide.
+1. Hacer commit/push desde la WS con el export AL4 liviano y `data/results.sqlite` actualizado.
+2. En laptop: `git pull`.
+3. En laptop: reentrenar GP after-AL4 usando datos oficiales hasta AL4.
+4. Decidir si corresponde AL5, holdout o checks finos `dp=0.002`.
 
 ## Contexto minimo para continuar
-- AL3 ya volvio desde la WS: 8/8 OK, todos ESTABLE.
-- AL3 no invalida el proceso; cierra el lado estable de varios brackets.
-- GP after-AL3 fue entrenado localmente con 56 casos oficiales.
-- Metricas GP after-AL3: LOO accuracy 0.857, MAE 2.866% d_eq, RMSE 4.485% d_eq.
-- AL4 no expande dominio; baja `mu` dentro de brackets observados para ubicar mejor el cambio estable/fallo.
-- `m*` es masa relativa respecto del caso base: 0.85, 1.00, 1.15, 1.25.
-- La WS no debe usar `--retrain-gp`; solo simula y exporta resultados livianos.
+- AL4 after-AL3 termino limpio: `8/8` OK, `0` fallos numericos, `35.5 h`.
+- AL4 no fue convergencia: fue lote productivo dirigido para cerrar brackets after-AL3.
+- Metodologia fija: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`, rotacion diagnostica.
+- Resultado AL4: 5 ESTABLE y 3 FALLO.
+- Fallos AL4:
+  - `al4_base_m085_mu0790`: `Dmax=6.18% d_eq`.
+  - `al4_highH_m115_mu0750`: `Dmax=5.45% d_eq`.
+  - `al4_highH_m125_mu0680`: `Dmax=6.20% d_eq`.
+- Estables cercanos:
+  - `al4_highH_m100_mu0865`: `Dmax=4.86% d_eq`.
+  - `al4_base_m100_mu06808`: `Dmax=3.57% d_eq`.
+- Export liviano WS: `exports/al_batch4_after_al3_20260520/`.
+- La laptop debe reentrenar el GP; la WS no debe usar `--retrain-gp`.
 
 ## Archivos a leer primero
 - `.apos/STATUS.md`
 - `.apos/PLAN.md`
-- `docs/PROMPT_WS_AL4_AFTER_AL3_20260518.md`
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.md`
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
 - `config/al_batch4_after_al3_20260518.csv`
-- `data/analysis/gp_h_mu_mstar_after_al3_20260518/README.md`
-- `docs/post_convergence_story_web/index.html`
+- `data/results.sqlite`
 
-## Comandos sugeridos para WS
+## Comandos sugeridos para laptop
 ```powershell
-git pull origin master
-python scripts\run_production.py --prod --matrix config\al_batch4_after_al3_20260518.csv --max-cases 8 --dry-run --no-notify
-python scripts\run_production.py --prod --matrix config\al_batch4_after_al3_20260518.csv --max-cases 8 --no-notify
+git pull
+Get-Content exports\al_batch4_after_al3_20260520\al_batch4_summary.md
+Import-Csv exports\al_batch4_after_al3_20260520\al_batch4_summary.csv |
+  Select case_name,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq,margin_pct_deq
 ```
 
 ## Senales de exito
-- Dry-run AL4 lista exactamente 8 casos.
-- `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
-- No aparece `--retrain-gp`.
-- AL4 queda corriendo o termina con export liviano `exports/al_batch4_after_al3_YYYYMMDD/`.
-- Al menos varios casos AL4 caen cerca de `Dmax=5% d_eq`, con mezcla de ESTABLE/FALLO.
+- Laptop ve `exports/al_batch4_after_al3_20260520/`.
+- Laptop ve `data/results.sqlite` con filas `al4_*`.
+- GP after-AL4 se entrena solo en laptop.
+- Siguiente lote se decide con brackets actualizados, no por intuicion.
 
 ## No hacer todavia
-- No lanzar AL5 sin incorporar AL4.
-- No reentrenar GP en la WS.
-- No abrir forma/orientacion/pendiente antes de cerrar el analisis AL4.
+- No lanzar AL5 antes de reentrenar y revisar AL4.
+- No abrir pendiente/orientacion/forma antes de cerrar el analisis AL4.
 - No tratar el GP como resultado SPH directo.
 - No versionar crudos pesados.
+- No usar `--retrain-gp` en WS.
 
 ## Riesgos inmediatos
-- La WS podria tener cambios locales; no limpiar ni resetear sin revisar.
-- AL4 incluye un chequeo muy fino `mu=0.6808` en la transicion base; si sale distinto a lo esperado, tratarlo como sensibilidad/noise local, no como crisis metodologica.
-- Si AL4 sale casi todo estable o casi todo fallo, ajustar AL5 con brackets actualizados antes de pasar a holdout.
+- AL4 incluye puntos muy cercanos al umbral; pequenas diferencias de resolucion/contacto pueden cambiar clase.
+- Rotacion supera 5 grados en varios casos, pero no decide la clase bajo `displacement_only`.
+- Si el GP after-AL4 propone puntos fuera de brackets observados, revisar que sea realmente necesario.

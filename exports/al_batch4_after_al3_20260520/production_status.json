@@ -1,0 +1,20 @@
+{
+  "phase": "completed",
+  "dp": 0.003,
+  "mode": "prod",
+  "total_cases": 8,
+  "desde": 0,
+  "pending": 8,
+  "completed": 8,
+  "failed": 0,
+  "current_case": "al4_base_m100_mu06808",
+  "start_time": "2026-05-18T15:42:45.422787",
+  "dry_run": false,
+  "updated": "2026-05-20T03:12:58.590969",
+  "progress": "8/8",
+  "eta": "2026-05-19T23:02:30.913454",
+  "avg_case_seconds": 16112.2,
+  "eta_human": "0.0h (0.0d)",
+  "end_time": "2026-05-20T03:12:58.590969",
+  "total_elapsed_hours": 35.5
+}

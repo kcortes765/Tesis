@@ -4,7 +4,7 @@
 Cerrar de forma robusta la frontera base `[H, mu, m*]` con active learning trazable, antes de abrir pendiente, orientacion y forma como extensiones jerarquicas.
 
 ## Fase actual
-Post-AL3 con surrogate deliberate after-AL3 entrenado en laptop y AL4 listo para WS.
+Post-AL4 en WS: export liviano creado y pendiente de sincronizar por Git para reentrenamiento GP after-AL4 en laptop.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como resolucion operativa.
@@ -17,12 +17,13 @@ Post-AL3 con surrogate deliberate after-AL3 entrenado en laptop y AL4 listo para
 - [x] Actualizar web post-convergencia con AL3 y GP after-AL3.
 - [x] Generar matriz AL4.
 - [x] Preparar prompt WS AL4.
-- [ ] Subir cambios AL4 a Git.
-- [ ] En WS: dry-run AL4.
-- [ ] En WS: ejecutar AL4 si el dry-run coincide.
-- [ ] Exportar AL4 liviano y traerlo a laptop.
+- [x] En WS: dry-run AL4.
+- [x] En WS: ejecutar AL4.
+- [x] Exportar AL4 liviano.
+- [ ] Subir AL4 por Git a laptop.
 - [ ] Reentrenar GP after-AL4 en laptop.
 - [ ] Decidir si sigue AL5, holdout o checks finos `dp=0.002`.
+- [ ] Actualizar web post-convergencia con AL4 y GP after-AL4.
 - [ ] Seleccionar variables secundarias: pendiente, orientacion y formas/STL representativas.
 
 ## Linea metodologica prevista
