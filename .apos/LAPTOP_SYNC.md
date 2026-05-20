@@ -1,48 +1,34 @@
 # LAPTOP_SYNC
 
-Ultima actualizacion WS: 2026-05-20T18:45:51
+Ultima actualizacion WS: 2026-05-20T18:51:27
 Proyecto: SPH-Tesis
-Ruta WS: `C:\Users\Admin\Desktop\SPH-Tesis`
+Ruta WS: `C:\Users\kevin\projects\Tesis`
 
 Este archivo es el resumen inteligente que `/guardar` debe versionar para que la laptop reciba contexto por `git pull`.
 
 ## Git
-- Rama: `master`
-- HEAD: `8d178c9 Add after-AL4 GP analysis and AL5 plan`
+- Rama: ``
+- HEAD: `6be2ea8 Enable external ntfy watcher for production runs`
 
 ```text
-## master...origin/master
- M .apos/HANDOFF.md
- M .apos/JOURNAL.md
- M .apos/PLAN.md
- M .apos/STATUS.md
- M docs/NTFY_SIMULACIONES.md
-?? scripts/start_production_ntfy_watch.ps1
+## HEAD (no branch)
+UU .apos/HANDOFF.md
+M  .apos/INDEX.md
+UU .apos/JOURNAL.md
+UU .apos/LAPTOP_SYNC.md
+M  .apos/OPEN_QUESTIONS.md
+UU .apos/PLAN.md
+M  .apos/RISKS.md
+UU .apos/STATUS.md
 ```
 
 ## Estado productivo / simulaciones
-- **phase:** `production`
-- **mode:** `prod`
-- **dp:** `0.003`
-- **total_cases:** `8`
-- **completed:** `0`
-- **failed:** `0`
-- **current_case:** `al5_highH_m085_mu0900`
-- **progress:** `1/8`
-- **updated:** `2026-05-20T18:29:15.928018`
+_No hay `data/production_status.json` disponible._
 
 ## Estado APOS resumido
 
 ### STATUS
-# STATUS
-
-Ultima actualizacion: 2026-05-20 19:10
-Proyecto: SPH-IncipientMotion / Tesis UCN 2026
-Ruta canonica WS: C:\Users\Admin\Desktop\SPH-Tesis
-Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reentrenado localmente y AL5 quedo preparado para ejecutar en WS.
-
-## Hechos verificados
-- Convergencia cerrada para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
+a para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
 - Piloto, batch2, batch3, batch4, AL1, AL2, AL3 y AL4 tienen exports livianos versionables.
 - AL4 corrio entre 2026-05-18 15:42 y 2026-05-20 03:12.
 - AL4 termino `8/8` casos, `0` fallos numericos, tiempo total `35.5 h`.
@@ -71,10 +57,14 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - AL5 fue lanzado en WS el 2026-05-20 18:29 con `--no-notify`; se activo watcher externo ntfy a las 18:43.
 - Watcher externo AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
 - Se agrego atajo versionado: `scripts/start_production_ntfy_watch.ps1`.
+- Decision estrategica nueva: adoptar plan ambicioso, no minimo. Se mantiene cierre jerarquico: primero frontera base `[H, mu, m*]`, luego holdout/checks `dp=0.002`, y despues extensiones de pendiente, orientacion y forma.
+- El usuario quiere idealmente usar las 10 formas STL disponibles; esto queda aceptado como objetivo aspiracional, condicionado a analisis geometrico avanzado, sanity de contacto por forma y diseno experimental interpretable.
 
 ## Decisiones activas
 - La WS solo ejecuta simulaciones y exporta resultados livianos; el reentrenamiento GP se hace deliberadamente en laptop.
 - AL5 debe correrse en WS con matriz explicita y sin `--retrain-gp`.
+- La tesis apunta a campana amplia si el tiempo/WS lo permite: orden de magnitud `90-130` simulaciones adicionales planificadas por etapas, no lanzadas de una sola vez.
+- Las 10 formas pueden entrar solo si se tratan como extension de forma, no como mezcla desordenada dentro del GP base.
 - Tratar rotacion, fuerzas y gauges como diagnosticos, no como criterio primario.
 - Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 - No usar `--retrain-gp` en WS.
@@ -89,6 +79,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Aun faltan puntos para cerrar/llenar cortes:
   - `H=0.225,m*=0.85`: no hay ESTABLE dentro de los corridos.
   - `H=0.210,m*=1.15` y `H=0.210,m*=1.25`: faltan fallos o transiciones claras.
+- Con 4 meses o mas de computo disponible, el limite principal ya no es solo tiempo GPU; el limite real es diseno metodologico, trazabilidad y capacidad de interpretar variables sin mezclar efectos.
 
 ## Pendientes criticos
 - Commit/push de analisis after-AL4, matriz AL5, prompt WS AL5 y APOS.
@@ -96,12 +87,14 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Al terminar AL5, crear export liviano, subir a Git y avisar explicitamente a laptop: "SI ACTIVE SIEMPRE NTFY".
 - Cuando vuelva AL5: reentrenar GP after-AL5 y decidir holdout/checks finos `dp=0.002`.
 - Actualizar web post-convergencia con AL4 despues del reentrenamiento local.
+- Planificar etapa posterior ambiciosa: holdout base, checks finos `dp=0.002`, campana pendiente, campana orientacion, analisis STL de las 10 formas, sanity de contacto por forma y campana de forma idealmente con las 10 formas si pasan filtros.
 
 ## Riesgos activos
 - Riesgo de reentrenar GP automaticamente en WS; mantenerlo desactivado.
 - Riesgo de confundir interpolacion GP con resultado SPH directo.
 - Riesgo de abrir pendiente/orientacion/forma antes de cerrar bien la frontera base.
 - Riesgo de sobreinterpretar rotacion diagnostica como falla primaria.
+- Riesgo de intentar usar las 10 formas sin normalizar volumen/masa/inercia/apoyo, lo que confundiria efecto de forma con errores de setup.
 
 ## Evidencia reciente
 - `data/production_status.json`
@@ -123,6 +116,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 2. En WS: `git pull origin master`.
 3. En WS: dry-run AL5 con `config/al_batch5_after_al4_20260520.csv`.
 4. Si dry-run lista exactamente 8 casos, ejecutar AL5.
+5. Despues de AL5 y reentrenamiento, preparar hoja de ruta ambiciosa para pendiente, orientacion y forma.
 
 ## Contexto minimo para continuar
 - AL4 after-AL3 termino limpio: `8/8` OK, `0` fallos numericos, `35.5 h`.
@@ -145,6 +139,8 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Como AL5 fue lanzado con `--no-notify`, se activo watcher externo ntfy a las 18:43.
 - Watcher AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
 - Regla para siguientes lotes: si se usa `--no-notify`, arrancar siempre `scripts/start_production_ntfy_watch.ps1`.
+- Decision estrategica de sesion: el plan objetivo ya no es cerrar con el minimo. Se adopta plan ambicioso, compatible con ~90-130 simulaciones adicionales por etapas si aportan evidencia interpretable.
+- El usuario quiere idealmente usar las 10 formas STL. Eso queda como objetivo, pero solo despues de cerrar frontera base y pasar analisis geometrico + sanity de contacto por forma.
 
 ## Archivos a leer primero
 - `.apos/STATUS.md`
@@ -157,6 +153,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
 - `config/al_batch5_after_al4_20260520.csv`
 - `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`
+- `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
 
 ## Comandos sugeridos para laptop
 ```powershell
@@ -182,6 +179,7 @@ Get-Content data\logs\production_ntfy_watch_al5_20260520.log -Tail 40
 ## No hacer todavia
 - No cambiar la matriz AL5 en WS sin volver a justificarla en laptop.
 - No abrir pendiente/orientacion/forma antes de cerrar el analisis AL4.
+- No lanzar campana de 10 formas antes de elegir metricas geometricas, confirmar masa/inercia/centroide/apoyo por STL, correr sanity de contacto por forma y decidir si todas aportan variacion real.
 - No tratar el GP como resultado SPH directo.
 - No versionar crudos pesados.
 - No usar `--retrain-gp` en WS.
@@ -193,10 +191,8 @@ Get-Content data\logs\production_ntfy_watch_al5_20260520.log -Tail 40
 - `al5_highH_m085_mu0900` puede fallar aun con `mu=0.90`; si ocurre, se reporta que para `H=0.225,m*=0.85` la frontera queda fuera del dominio de `mu<=0.90`.
 
 ### PLAN
-# PLAN
-
-## Objetivo activo
-Cerrar de forma robusta la frontera base `[H, mu, m*]` con active learning trazable, antes de abrir pendiente, orientacion y forma como extensiones jerarquicas.
+o
+Construir una tesis fuerte con plan ambicioso y jerarquico: cerrar primero la frontera base `[H, mu, m*]`, validarla, y luego expandir a pendiente, orientacion y forma sin perder interpretabilidad.
 
 ## Fase actual
 Post-AL4 en laptop: GP after-AL4 reentrenado y AL5 preparado para ejecutar en WS.
@@ -230,6 +226,10 @@ Post-AL4 en laptop: GP after-AL4 reentrenado y AL5 preparado para ejecutar en WS
 - [ ] Actualizar web post-convergencia con AL4 y GP after-AL4.
 - [ ] Seleccionar variables secundarias: pendiente, orientacion y formas/STL representativas.
 - [ ] Al cerrar AL5, exportar liviano, subir por Git y registrar que ntfy estuvo activo.
+- [ ] Preparar plan ambicioso post-base con presupuesto de ~90-130 simulaciones adicionales por etapas.
+- [ ] Analizar si las 10 formas STL disponibles aportan variacion geometrica suficiente o si algunas son redundantes.
+- [ ] Disenar sanity de contacto por forma.
+- [ ] Decidir campana de forma: idealmente 10 formas, pero solo si pasan filtros geometricos/contacto.
 
 ## Linea metodologica prevista
 1. Cerrar frontera base con `[H, mu, m*]`.
@@ -237,33 +237,30 @@ Post-AL4 en laptop: GP after-AL4 reentrenado y AL5 preparado para ejecutar en WS
 3. Agregar checks finos `dp=0.002` en pocos puntos criticos.
 4. Agregar pendiente como extension controlada.
 5. Agregar orientacion como sensibilidad controlada.
-6. Agregar forma con pocas geometrias representativas elegidas por analisis STL.
+6. Agregar forma como extension fuerte. Objetivo ideal: usar las 10 formas STL, siempre que el analisis geometrico demuestre que no son redundantes y que cada una pasa sanity de contacto.
 7. Entregar estado limite, fragilidad condicional, incertidumbre y validacion por capas.
+
+## Plan ambicioso de simulaciones
+- Base final `[H, mu, m*]`: AL5 + posible AL6 + holdout + checks `dp=0.002`.
+- Pendiente: mini-campana dirigida en varios `slope_inv`.
+- Orientacion: sensibilidad por angulos discretos del bloque.
+- Forma: idealmente 10 STL, con sanity por forma y casos hidraulicos cerca de frontera.
+- Rango objetivo: `90-130` simulaciones adicionales maximas planificadas por etapas, no lanzadas simultaneamente.
 
 ## Bloqueos
 - No lanzar nuevos casos si la WS no esta sincronizada por Git.
 - No usar GP legacy ni reentreno automatico.
 - No versionar crudos pesados.
 - No usar el caso parcial de batch4 como oficial.
+- No abrir forma si no esta resuelto el procesamiento consistente de volumen, centroide, masa, inercia, apoyo inicial e insertion point por STL.
 
 ## Fuera de alcance por ahora
 - Factorial completo 6D sin active learning.
-- Dominio amplio de forma sin seleccion geometrica previa.
+- Dominio amplio de forma sin seleccion geometrica/contacto previa.
 - Claims universales de bloques costeros.
 
 ### Riesgos activos
-Probabilidad: media
-Evidencia: la WS produce exports via GitHub y la laptop contiene STL/documentos/figuras/scripts locales no necesariamente sincronizados.
-Mitigacion: usar `docs/DATA_ORIGIN_POLICY.md`; citar export/commit para WS y path local para laptop; versionar solo lo liviano y trazable.
-Relacionado: `docs/DATA_ORIGIN_POLICY.md`, `exports/`, `models/bloques/`
-
-## RISK-20260510-002 - Recuperar cambios antiguos del stash y reintroducir estado obsoleto
-
-Estado: activo
-Severidad: media
-Probabilidad: media
-Evidencia: los cambios trackeados previos quedaron en `stash@{0}` antes del fast-forward.
-Mitigacion: no aplicar el stash completo; inspeccionar y recuperar solo archivos puntuales si falta algo.
+y recuperar solo archivos puntuales si falta algo.
 Relacionado: `C:\Seba\workspace_backups\tesis-reconcile-20260510_125339`
 
 ## RISK-20260510-003 - Perdida de crudos locales por limpieza
@@ -311,14 +308,17 @@ Evidencia: se creo `docs/mock_final_deliverable_20260516/` con datos sinteticos 
 Mitigacion: mantener rotulos explicitos de datos sinteticos y no citarlo como evidencia cientifica.
 Relacionado: `scripts/generate_mock_final_deliverable_20260516.py`
 
+## RISK-20260520-001 - Usar 10 formas sin control geometrico/contacto
+
+Estado: activo
+Severidad: alta
+Probabilidad: media
+Evidencia: el usuario quiere idealmente usar las 10 formas STL para dar peso cientifico al efecto de forma, pero varias pueden ser geometricamente parecidas o requerir ajustes de masa/inercia/apoyo.
+Mitigacion: antes de correr campana de forma, hacer analisis geometrico avanzado, verificar masa/inercia/centroide/apoyo por STL y correr sanity de contacto por forma. Tratar forma como extension jerarquica, no como mezcla dentro del GP base.
+Relacionado: `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`, `models/`
+
 ### Preguntas abiertas
-# OPEN_QUESTIONS
-
-## Q-20260501-001 - Resultado completo del piloto productivo
-
-Estado: resuelta
-Tipo: tecnica
-Contexto: el piloto de 5 casos esta corriendo.
+5 casos esta corriendo.
 Que evidencia falta:
 - `production_status.json` final.
 - logs finales.
@@ -346,34 +346,50 @@ Resolucion: para tesis, `apos-system/` no es runtime vivo; APOS canonico es `.ap
 
 ## Q-20260516-001 - Cuanto expandir pendiente, orientacion y forma
 
-Estado: abierta
+Estado: resuelta parcialmente
 Tipo: tecnica
 Contexto: se decidio que el plan no debe cerrar con el minimo de simulaciones si hay 6 meses y WS potente. Pendiente, orientacion y forma importan, pero deben entrar de forma jerarquica.
 Que evidencia falta:
-- resultados de AL3;
-- reentrenamiento GP after-AL3;
-- analisis geometrico/STL para seleccionar formas representativas;
+- resultados de AL5 y posible AL6;
+- reentrenamiento GP after-AL5;
+- holdout base;
+- analisis geometrico/STL actualizado para determinar si conviene usar las 10 formas o un subconjunto;
 - presupuesto actualizado de tiempo por simulacion.
-Resolucion: pendiente.
+Resolucion: se adopta plan ambicioso por etapas; no se lanzara factorial 6D. La forma entra como extension fuerte, idealmente con las 10 formas, si pasan analisis geometrico y sanity de contacto.
+
+## Q-20260520-001 - Usar las 10 formas STL o subconjunto representativo
+
+Estado: abierta
+Tipo: tecnica
+Contexto: el usuario quiere idealmente aprovechar las 10 formas disponibles para que el efecto de forma tenga peso cientifico. Antes se propuso usar pocas formas por prudencia metodologica.
+Que evidencia falta:
+- revisar/actualizar analisis geometrico de las 10 STL;
+- medir volumen, d_eq, bbox, ratios L/B/T, solidez, huella inferior, centroide e inercia;
+- verificar que el pipeline genera masa/inercia/apoyo correcto por forma;
+- correr sanity de contacto por forma;
+- decidir si todas las formas son suficientemente distintas o si algunas son redundantes.
+Resolucion: pendiente; objetivo ideal es usar las 10, pero no sin filtros geometricos/contacto.
 
 ## Exports livianos recientes
-- `exports\al_batch4_after_al3_20260520` (2026-05-20T18:03)
-- `exports\al_batch3_gp_after_al2_20260518` (2026-05-18T15:00)
-- `exports\al_batch2_bracket_closing_20260516` (2026-05-16T17:24)
-- `exports\stitch_visual_package_20260515` (2026-05-15T03:29)
-- `exports\al_batch1_hybrid_20260514` (2026-05-14T20:12)
-- `exports\batch4_mass_probe_20260513` (2026-05-13T08:34)
-- `exports\batch3_productivo_20260509` (2026-05-09T23:24)
-- `exports\batch2_productivo_20260505` (2026-05-06T11:30)
+- `exports\al_batch4_after_al3_20260520` (2026-05-20T18:07)
+- `exports\al_batch3_gp_after_al2_20260518` (2026-05-18T15:02)
+- `exports\stitch_visual_package_20260515` (2026-05-16T17:36)
+- `exports\batch4_mass_probe_20260513` (2026-05-16T17:36)
+- `exports\al_batch2_bracket_closing_20260516` (2026-05-16T17:36)
+- `exports\al_batch1_hybrid_20260514` (2026-05-16T17:36)
+- `exports\ws_delta_conv_edge_f0685_20260422_090418` (2026-05-10T12:54)
+- `exports\ws_delta_conv_edge_f0685_20260422_081859` (2026-05-10T12:54)
 
 ## Cambios locales al momento de guardar
 **Cambios livianos o de codigo:**
-- `M .apos/HANDOFF.md`
-- ` M .apos/JOURNAL.md`
-- ` M .apos/PLAN.md`
-- ` M .apos/STATUS.md`
-- ` M docs/NTFY_SIMULACIONES.md`
-- `?? scripts/start_production_ntfy_watch.ps1`
+- `UU .apos/HANDOFF.md`
+- `M  .apos/INDEX.md`
+- `UU .apos/JOURNAL.md`
+- `UU .apos/LAPTOP_SYNC.md`
+- `M  .apos/OPEN_QUESTIONS.md`
+- `UU .apos/PLAN.md`
+- `M  .apos/RISKS.md`
+- `UU .apos/STATUS.md`
 
 ## Instrucciones para laptop
 1. Ejecutar `git pull`.

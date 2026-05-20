@@ -23,6 +23,7 @@
 - AL4 completo 8/8 OK, 5 ESTABLE y 3 FALLO; export liviano en `exports/al_batch4_after_al3_20260520/`.
 - GP after-AL4 entrenado localmente con 64 casos oficiales; AL5 definido en `config/al_batch5_after_al4_20260520.csv`.
 - Plan cientifico actualizado: no cerrar con minimo; usar 6 meses/WS para estrategia jerarquica con pendiente, orientacion y forma como extensiones controladas.
+- Decision nueva: adoptar plan ambicioso, con posibilidad de ~90-130 simulaciones adicionales por etapas. La forma debe tener peso; se buscara idealmente usar las 10 STL si pasan filtros geometricos/contacto.
 
 ## Ultimas sesiones
 - 2026-04-30: cierre de convergencia, documento productivo, matriz piloto y guardas `run_production.py`.
@@ -42,6 +43,7 @@
 - 2026-05-18: AL3 recibido, GP after-AL3 entrenado, web post-convergencia actualizada y AL4 preparado para WS.
 - 2026-05-20: AL4 after-AL3 completo 8/8 OK; export liviano creado para laptop.
 - 2026-05-20: AL4 recibido en laptop, GP after-AL4 entrenado y AL5 preparado para WS.
+- 2026-05-20: se adopta plan ambicioso; forma pasa a ser extension fuerte, idealmente con 10 STL si el analisis lo permite.
 
 ## Research relevante
 - Pendiente: registrar investigaciones futuras en `.apos/research/` y `RESEARCH_LOG.md`.

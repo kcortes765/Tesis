@@ -1,6 +1,6 @@
 # STATUS
 
-Ultima actualizacion: 2026-05-20 19:10
+Ultima actualizacion: 2026-05-20 19:45
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica WS: C:\Users\Admin\Desktop\SPH-Tesis
 Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reentrenado localmente y AL5 quedo preparado para ejecutar en WS.
@@ -35,10 +35,14 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - AL5 fue lanzado en WS el 2026-05-20 18:29 con `--no-notify`; se activo watcher externo ntfy a las 18:43.
 - Watcher externo AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
 - Se agrego atajo versionado: `scripts/start_production_ntfy_watch.ps1`.
+- Decision estrategica nueva: adoptar plan ambicioso, no minimo. Se mantiene cierre jerarquico: primero frontera base `[H, mu, m*]`, luego holdout/checks `dp=0.002`, y despues extensiones de pendiente, orientacion y forma.
+- El usuario quiere idealmente usar las 10 formas STL disponibles; esto queda aceptado como objetivo aspiracional, condicionado a analisis geometrico avanzado, sanity de contacto por forma y diseno experimental interpretable.
 
 ## Decisiones activas
 - La WS solo ejecuta simulaciones y exporta resultados livianos; el reentrenamiento GP se hace deliberadamente en laptop.
 - AL5 debe correrse en WS con matriz explicita y sin `--retrain-gp`.
+- La tesis apunta a campana amplia si el tiempo/WS lo permite: orden de magnitud `90-130` simulaciones adicionales planificadas por etapas, no lanzadas de una sola vez.
+- Las 10 formas pueden entrar solo si se tratan como extension de forma, no como mezcla desordenada dentro del GP base.
 - Tratar rotacion, fuerzas y gauges como diagnosticos, no como criterio primario.
 - Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 - No usar `--retrain-gp` en WS.
@@ -53,6 +57,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Aun faltan puntos para cerrar/llenar cortes:
   - `H=0.225,m*=0.85`: no hay ESTABLE dentro de los corridos.
   - `H=0.210,m*=1.15` y `H=0.210,m*=1.25`: faltan fallos o transiciones claras.
+- Con 4 meses o mas de computo disponible, el limite principal ya no es solo tiempo GPU; el limite real es diseno metodologico, trazabilidad y capacidad de interpretar variables sin mezclar efectos.
 
 ## Pendientes criticos
 - Commit/push de analisis after-AL4, matriz AL5, prompt WS AL5 y APOS.
@@ -60,12 +65,14 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Al terminar AL5, crear export liviano, subir a Git y avisar explicitamente a laptop: "SI ACTIVE SIEMPRE NTFY".
 - Cuando vuelva AL5: reentrenar GP after-AL5 y decidir holdout/checks finos `dp=0.002`.
 - Actualizar web post-convergencia con AL4 despues del reentrenamiento local.
+- Planificar etapa posterior ambiciosa: holdout base, checks finos `dp=0.002`, campana pendiente, campana orientacion, analisis STL de las 10 formas, sanity de contacto por forma y campana de forma idealmente con las 10 formas si pasan filtros.
 
 ## Riesgos activos
 - Riesgo de reentrenar GP automaticamente en WS; mantenerlo desactivado.
 - Riesgo de confundir interpolacion GP con resultado SPH directo.
 - Riesgo de abrir pendiente/orientacion/forma antes de cerrar bien la frontera base.
 - Riesgo de sobreinterpretar rotacion diagnostica como falla primaria.
+- Riesgo de intentar usar las 10 formas sin normalizar volumen/masa/inercia/apoyo, lo que confundiria efecto de forma con errores de setup.
 
 ## Evidencia reciente
 - `data/production_status.json`

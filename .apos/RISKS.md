@@ -116,3 +116,12 @@ Probabilidad: baja
 Evidencia: se creo `docs/mock_final_deliverable_20260516/` con datos sinteticos para visualizar el entregable final.
 Mitigacion: mantener rotulos explicitos de datos sinteticos y no citarlo como evidencia cientifica.
 Relacionado: `scripts/generate_mock_final_deliverable_20260516.py`
+
+## RISK-20260520-001 - Usar 10 formas sin control geometrico/contacto
+
+Estado: activo
+Severidad: alta
+Probabilidad: media
+Evidencia: el usuario quiere idealmente usar las 10 formas STL para dar peso cientifico al efecto de forma, pero varias pueden ser geometricamente parecidas o requerir ajustes de masa/inercia/apoyo.
+Mitigacion: antes de correr campana de forma, hacer analisis geometrico avanzado, verificar masa/inercia/centroide/apoyo por STL y correr sanity de contacto por forma. Tratar forma como extension jerarquica, no como mezcla dentro del GP base.
+Relacionado: `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`, `models/`

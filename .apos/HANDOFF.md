@@ -5,6 +5,7 @@
 2. En WS: `git pull origin master`.
 3. En WS: dry-run AL5 con `config/al_batch5_after_al4_20260520.csv`.
 4. Si dry-run lista exactamente 8 casos, ejecutar AL5.
+5. Despues de AL5 y reentrenamiento, preparar hoja de ruta ambiciosa para pendiente, orientacion y forma.
 
 ## Contexto minimo para continuar
 - AL4 after-AL3 termino limpio: `8/8` OK, `0` fallos numericos, `35.5 h`.
@@ -27,6 +28,8 @@
 - Como AL5 fue lanzado con `--no-notify`, se activo watcher externo ntfy a las 18:43.
 - Watcher AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
 - Regla para siguientes lotes: si se usa `--no-notify`, arrancar siempre `scripts/start_production_ntfy_watch.ps1`.
+- Decision estrategica de sesion: el plan objetivo ya no es cerrar con el minimo. Se adopta plan ambicioso, compatible con ~90-130 simulaciones adicionales por etapas si aportan evidencia interpretable.
+- El usuario quiere idealmente usar las 10 formas STL. Eso queda como objetivo, pero solo despues de cerrar frontera base y pasar analisis geometrico + sanity de contacto por forma.
 
 ## Archivos a leer primero
 - `.apos/STATUS.md`
@@ -39,6 +42,7 @@
 - `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
 - `config/al_batch5_after_al4_20260520.csv`
 - `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`
+- `data/geometry/bloques_b02_20260510/ANALISIS_BLOQUES_STL_20260510.md`
 
 ## Comandos sugeridos para laptop
 ```powershell
@@ -64,6 +68,7 @@ Get-Content data\logs\production_ntfy_watch_al5_20260520.log -Tail 40
 ## No hacer todavia
 - No cambiar la matriz AL5 en WS sin volver a justificarla en laptop.
 - No abrir pendiente/orientacion/forma antes de cerrar el analisis AL4.
+- No lanzar campana de 10 formas antes de elegir metricas geometricas, confirmar masa/inercia/centroide/apoyo por STL, correr sanity de contacto por forma y decidir si todas aportan variacion real.
 - No tratar el GP como resultado SPH directo.
 - No versionar crudos pesados.
 - No usar `--retrain-gp` en WS.

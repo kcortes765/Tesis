@@ -862,7 +862,8 @@ python -m py_compile scripts\generate_production_story_graphics.py scripts\gener
 Sincronizar a laptop los resultados livianos de AL batch2 y bloquear el reentrenamiento GP automatico.
 
 ### Acciones
-- Verificado data/production_status.json: AL2 completed=10, ailed=0, phase=completed.
+- Verificado data/production_status.json: AL2 completed=10, 
+ailed=0, phase=completed.
 - Creado export liviano exports/al_batch2_bracket_closing_20260516/.
 - Extraida tabla oficial desde data/results.sqlite a l_batch2_summary.csv.
 - Actualizado APOS: STATUS, HANDOFF y PLAN.
@@ -1222,6 +1223,32 @@ Recuperar notificaciones ntfy para AL5, que fue lanzado correctamente con `--no-
 - `.apos/STATUS.md`
 - `.apos/HANDOFF.md`
 - `.apos/PLAN.md`
+## 2026-05-20 19:45 - Decision de plan ambicioso y forma como extension fuerte
+
+### Objetivo
+Registrar el cambio estrategico: no cerrar la tesis con el minimo computacional, sino usar el tiempo/GPU disponible para una campana jerarquica mas ambiciosa con pendiente, orientacion y forma.
+
+### Acciones
+- Se discutio que 4+ meses de computo disponible permiten apuntar a mas que el cierre minimo.
+- Se aclaro que el limite principal no es solo tiempo GPU, sino diseno metodologico e interpretabilidad.
+- Se acordo mantener la jerarquia: cerrar base `[H, mu, m*]`, luego validar, y despues abrir pendiente/orientacion/forma.
+- Se registro que el usuario quiere idealmente usar las 10 formas STL disponibles.
+- Se actualizo APOS para reflejar plan ambicioso, riesgos y preguntas abiertas.
+
+### Archivos revisados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/RISKS.md`
+- `.apos/OPEN_QUESTIONS.md`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/RISKS.md`
+- `.apos/OPEN_QUESTIONS.md`
 - `.apos/JOURNAL.md`
 
 ### Comandos importantes
@@ -1245,3 +1272,26 @@ Start-Process python scripts\watch_production_ntfy.py ...
 
 ### Advertencias metodologicas
 - ntfy es observabilidad operacional; no reemplaza logs, SQLite, `production_status.json` ni exports.
+/guardar
+```
+
+### Resultados
+- Decision: adoptar plan ambicioso, estimado en `90-130` simulaciones adicionales maximas planificadas por etapas.
+- Forma pasa a ser extension fuerte, no solo nota marginal.
+- Objetivo ideal: usar las 10 formas STL si pasan analisis geometrico y sanity de contacto.
+- La forma no entra aun al GP base; primero se cierra y valida `[H, mu, m*]`.
+
+### Errores / bloqueos
+- No hubo errores tecnicos.
+- Sigue pendiente confirmar si las 10 formas son suficientemente distintas y si el pipeline mantiene masa/inercia/apoyo correctos por STL.
+
+### Proximos pasos
+- Ejecutar AL5 en WS.
+- Al volver AL5, reentrenar GP after-AL5.
+- Preparar plan detallado post-base: holdout, `dp=0.002`, pendiente, orientacion y forma.
+- Actualizar/rehacer analisis geometrico de las 10 STL antes de lanzar campana de forma.
+
+### Advertencias metodologicas
+- Mas simulaciones solo ayudan si responden una pregunta estructurada.
+- Usar 10 formas sin filtros puede confundir efecto de forma con cambios de volumen, masa, centroide, inercia o apoyo.
+- No lanzar factorial 6D completo sin active learning o estructura jerarquica.
