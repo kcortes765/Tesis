@@ -30,6 +30,18 @@ Ejemplo:
 python scripts\run_production.py --prod --matrix config\batchX.csv --max-cases N
 ```
 
+Regla operativa actual:
+
+- Preferir correr sin `--no-notify` cuando se quiera ntfy nativo.
+- Si un prompt usa `--no-notify`, arrancar igualmente el watcher externo apenas se lance el lote.
+- Para la WS, considerar ntfy obligatorio para lotes largos: inicio, cambio/fin de caso, errores, heartbeat y cierre.
+
+Comando recomendado despues de lanzar cualquier lote productivo:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\start_production_ntfy_watch.ps1 -Label alX
+```
+
 ## Corridas ya lanzadas con `--no-notify`
 
 Si una corrida ya esta viva con `--no-notify`, usar watcher externo:
@@ -45,6 +57,12 @@ $stdout='data\logs\production_ntfy_watch_stdout.log'
 $stderr='data\logs\production_ntfy_watch_stderr.log'
 $args=@('scripts\watch_production_ntfy.py','--project','tesis','--poll-seconds','60','--heartbeat-minutes','120','--exit-on-complete')
 Start-Process -FilePath 'python' -ArgumentList $args -WorkingDirectory 'C:\Users\Admin\Desktop\SPH-Tesis' -RedirectStandardOutput $stdout -RedirectStandardError $stderr -WindowStyle Hidden
+```
+
+Atajo versionado:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\start_production_ntfy_watch.ps1 -Label al5
 ```
 
 Eventos del watcher externo:

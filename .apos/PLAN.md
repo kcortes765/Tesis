@@ -28,11 +28,13 @@ Post-AL4 en laptop: GP after-AL4 reentrenado y AL5 preparado para ejecutar en WS
 - [ ] Commit/push de GP after-AL4 y AL5.
 - [ ] En WS: dry-run AL5.
 - [ ] En WS: ejecutar AL5.
+- [x] Activar watcher externo ntfy para AL5 lanzado con `--no-notify`.
 - [ ] Traer AL5 a laptop.
 - [ ] Reentrenar GP after-AL5.
 - [ ] Decidir holdout/checks finos `dp=0.002`.
 - [ ] Actualizar web post-convergencia con AL4 y GP after-AL4.
 - [ ] Seleccionar variables secundarias: pendiente, orientacion y formas/STL representativas.
+- [ ] Al cerrar AL5, exportar liviano, subir por Git y registrar que ntfy estuvo activo.
 
 ## Linea metodologica prevista
 1. Cerrar frontera base con `[H, mu, m*]`.

@@ -32,6 +32,9 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - AL5 preparado:
   - Matriz: `config/al_batch5_after_al4_20260520.csv`.
   - Prompt WS: `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`.
+- AL5 fue lanzado en WS el 2026-05-20 18:29 con `--no-notify`; se activo watcher externo ntfy a las 18:43.
+- Watcher externo AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
+- Se agrego atajo versionado: `scripts/start_production_ntfy_watch.ps1`.
 
 ## Decisiones activas
 - La WS solo ejecuta simulaciones y exporta resultados livianos; el reentrenamiento GP se hace deliberadamente en laptop.
@@ -39,6 +42,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 - Tratar rotacion, fuerzas y gauges como diagnosticos, no como criterio primario.
 - Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 - No usar `--retrain-gp` en WS.
+- Para lotes largos en WS, ntfy queda operacionalmente obligatorio: usar notificacion nativa o watcher externo si el comando usa `--no-notify`.
 
 ## Inferencias vigentes
 - AL4 fue informativo porque mezclo ESTABLE/FALLO dentro de brackets observados.
@@ -53,6 +57,7 @@ Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reen
 ## Pendientes criticos
 - Commit/push de analisis after-AL4, matriz AL5, prompt WS AL5 y APOS.
 - En WS: hacer `git pull`, dry-run AL5 y ejecutar solo si lista exactamente 8 casos.
+- Al terminar AL5, crear export liviano, subir a Git y avisar explicitamente a laptop: "SI ACTIVE SIEMPRE NTFY".
 - Cuando vuelva AL5: reentrenar GP after-AL5 y decidir holdout/checks finos `dp=0.002`.
 - Actualizar web post-convergencia con AL4 despues del reentrenamiento local.
 

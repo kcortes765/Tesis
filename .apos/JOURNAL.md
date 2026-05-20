@@ -1195,3 +1195,53 @@ python scripts\train_gp_h_mu_mstar_after_al4_20260520.py
 - AL5 sigue siendo active learning productivo, no convergencia.
 - `al5_highH_m085_mu0900` puede fallar; si falla, indica que para `H=0.225,m*=0.85` la frontera queda fuera del dominio `mu<=0.90`.
 - No abrir pendiente/orientacion/forma hasta tener la frontera base y validacion interna mas cerradas.
+
+## 2026-05-20 18:43 - Watcher externo ntfy activado para AL5
+
+### Objetivo
+Recuperar notificaciones ntfy para AL5, que fue lanzado correctamente con `--no-notify`, sin interrumpir la simulacion ya en curso.
+
+### Acciones
+- Se verifico que AL5 estaba en produccion con `current_case=al5_highH_m085_mu0900`.
+- Se encontro `scripts/watch_production_ntfy.py` y la documentacion `docs/NTFY_SIMULACIONES.md`.
+- Se inicio watcher externo ntfy para AL5 con estado y log propios.
+- Se envio notificacion manual de confirmacion: `AL5 ntfy externo activado`.
+- Se agrego `scripts/start_production_ntfy_watch.ps1` como atajo versionado para futuros lotes.
+- Se actualizo la politica operativa en `docs/NTFY_SIMULACIONES.md`.
+
+### Archivos revisados
+- `data/production_status.json`
+- `scripts/watch_production_ntfy.py`
+- `scripts/notifier.py`
+- `config/notifier_config.json`
+- `docs/NTFY_SIMULACIONES.md`
+
+### Archivos modificados
+- `scripts/start_production_ntfy_watch.ps1`
+- `docs/NTFY_SIMULACIONES.md`
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/JOURNAL.md`
+
+### Comandos importantes
+```text
+python scripts\notifier.py notify "AL5 ntfy externo activado" "Watcher externo activo en WS..." --project tesis --priority default --tags satellite
+Start-Process python scripts\watch_production_ntfy.py ...
+```
+
+### Resultados
+- Watcher externo activo para AL5.
+- Log del watcher: `data/logs/production_ntfy_watch_al5_20260520.log`.
+- Topic configurado: `sph-kevin-tesis-2026`.
+- Regla nueva: no dejar lotes largos sin ntfy; si el runner usa `--no-notify`, iniciar watcher externo.
+
+### Errores / bloqueos
+- Ninguno. El watcher no modifica ni interrumpe la simulacion.
+
+### Proximos pasos
+- Mantener AL5 corriendo.
+- Al terminar AL5, exportar liviano, subir a Git y avisar a laptop explicitamente: "SI ACTIVE SIEMPRE NTFY".
+
+### Advertencias metodologicas
+- ntfy es observabilidad operacional; no reemplaza logs, SQLite, `production_status.json` ni exports.

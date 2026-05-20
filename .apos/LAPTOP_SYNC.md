@@ -1,6 +1,6 @@
 # LAPTOP_SYNC
 
-Ultima actualizacion WS: 2026-05-20T18:04:54
+Ultima actualizacion WS: 2026-05-20T18:45:51
 Proyecto: SPH-Tesis
 Ruta WS: `C:\Users\Admin\Desktop\SPH-Tesis`
 
@@ -8,45 +8,42 @@ Este archivo es el resumen inteligente que `/guardar` debe versionar para que la
 
 ## Git
 - Rama: `master`
-- HEAD: `fd74ede Add after-AL3 GP analysis and AL4 plan`
+- HEAD: `8d178c9 Add after-AL4 GP analysis and AL5 plan`
 
 ```text
 ## master...origin/master
  M .apos/HANDOFF.md
- M .apos/INDEX.md
  M .apos/JOURNAL.md
  M .apos/PLAN.md
  M .apos/STATUS.md
- M data/results.sqlite
-?? exports/al_batch4_after_al3_20260520/
+ M docs/NTFY_SIMULACIONES.md
+?? scripts/start_production_ntfy_watch.ps1
 ```
 
 ## Estado productivo / simulaciones
-- **phase:** `completed`
+- **phase:** `production`
 - **mode:** `prod`
 - **dp:** `0.003`
 - **total_cases:** `8`
-- **completed:** `8`
+- **completed:** `0`
 - **failed:** `0`
-- **current_case:** `al4_base_m100_mu06808`
-- **progress:** `8/8`
-- **updated:** `2026-05-20T03:12:58.590969`
-- **eta_human:** `0.0h (0.0d)`
-- **eta:** `2026-05-19T23:02:30.913454`
+- **current_case:** `al5_highH_m085_mu0900`
+- **progress:** `1/8`
+- **updated:** `2026-05-20T18:29:15.928018`
 
 ## Estado APOS resumido
 
 ### STATUS
 # STATUS
 
-Ultima actualizacion: 2026-05-20 03:30
+Ultima actualizacion: 2026-05-20 19:10
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica WS: C:\Users\Admin\Desktop\SPH-Tesis
-Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tiene export liviano listo para laptop.
+Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reentrenado localmente y AL5 quedo preparado para ejecutar en WS.
 
 ## Hechos verificados
 - Convergencia cerrada para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
-- Piloto, batch2, batch3, batch4, AL1, AL2, AL3 y AL4 tienen o deben tener exports livianos versionables.
+- Piloto, batch2, batch3, batch4, AL1, AL2, AL3 y AL4 tienen exports livianos versionables.
 - AL4 corrio entre 2026-05-18 15:42 y 2026-05-20 03:12.
 - AL4 termino `8/8` casos, `0` fallos numericos, tiempo total `35.5 h`.
 - AL4 fue produccion dirigida por GP after-AL3 y brackets observados; no fue convergencia ni campana grande.
@@ -61,23 +58,43 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
 - Export liviano creado: `exports/al_batch4_after_al3_20260520/`.
 - El export AL4 incluye resumen CSV/MD, snapshot de status, tail de log, matriz corrida, inventario procesado y `Run.csv`/`RunPARTs.csv`.
 - No se incluyeron Chrono/Gauges completos, `.bi4`, `.ibi4`, VTK, `Part*`, `cases/` ni carpetas `_out`.
+- Laptop ya contiene commit `873fc18 Add AL4 after-AL3 lightweight export`.
+- GP after-AL4 entrenado localmente:
+  - Script: `scripts/train_gp_h_mu_mstar_after_al4_20260520.py`.
+  - Analisis: `data/analysis/gp_h_mu_mstar_after_al4_20260520/`.
+  - Modelo: `models/surrogates/gp_h_mu_mstar_after_al4_20260520.pkl`.
+  - Casos usados: 64 oficiales dentro del dominio `[H, mu, m*]`.
+  - LOO accuracy: `0.875`; MAE: `2.557% d_eq`; RMSE: `4.226% d_eq`.
+- AL5 preparado:
+  - Matriz: `config/al_batch5_after_al4_20260520.csv`.
+  - Prompt WS: `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`.
+- AL5 fue lanzado en WS el 2026-05-20 18:29 con `--no-notify`; se activo watcher externo ntfy a las 18:43.
+- Watcher externo AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
+- Se agrego atajo versionado: `scripts/start_production_ntfy_watch.ps1`.
 
 ## Decisiones activas
 - La WS solo ejecuta simulaciones y exporta resultados livianos; el reentrenamiento GP se hace deliberadamente en laptop.
-- AL4 debe analizarse en laptop antes de lanzar AL5, holdout o checks finos.
+- AL5 debe correrse en WS con matriz explicita y sin `--retrain-gp`.
 - Tratar rotacion, fuerzas y gauges como diagnosticos, no como criterio primario.
 - Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 - No usar `--retrain-gp` en WS.
+- Para lotes largos en WS, ntfy queda operacionalmente obligatorio: usar notificacion nativa o watcher externo si el comando usa `--no-notify`.
 
 ## Inferencias vigentes
 - AL4 fue informativo porque mezclo ESTABLE/FALLO dentro de brackets observados.
-- El GP after-AL4 deberia mejorar la localizacion de fronteras para `m*=0.85`, `m*=1.00`, `m*=1.15` y `m*=1.25`.
-- La frontera base `[H, mu, m*]` probablemente esta cerca de estar lista para una fase de holdout o AL5 muy pequeno, pero eso debe decidirse tras reentrenar en laptop.
+- El GP after-AL4 mejoro respecto a after-AL3 y dejo brackets muy estrechos en varios cortes:
+  - `H=0.200,m*=1.00`: `mu=0.6806` FALLO / `0.6808` ESTABLE.
+  - `H=0.225,m*=1.00`: `mu=0.8600` FALLO / `0.8650` ESTABLE.
+  - `H=0.225,m*=1.15`: `mu=0.7500` FALLO / `0.7600` ESTABLE.
+- Aun faltan puntos para cerrar/llenar cortes:
+  - `H=0.225,m*=0.85`: no hay ESTABLE dentro de los corridos.
+  - `H=0.210,m*=1.15` y `H=0.210,m*=1.25`: faltan fallos o transiciones claras.
 
 ## Pendientes criticos
-- Subir por Git el export AL4, `data/results.sqlite` actualizado y APOS.
-- En laptop: `git pull`, leer `exports/al_batch4_after_al3_20260520/al_batch4_summary.md` y reentrenar GP after-AL4.
-- Decidir con evidencia si sigue AL5, holdout, o checks finos `dp=0.002`.
+- Commit/push de analisis after-AL4, matriz AL5, prompt WS AL5 y APOS.
+- En WS: hacer `git pull`, dry-run AL5 y ejecutar solo si lista exactamente 8 casos.
+- Al terminar AL5, crear export liviano, subir a Git y avisar explicitamente a laptop: "SI ACTIVE SIEMPRE NTFY".
+- Cuando vuelva AL5: reentrenar GP after-AL5 y decidir holdout/checks finos `dp=0.002`.
 - Actualizar web post-convergencia con AL4 despues del reentrenamiento local.
 
 ## Riesgos activos
@@ -93,15 +110,19 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
 - `exports/al_batch4_after_al3_20260520/al_batch4_summary.md`
 - `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
 - `config/al_batch4_after_al3_20260518.csv`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/validation_metrics.json`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/brackets_by_h_mstar.csv`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
+- `config/al_batch5_after_al4_20260520.csv`
 
 ### HANDOFF
 # HANDOFF
 
 ## Proxima accion recomendada
-1. Hacer commit/push desde la WS con el export AL4 liviano y `data/results.sqlite` actualizado.
-2. En laptop: `git pull`.
-3. En laptop: reentrenar GP after-AL4 usando datos oficiales hasta AL4.
-4. Decidir si corresponde AL5, holdout o checks finos `dp=0.002`.
+1. Hacer commit/push desde laptop con GP after-AL4, matriz AL5, prompt WS AL5 y APOS.
+2. En WS: `git pull origin master`.
+3. En WS: dry-run AL5 con `config/al_batch5_after_al4_20260520.csv`.
+4. Si dry-run lista exactamente 8 casos, ejecutar AL5.
 
 ## Contexto minimo para continuar
 - AL4 after-AL3 termino limpio: `8/8` OK, `0` fallos numericos, `35.5 h`.
@@ -116,7 +137,14 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
   - `al4_highH_m100_mu0865`: `Dmax=4.86% d_eq`.
   - `al4_base_m100_mu06808`: `Dmax=3.57% d_eq`.
 - Export liviano WS: `exports/al_batch4_after_al3_20260520/`.
-- La laptop debe reentrenar el GP; la WS no debe usar `--retrain-gp`.
+- La laptop ya reentreno GP after-AL4.
+- GP after-AL4: 64 casos usados, LOO accuracy `0.875`, MAE `2.557% d_eq`, RMSE `4.226% d_eq`.
+- AL5 recomendado: 8 casos para cerrar brackets y llenar cortes H-m* faltantes.
+- La WS no debe usar `--retrain-gp`.
+- AL5 ya fue lanzado en WS el 2026-05-20 18:29.
+- Como AL5 fue lanzado con `--no-notify`, se activo watcher externo ntfy a las 18:43.
+- Watcher AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
+- Regla para siguientes lotes: si se usa `--no-notify`, arrancar siempre `scripts/start_production_ntfy_watch.ps1`.
 
 ## Archivos a leer primero
 - `.apos/STATUS.md`
@@ -125,32 +153,44 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
 - `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
 - `config/al_batch4_after_al3_20260518.csv`
 - `data/results.sqlite`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/README.md`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
+- `config/al_batch5_after_al4_20260520.csv`
+- `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`
 
 ## Comandos sugeridos para laptop
 ```powershell
-git pull
-Get-Content exports\al_batch4_after_al3_20260520\al_batch4_summary.md
-Import-Csv exports\al_batch4_after_al3_20260520\al_batch4_summary.csv |
-  Select case_name,dam_height,boulder_mass,friction_coefficient,criterion_class,disp_pct_deq,margin_pct_deq
+git status --short
+git add .apos config/al_batch5_after_al4_20260520.csv docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md scripts/train_gp_h_mu_mstar_after_al4_20260520.py data/analysis/gp_h_mu_mstar_after_al4_20260520 models/surrogates/gp_h_mu_mstar_after_al4_20260520.pkl
+git commit -m "Add after-AL4 GP analysis and AL5 plan"
+git push origin master
 ```
 
 ## Senales de exito
-- Laptop ve `exports/al_batch4_after_al3_20260520/`.
-- Laptop ve `data/results.sqlite` con filas `al4_*`.
-- GP after-AL4 se entrena solo en laptop.
-- Siguiente lote se decide con brackets actualizados, no por intuicion.
+- Git remoto contiene `config/al_batch5_after_al4_20260520.csv`.
+- WS puede hacer dry-run AL5 con exactamente 8 casos.
+- AL5 se ejecuta sin `--retrain-gp`.
+- ntfy queda activo por notificacion nativa o watcher externo.
+
+## Comandos sugeridos para WS mientras AL5 corre
+```powershell
+Get-Content data\production_status.json
+Get-Content data\production_20260520_1829.log -Tail 100 -Wait
+Get-Content data\logs\production_ntfy_watch_al5_20260520.log -Tail 40
+```
 
 ## No hacer todavia
-- No lanzar AL5 antes de reentrenar y revisar AL4.
+- No cambiar la matriz AL5 en WS sin volver a justificarla en laptop.
 - No abrir pendiente/orientacion/forma antes de cerrar el analisis AL4.
 - No tratar el GP como resultado SPH directo.
 - No versionar crudos pesados.
 - No usar `--retrain-gp` en WS.
+- No dejar corridas largas sin ntfy: usar nativo o watcher externo.
 
 ## Riesgos inmediatos
 - AL4 incluye puntos muy cercanos al umbral; pequenas diferencias de resolucion/contacto pueden cambiar clase.
 - Rotacion supera 5 grados en varios casos, pero no decide la clase bajo `displacement_only`.
-- Si el GP after-AL4 propone puntos fuera de brackets observados, revisar que sea realmente necesario.
+- `al5_highH_m085_mu0900` puede fallar aun con `mu=0.90`; si ocurre, se reporta que para `H=0.225,m*=0.85` la frontera queda fuera del dominio de `mu<=0.90`.
 
 ### PLAN
 # PLAN
@@ -159,7 +199,7 @@ Import-Csv exports\al_batch4_after_al3_20260520\al_batch4_summary.csv |
 Cerrar de forma robusta la frontera base `[H, mu, m*]` con active learning trazable, antes de abrir pendiente, orientacion y forma como extensiones jerarquicas.
 
 ## Fase actual
-Post-AL4 en WS: export liviano creado y pendiente de sincronizar por Git para reentrenamiento GP after-AL4 en laptop.
+Post-AL4 en laptop: GP after-AL4 reentrenado y AL5 preparado para ejecutar en WS.
 
 ## Proximos hitos
 - [x] Cerrar convergencia y adoptar `dp=0.003` como resolucion operativa.
@@ -175,11 +215,21 @@ Post-AL4 en WS: export liviano creado y pendiente de sincronizar por Git para re
 - [x] En WS: dry-run AL4.
 - [x] En WS: ejecutar AL4.
 - [x] Exportar AL4 liviano.
-- [ ] Subir AL4 por Git a laptop.
-- [ ] Reentrenar GP after-AL4 en laptop.
-- [ ] Decidir si sigue AL5, holdout o checks finos `dp=0.002`.
+- [x] Subir AL4 por Git a laptop.
+- [x] Reentrenar GP after-AL4 en laptop.
+- [x] Decidir si sigue AL5, holdout o checks finos `dp=0.002`.
+- [x] Generar matriz AL5.
+- [x] Preparar prompt WS AL5.
+- [ ] Commit/push de GP after-AL4 y AL5.
+- [ ] En WS: dry-run AL5.
+- [ ] En WS: ejecutar AL5.
+- [x] Activar watcher externo ntfy para AL5 lanzado con `--no-notify`.
+- [ ] Traer AL5 a laptop.
+- [ ] Reentrenar GP after-AL5.
+- [ ] Decidir holdout/checks finos `dp=0.002`.
 - [ ] Actualizar web post-convergencia con AL4 y GP after-AL4.
 - [ ] Seleccionar variables secundarias: pendiente, orientacion y formas/STL representativas.
+- [ ] Al cerrar AL5, exportar liviano, subir por Git y registrar que ntfy estuvo activo.
 
 ## Linea metodologica prevista
 1. Cerrar frontera base con `[H, mu, m*]`.
@@ -319,14 +369,11 @@ Resolucion: pendiente.
 ## Cambios locales al momento de guardar
 **Cambios livianos o de codigo:**
 - `M .apos/HANDOFF.md`
-- ` M .apos/INDEX.md`
 - ` M .apos/JOURNAL.md`
 - ` M .apos/PLAN.md`
 - ` M .apos/STATUS.md`
-- `?? exports/al_batch4_after_al3_20260520/`
-
-**Cambios runtime/pesados/no sincronizar a ciegas:**
-- ` M data/results.sqlite`
+- ` M docs/NTFY_SIMULACIONES.md`
+- `?? scripts/start_production_ntfy_watch.ps1`
 
 ## Instrucciones para laptop
 1. Ejecutar `git pull`.

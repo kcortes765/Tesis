@@ -23,6 +23,10 @@
 - GP after-AL4: 64 casos usados, LOO accuracy `0.875`, MAE `2.557% d_eq`, RMSE `4.226% d_eq`.
 - AL5 recomendado: 8 casos para cerrar brackets y llenar cortes H-m* faltantes.
 - La WS no debe usar `--retrain-gp`.
+- AL5 ya fue lanzado en WS el 2026-05-20 18:29.
+- Como AL5 fue lanzado con `--no-notify`, se activo watcher externo ntfy a las 18:43.
+- Watcher AL5: `scripts/watch_production_ntfy.py`, log `data/logs/production_ntfy_watch_al5_20260520.log`.
+- Regla para siguientes lotes: si se usa `--no-notify`, arrancar siempre `scripts/start_production_ntfy_watch.ps1`.
 
 ## Archivos a leer primero
 - `.apos/STATUS.md`
@@ -48,6 +52,14 @@ git push origin master
 - Git remoto contiene `config/al_batch5_after_al4_20260520.csv`.
 - WS puede hacer dry-run AL5 con exactamente 8 casos.
 - AL5 se ejecuta sin `--retrain-gp`.
+- ntfy queda activo por notificacion nativa o watcher externo.
+
+## Comandos sugeridos para WS mientras AL5 corre
+```powershell
+Get-Content data\production_status.json
+Get-Content data\production_20260520_1829.log -Tail 100 -Wait
+Get-Content data\logs\production_ntfy_watch_al5_20260520.log -Tail 40
+```
 
 ## No hacer todavia
 - No cambiar la matriz AL5 en WS sin volver a justificarla en laptop.
@@ -55,6 +67,7 @@ git push origin master
 - No tratar el GP como resultado SPH directo.
 - No versionar crudos pesados.
 - No usar `--retrain-gp` en WS.
+- No dejar corridas largas sin ntfy: usar nativo o watcher externo.
 
 ## Riesgos inmediatos
 - AL4 incluye puntos muy cercanos al umbral; pequenas diferencias de resolucion/contacto pueden cambiar clase.
