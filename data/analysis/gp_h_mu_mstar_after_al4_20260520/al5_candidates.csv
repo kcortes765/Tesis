@@ -1,0 +1,9 @@
+case_id,dam_height,boulder_mass,boulder_rot_z,friction_coefficient,slope_inv,pred_margin_train_pct_deq,pred_std_pct_deq,u_value,rationale
+al5_highH_m085_mu0900,0.225,0.85,0,0.9,20,-17.596879408126714,3.3509928225723855,5.251243538806878,test whether high-H low-mass frontier is inside the current mu domain
+al5_base_m085_mu0795,0.2,0.85,0,0.795,20,-0.39775477227460354,1.4468348712385015,0.27491373077968984,close base low-mass bracket between 0.790 F and 0.800 E
+al5_midH_m100_mu0744,0.21,1.0,0,0.744,20,-1.3815898088539758,1.4542893706957836,0.9500102501553898,close mid-H reference-mass bracket between 0.740 F and 0.748 E
+al5_highH_m100_mu08625,0.225,1.0,0,0.8625,20,-0.38497570522969093,1.4510488740108596,0.2653085723882685,close high-H reference-mass bracket between 0.860 F and 0.865 E
+al5_midH_m115_mu0700,0.21,1.15,0,0.7,20,0.21437751932061166,3.844301489243203,0.05576501216681595,find lower side of missing mid-H m*=1.15 bracket
+al5_highH_m115_mu0755,0.225,1.15,0,0.755,20,0.4304825273044792,1.4446996340955869,0.2979737221112211,close high-H m*=1.15 bracket between 0.750 F and 0.760 E
+al5_midH_m125_mu0660,0.21,1.25,0,0.66,20,0.13519704194170146,8.161430763501516,0.016565360395666827,fill missing mid-H m*=1.25 cut and test expected transition region
+al5_highH_m125_mu0690,0.225,1.25,0,0.69,20,0.0658799203314806,1.551675595478095,0.04245727684538309,close high-H m*=1.25 bracket between 0.680 F and 0.700 E

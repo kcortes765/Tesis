@@ -1127,3 +1127,71 @@ python <inline export builder>
 - AL4 no debe interpretarse como convergencia de dp; es produccion dirigida a brackets.
 - Rotacion sigue siendo diagnostica, no criterio primario.
 - El GP after-AL4 debe entrenarse de forma deliberada en laptop, no automaticamente en WS.
+
+## 2026-05-20 19:10 - GP after-AL4 entrenado y AL5 preparado
+
+### Objetivo
+Incorporar el export AL4 en laptop, reentrenar el surrogate GP local y definir el siguiente lote productivo WS sin usar reentrenamiento automatico en la WS.
+
+### Acciones
+- Se hizo `git pull origin master`; el repo ya contenia el commit `873fc18 Add AL4 after-AL3 lightweight export`.
+- Se verifico `exports/al_batch4_after_al3_20260520/`.
+- Se confirmo que `data/results.sqlite` contiene 8 filas oficiales `al4_*`.
+- Se creo `scripts/train_gp_h_mu_mstar_after_al4_20260520.py`.
+- Se entreno el GP after-AL4 localmente.
+- Se genero `data/analysis/gp_h_mu_mstar_after_al4_20260520/`.
+- Se guardo el modelo en `models/surrogates/gp_h_mu_mstar_after_al4_20260520.pkl`.
+- Se creo `config/al_batch5_after_al4_20260520.csv`.
+- Se creo `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`.
+- Se actualizaron `STATUS.md`, `HANDOFF.md`, `PLAN.md` e `INDEX.md`.
+
+### Archivos revisados
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.md`
+- `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
+- `data/results.sqlite`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/brackets_by_h_mstar.csv`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
+
+### Archivos modificados
+- `.apos/STATUS.md`
+- `.apos/HANDOFF.md`
+- `.apos/PLAN.md`
+- `.apos/INDEX.md`
+- `.apos/JOURNAL.md`
+- `scripts/train_gp_h_mu_mstar_after_al4_20260520.py`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/`
+- `models/surrogates/gp_h_mu_mstar_after_al4_20260520.pkl`
+- `config/al_batch5_after_al4_20260520.csv`
+- `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`
+
+### Comandos importantes
+```text
+git pull origin master
+python scripts\train_gp_h_mu_mstar_after_al4_20260520.py
+```
+
+### Resultados
+- GP after-AL4 uso 64 casos oficiales dentro del dominio.
+- Dataset: 25 FALLO y 39 ESTABLE.
+- Validacion LOO: accuracy `0.875`, MAE `2.557% d_eq`, RMSE `4.226% d_eq`.
+- AL5 recomendado: 8 casos.
+- Brackets clave after-AL4:
+  - `H=0.200,m*=0.85`: `mu=0.7900` FALLO / `0.8000` ESTABLE.
+  - `H=0.210,m*=1.00`: `mu=0.7400` FALLO / `0.7480` ESTABLE.
+  - `H=0.225,m*=1.00`: `mu=0.8600` FALLO / `0.8650` ESTABLE.
+  - `H=0.225,m*=1.15`: `mu=0.7500` FALLO / `0.7600` ESTABLE.
+  - `H=0.225,m*=1.25`: `mu=0.6800` FALLO / `0.7000` ESTABLE.
+
+### Errores / bloqueos
+- No hubo errores de entrenamiento.
+- El ranking automatico de candidatos por U-value cae en zonas de alta incertidumbre sin bracket fisico claro; se prefirio una matriz AL5 hibrida basada en brackets y vacios H-m*.
+
+### Proximos pasos
+- Commit/push de cambios locales.
+- En WS: `git pull`, dry-run AL5 y corrida real si el dry-run lista exactamente 8 casos.
+- Al volver AL5: reentrenar GP after-AL5 y decidir holdout/checks `dp=0.002`.
+
+### Advertencias metodologicas
+- AL5 sigue siendo active learning productivo, no convergencia.
+- `al5_highH_m085_mu0900` puede fallar; si falla, indica que para `H=0.225,m*=0.85` la frontera queda fuera del dominio `mu<=0.90`.
+- No abrir pendiente/orientacion/forma hasta tener la frontera base y validacion interna mas cerradas.

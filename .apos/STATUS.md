@@ -1,13 +1,13 @@
 # STATUS
 
-Ultima actualizacion: 2026-05-20 03:30
+Ultima actualizacion: 2026-05-20 19:10
 Proyecto: SPH-IncipientMotion / Tesis UCN 2026
 Ruta canonica WS: C:\Users\Admin\Desktop\SPH-Tesis
-Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tiene export liviano listo para laptop.
+Estado actual: AL4 after-AL3 fue incorporado en laptop, el GP after-AL4 fue reentrenado localmente y AL5 quedo preparado para ejecutar en WS.
 
 ## Hechos verificados
 - Convergencia cerrada para uso productivo: `dp=0.003`, `classification_mode=displacement_only`, `reference_time_s=0.5`.
-- Piloto, batch2, batch3, batch4, AL1, AL2, AL3 y AL4 tienen o deben tener exports livianos versionables.
+- Piloto, batch2, batch3, batch4, AL1, AL2, AL3 y AL4 tienen exports livianos versionables.
 - AL4 corrio entre 2026-05-18 15:42 y 2026-05-20 03:12.
 - AL4 termino `8/8` casos, `0` fallos numericos, tiempo total `35.5 h`.
 - AL4 fue produccion dirigida por GP after-AL3 y brackets observados; no fue convergencia ni campana grande.
@@ -22,23 +22,38 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
 - Export liviano creado: `exports/al_batch4_after_al3_20260520/`.
 - El export AL4 incluye resumen CSV/MD, snapshot de status, tail de log, matriz corrida, inventario procesado y `Run.csv`/`RunPARTs.csv`.
 - No se incluyeron Chrono/Gauges completos, `.bi4`, `.ibi4`, VTK, `Part*`, `cases/` ni carpetas `_out`.
+- Laptop ya contiene commit `873fc18 Add AL4 after-AL3 lightweight export`.
+- GP after-AL4 entrenado localmente:
+  - Script: `scripts/train_gp_h_mu_mstar_after_al4_20260520.py`.
+  - Analisis: `data/analysis/gp_h_mu_mstar_after_al4_20260520/`.
+  - Modelo: `models/surrogates/gp_h_mu_mstar_after_al4_20260520.pkl`.
+  - Casos usados: 64 oficiales dentro del dominio `[H, mu, m*]`.
+  - LOO accuracy: `0.875`; MAE: `2.557% d_eq`; RMSE: `4.226% d_eq`.
+- AL5 preparado:
+  - Matriz: `config/al_batch5_after_al4_20260520.csv`.
+  - Prompt WS: `docs/PROMPT_WS_AL5_AFTER_AL4_20260520.md`.
 
 ## Decisiones activas
 - La WS solo ejecuta simulaciones y exporta resultados livianos; el reentrenamiento GP se hace deliberadamente en laptop.
-- AL4 debe analizarse en laptop antes de lanzar AL5, holdout o checks finos.
+- AL5 debe correrse en WS con matriz explicita y sin `--retrain-gp`.
 - Tratar rotacion, fuerzas y gauges como diagnosticos, no como criterio primario.
 - Mantener el caso parcial `batch4_mass_m125_H0225_mu0860` fuera de evidencia oficial salvo reproceso/repeticion.
 - No usar `--retrain-gp` en WS.
 
 ## Inferencias vigentes
 - AL4 fue informativo porque mezclo ESTABLE/FALLO dentro de brackets observados.
-- El GP after-AL4 deberia mejorar la localizacion de fronteras para `m*=0.85`, `m*=1.00`, `m*=1.15` y `m*=1.25`.
-- La frontera base `[H, mu, m*]` probablemente esta cerca de estar lista para una fase de holdout o AL5 muy pequeno, pero eso debe decidirse tras reentrenar en laptop.
+- El GP after-AL4 mejoro respecto a after-AL3 y dejo brackets muy estrechos en varios cortes:
+  - `H=0.200,m*=1.00`: `mu=0.6806` FALLO / `0.6808` ESTABLE.
+  - `H=0.225,m*=1.00`: `mu=0.8600` FALLO / `0.8650` ESTABLE.
+  - `H=0.225,m*=1.15`: `mu=0.7500` FALLO / `0.7600` ESTABLE.
+- Aun faltan puntos para cerrar/llenar cortes:
+  - `H=0.225,m*=0.85`: no hay ESTABLE dentro de los corridos.
+  - `H=0.210,m*=1.15` y `H=0.210,m*=1.25`: faltan fallos o transiciones claras.
 
 ## Pendientes criticos
-- Subir por Git el export AL4, `data/results.sqlite` actualizado y APOS.
-- En laptop: `git pull`, leer `exports/al_batch4_after_al3_20260520/al_batch4_summary.md` y reentrenar GP after-AL4.
-- Decidir con evidencia si sigue AL5, holdout, o checks finos `dp=0.002`.
+- Commit/push de analisis after-AL4, matriz AL5, prompt WS AL5 y APOS.
+- En WS: hacer `git pull`, dry-run AL5 y ejecutar solo si lista exactamente 8 casos.
+- Cuando vuelva AL5: reentrenar GP after-AL5 y decidir holdout/checks finos `dp=0.002`.
 - Actualizar web post-convergencia con AL4 despues del reentrenamiento local.
 
 ## Riesgos activos
@@ -54,3 +69,7 @@ Estado actual: AL4 after-AL3 termino en la WS, fue procesado oficialmente y tien
 - `exports/al_batch4_after_al3_20260520/al_batch4_summary.md`
 - `exports/al_batch4_after_al3_20260520/al_batch4_summary.csv`
 - `config/al_batch4_after_al3_20260518.csv`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/validation_metrics.json`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/brackets_by_h_mstar.csv`
+- `data/analysis/gp_h_mu_mstar_after_al4_20260520/al5_candidates.csv`
+- `config/al_batch5_after_al4_20260520.csv`
